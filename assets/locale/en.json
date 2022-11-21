@@ -1,0 +1,239 @@
+{
+  "none": "none",
+  "Password": "Password",
+  "remember_me": "Remember me",
+  "for_pass": "Forgot Password?",
+  "login_err": "please fill all fields",
+  "Quotation Date": "Quotation Date",
+  "Customer Group": "Customer Group",
+  "Territory": "Territory",
+  "Customer Address": "Customer Address",
+  "Address": "Address",
+  "Contact": "Contact",
+  "Mobile No": "Mobile No",
+  "Contact Email": "Contact Email",
+  "Valid Till": "Valid Till",
+  "Status": "Status",
+
+  "Order Type": "Order Type",
+  "Currency": "Currency",
+  "Exchange Rate": "Exchange Rate",
+  "Price List": "Price List",
+  "Price List Currency": "Price List Currency",
+  "Price List Exchange Rate":"Price List Exchange Rate",
+  "Order Lost Reason": "Order Lost Reason",
+  "Terms & Conditions": "Terms & Conditions",
+  "Terms & Conditions Details": "Terms & Conditions Details",
+  "Taxes and Charges Template": "Taxes and Charges Template",
+  "Payment Terms Template": "Payment Terms Template",
+  "Campaign": "Campaign",
+  "Source": "Source",
+  "Ignore Pricing Rule": "Ignore Pricing Rule",
+  "Total Quantity": "Total Quantity",
+  "Total ": "Total ",
+  "Net Total ": "Net Total ",
+  "Total": "Total",
+  "Net Total": "Net Total",
+  "Total Taxes and Charges ": "Total Taxes and Charges ",
+  "Total Taxes and Charges": "Total Taxes and Charges",
+  "Apply Additional Discount On": "Apply Additional Discount On",
+  "Additional Discount Amount ": "Additional Discount Amount ",
+  "Additional Discount Percentage": "Additional Discount Percentage",
+  "Additional Discount Amount": "Additional Discount Amount",
+  "Grand Total ": "Grand Total ",
+  "In Words ": "In Words ",
+  "Grand Total": "Grand Total",
+  "In Words": "In Words",
+  "Item Code": "Item Code",
+  "Item Name": "Item Name",
+  "Description": "Description",
+  "Item Group": "Item Group",
+  "Brand": "Brand",
+  "Image": "Image",
+  "Quantity": "Quantity",
+  "Stock UOM": "Stock UOM",
+  "UOM": "UOM",
+  "UOM Conversion Factor": "UOM Conversion Factor",
+  "Qty as per Stock UOM": "Qty as per Stock UOM",
+  "Price List Rate": "Price List Rate",
+  "Price List Rate ": "Price List Rate ",
+  "Margin Type": "Margin Type",
+  "Margin Rate or Amount": "Margin Rate or Amount",
+  "Rate With Margin": "Rate With Margin",
+  "Discount (%) on Price List Rate with Margin": "Discount (%) on Price List Rate with Margin",
+  "Discount Amount": "Discount Amount",
+  "Rate With Margin ": "Rate With Margin ",
+  "Rate": "Rate",
+  "Net Rate": "Net Rate",
+  "Amount": "Amount",
+  "Net Amount": "Net Amount",
+  "Rate ": "Rate ",
+  "Net Rate ": "Net Rate ",
+  "Amount ": "Amount ",
+  "Net Amount ": "Net Amount ",
+  "Rate of Stock UOM": "Rate of Stock UOM",
+  "Valuation Rate": "Valuation Rate",
+  "Gross Profit": "Gross Profit",
+  "Warehouse": "Warehouse",
+  "Against Doctype": "Against Doctype",
+  "Against Docname": "Against Docname",
+  "Projected Qty": "Projected Qty",
+  "Actual Qty": "Actual Qty",
+  "Reference Row #": "Reference Row #",
+  "Account Head": "Account Head",
+  "Cost Center": "Cost Center",
+  "Account Currency": "Account Currency",
+  "Tax Amount": "Tax Amount",
+  "Tax Amount After Discount Amount": "Tax Amount After Discount Amount",
+  "Tax Amount ": "Tax Amount ",
+  "Tax Amount After Discount Amount ": "Tax Amount After Discount Amount ",
+  "Payment Term": "Payment Term",
+  "Due Date": "Due Date",
+  "Mode of Payment": "Mode of Payment",
+  "Invoice Portion": "Invoice Portion",
+  "Discount Type": "Discount Type",
+  "Discount Date": "Discount Date",
+  "Discount": "Discount",
+  "Payment Amount": "Payment Amount",
+  "Outstanding Amount": "Outstanding Amount",
+  "Paid Amount": "Paid Amount",
+  "Discounted Amount": "Discounted Amount",
+  "Payment Amount ": "Payment Amount ",
+  "Type": "Type",
+  "Person Name": "Person Name",
+  "Lead Is A Company": "Lead Is A Company",
+  "Company Name": "Company Name",
+  "Industry": "Industry",
+  "Market Segment": "Market Segment",
+  "City": "City",
+  "Country": "Country",
+  "Mobile No.": "Mobile No.",
+  "Email Address": "Email Address",
+
+  "Customer": "Customer",
+  "Date": "Date",
+  "Delivery Date":"Delivery Date",
+  "Tax Id":"Tax Id",
+
+  "Project":  "Project",
+  "Set Source Warehouse" :  "Set Source Warehouse",
+  "Sales Partner" : "Sales Partner",
+  "Commission Rate" :  "Commission Rate",
+  "Total Commission" : "Total Commission",
+
+  "Row #": "Row #",
+  "Item Tax Template": "Item Tax Template",
+  "Billed Amount": "Billed Amount",
+  "Ordered Qty":  "Ordered Qty",
+  "Planned Quantity": "Planned Quantity",
+  "Work Order Qty":  "Work Order Qty",
+  "Delivered Qty": "Delivered Qty",
+  "Produced Quantity":  "Produced Quantity",
+  "Returned Qty": "Returned Qty",
+  "Additional Notes":  "Additional Notes",
+
+  "Campaign Name":  "Campaign Name",
+  "Request Type": "Request Type",
+  "Lead Owner":  "Lead Owner",
+  "Next Contact By": "Next Contact By",
+  "Next Contact Date":  "Next Contact Date",
+  "Notes": "Notes",
+
+  "Quotation To" : "Quotation To",
+
+  "Customer Name":  "Customer Name",
+  "Customer Balance": "Customer Balance",
+  "Disabled":  "Disabled",
+  "Customer Type": "Customer Type",
+  "Tax ID":  "Tax ID",
+  "Customer Primary Address": "Customer Primary Address",
+  "Primary Address":  "Primary Address",
+  "Customer Primary Contact": "Customer Primary Contact",
+  "Email Id": "Email Id",
+
+  "Company" :  "Company",
+  "Credit" : "Credit Limit",
+  "Bypass Credit Limit Check at Sales Order" :  "Bypass Credit Limit Check at Sales Order",
+
+  "Is Return":  "Is Return",
+  "Update Stock": "Update Stock",
+  "Source Warehouse":  "Source Warehouse",
+  "Target Warehouse": "Target Warehouse",
+  "Party": "Party",
+  "Party Name": "Party Name",
+  "Reference No": "Reference No",
+  "Reference Date": "Reference Date",
+  "Payment Type": "Payment Type",
+  "Mode Of Payment": "Mode Of Payment",
+  "Account Paid From": "Account Paid From",
+  "Party Type": "Party Type",
+  "Contact Person": "Contact Person",
+  "Stock Entry Type": "Stock Entry Type",
+  "Purpose": "Purpose",
+  "From Warehouse": "From Warehouse",
+  "To Warehouse": "To Warehouse",
+  "Default UOM": "Default UOM",
+  "Maintain Stock": "Maintain Stock",
+  "Include In Maunfacturing": "Include In Maunfacturing",
+  "Is Fixed Asset": "Is Fixed Asset",
+  "Asset Category": "Asset Category",
+  "Is Sales Item": "Is Sales Item",
+  "Sales UOM": "Sales UOM",
+  "Is Purchase Item": "Is Purchase Item",
+  "Purchase UOM": "Purchase UOM",
+  "Address Title": "Address Title",
+  "opportunity_type": "opportunity_type",
+  "to_discuss": "order_lost_reason",
+  "with_items": "contact_by",
+  "To Discuss": "To Discuss",
+  "With Items": "With Items",
+  "Conversion Factor": "Conversion Factor",
+  "Warehouse Type": "Warehouse Type",
+  "Balance": "Balance",
+  "Reserved Qty": "Reserved Qty",
+  "Requested Qty": "Requested Qty",
+  "Mobile": "Mobile",
+  "Group": "Group"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

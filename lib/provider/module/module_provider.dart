@@ -1,0 +1,581 @@
+import 'dart:io';
+
+import 'package:next_app/models/list_models/list_model.dart';
+import 'package:next_app/provider/module/module_type.dart';
+import 'package:next_app/service/server_exception.dart';
+import 'package:next_app/service/service.dart';
+import 'package:next_app/service/service_constants.dart';
+import 'package:next_app/screen/page/page_screen.dart';
+import 'package:next_app/core/cloud_system_widgets.dart';
+import 'package:next_app/widgets/dialog/loading_dialog.dart';
+import 'package:next_app/widgets/snack_bar.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
+
+import '../user/user_provider.dart';
+
+class ModuleProvider extends ChangeNotifier {
+  ModuleType? _currentModule;
+
+  /// store current module and page_models data here temporary until the user pop the connection list
+  Map<String, dynamic> _oldData = {};
+
+  Map<String, dynamic> _pageData = {};
+
+  Map<String, dynamic> _createFromPageData = {};
+
+  // detect weather the form need to load any data,
+  // in order to update the page_models instead of creating new form
+  bool _editPage = false;
+
+  bool _createFromPage = false;
+
+  bool _isLoading = false;
+
+  bool _availablePdfFormat = false;
+
+  /// id of the pushing page_models
+  String _pageId = '';
+  String _totalListCount = '';
+  String _loadCount = '';
+
+  /// these to handle connections
+  /// list service asks for extra parameters when querying for connection items
+  String? _connection, _filterById;
+
+  int? _pageSubmitStatus;
+
+
+  /// this to handle filters data from FilterScreen
+  Map<String, dynamic> _filter = {};
+
+
+  /// Getters ///
+
+  String get totalListCount => _totalListCount;
+  String get loadCount => _loadCount;
+
+  int? get pageSubmitStatus => _pageSubmitStatus;
+
+  Map<String, dynamic> get filter => _filter;
+
+
+  bool get isEditing => _editPage;
+
+  bool get isCreateFromPage => _createFromPage;
+
+  String get pageId => _pageId;
+
+  bool get availablePdfFormat => _availablePdfFormat;
+
+  bool get isLoading => _isLoading;
+
+  /// used for connection card, to know if it is the first connection route to push or not
+  bool get isSecondModule => _oldData.isNotEmpty;
+
+  /// used for push create from page
+  bool get isSecondCreateFromPage => _createFromPageData.isNotEmpty;
+
+  // pass by value not by reference
+  Map<String, dynamic> get pageData => {..._pageData};
+  Map<String, dynamic> get createFromPageData => {..._createFromPageData};
+
+  Map<String, dynamic> get updateData {
+    final data = pageData;
+    data['set_posting_time'] = 1;
+
+    data.remove('attachments');
+    data.remove('comments');
+    data.remove('print_formats');
+    data.remove('conn');
+    data.remove('payment_schedule');
+    return data;
+  }
+
+  List<Map<String, dynamic>> get attachments =>
+      List<Map<String, dynamic>>.from(_pageData['attachments'] ?? []);
+
+  List<String> get pdfFormats =>
+      List<Map<String, dynamic>>.from(_pageData['print_formats'] ?? {})
+          .map((e) => e['name'].toString())
+          .toList();
+
+  ModuleType get currentModule => _currentModule!;
+
+  Color? get color {
+    Color? color = statusColor(_pageData['status'] ?? 'none');
+    if (color == Colors.transparent) color = null;
+    return color;
+  }
+
+  /// Setters ///
+  set setLoadCount(String count) {
+    _loadCount = count;
+    //notifyListeners();
+  }
+
+  set filter(Map<String, dynamic> value) {
+    _filter = value;
+    // listService(page_models: 0);
+    notifyListeners();
+  }
+
+  void iAmCreatingAForm() {
+    _editPage = false;
+    _createFromPage = false;
+  }
+
+  void editThisPage() => _editPage = true;
+
+  void createFromThisPage() => _createFromPage = true;
+
+
+  set setModule(String doctype) {
+    switch (doctype) {
+      // Selling
+      case APIService.LEAD:
+        _currentModule = ModuleType.lead;
+        break;
+      case APIService.OPPORTUNITY:
+        _currentModule = ModuleType.opportunity;
+        break;
+      case APIService.CUSTOMER:
+        _currentModule = ModuleType.customer;
+        break;
+      case APIService.QUOTATION:
+        _currentModule = ModuleType.quotation;
+        break;
+      case APIService.SALES_ORDER:
+        _currentModule = ModuleType.salesOrder;
+        break;
+      case APIService.SALES_INVOICE:
+        _currentModule = ModuleType.salesInvoice;
+        break;
+      case APIService.PAYMENT_ENTRY:
+        _currentModule = ModuleType.paymentEntry;
+        break;
+      case APIService.CUSTOMER_VISIT:
+        _currentModule = ModuleType.customerVisit;
+        break;
+      case APIService.ADDRESS:
+        _currentModule = ModuleType.address;
+        break;
+      case APIService.CONTACT:
+        _currentModule = ModuleType.contact;
+        break;
+
+      // Stock
+      case APIService.ITEM:
+        _currentModule = ModuleType.item;
+        break;
+      case APIService.STOCK_ENTRY:
+        _currentModule = ModuleType.stockEntry;
+        break;
+      case APIService.DELIVERY_NOTE:
+        _currentModule = ModuleType.deliveryNote;
+        break;
+      case APIService.PURCHASE_RECEIPT:
+        _currentModule = ModuleType.purchaseReceipt;
+        break;
+
+      case APIService.MATERIAL_REQUEST:
+        _currentModule = ModuleType.materialRequest;
+        break;
+
+      // Buying
+      case APIService.SUPPLIER:
+        _currentModule = ModuleType.supplier;
+        break;
+      case APIService.SUPPLIER_QUOTATION:
+        _currentModule = ModuleType.supplierQuotation;
+        break;
+      case APIService.PURCHASE_INVOICE:
+        _currentModule = ModuleType.purchaseInvoice;
+        break;
+      case APIService.PURCHASE_ORDER:
+        _currentModule = ModuleType.purchaseOrder;
+        break;
+// HR
+      case APIService.EMPLOYEE:
+        _currentModule = ModuleType.employee;
+        break;
+      case APIService.LEAVE_APPLICATION:
+        _currentModule = ModuleType.leaveApplication;
+        break;
+      case APIService.EMPLOYEE_CHECKIN:
+        _currentModule = ModuleType.employeeCheckin;
+        break;
+      case APIService.ATTENDANCE_REQUEST:
+        _currentModule = ModuleType.attendanceRequest;
+        break;
+      case APIService.EMPLOYEE_ADVANCE:
+        _currentModule = ModuleType.employeeAdvance;
+        break;
+      case APIService.EXPENSE_CLAIM:
+        _currentModule = ModuleType.expenseClaim;
+        break;
+      case APIService.LOAN_APPLICATION:
+        _currentModule = ModuleType.loanApplication;
+        break;
+      case APIService.JOURNAL_ENTRY:
+        _currentModule = ModuleType.journalEntry;
+        break;
+    }
+    _filter.clear();
+    notifyListeners();
+  }
+
+  /// used to load page_models page_models data and store it in the provider
+  Future<void> loadPage() async {
+    _isLoading = true;
+    notifyListeners();
+    final data =
+        await APIService().getPage(_currentModule!.pageService, _pageId);
+    if (data['message'] != null && data['message'] is Map) {
+      _pageData = Map<String, dynamic>.from(data['message']);
+      _pageSubmitStatus = data['message']?['docstatus'];
+      _availablePdfFormat = (_pageData['print_formats'] ?? []).isNotEmpty;
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  void pushPage(String pageId) {
+    _availablePdfFormat = false;
+    _pageData = {};
+    _isLoading = true;
+    _editPage = false;
+    _pageId = pageId;
+    loadPage();
+  }
+
+  /// used to create doc from doc
+  void pushCreateFromPage(
+      {required Map<String, dynamic> pageData, required String doctype}) {
+    _createFromPage = true;
+    _createFromPageData = pageData;
+
+    _createFromPageData['_pageData'] = _pageData;
+    _createFromPageData['_pageId'] = _pageId;
+    _createFromPageData['_availablePdfFormat'] = _availablePdfFormat;
+    _createFromPageData['_currentModule'] = _currentModule;
+
+    // this going to notify Listeners
+    setModule = doctype;
+  }
+
+  void removeCreateFromPage() {
+    //retrieve old data
+    _pageData = _createFromPageData['_pageData'];
+    _pageId = _createFromPageData['_pageId'];
+    _availablePdfFormat = _createFromPageData['_availablePdfFormat'];
+    _currentModule = _createFromPageData['_currentModule'];
+
+    //to reset [_createFromPageData]
+    _createFromPageData.clear();
+    notifyListeners();
+  }
+
+  /// used to push new connection list route
+  void pushConnection(String connection) {
+    _filterById = _pageId;
+    _connection = _currentModule!.genericListService;
+
+    // to save the first route only (list & page_models)
+    if (!isSecondModule) {
+      _oldData['_pageData'] = _pageData;
+      _oldData['_pageId'] = _pageId;
+      _oldData['_availablePdfFormat'] = _availablePdfFormat;
+      _oldData['_currentModule'] = _currentModule;
+    }
+
+    // this going to notify Listeners
+    setModule = connection;
+  }
+
+  /// used to remove current connection module and retrieve the previous module
+  void removeConnection() {
+    _filterById = null;
+    _connection = null;
+
+    // retrieve old data
+    _pageData = _oldData['_pageData'];
+    _pageId = _oldData['_pageId'];
+    _availablePdfFormat = _oldData['_availablePdfFormat'];
+    _currentModule = _oldData['_currentModule'];
+
+    // very important since it is used for [_isSecondModule] logic
+    _oldData.clear();
+    notifyListeners();
+  }
+
+  /// gets data for the [GenericListScreen]
+  Future<ListModel?> listService({required int page, String? search}) async {
+    return await APIService().getList(
+      _currentModule!.genericListService,
+      page,
+      _currentModule!.serviceParser,
+      search: search,
+      filterById: _filterById,
+      connection: _connection,
+      filters: _filter,
+    );
+  }
+
+  /// gets List Count of [GenericListScreen]
+  Future<String> listCount({String? service, String? search}) async {
+    String count;
+    count = await APIService().getListCount(
+        service: service ?? _currentModule!.genericListService,
+        filters: _filter,
+        search: search);
+    _totalListCount = count;
+    return count;
+  }
+
+  Future<void> submitDocument(BuildContext context) async {
+    final res = await checkDialog(context,
+        'Are you sure to submit ${_currentModule!.genericListService} $_pageId');
+    if (res == false) loadPage();
+
+    if (res != null && res == true) {
+      showLoadingDialog(
+          context, 'Submitting ${_currentModule!.genericListService}');
+
+      final response = await handleRequest(
+          () => APIService()
+              .submitDoc(_pageId, _currentModule!.genericListService),
+          context);
+
+      if (response != null && response == true) _pageSubmitStatus = 1;
+      final x = _filter;
+      filter = {'notifyListeners': true};
+      filter = x;
+      loadPage();
+      Navigator.pop(context);
+      showSnackBar('Submitted Successfully', context);
+    }
+  }
+
+  Future<void> cancelledDocument(BuildContext context) async {
+    final res = await checkDialog(context,
+        'Are you sure to cancel ${_currentModule!.genericListService} $_pageId');
+    if (res == false) loadPage();
+
+    if (res != null && res == true) {
+      showLoadingDialog(
+          context, 'canceling ${_currentModule!.genericListService}');
+
+      final response = await handleRequest(
+          () => APIService()
+              .cancelDoc(_pageId, _currentModule!.genericListService),
+          context);
+
+      if (response != null && response == true) _pageSubmitStatus = 1;
+      final x = _filter;
+      filter = {'notifyListeners': true};
+      filter = x;
+      loadPage();
+      Navigator.pop(context);
+      showSnackBar('canceled Successfully', context);
+    }
+  }
+
+  Widget submitDocumentWidget() {
+    switch (_pageSubmitStatus) {
+      case (0):
+        return SubmitButton();
+      case (1):
+        return CancelButton();
+      case (2):
+        return AmendButton();
+
+      default:
+        return SizedBox();
+    }
+  }
+
+  Future<void> updatePage(Map<String, dynamic> data) async {
+    await APIService()
+        .updatePage(_currentModule!.genericListService + '/' + _pageId, data);
+    await loadPage();
+  }
+
+  Future<bool> addComment(BuildContext context, String comment) async {
+    showLoadingDialog(context, 'Uploading comment');
+    bool? response;
+    try {
+      response =
+          await APIService().comment(_currentModule!.title, _pageId, comment);
+    } catch (_) {}
+    Navigator.pop(context);
+
+    if (response != null && response == true) {
+      ((_pageData['comments'] as List?) ?? []).add({
+        "creation": DateTime.now().toIso8601String(),
+        "owner": context.read<UserProvider>().username,
+        "content": comment
+      });
+      loadPage();
+      return true;
+    }
+
+    Fluttertoast.showToast(msg: 'something went wrong');
+    return false;
+  }
+
+  Future<void> addAttachment(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
+      showLoadingDialog(context, 'Uploading Your File');
+
+      final server = APIService();
+
+      final res = await handleRequest(
+          () async => await server.postFile(
+              _currentModule!.genericListService, _pageId, file),
+          context);
+      //
+      // print(res);
+
+      Navigator.pop(context);
+      Navigator.pop(context);
+
+      try {
+        if (res['message']['name'] != null) {
+          loadPage();
+          Future.delayed(Duration(seconds: 1),(){
+            showSnackBar('File Uploaded Successfully', context);
+          });
+
+        }
+      } catch (e) {}
+    }
+  }
+
+  Future<Map<String, dynamic>?> uploadImage(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
+      showLoadingDialog(context, 'Uploading Your Image');
+      final server = APIService();
+
+      final res = await handleRequest(
+          () async => await server.postFile(
+              _currentModule!.genericListService, _pageId, file),
+          context);
+      //print('$res');
+
+      Navigator.pop(context);
+
+      try {
+        if (res['message']['name'] != null) {
+          //print('Image URL: ${res['message']['file_url']}');
+          showSnackBar('File Uploaded Successfully', context);
+          return {
+            "imageUrl": res['message']['file_url'],
+            "imageFile": file,
+          };
+          //return res['message']['name'].toString();
+        }
+      } catch (e) {
+        print('No Image URL Found: ${res['message']['name']}');
+      }
+    }
+    return null;
+  }
+
+  void printPdf(BuildContext context) async {
+    if (pdfFormats.length == 1)
+      APIService().printInvoice(
+          context: context,
+          docType: _currentModule!.genericListService,
+          id: _pageId,
+          format: pdfFormats[0]);
+    else {
+      final format = await showDialog(
+          context: context,
+          builder: (_) => SelectFormatDialog(
+              formats: pdfFormats, title: 'Select Print Format'));
+      if (format == null) return;
+      APIService().printInvoice(
+          context: context,
+          docType: _currentModule!.genericListService,
+          id: _pageId,
+          format: format);
+    }
+  }
+
+  void downloadPdf(BuildContext context) async {
+    //make sure for storage permission
+    if (!context.read<UserProvider>().storageAccess) {
+      await context.read<UserProvider>().checkPermission();
+
+      //return if it's not guaranteed
+      if (!context.read<UserProvider>().storageAccess) {
+        showSnackBar('Storage Access Required!', context, color: Colors.red);
+        return;
+      }
+    }
+
+    try {
+      var file;
+
+      if (pdfFormats.length == 1) {
+        showLoadingDialog(context, 'Downloading PDF ...');
+        file = await APIService().downloadFile(
+          context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
+          _pageId + '.pdf',
+          queryParameters: {
+            'doctype': _currentModule!.genericListService,
+            'name': _pageId,
+            'format': pdfFormats[0]
+          },
+          path: null,
+        );
+      } else {
+        final format = await showDialog(
+            context: context,
+            builder: (_) => SelectFormatDialog(
+                formats: pdfFormats, title: 'Select PDF Format'));
+        if (format == null) return;
+        showLoadingDialog(context, 'Downloading PDF ...');
+        file = await APIService().downloadFile(
+          context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
+          '$_pageId-$format' + '.pdf',
+          queryParameters: {
+            'doctype': _currentModule!.genericListService,
+            'name': _pageId,
+            'format': format
+          },
+          path: null,
+        );
+      }
+      Navigator.pop(context);
+      if (file is File) OpenFile.open(file.path);
+      // showSnackBar('checkout: downloads/ERPCloud.systems/${_currentModule!.genericListService}', context);
+    } on ServerException catch (e) {
+      print(e);
+      Navigator.pop(context);
+      showSnackBar(e.message, context, color: Colors.red);
+    } on PlatformException catch (e) {
+      print(e);
+      Navigator.pop(context);
+      showSnackBar('Could\'t save file!', context, color: Colors.red);
+    } catch (e) {
+      print(e);
+      Navigator.pop(context);
+      showSnackBar('something went wrong!', context, color: Colors.red);
+    }
+  }
+}

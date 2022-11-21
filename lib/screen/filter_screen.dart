@@ -1,0 +1,176 @@
+// import 'package:next_app/models/filter/filter_filed.dart';
+import 'package:next_app/core/showcase_consts.dart';
+import 'package:next_app/provider/module/module_provider.dart';
+import 'package:next_app/provider/user/user_provider.dart';
+
+import 'package:next_app/widgets/form_widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
+
+import '../core/constants.dart';
+import '../widgets/filter_widgets/selling_filters/sales_invoice_filter.dart';
+import '../widgets/filter_widgets/selling_filters/sales_order_filter.dart';
+import 'list/generic_list_screen.dart';
+
+class FilterScreen extends StatefulWidget {
+  const FilterScreen({Key? key}) : super(key: key);
+
+  static _FilterScreenState of(BuildContext context) =>
+      context.findAncestorStateOfType<_FilterScreenState>()!;
+
+  @override
+  State<FilterScreen> createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  final Map<String, dynamic> values = {};
+  late BuildContext showCaseContext;
+  late Widget _filter;
+
+  @override
+  void initState() {
+    _filter = context.read<ModuleProvider>().currentModule.filterWidget!;
+    values.addAll(context.read<ModuleProvider>().filter);
+    super.initState();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if(!context.read<UserProvider>().showcaseProgress!.contains('filter_tut'))
+      Future.delayed(Duration.zero,(){
+        ShowCaseWidget.of(showCaseContext).startShowCase([clearFiltersGK,chooseFiltersGK,applyFiltersGK]);
+      });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ShowCaseWidget(
+      onFinish: ()  {
+       context.read<UserProvider>().setShowcaseProgress('filter_tut');
+      },
+      builder:
+      Builder(builder: (context) {
+        showCaseContext= context;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Filter'.tr()),
+            actions: [
+              (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
+              CustomShowCase(
+                globalKey: clearFiltersGK,
+                title: 'Clear Filter',
+                description: 'Click here to clear all filters',
+                child: IconButton(
+                  splashRadius: 20,
+                  icon: Icon(Icons.clear, color: Colors.black),
+                  onPressed: () {
+                    // Navigator.pushReplacement(context, new MaterialPageRoute(
+                    //     builder: (context) => this.build(context)));
+                    values.clear();
+                    context.read<ModuleProvider>().filter = {'':''};
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => super.widget));
+                    setState(() {
+                      //values.clear();
+                      //_children = context.read<ModuleProvider>().currentModule.filter!.fields;
+                      //_filter = SalesInvoiceFilter(key: UniqueKey());
+                      //_filter = new SalesOrderFilter();
+                      //_filter = context.read<ModuleProvider>().currentModule.filterWidget!;
+                    });
+                  },
+                ),
+              ): IconButton(
+          splashRadius: 20,
+          icon: Icon(Icons.clear, color: Colors.black),
+          onPressed: () {
+            // Navigator.pushReplacement(context, new MaterialPageRoute(
+            //     builder: (context) => this.build(context)));
+            values.clear();
+            context.read<ModuleProvider>().filter = {'':''};
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => super.widget));
+            setState(() {
+              //values.clear();
+              //_children = context.read<ModuleProvider>().currentModule.filter!.fields;
+              //_filter = SalesInvoiceFilter(key: UniqueKey());
+              //_filter = new SalesOrderFilter();
+              //_filter = context.read<ModuleProvider>().currentModule.filterWidget!;
+            });
+          },
+        ),
+
+
+            ],
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: Group(
+                  child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+                    child:
+                    (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
+                    CustomShowCase(
+                        globalKey: chooseFiltersGK,
+                        title: 'Filter by',
+                        description: 'Click here to choose your filter',
+                        overlayPadding: EdgeInsets.symmetric(horizontal: 22,vertical: 10),
+
+                        child: _filter):_filter,
+                  ),
+                ),
+              ),
+
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                child: ElevatedButton(
+
+                    style: ElevatedButton.styleFrom(
+                      // maximumSize: Size.fromWidth(106),
+                        primary: APPBAR_COLOR, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
+                    onPressed: () {
+                      context.read<ModuleProvider>().filter = values;
+                      Navigator.of(context).pop();
+
+                    },
+                    child:
+                    (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
+                    CustomShowCase(
+                      globalKey: applyFiltersGK,
+                      title: 'Apply',
+                      description: 'Click here to get results',
+                      overlayPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Apply Filter',style: TextStyle(color: Colors.black,fontSize: 14.5),),
+                        ],
+                      ),
+                    ):
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Apply Filter',style: TextStyle(color: Colors.black,fontSize: 14.5),),
+                      ],
+                    ),
+                ),
+              )
+            ],
+          ),
+        );
+      } ),
+    )
+
+      ;
+  }
+}
