@@ -7,6 +7,7 @@ import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/screen/list/otherLists.dart';
 import 'package:next_app/widgets/dialog/loading_dialog.dart';
 import 'package:next_app/widgets/form_widgets.dart';
+import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
 import 'package:next_app/widgets/item_card.dart';
 import 'package:next_app/widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -35,6 +36,8 @@ class _OpportunityFormState extends State<OpportunityForm> {
     "with_items": 0,
   };
 
+  Map<String, dynamic> selectedCstData = {
+  };
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
@@ -111,11 +114,17 @@ class _OpportunityFormState extends State<OpportunityForm> {
   final _controller = ScrollController();
   final List<ItemQuantity> _items = [];
 
+  Future<void> _getCustomerData(String customer) async {
+    selectedCstData = Map<String, dynamic>.from(
+        await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
+  }
+
   @override
   void initState() {
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    //Editing Mode
+    if (context.read<ModuleProvider>().isEditing){
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
 
@@ -125,16 +134,25 @@ class _OpportunityFormState extends State<OpportunityForm> {
           final item = ItemSelectModel.fromJson(element);
           _items.add(ItemQuantity(item, qty: item.qty));
         });
-
         setState(() {});
       });
+    }
 
+
+    //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        print('qewrwre${data}');
-        data['credit_limits'] = [{}];
+
+
+        data['doctype']= "Opportunity";
+        data['opportunity_from']= "Customer";
+        data['posting_date']= DateTime.now().toIso8601String();
+        data['transaction_date']= DateTime.now().toIso8601String();
+        data['with_items']= 0;
+
         data['customer_name'] = data['lead_name'];
+        data['party_name'] = data['lead_name'];
         data['lead_name'] = data['name'];
         data.remove('print_formats');
         data.remove('conn');
@@ -146,21 +164,27 @@ class _OpportunityFormState extends State<OpportunityForm> {
         data.remove('_pageId');
         data.remove('_availablePdfFormat');
         data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
 
-        // from user defaults
-        data['default_currency'] = context
-            .read<UserProvider>()
-            .defaultCurrency
-            .split('(')[1]
-            .split(')')[0];
-        data['country'] =
-        context.read<UserProvider>().companyDefaults['country'];
+        _getCustomerData(data['customer_name']).then((value) => setState(() {
 
-        //FOR TEST ONLY REAMVE AFTER FINSH CREAT DOC FROM DOC
-        // data['default_price_list'] = 'B';
-        // data['tax_id'] = '345';
-        // data['customer_group'] = 'Government';
-        // data['payment_terms'] = '15 Days Credit';
+          data['valid_till'] = DateTime.now()
+              .add(Duration(
+              days: int.parse((selectedCstData[
+              'quotation_validaty_days']??"0").toString())))
+              .toIso8601String();
+
+
+
+          data['currency'] = selectedCstData['default_currency'] ;
+          data['price_list_currency'] = selectedCstData['default_currency'] ;
+          data['payment_terms_template'] = selectedCstData['payment_terms'] ;
+          data['customer_address'] = selectedCstData["customer_primary_address"];
+          data['contact_person'] = selectedCstData["customer_primary_contact"];
+
+
+        }));
 
         setState(() {});
       });

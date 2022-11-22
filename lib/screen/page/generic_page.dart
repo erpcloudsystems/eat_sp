@@ -41,14 +41,14 @@ class GenericPage extends StatelessWidget {
                   ? () => editPage(context)
                   : null,
               splashRadius: 20,
-              icon: Icon(Icons.edit,color: Colors.white)),
+              icon: Icon(Icons.edit, color: Colors.white)),
           IconButton(
             onPressed: context.select<ModuleProvider, bool>(
                     (value) => value.availablePdfFormat)
                 ? () => context.read<ModuleProvider>().downloadPdf(context)
                 : null,
             splashRadius: 20,
-            icon: Icon(Icons.download,color: Colors.white),
+            icon: Icon(Icons.download, color: Colors.white),
           ),
           IconButton(
             onPressed: context.select<ModuleProvider, bool>(
@@ -56,7 +56,7 @@ class GenericPage extends StatelessWidget {
                 ? () => context.read<ModuleProvider>().printPdf(context)
                 : null,
             splashRadius: 20,
-            icon: Icon(Icons.print_sharp,color: Colors.white),
+            icon: Icon(Icons.print_sharp, color: Colors.white),
           ),
           Container(
             margin: EdgeInsets.only(right: 5),
@@ -66,7 +66,8 @@ class GenericPage extends StatelessWidget {
                 icon: Badge(
                     badgeContent: Text(
                       '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
-                      style: TextStyle(fontSize: 13,color: Colors.white,height: 1.5),
+                      style: TextStyle(
+                          fontSize: 13, color: Colors.white, height: 1.5),
                     ),
                     stackFit: StackFit.passthrough,
                     // position:BadgePosition.topStart(),
@@ -78,23 +79,22 @@ class GenericPage extends StatelessWidget {
                                 ?.length) ==
                             null
                         ? false
-                        : ((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length) ==0 ? false : true,
+                        : ((context
+                                        .read<ModuleProvider>()
+                                        .pageData['attachments'] as List?)
+                                    ?.length) ==
+                                0
+                            ? false
+                            : true,
                     child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 0,vertical: 6),
-                        child: Icon(Icons.attach_file,color: Colors.white,)))),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+                        child: Icon(
+                          Icons.attach_file,
+                          color: Colors.white,
+                        )))),
           ),
         ],
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Icon(Icons.arrow_back, color: Colors.black),
-            style: TextButton.styleFrom(
-              shape: CircleBorder(),
-              // padding: EdgeInsets.zero,
-            ),
-          ),
-        ),
       ),
       body: _GenericPageBody(),
     );

@@ -41,7 +41,7 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
 
-    return Container(
+    return  Container(
       height: 30,
      // width: 120,
       margin: EdgeInsets.only(top: 0,left: 4),
@@ -50,38 +50,41 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: DropdownButton<String>(
-           value: _value,
-          borderRadius: BorderRadius.circular(5),
-          underline: SizedBox(),
-          alignment:Alignment.center,
-          menuMaxHeight: 300,
-          iconSize:26,
-          isDense:true,
-          isExpanded:false,
-          hint: Text('Create'.tr(),style: TextStyle(color: Colors.black87),textAlign: TextAlign.center,),
-          onChanged: (value) {
-            if (value == null) return;
-            _value = value;
-            context
-                .read<ModuleProvider>()
-                .pushCreateFromPage(pageData: widget.data, doctype: _value.toString());
+      child: IgnorePointer(
+        ignoring: (widget.data['status'].toString() != "Converted") ? false:true,
+        child: DropdownButton<String>(
+             value: _value,
+            borderRadius: BorderRadius.circular(5),
+            underline: SizedBox(),
+            alignment:Alignment.center,
+            menuMaxHeight: 300,
+            iconSize:26,
+            isDense:true,
+            isExpanded:false,
+            hint: Text('Create'.tr(),style: TextStyle(color:(widget.data['status'].toString() != "Converted") ?  Colors.black87:Colors.grey),textAlign: TextAlign.center,),
+            onChanged: (value) {
+              if (value == null) return;
+              _value = value;
+              context
+                  .read<ModuleProvider>()
+                  .pushCreateFromPage(pageData: widget.data, doctype: _value.toString());
 
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => widget.items[_value.toString()]))
-                .then((value) {
-              provider.iAmCreatingAForm();
-              provider.removeCreateFromPage();
-            });
-          },
-          items: widget.items.keys
-              .toList()
-              .map((e) => DropdownMenuItem(
-                  value: e,
-                  child: FittedBox(
-                    child: Text(e, overflow: TextOverflow.ellipsis),
-                  )))
-              .toList()),
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => widget.items[_value.toString()]))
+                  .then((value) {
+                provider.iAmCreatingAForm();
+                provider.removeCreateFromPage();
+              });
+            },
+            items: widget.items.keys
+                .toList()
+                .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: FittedBox(
+                      child: Text(e, overflow: TextOverflow.ellipsis),
+                    )))
+                .toList()),
+      ),
     );
   }
 }

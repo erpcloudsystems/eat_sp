@@ -38,6 +38,7 @@ class _QuotationFormState extends State<QuotationForm> {
     "transaction_date": DateTime.now().toIso8601String(),
     'apply_discount_on': grandTotalList[0],
     'order_type': orderTypeList[0],
+    'conversion_rate': 1,
   };
   Map<String, dynamic> selectedCstData = {
     'quotation_validaty_days':'0',
@@ -96,7 +97,7 @@ class _QuotationFormState extends State<QuotationForm> {
 
     final server = APIService();
 
-    // for (var k in data.keys) print("$k: ${data[k]}");
+    for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -137,15 +138,13 @@ class _QuotationFormState extends State<QuotationForm> {
   @override
   void initState() {
     super.initState();
-
-
-
+    //Adding Mode
     if(!context.read<ModuleProvider>().isEditing){
       data['tc_name'] = context.read<UserProvider>().companyDefaults['default_selling_terms'];
       setState(() {
       });
     }
-
+//Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
@@ -153,10 +152,7 @@ class _QuotationFormState extends State<QuotationForm> {
           selectedCstData['address_line1'] = formatDescription(data['address_line1']);
           selectedCstData['city'] = data['city'];
           selectedCstData['country'] = data['country'];
-
         }));
-
-
 
         final items = QuotationPageModel(context, data).items;
 
@@ -169,10 +165,16 @@ class _QuotationFormState extends State<QuotationForm> {
         setState(() {});
       });
 
+    //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        data['credit_limits'] = [{}];
+        data['doctype']= "Quotation";
+        data['transaction_date']= DateTime.now().toIso8601String();
+        data['apply_discount_on']= grandTotalList[0];
+        data['order_type']= orderTypeList[0];
+        data['conversion_rate']= 1;
+
         data['customer_name'] = data['lead_name'];
         data['party_name'] = data['lead_name'];
         data['lead_name'] = data['name'];
@@ -186,34 +188,37 @@ class _QuotationFormState extends State<QuotationForm> {
         data.remove('_pageId');
         data.remove('_availablePdfFormat');
         data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
 
         _getCustomerData(data['customer_name']).then((value) => setState(() {
-          selectedCstData['address_line1'] = formatDescription(data['address_line1']);
-          selectedCstData['city'] = data['city'];
-          selectedCstData['country'] = data['country'];
+
+          data['valid_till'] = DateTime.now()
+              .add(Duration(
+              days: int.parse((selectedCstData[
+              'quotation_validaty_days']??"0").toString())))
+              .toIso8601String();
+
+          if (data['selling_price_list'] !=
+              selectedCstData['default_price_list']) {
+            data['selling_price_list'] =
+            selectedCstData['default_price_list'];
+            InheritedForm.of(context).items.clear();
+            InheritedForm.of(context)
+                .data['selling_price_list'] =
+            selectedCstData['default_price_list'];
+          }
+
+
           data['currency'] = selectedCstData['default_currency'] ;
           data['price_list_currency'] = selectedCstData['default_currency'] ;
           data['payment_terms_template'] = selectedCstData['payment_terms'] ;
+          data['customer_address'] = selectedCstData["customer_primary_address"];
+          data['contact_person'] = selectedCstData["customer_primary_contact"];
 
 
         }));
 
-
-        // from user defaults
-        // data['currency'] = context
-        //     .read<UserProvider>()
-        //     .defaultCurrency
-        //     .split('(')[1]
-        //     .split(')')[0];
-
-        // data['country'] =
-        // context.read<UserProvider>().companyDefaults['country'];
-
-        //FOR TEST ONLY REAMVE AFTER FINSH CREAT DOC FROM DOC
-        // data['default_price_list'] = 'B';
-        // data['tax_id'] = '345';
-        // data['customer_group'] = 'Government';
-        // data['payment_terms'] = '15 Days Credit';
 
         setState(() {});
       });
@@ -292,9 +297,8 @@ class _QuotationFormState extends State<QuotationForm> {
                               setState(() {
                                 data['valid_till'] = DateTime.now()
                                     .add(Duration(
-                                    days: int.parse(selectedCstData[
-                                    'quotation_validaty_days'].toString() ??
-                                        '0')))
+                                    days: int.parse((selectedCstData[
+                                    'quotation_validaty_days']??"0").toString())))
                                     .toIso8601String();
                                 data['party_name'] = res['name'];
                                 data['customer_name'] = res['customer_name'];
@@ -375,9 +379,8 @@ class _QuotationFormState extends State<QuotationForm> {
                             lastDate: DateTime.tryParse(data['valid_till'] ??
                                 DateTime.now()
                                     .add(Duration(
-                                        days: int.parse(selectedCstData[
-                                                'quotation_validaty_days'].toString() ??
-                                            '0')))
+                                        days: int.parse((selectedCstData[
+                                                'quotation_validaty_days']??"0").toString())))
                                     .toIso8601String()),
                           ),
                         ),

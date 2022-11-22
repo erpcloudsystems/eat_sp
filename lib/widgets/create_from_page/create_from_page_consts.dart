@@ -1,3 +1,4 @@
+import 'package:next_app/screen/form/buying_forms/supplier_quotation_form.dart';
 import 'package:next_app/screen/form/selling_forms/customer_form.dart';
 import 'package:next_app/screen/form/selling_forms/opportunity_form.dart';
 import 'package:next_app/screen/form/selling_forms/quotation_form.dart';
@@ -17,6 +18,6 @@ import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
 //Opportunity
  Map<String,Widget> fromOpportunity=
 {
-  'Customer':CustomerForm(),
+  'Supplier Quotation':SupplierQuotationForm(),
   'Quotation':QuotationForm(),
 };

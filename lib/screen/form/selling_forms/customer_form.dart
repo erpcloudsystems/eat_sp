@@ -107,6 +107,7 @@ class _CustomerFormState extends State<CustomerForm> {
   void initState() {
     super.initState();
 
+    //Adding Mode
     if (!context.read<ModuleProvider>().isEditing) {
       data['default_currency'] = context
           .read<UserProvider>()
@@ -116,8 +117,8 @@ class _CustomerFormState extends State<CustomerForm> {
       data['country'] = context.read<UserProvider>().companyDefaults['country'];
       setState(() {});
     }
-
-    if (context.read<ModuleProvider>().isEditing)
+//Editing Mode
+    if (context.read<ModuleProvider>().isEditing){
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         removeWhenUpdate = data.isEmpty;
@@ -126,11 +127,11 @@ class _CustomerFormState extends State<CustomerForm> {
 
         setState(() {});
       });
-
+    }
+    //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        print('qewrwre${data}');
         data['credit_limits'] = [{}];
         data['customer_name'] = data['lead_name'];
         data['lead_name'] = data['name'];
@@ -154,11 +155,6 @@ class _CustomerFormState extends State<CustomerForm> {
         data['country'] =
             context.read<UserProvider>().companyDefaults['country'];
 
-        //FOR TEST ONLY REAMVE AFTER FINSH CREAT DOC FROM DOC
-        // data['default_price_list'] = 'B';
-        // data['tax_id'] = '345';
-        // data['customer_group'] = 'Government';
-        // data['payment_terms'] = '15 Days Credit';
 
         setState(() {});
       });
@@ -353,8 +349,8 @@ class _CustomerFormState extends State<CustomerForm> {
                   child: Column(
                     children: [
                       CustomTextField('credit_limit', 'Credit Limit'.tr(),
-                          initialValue: data['credit_limits']?[0]
-                                  ['credit_limit']
+                          initialValue: (data['credit_limits']?[0]
+                                  ['credit_limit']??'')
                               .toString(),
                           disableValidation: true,
                           keyboardType: TextInputType.number,
