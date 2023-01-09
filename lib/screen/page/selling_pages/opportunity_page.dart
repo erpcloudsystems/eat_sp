@@ -1,6 +1,8 @@
 import 'package:next_app/models/page_models/selling_page_model/opportunity_page_model.dart';
 import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/core/cloud_system_widgets.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_button.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_consts.dart';
 import 'package:next_app/widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +31,23 @@ class OpportunityPage extends StatelessWidget {
           color: color,
           items: model.card1Items,
           header: [
+            Row(
+              mainAxisAlignment:  MainAxisAlignment.start,
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Opportunity',
+                  data: data,
+                  items: data['opportunity_from']=="Customer" ? fromOpportunity:fromOpportunity2,
+                  disableCreate: false,
+
+                ),
+              ],
+            ),
             Text('Opportunity', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Padding(
                 padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
             Text('Opportunity From: ' + (data['opportunity_from'] ?? 'none')),
-            Text('Customer: ' + (data['party_name'] ?? 'none')),
+            Text('${data['opportunity_from']??""} : ' + (data['party_name'] ?? 'none')),
             Padding(padding: const EdgeInsets.only(bottom: 4), child: Text(data['customer_name'] ?? 'none')),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],

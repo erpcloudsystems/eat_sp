@@ -51,13 +51,13 @@ Future<dynamic> checkDialog ([
   borderRadius: GLOBAL_BORDER_RADIUS,
   backgroundColor: Colors.white,
   confirmBtnColor: Colors.white,
-  okBtnElevation:0,
-  okBtnhighlightElevation:0,
+  // okBtnElevation:0,
+  // okBtnhighlightElevation:0,
   confirmBtnTextStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600,fontSize: 18.0),
   lottieAsset: 'assets/lottie/warning.json',
   loopAnimation: false,
-  contentOfTextAndButtonsPadding: EdgeInsets.fromLTRB(15,0,15,10),
-  contentOflottiePadding: EdgeInsets.fromLTRB(0,5,0,0),
+  // contentOfTextAndButtonsPadding: EdgeInsets.fromLTRB(15,0,15,10),
+  // contentOflottiePadding: EdgeInsets.fromLTRB(0,5,0,0),
   onConfirmBtnTap: () {
     return Navigator.pop(context, true);
   },

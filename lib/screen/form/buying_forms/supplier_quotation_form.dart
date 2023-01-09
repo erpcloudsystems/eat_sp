@@ -45,13 +45,12 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
     'quotation_validaty_days': '0',
   };
 
-
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
-      showSnackBar('Fill required fields', context);
+      showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
     if (InheritedForm.of(context).items.isEmpty) {
@@ -67,7 +66,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         .items
         .forEach((element) => data['items'].add(element.toJson));
 
-    //print(data['plc_conversion_rate'].runtimeType);
+    for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
     showLoadingDialog(
         context,
@@ -76,9 +75,6 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
             : 'Creating Your Quotation');
 
     final server = APIService();
-
-    //for (var k in data.keys) print("➡️ $k: ${data[k]}");
-    //dev.log('➡️ Update:$data');
 
     data['total_qty'] = null;
     data['total'] = null;
@@ -105,9 +101,19 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
       return;
     else if (provider.isEditing && res == null)
       Navigator.pop(context);
-    else if (res != null && res['message']['quotation_name'] != null) {
+    else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['quotation_name'] != null)
+        context
+            .read<ModuleProvider>()
+            .pushPage(res['message']['quotation_name']);
+      Navigator.of(context)
+          .push(MaterialPageRoute(
+            builder: (_) => GenericPage(),
+          ))
+          .then((value) => Navigator.pop(context));
+    } else if (res != null && res['message']['quotation_name'] != null) {
       context.read<ModuleProvider>().pushPage(
-          res['message']['quotation_name']); //todo should be supplier quotation
+          res['message']['quotation_name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
@@ -122,16 +128,19 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
   void initState() {
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    //Editing Mode
+    if (context.read<ModuleProvider>().isEditing){
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
-          selectedSupplierData['address_line1'] = formatDescription(data['address_line1']);
+          selectedSupplierData['address_line1'] =
+              formatDescription(data['address_line1']);
 
           selectedSupplierData['city'] = data['city'];
           selectedSupplierData['country'] = data['country'];
 
-          selectedSupplierData['contact_display'] = formatDescription(data['contact_display']);
+          selectedSupplierData['contact_display'] =
+              formatDescription(data['contact_display']);
           selectedSupplierData['mobile_no'] = data['mobile_no'];
           selectedSupplierData['phone'] = data['phone'];
           selectedSupplierData['email_id'] = data['email_id'];
@@ -144,21 +153,70 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
             .items
             .add(ItemSelectModel.fromJson(element)));
         InheritedForm.of(context).data['buying_price_list'] =
-            data['buying_price_list'];
+        data['buying_price_list'];
 
         setState(() {});
       });
+    }
+
+    //DocFromPage Mode
+    if (context.read<ModuleProvider>().isCreateFromPage) {
+      Future.delayed(Duration.zero, () {
+        data = context.read<ModuleProvider>().createFromPageData;
+
+        InheritedForm.of(context).items.clear;
+
+        data['items'].forEach((element) {
+          InheritedForm.of(context)
+              .items
+              .add(ItemSelectModel.fromJson(element));
+        });
+
+        print('asdfsf1${data}');
+        data['doctype'] = "Supplier Quotation";
+        data['transaction_date'] = DateTime.now().toIso8601String();
+        data['apply_discount_on'] = grandTotalList[0];
+
+
+        // From Opportunity
+        if(data['doctype']=='Opportunity'){
+          data['opportunity'] = data['name'];
+        }
+
+        _getSupplierData(data['customer_name']).then((value) => setState(() {
+          data['currency'] = selectedSupplierData['default_currency'];
+          data['price_list_currency'] = selectedSupplierData['default_currency'];
+
+        }));
+
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
+
+        setState(() {});
+      });
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
-    //  print('========== Supplier Quotation Rebuild ============');
+    InheritedForm.of(context)
+        .data['selling_price_list']='';
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
         if (isGoBack != null) {
           if (isGoBack) {
-            InheritedForm.of(context).data['selling_price_list'] = null;
             return Future.value(true);
           } else {
             return Future.value(false);
@@ -210,7 +268,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
 
                             if (res != null) {
                               id = res['name'];
-                               _getSupplierData(res['name']);
+                              _getSupplierData(res['name']);
                               // selectedSupplierData = Map<String, dynamic>.from(
                               //     await APIService().getPage(
                               //         SUPPLIER_PAGE, res['name']))['message'];
@@ -255,7 +313,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                           child: DatePicker(
                             'transaction_date',
                             'Quotation Date',
-                            initialValue: data['transaction_date'] ,
+                            initialValue: data['transaction_date'],
                             onChanged: (value) => setState(
                                 () => data['transaction_date'] = value),
                           ),
@@ -294,7 +352,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
-                            data['supplier_address'] == null,
+                                data['supplier_address'] == null,
                             onPressed: () async {
                               if (data['supplier'] == null)
                                 return showSnackBar(
@@ -307,102 +365,100 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                               setState(() {
                                 data['supplier_address'] = res['name'];
                                 selectedSupplierData['address_line1'] =
-                                res['address_line1'];
+                                    res['address_line1'];
                                 selectedSupplierData['city'] = res['city'];
                                 selectedSupplierData['country'] =
-                                res['country'];
+                                    res['country'];
                               });
                               return res['name'];
                             }),
                         children: (data['supplier_address'] != null)
                             ? <Widget>[
-                          if (selectedSupplierData['address_line1'] !=
-                              null)
-                            ListTile(
-                              trailing: Icon(Icons.location_on),
-                              title: Text(
-                                  selectedSupplierData['address_line1'] ??
-                                      ''),
-                            ),
-                          if (selectedSupplierData['city'] != null)
-                            ListTile(
-                              trailing: Icon(Icons.location_city),
-                              title: Text(
-                                  selectedSupplierData['city'] ?? ''),
-                            ),
-                          if (selectedSupplierData['country'] != null)
-                            ListTile(
-                              trailing: Icon(Icons.flag),
-                              title: Text(
-                                  selectedSupplierData['country'] ?? ''),
-                            )
-                        ]
+                                if (selectedSupplierData['address_line1'] !=
+                                    null)
+                                  ListTile(
+                                    trailing: Icon(Icons.location_on),
+                                    title: Text(
+                                        selectedSupplierData['address_line1'] ??
+                                            ''),
+                                  ),
+                                if (selectedSupplierData['city'] != null)
+                                  ListTile(
+                                    trailing: Icon(Icons.location_city),
+                                    title: Text(
+                                        selectedSupplierData['city'] ?? ''),
+                                  ),
+                                if (selectedSupplierData['country'] != null)
+                                  ListTile(
+                                    trailing: Icon(Icons.flag),
+                                    title: Text(
+                                        selectedSupplierData['country'] ?? ''),
+                                  )
+                              ]
                             : null,
                       ),
                       CustomExpandableTile(
                         hideArrow: data['supplier'] == null,
                         title:
-                        CustomTextField('contact_person', 'Contact Person',
-                            initialValue: data['contact_person'],
-                            disableValidation: true,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              if (data['supplier'] == null) {
-                                showSnackBar(
-                                    'Please select a supplier', context);
-                                return null;
-                              }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          contactScreen(data['supplier'])));
-                              setState(() {
-                                data['contact_person'] = res['name'];
+                            CustomTextField('contact_person', 'Contact Person',
+                                initialValue: data['contact_person'],
+                                disableValidation: true,
+                                clearButton: false,
+                                onSave: (key, value) => data[key] = value,
+                                onPressed: () async {
+                                  if (data['supplier'] == null) {
+                                    showSnackBar(
+                                        'Please select a supplier', context);
+                                    return null;
+                                  }
+                                  final res = await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              contactScreen(data['supplier'])));
+                                  setState(() {
+                                    data['contact_person'] = res['name'];
 
-                                selectedSupplierData[
-                                'contact_display'] =
-                                res['contact_person'];
-                                selectedSupplierData['mobile_no'] =
-                                res['mobile_no'];
-                                selectedSupplierData['phone'] =
-                                res['phone'];
-                                selectedSupplierData['email_id'] =
-                                res['email_id'];
-                              });
-                              return res['name'];
-                            }),
+                                    selectedSupplierData['contact_display'] =
+                                        res['contact_person'];
+                                    selectedSupplierData['mobile_no'] =
+                                        res['mobile_no'];
+                                    selectedSupplierData['phone'] =
+                                        res['phone'];
+                                    selectedSupplierData['email_id'] =
+                                        res['email_id'];
+                                  });
+                                  return res['name'];
+                                }),
                         children: (data['contact_person'] != null)
                             ? <Widget>[
-                          ListTile(
-                            trailing: Icon(Icons.person),
-                            title: Text('' +
-                                (selectedSupplierData[
-                                'contact_display'] ??
-                                    '')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.phone_iphone),
-                            title: Text('Mobile :  ' +
-                                (selectedSupplierData['mobile_no'] ??
-                                    'none')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.call),
-                            title: Text('Phone :  ' +
-                                (selectedSupplierData['phone'] ??
-                                    'none')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.alternate_email),
-                            title: Text(
-                                '' + ((selectedSupplierData['email_id']) ??
-                                    'none')),
-                          )
-                        ]
+                                ListTile(
+                                  trailing: Icon(Icons.person),
+                                  title: Text('' +
+                                      (selectedSupplierData[
+                                              'contact_display'] ??
+                                          '')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.phone_iphone),
+                                  title: Text('Mobile :  ' +
+                                      (selectedSupplierData['mobile_no'] ??
+                                          'none')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.call),
+                                  title: Text('Phone :  ' +
+                                      (selectedSupplierData['phone'] ??
+                                          'none')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.alternate_email),
+                                  title: Text('' +
+                                      ((selectedSupplierData['email_id']) ??
+                                          'none')),
+                                )
+                              ]
                             : null,
                       ),
-
 
                       SizedBox(height: 8),
                     ],
@@ -415,19 +471,9 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                 Group(
                   child: Column(
                     children: [
-                      // not editable
-                      // CustomTextField(
-                      //   'currency',
-                      //   'Currency',
-                      //   initialValue: 'EGP', //data['currency'],
-                      //   onSave: (key, value) => data[key] = value,
-                      //   enabled: false,
-                      //   clearButton: false,
-                      //   disableValidation: false,
-                      // ),
+
                       CustomTextField('currency', 'Currency',
                           initialValue: data['currency'],
-                          disableValidation: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(

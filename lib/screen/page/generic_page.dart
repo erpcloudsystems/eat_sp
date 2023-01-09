@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/screen/page/page_screen.dart';
+import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
 import 'package:next_app/widgets/nothing_here.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,10 @@ class GenericPage extends StatelessWidget {
                   ? () => editPage(context)
                   : null,
               splashRadius: 20,
-              icon: Icon(Icons.edit, color: Colors.white)),
+              icon: Icon(Icons.edit,
+                  color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
+                      ? Colors.white
+                      : Colors.white54)),
           IconButton(
             onPressed: context.select<ModuleProvider, bool>(
                     (value) => value.availablePdfFormat)

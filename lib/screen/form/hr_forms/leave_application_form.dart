@@ -42,7 +42,7 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
-      showSnackBar('Fill required fields', context);
+      showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
 

@@ -90,5 +90,8 @@ const CANCEL_DOC = 'method/ecs_mobile.api.cancel';
 const PRINT_INVOICE = 'method/frappe.utils.print_format.download_pdf';
 const ATTACH_FILE = 'method/frappe.client.attach_file';
 const COMMENT = 'method/ecs_mobile.add.comment';
+const NOTIFICATION = 'method/ecs_mobile.notifications.device_tokens';
+const UPDATE_NOTIFICATION_TOKEN = 'resource/Push Notification Details/';
+const PUSH_NOTIFICATION_FILTER_USER_DEVICES = 'method/ecs_mobile.notifications.get_push_notification_details';
 const PURCHASE_INVOICE_DEFAULT_TAX =
     'method/ecs_mobile.pages.default_tax_template';

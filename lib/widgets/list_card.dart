@@ -30,8 +30,7 @@ class ListCard extends StatelessWidget {
     for (int i = 3; i < names.length; i++) {
       secondRow.add(ListTitle(title: names[i], value: values[i]));
       if (i < names.length - 1)
-        secondRow
-            .add(Container(width: 1, color: Colors.white, height: 42));
+        secondRow.add(Container(width: 1, color: Colors.white, height: 42));
     }
 
     return Container(
@@ -40,7 +39,7 @@ class ListCard extends StatelessWidget {
         //color: Colors.white,
         borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
         border: Border.all(color: Colors.transparent),
-        boxShadow:[
+        boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.08),
             blurRadius: 4,
@@ -77,7 +76,8 @@ class ListCard extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   if (title != '')
                                     Expanded(
@@ -109,43 +109,53 @@ class ListCard extends StatelessWidget {
                             ),
 
                             if (names.isNotEmpty)
-                              Divider(thickness: 1, color: Colors.white,height: 0,),
-                              if (names.isNotEmpty)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ListTitle(title: names[0], value: values[0]),
-                                    //Container(width: 1, color: Colors.grey.shade200, height: 42),
-                                    if (names.length > 1)
-                                      ListTitle(
-                                          title: names[1], value: values[1]),
-                                    //Container(width: 1, color: Colors.grey.shade200, height: 42),
-                                    if (names.length > 2)
-                                      ListTitle(
-                                          title: names[2], value: values[2]),
-
-
-                                    if (statusColor(status) != Colors.transparent)
-                                      SizedBox(width: 6)
-                                  ],
-                                ),
-                            if (secondRow.isNotEmpty || status.isNotEmpty)
-                              Divider(thickness: 1, color: Colors.white,height: 8,),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.white,
+                                height: 0,
+                              ),
+                            if (names.isNotEmpty)
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  ...secondRow,
-                                  if (status != '' && status != 'Random' && secondRow.isNotEmpty)
-                                    Container(
-                                        width: 1,
-                                        color: Colors.white,
-                                        height: 42),
-                                  if (status != ''&& status != 'Random') StatusWidget(status),
+                                  ListTitle(title: names[0], value: values[0]),
+                                  //Container(width: 1, color: Colors.grey.shade200, height: 42),
+                                  if (names.length > 1)
+                                    ListTitle(
+                                        title: names[1], value: values[1]),
+                                  //Container(width: 1, color: Colors.grey.shade200, height: 42),
+                                  if (names.length > 2)
+                                    ListTitle(
+                                        title: names[2], value: values[2]),
+
                                   if (statusColor(status) != Colors.transparent)
                                     SizedBox(width: 6)
                                 ],
                               ),
+                            if (secondRow.isNotEmpty || status.isNotEmpty)
+                              Divider(
+                                thickness: 1,
+                                color: Colors.white,
+                                height: 8,
+                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ...secondRow,
+                                if (status != '' &&
+                                    status != 'Random' &&
+                                    secondRow.isNotEmpty)
+                                  Container(
+                                      width: 1,
+                                      color: Colors.white,
+                                      height: 42),
+                                if (status != '' && status != 'Random')
+                                  StatusWidget(status),
+                                if (statusColor(status) != Colors.transparent)
+                                  SizedBox(width: 6)
+                              ],
+                            ),
                             // Divider(thickness: 1, color: Colors.grey.shade300,height: 10),
                             // SizedBox(height: 25,child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),),),
                           ],
@@ -212,6 +222,7 @@ class ListTitle extends StatelessWidget {
     );
   }
 }
+
 
 ///simple function takes a date and returns a formatted String: day-month-year
 String formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';

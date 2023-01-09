@@ -22,8 +22,8 @@ class LeadForm extends StatefulWidget {
 class _LeadFormState extends State<LeadForm> {
   Map<String, dynamic> data = {
     "doctype": "Lead",
-    "status": "Lead"
-
+    "status": "Lead",
+    "organization_lead": 0
   };
 
   final _formKey = GlobalKey<FormState>();
@@ -39,8 +39,8 @@ class _LeadFormState extends State<LeadForm> {
 
     final server = APIService();
 
-    // for (var k in data.keys) print("$k: ${data[k]}");
-// return;
+    for (var k in data.keys) print("$k: ${data[k]}");
+
     final res = await handleRequest(
         () async => provider.isEditing
             ? await provider.updatePage(data)
@@ -123,24 +123,25 @@ class _LeadFormState extends State<LeadForm> {
                         initialValue: data['lead_name'],
                         onSave: (key, value) => data[key] = value,
                       ),
-                      CheckBoxWidget(
-                          'organization_lead', tr('Lead Is A Company'),
-                          initialValue: (int.parse(
-                                  '${data['organization_lead'] ?? '0'}') ==
-                              1),
-                          onChanged: (key, value) =>
-                              setState(() => data[key] = value ? 1 : 0)),
+                      // CheckBoxWidget(
+                      //     'organization_lead', tr('Lead Is A Company'),
+                      //     initialValue: (int.parse(
+                      //             '${data['organization_lead'] ?? '0'}') ==
+                      //         1),
+                      //     onChanged: (key, value) =>
+                      //         setState(() => data[key] = value ? 1 : 0)),
                       CustomTextField(
                         'company_name',
                         tr('Company Name'),
                         initialValue: data['company_name'],
                         onSave: (key, value) => data[key] = value,
-                        enabled: data['organization_lead'] == 1,
-                        disableValidation: data['organization_lead'] != 1,
+                        enabled: true,
+                        disableValidation: true,
                       ),
                       CustomTextField('industry', tr('Industry'),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['industry'],
+                          disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => industryScreen()))),
@@ -153,6 +154,8 @@ class _LeadFormState extends State<LeadForm> {
                                   builder: (_) => marketSegmentScreen()))),
                       CustomTextField('territory', tr('Territory'),
                           initialValue: data['territory'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -162,6 +165,8 @@ class _LeadFormState extends State<LeadForm> {
                         tr('Address Title'),
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['address_title'],
+                        disableValidation: true,
+
                         onChanged: (value) => data['address_title'] = value,
                       ),
                       CustomTextField(
@@ -169,26 +174,36 @@ class _LeadFormState extends State<LeadForm> {
                         tr('Address'),
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['address_line1'],
+                        disableValidation: true,
+
                       ),
                       CustomTextField(
                         'city',
                         'City',
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['city'],
+                        disableValidation: true,
+
                       ),
                       CustomTextField('country', tr('Country'),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['country'],
+                          disableValidation: true,
+
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => countryScreen()))),
                       CustomTextField('mobile_no', tr('Mobile No'),
                           initialValue: data['mobile_no'],
+                          disableValidation: true,
+
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
                           onSave: (key, value) => data[key] = value),
                       CustomTextField('email_id', tr('Email Address'),
                           initialValue: data['email_id'],
+                          disableValidation: true,
+
                           keyboardType: TextInputType.emailAddress,
                           validator: mailValidation,
                           onSave: (key, value) => data[key] = value),
@@ -213,6 +228,7 @@ class _LeadFormState extends State<LeadForm> {
                       CustomTextField('source', 'Source'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['source'],
+
                           disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -230,25 +246,27 @@ class _LeadFormState extends State<LeadForm> {
                           defaultValue: requestTypeList[0],
                           onChanged: (value) => data['request_type'] = value),
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      CustomTextField('contact_by', 'Next Contact By'.tr(),
-                          initialValue: data['contact_by'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => userListScreen()))),
-                      DatePicker('contact_date', tr('Next Contact Date'),
-                          initialValue: data['contact_date'],
-                          disableValidation: true,
-                          onChanged: (value) =>
-                              setState(() => data['contact_date'] = value)),
-                      ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 250),
-                          child: CustomTextField('notes', 'Notes'.tr(),
-                              disableValidation: true,
-                              maxLines: null,
-                              initialValue: data['notes'],
-                              onChanged: (value) => data['notes'] = value)),
+                      // Deleted By Ziad testing ↓↓↓↓↓↓↓↓↓↓
+                      // CustomTextField('contact_by', 'Next Contact By'.tr(),
+                      //     initialValue: data['contact_by'],
+                      //     disableValidation: true,
+                      //     onSave: (key, value) => data[key] = value,
+                      //     onPressed: () => Navigator.of(context).push(
+                      //         MaterialPageRoute(
+                      //             builder: (_) => userListScreen()))),
+                      // DatePicker('contact_date', tr('Next Contact Date'),
+                      //     initialValue: data['contact_date'],
+                      //     disableValidation: true,
+                      //     onChanged: (value) =>
+                      //         setState(() => data['contact_date'] = value)),
+                      // ConstrainedBox(
+                      //     constraints: BoxConstraints(maxHeight: 250),
+                      //     child: CustomTextField('notes', 'Notes'.tr(),
+                      //         disableValidation: true,
+                      //         maxLines: null,
+                      //         initialValue: data['notes'],
+                      //         onChanged: (value) => data['notes'] = value)),
+                      // Deleted By Ziad testing ↑↑↑↑↑↑↑↑↑↑↑↑↑
                     ],
                   ),
                 ),

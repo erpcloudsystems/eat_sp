@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:collection';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:next_app/main.dart';
+import 'package:next_app/provider/user/user_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
+
 
 class UnderDevelopmentScreen extends StatelessWidget {
   UnderDevelopmentScreen({Key? key,required this.message}) : super(key: key);
@@ -10,6 +15,7 @@ class UnderDevelopmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child:
       Scaffold(
@@ -23,6 +29,12 @@ class UnderDevelopmentScreen extends StatelessWidget {
                   repeat: false,
                 ),
                 Text(message,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                  TextButton(child: Text('Send Token to WhatsApp For Testing'),onPressed: ()async{
+                    final box = context.findRenderObject() as RenderBox?;
+                    await Share.share(deviceTokenToSendPushNotification,
+                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+
+                  },)
               ],
             ),
           ),

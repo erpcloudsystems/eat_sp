@@ -1,3 +1,4 @@
+import 'package:next_app/core/constants.dart';
 import 'package:next_app/models/page_models/model_functions.dart';
 import 'package:next_app/service/service.dart';
 import 'package:next_app/service/service_constants.dart';
@@ -147,7 +148,7 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
                 clipBehavior: Clip.hardEdge,
                 child: IconButton(
                   onPressed: submit,
-                  icon: Icon(Icons.check, color: Colors.blueAccent),
+                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
                 ))
           ],
         ),
@@ -253,6 +254,8 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
                         //     }),
                         CustomTextField('payable_account', tr('Payable Account'),
                             initialValue: data['payable_account'],
+                            disableValidation: true,
+
                             onSave: (key, value) => data[key] = value,
                             onPressed: () async {
                               final res = await Navigator.of(context).push(

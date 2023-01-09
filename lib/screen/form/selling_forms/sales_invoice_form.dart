@@ -38,33 +38,32 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "posting_date": DateTime.now().toIso8601String(),
     "is_return": 0,
     "update_stock": 1,
+    "conversion_rate": 1,
     "latitude": 0.0,
     "longitude": 0.0,
-
   };
 
   LatLng location = LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
-
-  Map<String, dynamic> selectedCstData = {'name': 'noName', 'credit_days': 0};
+  Map<String, dynamic> selectedCstData = {
+    'name': 'noName',
+    'credit_days': 0,
+  };
 
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      showSnackBar(KFillRequiredSnackBar, context);
+      return;
+    }
 
-    if(location == LatLng(0.0, 0.0)
-
-    ) {
-      showSnackBar(
-          KEnableGpsSnackBar,
-          context)  ;
-      Future.delayed(Duration(seconds: 1), () async{
-
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar(KEnableGpsSnackBar, context);
+      Future.delayed(Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
-
       });
       return;
     }
@@ -83,13 +82,17 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       data['items'].add(element.toJson);
     });
 
+    //DocFromPage Mode from Sales Invoice
+    data['items'].forEach((element) {
+      element['sales_invoice'] = data['sales_invoice'];
+    });
+
     final server = APIService();
 
-    if (!context.read<ModuleProvider>().isEditing){
+    if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
       data['location'] = gpsService.placemarks[0].subAdministrativeArea;
-
     }
 
     showLoadingDialog(
@@ -97,7 +100,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         provider.isEditing
             ? 'Updating ${provider.pageId}'
             : 'Creating Your Sales Invoice');
-
 
     for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
@@ -108,48 +110,57 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         context);
 
     Navigator.pop(context);
+
     InheritedForm.of(context).data['selling_price_list'] = null;
 
     if (provider.isEditing && res == false)
       return;
     else if (provider.isEditing && res == null)
       Navigator.pop(context);
-    else if (res != null && res['message']['sales_invoice'] != null) {
+    else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['sales_invoice'] != null)
+        context
+            .read<ModuleProvider>()
+            .pushPage(res['message']['sales_invoice']);
+      Navigator.of(context)
+          .push(MaterialPageRoute(
+            builder: (_) => GenericPage(),
+          ))
+          .then((value) => Navigator.pop(context));
+    } else if (res != null && res['message']['sales_invoice'] != null) {
       provider.pushPage(res['message']['sales_invoice']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
 
-    Future<void> _getCustomerData(String customer) async {
-      selectedCstData = Map<String, dynamic>.from(
-          await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
-
-    }
+  Future<void> _getCustomerData(String customer) async {
+    selectedCstData = Map<String, dynamic>.from(
+        await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
+  }
 
   @override
   void initState() {
     super.initState();
 
+    //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-
-
         _getCustomerData(data['customer_name']).then((value) => setState(() {
-          selectedCstData['address_line1'] = formatDescription(data['address_line1']);
-          selectedCstData['city'] = data['city'];
-          selectedCstData['country'] = data['country'];
+              selectedCstData['address_line1'] =
+                  formatDescription(data['address_line1']);
+              selectedCstData['city'] = data['city'];
+              selectedCstData['country'] = data['country'];
 
-          selectedCstData['contact_display'] = data['contact_display'];
-          selectedCstData['phone'] = data['phone'];
-          selectedCstData['mobile_no'] = data['mobile_no'];
-          selectedCstData['email_id'] = data['email_id'];
-        }));
+              selectedCstData['contact_display'] = data['contact_display'];
+              selectedCstData['phone'] = data['phone'];
+              selectedCstData['mobile_no'] = data['mobile_no'];
+              selectedCstData['email_id'] = data['email_id'];
+            }));
 
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
-
 
         final items = SalesInvoicePageModel(context, data).items;
 
@@ -158,26 +169,101 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
             .add(ItemSelectModel.fromJson(element)));
 
         InheritedForm.of(context).data['selling_price_list'] =
-        data['selling_price_list'];
+            data['selling_price_list'];
 
         setState(() {});
       });
+
+    //DocFromPage Mode
+    if (context.read<ModuleProvider>().isCreateFromPage) {
+      Future.delayed(Duration.zero, () {
+        data = context.read<ModuleProvider>().createFromPageData;
+
+        InheritedForm.of(context).items.clear();
+        data['items'].forEach((element) {
+          InheritedForm.of(context)
+              .items
+              .add(ItemSelectModel.fromJson(element));
+        });
+        InheritedForm.of(context).data['selling_price_list'] =
+            data['selling_price_list'];
+
+        data['posting_date'] = DateTime.now().toIso8601String();
+        data['is_return'] = 0;
+        data['update_stock'] = 1;
+        data['latitude'] = 0.0;
+        data['longitude'] = 0.0;
+        data['conversion_rate'] = 1;
+
+        // from Sales Order
+        if (data['doctype'] == 'Sales Order') {
+          data['sales_order'] = data['name'];
+          data['project'] = data['project'];
+        }
+
+        // from Sales Invoice
+        if (data['doctype'] == 'Sales Invoice') {
+          data['return_against'] = data['name'];
+          data['is_return'] = 1;
+        }
+
+        _getCustomerData(data['customer_name']).then((value) => setState(() {
+              data['due_date'] = DateTime.now()
+                  .add(Duration(
+                      days: int.parse(
+                          (selectedCstData['credit_days'] ?? 0).toString())))
+                  .toIso8601String();
+
+              if (data['selling_price_list'] !=
+                  selectedCstData['default_price_list']) {
+                data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+
+                InheritedForm.of(context).data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+              }
+              data['currency'] = selectedCstData['default_currency'];
+              data['price_list_currency'] = selectedCstData['default_currency'];
+              // data['payment_terms_template'] = selectedCstData['payment_terms'];
+              // data['customer_address'] =
+              //     selectedCstData["customer_primary_address"];
+              // data['contact_person'] =
+              //     selectedCstData["customer_primary_contact"];
+            }));
+
+        data['doctype'] = "Sales Invoice";
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
+        print('sdfsdfsd${data['items']}');
+        setState(() {});
+      });
+    }
   }
 
   @override
-  void didChangeDependencies()  {
+  void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.delayed(Duration.zero, () async{
+    Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?'.tr());
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             InheritedForm.of(context).data['selling_price_list'] = null;
@@ -222,7 +308,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           'customer',
                           'Customer',
                           initialValue: data['customer'],
-                          clearButton:true,
+                          clearButton: true,
                           onPressed: () async {
                             String? id;
 
@@ -314,7 +400,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             'Due Date',
                             onChanged: (value) => Future.delayed(Duration.zero,
                                 () => setState(() => data['due_date'] = value)),
-                            firstDate: DateTime.parse(data['posting_date'] ?? ''),
+                            firstDate:
+                                DateTime.parse(data['posting_date'] ?? ''),
                             initialValue: data['due_date'] ??
                                 ((selectedCstData['name'].toString() !=
                                             'noName' &&
@@ -350,14 +437,16 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         CustomTextField('customer_group', 'Customer Group',
                             onSave: (key, value) => data[key] = value,
                             initialValue: data['customer_group'],
-                            clearButton:true,
+                            disableValidation: true,
+                            clearButton: true,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => customerGroupScreen()))),
                         CustomTextField('territory', 'Territory'.tr(),
                             onSave: (key, value) => data[key] = value,
                             initialValue: data['territory'],
-                            clearButton:true,
+                            disableValidation: true,
+                            clearButton: true,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => territoryScreen()))),
@@ -366,7 +455,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           title: CustomTextField(
                               'customer_address', 'Customer Address',
                               initialValue: data['customer_address'],
-                              disableValidation: false,
+                              disableValidation: true,
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               liestenToInitialValue:
@@ -402,7 +491,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                   ),
                                   ListTile(
                                     trailing: Icon(Icons.flag),
-                                    title: Text(selectedCstData['country'] ?? ''),
+                                    title:
+                                        Text(selectedCstData['country'] ?? ''),
                                   )
                                 ]
                               : null,
@@ -412,7 +502,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           title: CustomTextField(
                               'contact_person', 'Contact Person',
                               initialValue: data['contact_person'],
-                              disableValidation: false,
+                              disableValidation: true,
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               onPressed: () async {
@@ -427,9 +517,11 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                             contactScreen(data['customer'])));
                                 setState(() {
                                   data['contact_person'] = res['name'];
-                                  selectedCstData['contact_display'] = res['contact_display'];
+                                  selectedCstData['contact_display'] =
+                                      res['contact_display'];
                                   selectedCstData['phone'] = res['phone'];
-                                  selectedCstData['mobile_no'] = res['mobile_no'];
+                                  selectedCstData['mobile_no'] =
+                                      res['mobile_no'];
                                   selectedCstData['email_id'] = res['email_id'];
                                 });
                                 return res['name'];
@@ -451,8 +543,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                   ListTile(
                                     trailing: Icon(Icons.call),
                                     title: Text('Phone :  ' +
-                                        (selectedCstData['phone'] ??
-                                            'none')),
+                                        (selectedCstData['phone'] ?? 'none')),
                                   ),
                                   ListTile(
                                     trailing: Icon(Icons.alternate_email),
@@ -480,22 +571,24 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             onChanged: (id, value) =>
                                 setState(() => data[id] = value ? 1 : 0)),
                         CustomTextField('project', 'Project'.tr(),
+                            initialValue: data['project'],
                             disableValidation: true,
-                            clearButton:true,
+                            clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => projectScreen()))),
                         CustomTextField('cost_center', 'Cost Center',
                             initialValue: data['cost_center'],
-                            clearButton:true,
+                            disableValidation: true,
+                            clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => costCenterScreen()))),
                         CustomTextField('currency', 'Currency',
                             initialValue: data['currency'],
-                            clearButton:true,
+                            clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -503,8 +596,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         CustomTextField(
                           'conversion_rate',
                           'Exchange Rate'.tr(),
-                          clearButton:true,
+                          clearButton: true,
                           initialValue: '${data['conversion_rate'] ?? ''}',
+                          disableValidation: true,
                           hintText: '1',
                           validator: (value) =>
                               numberValidation(value, allowNull: true),
@@ -514,8 +608,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         ),
                         CustomTextField('selling_price_list', 'Price List'.tr(),
                             initialValue: data['selling_price_list'],
-                            clearButton:true,
-                            onPressed: () async {
+
+                            clearButton: true, onPressed: () async {
                           final res = await Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => priceListScreen()));
@@ -523,7 +617,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             setState(() {
                               if (data['selling_price_list'] != res['name']) {
                                 InheritedForm.of(context).items.clear();
-                                InheritedForm.of(context).data['selling_price_list'] = res['name'];
+                                InheritedForm.of(context)
+                                    .data['selling_price_list'] = res['name'];
                                 data['selling_price_list'] = res['name'];
                               }
                               data['price_list_currency'] = res['currency'];
@@ -552,11 +647,14 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                         fontSize: 16, color: Colors.black)),
                               )),
                         if (data['price_list_currency'] != null)
-                          Divider(color: Colors.grey, height: 1, thickness: 0.7),
+                          Divider(
+                              color: Colors.grey, height: 1, thickness: 0.7),
                         CustomTextField('plc_conversion_rate',
                             'Price List Exchange Rate'.tr(),
-                            initialValue: '${data['plc_conversion_rate'] ?? ''}',
-                            clearButton:true,
+                            initialValue:
+                                '${data['plc_conversion_rate'] ?? ''}',
+                            disableValidation: true,
+                            clearButton: true,
                             hintText: '1',
                             validator: (value) =>
                                 numberValidation(value, allowNull: true),
@@ -572,7 +670,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           CustomTextField(
                               'set_warehouse', 'Source Warehouse'.tr(),
                               initialValue: data['set_warehouse'],
-                              clearButton:true,
+                              disableValidation: true,
+                              clearButton: true,
                               onSave: (key, value) => data[key] = value,
                               onPressed: () => Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -580,14 +679,15 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         CustomTextField('payment_terms_template',
                             'Payment Terms Template'.tr(),
                             initialValue: data['payment_terms_template'],
-                            clearButton:true,
+                            clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => paymentTermsScreen()))),
                         CustomTextField('tc_name', 'Terms & Conditions'.tr(),
                             initialValue: data['tc_name'],
-                            clearButton:true,
+                            disableValidation: true,
+                            clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -603,19 +703,19 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                         fontSize: 16, color: Colors.black)),
                               )),
                         if (_terms != null)
-                          Divider(color: Colors.grey, height: 1, thickness: 0.7),
+                          Divider(
+                              color: Colors.grey, height: 1, thickness: 0.7),
                         CustomTextField(
                           'sales_partner',
                           'Sales Partner'.tr(),
                           disableValidation: true,
-                          clearButton:true,
+                          clearButton: true,
                           initialValue: data['sales_partner'],
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => salesPartnerScreen())),
                         ),
-
                         SizedBox(height: 8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -623,15 +723,17 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,color: Colors.amber,size: 22),
+                              child: Icon(Icons.warning_amber,
+                                  color: Colors.amber, size: 22),
                             ),
                             Flexible(
-                                child: Text(KLocationNotifySnackBar,textAlign: TextAlign.start,)),
+                                child: Text(
+                              KLocationNotifySnackBar,
+                              textAlign: TextAlign.start,
+                            )),
                           ],
                         ),
-
                         SizedBox(height: 8),
-
                       ],
                     ),
                   ),
@@ -664,7 +766,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   //     ],
                   //   ),
                   // ),
-
 
                   SizedBox(height: 8),
                   SelectedItemsList(),

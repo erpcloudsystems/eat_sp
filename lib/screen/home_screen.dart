@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:next_app/screen/Drawer/drawer_screen.dart';
+import 'package:next_app/service/local_notification_service.dart';
 import 'package:next_app/widgets/dialog/loading_dialog.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final _one = GlobalKey();
   final _two = GlobalKey();
 
-
+  @override
+  void initState() {
+    super.initState();
+    notificationConfig(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
       NotificationScreen(),
       CustomDrawer(),
     ];
-
+    List<String> appBarTitles = [
+      'App Settings',
+      'User Profile',
+      'Home',
+      'Notification',
+      ''
+    ];
     void logout() async {
       final res =
           await checkDialog(context, 'Are you sure do you want to logout ?');
@@ -70,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
-        title: Text("Home"),
+        title: Text(appBarTitles[_page]),
         centerTitle: true,
         elevation: 1,
         // actions: [
@@ -92,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       /* drawer: Drawer(child: Container(color: Colors.red,)),*/
       bottomNavigationBar: getBottomNavigationBar(
           key: _bottomNavigationKey,
-          index:indexNow,
+          index: indexNow,
           onTap: (index) {
             // if (index == 4) {
             //   Navigator.push(context, MaterialPageRoute(builder: (context) => CustomDrawer())).then((value) => setState(() {
@@ -104,8 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           }),
       extendBody: true,
-      body: Container(
-          padding: EdgeInsets.only(bottom: 50), child: pages[_page]),
+      body:
+          Container(padding: EdgeInsets.only(bottom: 50), child: pages[_page]),
     );
   }
 }

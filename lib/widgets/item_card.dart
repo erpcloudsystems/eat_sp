@@ -68,7 +68,7 @@ class ItemCard extends StatelessWidget {
                             // Text(values[0]),
                             // Divider(color: Colors.grey),
                             for (int i = 1; i < values.length; i++)
-                              Column(
+                              Wrap(
                                 children: [
                                   _CardItem(title: names[i - 1], value: values[i]),
                                   if (i != values.length - 1) Divider(color: Colors.grey),

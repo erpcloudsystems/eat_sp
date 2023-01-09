@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/module/module_provider.dart';
@@ -10,11 +11,15 @@ class CreateFromPageButton extends StatefulWidget {
   final Map<String, dynamic> data;
   final Map<String, dynamic> items;
   final String? defaultValue;
+  final String doctype;
+  final bool? disableCreate;
 
   const CreateFromPageButton({
     Key? key,
     required this.items,
     required this.data,
+    required this.doctype,
+     this.disableCreate = false,
     this.defaultValue,
   }) : super(key: key);
 
@@ -40,10 +45,11 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
-
+    bool isOpend = false;
+    widget.data['doctype']= widget.doctype;
     return  Container(
       height: 30,
-     // width: 120,
+     width: 110,
       margin: EdgeInsets.only(top: 0,left: 4),
       padding: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
@@ -51,20 +57,24 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: IgnorePointer(
-        ignoring: (widget.data['status'].toString() != "Converted") ? false:true,
+        ignoring: widget.disableCreate ?? false,
         child: DropdownButton<String>(
              value: _value,
             borderRadius: BorderRadius.circular(5),
             underline: SizedBox(),
-            alignment:Alignment.center,
+            alignment:Alignment.centerLeft,
             menuMaxHeight: 300,
             iconSize:26,
             isDense:true,
-            isExpanded:false,
-            hint: Text('Create'.tr(),style: TextStyle(color:(widget.data['status'].toString() != "Converted") ?  Colors.black87:Colors.grey),textAlign: TextAlign.center,),
+            isExpanded:true,
+            //iconDisabledColor:Colors.transparent,
+            //iconEnabledColor:Colors.transparent,
+            hint: Text('Create'.tr(),style: TextStyle(color:!(widget.disableCreate ?? false) ?  Colors.black87:Colors.grey),textAlign: TextAlign.center,),
             onChanged: (value) {
               if (value == null) return;
               _value = value;
+              // InheritedForm.of(context).items.clear();
+
               context
                   .read<ModuleProvider>()
                   .pushCreateFromPage(pageData: widget.data, doctype: _value.toString());

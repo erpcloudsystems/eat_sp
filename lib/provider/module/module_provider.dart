@@ -225,6 +225,7 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.JOURNAL_ENTRY:
         _currentModule = ModuleType.journalEntry;
         break;
+
     }
     _filter.clear();
     notifyListeners();
@@ -258,6 +259,7 @@ class ModuleProvider extends ChangeNotifier {
   void pushCreateFromPage(
       {required Map<String, dynamic> pageData, required String doctype}) {
     _createFromPage = true;
+    _editPage = false;
     _createFromPageData = pageData;
 
     _createFromPageData['_pageData'] = _pageData;
@@ -405,6 +407,7 @@ class ModuleProvider extends ChangeNotifier {
         .updatePage(_currentModule!.genericListService + '/' + _pageId, data);
     await loadPage();
   }
+
 
   Future<bool> addComment(BuildContext context, String comment) async {
     showLoadingDialog(context, 'Uploading comment');

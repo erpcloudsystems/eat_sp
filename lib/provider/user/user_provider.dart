@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:next_app/main.dart';
+import 'package:next_app/service/server_exception.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:next_app/service/service.dart';
@@ -10,8 +15,10 @@ class UserProvider extends ChangeNotifier {
   final SharedPref pref = SharedPref();
 
   String _username = '';
+  String _userNotificationToken = '';
 
   String get username => _username;
+  String get userNotificationToken => _userNotificationToken;
 
   List<Map<String, dynamic>> _modules = [];
 
@@ -34,8 +41,12 @@ class UserProvider extends ChangeNotifier {
   String? get user => _user;
 
   String? _url;
+  String? _userId;
+  String _platform = 'Android';
 
   String get url => _url ?? '';
+  String get userId => _userId ?? '';
+
   bool _storageAccess = false;
   bool _locationAccess = false;
 
@@ -60,39 +71,44 @@ class UserProvider extends ChangeNotifier {
     await pref.getUrl().then((value) => _url = value);
     await pref.getShowcaseList().then((value) => _showcaseProgress = value ?? []);
 
-    if (user != null && pass != null && _url != null)
+    if (user != null && pass != null && _url != null) {
       await login(user!, pass!, _url!, true);
-    else
+      await APIService().sendNotificationToken(deviceTokenToSendPushNotification, _userId.toString(),_platform);
+    if(isTokenRefreshed){
+      await APIService().updateNotificationToken(deviceTokenToSendPushNotification, _userId.toString(),_platform);
+    }
+    } else {
       _user = null;
+    }
   }
 
-  void logout() {
+  void logout() async{
     pref.clearData();
     _user = null;
     _url = null;
-    _user = null;
     notifyListeners();
+    await service.logout("method/logout");
   }
 
   Future<void> checkPermission() async {
     _storageAccess = await Permission.storage.request().isGranted;
-
     _locationAccess = !(await Permission.locationAlways.request().isGranted);
     if(_locationAccess){
       Geolocator.requestPermission();
     }
-
   }
+
+
 
   Future<void> login(String username, String password, String url, bool rememberMe) async {
     if (url.endsWith('/')) url = url.replaceRange(url.length - 1, url.length, '');
     service.changeUrl(url); // to set baseUrl for all app
     final res = await service.login("method/ecs_mobile.api.login", {"usr": username, "pwd": password, 'url': url});
 
-    if (res != null && res['message']['message'] == "Authentication Success") {
+    if (res != null && res['message']['success_key'].toString().toLowerCase() == 'true') {
       _modules = List<Map<String, dynamic>>.from(res['message']['modules']);
       _username = res['full_name'] ?? 'none';
-
+      _userId = res['message']['user_id'] ??'none';
       try {
         _defaultCurrency = ' (' + res['message']['company_defaults'][0]['default_currency'] + ')';
         _companyDefaults = res['message']['company_defaults'][0];
@@ -118,8 +134,18 @@ class UserProvider extends ChangeNotifier {
         await pref.setUrl(url);
       }
 
+      if (Platform.isAndroid) {
+        _platform= "Android";
+      } else if (Platform.isIOS) {
+        _platform= "Ios";
+      }
+
       notifyListeners();
       checkPermission();
+    }else {
+      //Fluttertoast.showToast(msg: 'invalid credentials');
+      throw ServerException("invalid credentials");
+
     }
 
   }

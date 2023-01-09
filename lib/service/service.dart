@@ -63,6 +63,7 @@ class APIService {
   static const HOLIDAY_LIST = 'Holiday List';
   static const DEFAULT_SHIFT = 'Default Shift';
 
+  static const NOTIFICATION_LOG = 'Notification Log';
   static const TERRITORY = 'Territory';
   static const COUNTRY = 'Country';
   static const CURRENCY = 'Currency';
@@ -127,6 +128,13 @@ class APIService {
 
   Map<String, String> get getHeaders => _cookie;
 
+  Future<void> logout(String url) async {
+    final response = await dio.get(url);
+    print('Logout out : ${response.realUri}');
+    print('Logout out : ${response.data}');
+    print('Logout out successfully');
+  }
+
   Future<Map<String, dynamic>?> login(
       String url, Map<String, dynamic> body) async {
     try {
@@ -159,7 +167,7 @@ class APIService {
       if (ex.type == DioErrorType.connectTimeout) {
         throw ServerException("Connection Timeout");
       } else if (ex.type == DioErrorType.other)
-        throw ServerException("Invalid url");
+        throw ServerException("Connection Timeout");
 
       print(ex.message);
       throw Exception(ex.message);
@@ -174,20 +182,24 @@ class APIService {
       {String? filterById,
       String? connection,
       String? search,
+      String? customServiceURL,
       ModuleType? module,
       Map<String, dynamic>? filters}) async {
     if (search != null && search.isNotEmpty) print('search: $search');
     try {
-      var response = await dio
-          .get('method/ecs_mobile.general.general_service', queryParameters: {
-        'doctype': service,
-        if (filterById != null) "cur_nam": filterById,
-        if (connection != null) "con_doc": connection,
-        if (search != null && search.isNotEmpty) 'search_text': '%$search%',
-        if (filters != null) ...filters,
-        "start": pageCount,
-        "page_length": PAGINATION_PAGE_LENGTH
-      });
+      var response = await dio.get(
+          customServiceURL == null
+              ? 'method/ecs_mobile.general.general_service'
+              : customServiceURL,
+          queryParameters: {
+            if (customServiceURL == null) 'doctype': service,
+            if (filterById != null) "cur_nam": filterById,
+            if (connection != null) "con_doc": connection,
+            if (search != null && search.isNotEmpty) 'search_text': '%$search%',
+            if (filters != null) ...filters,
+            "start": pageCount,
+            "page_length": PAGINATION_PAGE_LENGTH
+          });
       print('getList filters:');
       print(filters);
       print("getList request " + response.realUri.toString());
@@ -246,11 +258,9 @@ class APIService {
           print(
               "getListCount Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
       }
     }
     return '0';
-
   }
 
   Future<Map<String, dynamic>> getPage(String url, String id) async {
@@ -321,18 +331,17 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> genericGet(String url,
-
-      [Map<String, dynamic>? queryParameters ]) async {
+      [Map<String, dynamic>? queryParameters]) async {
     try {
-      var response = await dio
-          .get(url, queryParameters: (queryParameters != null)? queryParameters:{});
+      var response = await dio.get(url,
+          queryParameters: (queryParameters != null) ? queryParameters : {});
       print("genericGet request" + response.realUri.path.toString());
       print("genericGet request " + response.realUri.toString());
 
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
         print("genericGet request" + response.realUri.path.toString());
-      print("genericGet request " + response.realUri.toString());
+        print("genericGet request " + response.realUri.toString());
         print("genericGet response" + response.toString());
 
         print(myMap);
@@ -576,7 +585,6 @@ class APIService {
     if (file is File) OpenFile.open(file.path);
   }
 
-
   /// Download file into private folder not visible to user
   Future<File?> downloadFile(String url, String name,
       {Map<String, dynamic>? queryParameters, String? path}) async {
@@ -664,6 +672,92 @@ class APIService {
     return false;
   }
 
+  Future<bool?> sendNotificationToken(
+      String token, String userId, String deviceType) async {
+    print('➡️ Sending Device Token "$token" ');
+    try {
+      var response = await dio.post(NOTIFICATION, data: {
+        "data": {
+          "doctype": "Push Notification Details",
+          "device_token": token,
+          "user_id": userId,
+          "device_type": deviceType,
+        }
+      });
+
+      print("Send Notification Token request " +
+          response.realUri.path.toString());
+      print(response.statusCode);
+      print(response.data);
+      print("Send Notification Token request " + response.toString());
+
+      if (response.statusCode == 200) {
+        print("Send Notification Token request " +
+            response.realUri.path.toString());
+
+        final data = Map<String, dynamic>.from(response.data);
+
+        if (data['message']['success_key'] == true) return true;
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (error, stacktrace) {
+      if (error is DioError) {
+        if (error.response?.data != null) {
+          print(
+              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+        } else {
+          print(
+              "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+        }
+      }
+    }
+    return false;
+  }
+
+  Future updateNotificationToken(
+      String token, String userId, String deviceType) async {
+    print('➡️ Updating Device Token "$token" ');
+    String name;
+    final res = await genericGet(
+        PUSH_NOTIFICATION_FILTER_USER_DEVICES, {'user_id': userId});
+    if (res != {}) {
+      name = res['message']['name'];
+      print('➡️ name is: "$name" ');
+
+      try {
+        var response = await dio.put(
+            UPDATE_NOTIFICATION_TOKEN + name.toString(),
+            data: {"device_token": token});
+
+        print("Updating Notification Token request " +
+            response.realUri.path.toString());
+        print(response.statusCode);
+        print(response.data);
+        print("Updating Notification Token request " + response.toString());
+
+        if (response.statusCode == 200) {
+          print("Updating Notification Token request " +
+              response.realUri.path.toString());
+          return Map<String, dynamic>.from(response.data);
+        }
+      } on ServerException catch (e) {
+        throw ServerException(e.message);
+      } catch (error, stacktrace) {
+        if (error is DioError) {
+          if (error.response?.data != null) {
+            print(
+                "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+          } else {
+            print(
+                "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+          }
+        }
+      }
+    }else
+    return {};
+  }
+
   Future getImage(String image) async {
     try {
       var response = await dio.get(
@@ -709,8 +803,6 @@ class APIService {
     return {};
   }
 }
-
-
 
 ///this function handles any API request & show snackBar on Exception
 Future<dynamic> handleRequest(

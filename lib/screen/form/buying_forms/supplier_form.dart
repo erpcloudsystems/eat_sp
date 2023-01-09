@@ -35,7 +35,7 @@ class _SupplierFormState extends State<SupplierForm> {
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) {
-      showSnackBar('Fill required fields', context);
+      showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
     _formKey.currentState!.save();
@@ -59,8 +59,10 @@ class _SupplierFormState extends State<SupplierForm> {
 
     Navigator.pop(context);
 
-    if(provider.isEditing && res == false) return;
-    else if (provider.isEditing && res == null) Navigator.pop(context);
+    if (provider.isEditing && res == false)
+      return;
+    else if (provider.isEditing && res == null)
+      Navigator.pop(context);
     else if (res != null && res['message']['name'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['name']);
       Navigator.of(context)
@@ -83,7 +85,6 @@ class _SupplierFormState extends State<SupplierForm> {
           .split(')')[0];
       setState(() {});
     }
-
 
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
@@ -126,7 +127,7 @@ class _SupplierFormState extends State<SupplierForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -155,15 +156,20 @@ class _SupplierFormState extends State<SupplierForm> {
                                   builder: (_) => supplierGroupScreen()))),
                       CustomTextField('tax_id', tr('Tax ID'),
                           onSave: (key, value) => data[key] = value,
-                          initialValue: data['tax_id']),
+                          initialValue: data['tax_id'],
+                      disableValidation: true,
+                      ),
                       //if (removeWhenUpdate)
                       CustomTextField('email_id', tr('Email Address'),
                           initialValue: data['email_id'],
+                          disableValidation: true,
+
                           keyboardType: TextInputType.emailAddress,
                           validator: mailValidation,
                           onSave: (key, value) => data[key] = value),
                       CustomTextField('mobile_no', tr('Mobile No'),
                           initialValue: data['mobile_no'],
+                          disableValidation: true,
 
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
@@ -172,15 +178,17 @@ class _SupplierFormState extends State<SupplierForm> {
                         'address_line1',
                         tr('Address'),
                         initialValue: data['supplier_primary_address'],
+                        disableValidation: true,
+
                         onSave: (key, value) => data[key] = value,
                       ),
-                        CustomTextField(
-                          'city',
-                          tr('city'),
-                          disableValidation: true,
-                          initialValue: data['city'],
-                          onSave: (key, value) => data[key] = value,
-                        ),
+                      CustomTextField(
+                        'city',
+                        tr('city'),
+                        disableValidation: true,
+                        initialValue: data['city'],
+                        onSave: (key, value) => data[key] = value,
+                      ),
                       //if (removeWhenUpdate)
                       CustomTextField('country', tr('Country'),
                           initialValue: data['country'],
@@ -189,11 +197,11 @@ class _SupplierFormState extends State<SupplierForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => countryScreen()))),
-                      if(!removeWhenUpdate)
-                      CheckBoxWidget('disabled', 'Disabled'.tr(),
-                          initialValue: data['disabled'] == 1,
-                          onChanged: (key, value) =>
-                          data[key] = value ? 1 : 0),
+                      if (!removeWhenUpdate)
+                        CheckBoxWidget('disabled', 'Disabled'.tr(),
+                            initialValue: data['disabled'] == 1,
+                            onChanged: (key, value) =>
+                                data[key] = value ? 1 : 0),
                       SizedBox(height: 8),
                     ],
                   ),
@@ -207,6 +215,8 @@ class _SupplierFormState extends State<SupplierForm> {
                     children: [
                       CustomTextField('default_currency', 'Currency',
                           initialValue: data['default_currency'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -227,8 +237,9 @@ class _SupplierFormState extends State<SupplierForm> {
                           }),
                       CustomTextField(
                           'payment_terms', 'Payment Terms Template'.tr(),
-
                           initialValue: data['payment_terms'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onChanged: (value) => data['payment_terms'] = value,
                           onPressed: () => Navigator.of(context).push(

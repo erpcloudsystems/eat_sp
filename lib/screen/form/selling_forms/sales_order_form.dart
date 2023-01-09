@@ -41,7 +41,10 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      showSnackBar(KFillRequiredSnackBar, context);
+      return;
+    }
 
     if (InheritedForm.of(context).items.isEmpty) {
       showSnackBar('Please add an item at least', context);
@@ -54,6 +57,11 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
     InheritedForm.of(context)
         .items
         .forEach((element) => data['items'].add(element.toJson));
+
+    //DocFromPage Mode from Sales Order
+    data['items'].forEach((element) {
+      element['prevdoc_docname'] = data['prevdoc_docname'];
+    });
 
     showLoadingDialog(
         context,
@@ -78,7 +86,15 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
       return;
     else if (provider.isEditing && res == null)
       Navigator.pop(context);
-    else if (res != null && res['message']['sales_order'] != null) {
+    else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['sales_order'] != null)
+        context.read<ModuleProvider>().pushPage(res['message']['sales_order']);
+      Navigator.of(context)
+          .push(MaterialPageRoute(
+            builder: (_) => GenericPage(),
+          ))
+          .then((value) => Navigator.pop(context));
+    } else if (res != null && res['message']['sales_order'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['sales_order']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
@@ -94,21 +110,22 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
   void initState() {
     super.initState();
 
-
-    if(!context.read<ModuleProvider>().isEditing){
-
-      data['tc_name'] = context.read<UserProvider>().companyDefaults['default_selling_terms'];
-      setState(() {
-      });
+    //Adding Mode
+    if (!context.read<ModuleProvider>().isEditing) {
+      data['tc_name'] =
+          context.read<UserProvider>().companyDefaults['default_selling_terms'];
+      setState(() {});
     }
-
+    //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         print('123E4${InheritedForm.of(context).items}');
-        if(InheritedForm.of(context).items.isNotEmpty) print('123E4${InheritedForm.of(context).items[0].netRate}');
+        if (InheritedForm.of(context).items.isNotEmpty)
+          print('123E4${InheritedForm.of(context).items[0].netRate}');
         data = context.read<ModuleProvider>().updateData;
         print('123E5${InheritedForm.of(context).items}');
-        if(InheritedForm.of(context).items.isNotEmpty) print('123E5${InheritedForm.of(context).items[0].netRate}');
+        if (InheritedForm.of(context).items.isNotEmpty)
+          print('123E5${InheritedForm.of(context).items[0].netRate}');
         _getCustomerData(data['customer']).then((value) => setState(() {
               selectedCstData['address_line1'] =
                   formatDescription(data['address_line1']);
@@ -124,10 +141,80 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
         print('123E6${InheritedForm.of(context).items}');
-        if(InheritedForm.of(context).items.isNotEmpty) print('123E6${InheritedForm.of(context).items[0].netRate}');
+        if (InheritedForm.of(context).items.isNotEmpty)
+          print('123E6${InheritedForm.of(context).items[0].netRate}');
 
         setState(() {});
       });
+
+    //DocFromPage Mode
+    if (context.read<ModuleProvider>().isCreateFromPage) {
+      Future.delayed(Duration.zero, () {
+        data = context.read<ModuleProvider>().createFromPageData;
+        InheritedForm.of(context).items.clear();
+        data['items'].forEach((element) {
+          InheritedForm.of(context)
+              .items
+              .add(ItemSelectModel.fromJson(element));
+        });
+        InheritedForm.of(context).data['selling_price_list'] =
+            data['selling_price_list'];
+
+         data['posting_date'] = DateTime.now().toIso8601String();
+        data['is_return'] = 0;
+        data['update_stock'] = 1;
+        data['latitude'] = 0.0;
+        data['longitude'] = 0.0;
+        data['conversion_rate'] = 1;
+
+        // from Quotation
+        if(data['doctype']=='Quotation'){
+        data['prevdoc_docname'] = data['name'];
+        data['customer'] = data['party_name'];
+        data['customer_name'] = data['party_name'];
+        }
+
+
+        _getCustomerData(data['customer_name']).then((value) => setState(() {
+              data['due_date'] = DateTime.now()
+                  .add(Duration(
+                      days: int.parse(
+                          (selectedCstData['credit_days'] ?? 0).toString())))
+                  .toIso8601String();
+
+              if (data['selling_price_list'] !=
+                  selectedCstData['default_price_list']) {
+                data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+
+                InheritedForm.of(context).data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+              }
+              data['currency'] = selectedCstData['default_currency'];
+              data['price_list_currency'] = selectedCstData['default_currency'];
+              data['customer_address'] =
+                  selectedCstData["customer_primary_address"];
+              data['contact_person'] =
+                  selectedCstData["customer_primary_contact"];
+            }));
+
+        data['doctype'] = "Sales Order";
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
+        print('sdfsdfsd${data['items']}');
+        setState(() {});
+      });
+    }
   }
 
   @override
@@ -178,7 +265,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         'customer',
                         'Customer',
                         initialValue: data['customer'],
-                        clearButton:true,
+                        clearButton: true,
                         onPressed: () async {
                           String? id;
 
@@ -259,7 +346,8 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               setState(() => data['delivery_date'] = value),
                           firstDate: DateTime.parse(data['transaction_date']),
                           initialValue: data['delivery_date'],
-                        )),
+
+                            )),
                       ]),
                       if (data['tax_id'] != null)
                         Align(
@@ -280,7 +368,9 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         ),
                       CustomTextField('customer_group', 'Customer Group',
                           initialValue: data['customer_group'],
-                          clearButton:true,
+                          disableValidation: true,
+
+                          clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -288,7 +378,9 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['territory'],
-                          clearButton:true,
+                          clearButton: true,
+                          disableValidation: true,
+
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => territoryScreen()))),
@@ -320,7 +412,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         title: CustomTextField(
                             'customer_address', 'Customer Address',
                             initialValue: data['customer_address'],
-                            disableValidation: false,
+                            disableValidation: true,
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
@@ -366,7 +458,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         title: CustomTextField(
                             'contact_person', 'Contact Person',
                             initialValue: data['contact_person'],
-                            disableValidation: false,
+                            disableValidation: true,
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () async {
@@ -430,7 +522,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
                       CustomTextField('project', 'Project'.tr(),
                           disableValidation: true,
-                          clearButton:true,
+                          clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -444,7 +536,9 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
                       CustomTextField('currency', 'Currency'.tr(),
                           initialValue: data['currency'],
-                          clearButton:true,
+                          clearButton: true,
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -452,6 +546,8 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField(
                         'conversion_rate',
                         'Exchange Rate'.tr(),
+                        disableValidation: true,
+
                         initialValue: '${data['conversion_rate'] ?? ''}',
                         hintText: '1',
                         clearButton: true,
@@ -464,8 +560,9 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
                       CustomTextField('selling_price_list', 'Price List'.tr(),
                           initialValue: data['selling_price_list'],
-                          clearButton:true,
-                          onPressed: () async {
+                          disableValidation: true,
+
+                          clearButton: true, onPressed: () async {
                         final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (_) => priceListScreen()));
@@ -510,6 +607,8 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           initialValue: '${data['plc_conversion_rate'] ?? ''}',
                           hintText: '1',
                           clearButton: true,
+                          disableValidation: true,
+
                           validator: (value) =>
                               numberValidation(value, allowNull: true),
                           keyboardType: TextInputType.number,
@@ -519,7 +618,9 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField(
                           'set_warehouse', 'Set Source Warehouse'.tr(),
                           initialValue: data['set_warehouse'],
-                          clearButton:true,
+                          disableValidation: true,
+
+                          clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -528,14 +629,19 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('payment_terms_template',
                           'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms_template'],
-                          clearButton:true,
+                          disableValidation: true,
+
+                          clearButton: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => paymentTermsScreen()))),
                       CustomTextField('tc_name', 'Terms & Conditions'.tr(),
                           initialValue: data['tc_name'],
-                          clearButton:true,
+                          disableValidation: true,
+
+                          clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -564,7 +670,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         'Sales Partner'.tr(),
                         initialValue: data['sales_partner'],
                         disableValidation: true,
-                        clearButton:true,
+                        clearButton: true,
                         onSave: (key, value) => data[key] = value,
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(

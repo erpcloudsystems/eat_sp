@@ -289,6 +289,8 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                       'description',
                       tr('Reason'),
                       onChanged: (value) => data['description'] = value,
+                      disableValidation: true,
+
                       onSave: (key, value) => data[key] = value,
                       initialValue: data['description'],
                     ),

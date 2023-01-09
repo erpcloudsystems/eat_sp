@@ -38,13 +38,14 @@ class _QuotationFormState extends State<QuotationForm> {
     "transaction_date": DateTime.now().toIso8601String(),
     'apply_discount_on': grandTotalList[0],
     'order_type': orderTypeList[0],
+    'quotation_to': KQuotationToList[1],
     'conversion_rate': 1,
   };
   Map<String, dynamic> selectedCstData = {
     'quotation_validaty_days':'0',
   };
 
-  //used to clear all fields when change Quotation type(customer or lead)
+  //used to        clear all fields when change Quotation type(customer or lead)
   void changeType(String newType) {
     data['valid_till'] = null;
     data['quotation_to'] = newType;
@@ -73,7 +74,10 @@ class _QuotationFormState extends State<QuotationForm> {
 
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      showSnackBar(KFillRequiredSnackBar, context);
+      return;
+    }
 
     if (InheritedForm.of(context).items.isEmpty) {
       showSnackBar('Please add an item at least', context);
@@ -144,7 +148,7 @@ class _QuotationFormState extends State<QuotationForm> {
       setState(() {
       });
     }
-//Editing Mode
+    //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
@@ -169,27 +173,26 @@ class _QuotationFormState extends State<QuotationForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        data['doctype']= "Quotation";
+        print('asdfsf1${data}');
+
         data['transaction_date']= DateTime.now().toIso8601String();
         data['apply_discount_on']= grandTotalList[0];
         data['order_type']= orderTypeList[0];
         data['conversion_rate']= 1;
 
-        data['customer_name'] = data['lead_name'];
-        data['party_name'] = data['lead_name'];
-        data['lead_name'] = data['name'];
-        data.remove('print_formats');
-        data.remove('conn');
-        data.remove('comments');
-        data.remove('attachments');
-        data.remove('docstatus');
-        data.remove('name');
-        data.remove('_pageData');
-        data.remove('_pageId');
-        data.remove('_availablePdfFormat');
-        data.remove('_currentModule');
-        data.remove('status');
-        data.remove('organization_lead');
+
+        //from lead
+        if(data['doctype']=='Lead'){
+          data['customer_name'] = data['lead_name'];
+          data['party_name'] = data['name'];
+          data['quotation_to'] = KQuotationToList[0];
+        }
+        // From Opportunity
+        if(data['doctype']=='Opportunity'){
+          data['opportunity'] = data['name'];
+          data['customer_name'] = data['party_name'];
+          data['party_name'] = data['customer_name'];
+        }
 
         _getCustomerData(data['customer_name']).then((value) => setState(() {
 
@@ -203,22 +206,32 @@ class _QuotationFormState extends State<QuotationForm> {
               selectedCstData['default_price_list']) {
             data['selling_price_list'] =
             selectedCstData['default_price_list'];
-            InheritedForm.of(context).items.clear();
             InheritedForm.of(context)
                 .data['selling_price_list'] =
             selectedCstData['default_price_list'];
           }
-
-
           data['currency'] = selectedCstData['default_currency'] ;
           data['price_list_currency'] = selectedCstData['default_currency'] ;
           data['payment_terms_template'] = selectedCstData['payment_terms'] ;
           data['customer_address'] = selectedCstData["customer_primary_address"];
           data['contact_person'] = selectedCstData["customer_primary_contact"];
 
-
         }));
 
+        data['doctype']= "Quotation";
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
+        print('asdfsf1${data['customer_name']}');
 
         setState(() {});
       });
@@ -280,7 +293,7 @@ class _QuotationFormState extends State<QuotationForm> {
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
                       CustomTextField(
                         'party_name',
-                        'Customer',
+                        data['quotation_to']??'',
                         initialValue: data['party_name'],
                         onPressed: () async {
                           String? id;
@@ -352,21 +365,11 @@ class _QuotationFormState extends State<QuotationForm> {
                         },
                       ),
                       if (data['customer_name'] != null)
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              child: Text(data['customer_name']!,
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black)),
-                            )),
-                      if (data['customer_name'] != null)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 2, right: 2),
-                          child: Divider(
-                              color: Colors.grey, height: 1, thickness: 0.7),
+                        CustomTextField(
+                          'customer_name',
+                          data['quotation_to']??'',
+                          initialValue: data['customer_name'],
+                          enabled: false,
                         ),
                       Row(children: [
                         Flexible(
@@ -392,7 +395,9 @@ class _QuotationFormState extends State<QuotationForm> {
                           onChanged: (value) =>
                               setState(() => data['valid_till'] = value),
                           //firstDate: DateTime.parse(data['transaction_date']),
-                          initialValue: data['valid_till'] ??
+                              disableValidation: true,
+
+                              initialValue: data['valid_till'] ??
                               ((selectedCstData['quotation_validaty_days'] !=
                                       '0')
                                   ? DateTime.now()
@@ -407,12 +412,15 @@ class _QuotationFormState extends State<QuotationForm> {
                       if (_type == quotationType.customer)
                         CustomTextField('customer_group', 'Customer Group',
                             initialValue: data['customer_group'],
+                            disableValidation: true,
+
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => customerGroupScreen()))),
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['territory'],
+                          disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => territoryScreen()))),
@@ -424,7 +432,7 @@ class _QuotationFormState extends State<QuotationForm> {
                           title: CustomTextField(
                               'customer_address', 'Customer Address',
                               initialValue: data['customer_address'],
-                              disableValidation: false,
+                              disableValidation: true,
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               liestenToInitialValue:
@@ -472,7 +480,7 @@ class _QuotationFormState extends State<QuotationForm> {
                           title: CustomTextField(
                               'contact_person', 'Contact Person',
                               initialValue: data['contact_person'],
-                              disableValidation: false,
+                              disableValidation: true,
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               onPressed: () async {
@@ -627,6 +635,8 @@ class _QuotationFormState extends State<QuotationForm> {
                       CustomTextField('payment_terms_template',
                           'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms_template'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(

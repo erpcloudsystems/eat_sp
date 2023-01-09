@@ -23,11 +23,11 @@ class ItemTableModel extends ListModel<ItemModel> {
 class ItemModel {
   final String itemCode;
   final String itemName;
-  final String stockUom;
+   String stockUom;
   final String group;
   final String imageUrl;
 
-  const ItemModel(
+   ItemModel(
       {required this.imageUrl,
       required this.itemCode,
       required this.itemName,
@@ -83,13 +83,12 @@ class ItemSelectModel extends ItemModel {
   set qty(int value) => _qty = value;
 
   factory ItemSelectModel.fromJson(Map<String, dynamic> json) {
-    print('rcff${json['item_tax_template']}');
     final item = ItemSelectModel(
       ItemModel.fromJson(json),
       vat: double.tryParse((json['item_tax_template']?? (json['tax_percent']?? 0).toString())) ?? 0 ,
-      netRate: json['net_rate'] ?? 0,
-      rate: json['price_list_rate'] ?? 0,
-      priceListRate: json['price_list_rate'] ?? 0,
+      netRate: json['net_rate'] ?? 9999999999,
+      rate: json['price_list_rate'] ?? 88888888,
+      priceListRate: json['price_list_rate'] ?? 77777777,
       taxPercent:double.tryParse((json['item_tax_template']?? (json['tax_percent']?? 0).toString())) ?? 0 ,
       enableEdit: true, // (json['price_list_rate'] ?? 0) <= 0,
     );
@@ -130,10 +129,14 @@ class ItemSelectModel extends ItemModel {
   int get hashCode => itemName.hashCode;
 }
 
+//For OpportunityForm
 class ItemQuantity extends ItemModel {
   int qty;
+  double rate;
+  double total;
+  String actualQty;
 
-  ItemQuantity(ItemModel itemModel, {required this.qty})
+  ItemQuantity(ItemModel itemModel, {this.qty=0, this.rate =0.0, this.total=0.0,this.actualQty=''})
       : super(
             itemName: itemModel.itemName,
             itemCode: itemModel.itemCode,
@@ -146,6 +149,8 @@ class ItemQuantity extends ItemModel {
         "item_code": itemCode,
         "item_name": itemName,
         "qty": qty,
+        "rate": rate,
+        "amount": total,
         "uom": stockUom
       };
 }

@@ -23,6 +23,8 @@ class GenericListScreen<T> extends StatefulWidget {
   /// target url where the screen fetch the data from
   final String? service;
 
+  final String? customServiceURL;
+
   final String? filterById;
   final Map<String, dynamic>? filters;
 
@@ -39,15 +41,18 @@ class GenericListScreen<T> extends StatefulWidget {
   final ListModel<T> Function(Map<String, dynamic>)? serviceParser;
 
   final bool _useProvider;
+  final bool disableAppBar;
 
   // used to set the data by yourself
   GenericListScreen({
     required this.title,
     required this.service,
+    this.customServiceURL,
     this.filterById,
     this.filters,
     this.connection,
     this.createForm,
+    this.disableAppBar = false,
     required this.listItem,
     required this.serviceParser,
   }) : _useProvider = false;
@@ -55,10 +60,12 @@ class GenericListScreen<T> extends StatefulWidget {
   GenericListScreen._({
     this.title,
     this.service,
+    this.customServiceURL,
     this.filterById,
     this.filters,
     this.connection,
     this.createForm,
+    this.disableAppBar = false,
     this.listItem,
     this.serviceParser,
     bool? useProvider,
@@ -107,7 +114,7 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
+      appBar: widget.disableAppBar? null: AppBar(
         elevation: 0,
         title: Text(moduleProvider.currentModule.title),
         actions: [
@@ -213,7 +220,7 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
+      appBar: widget.disableAppBar? null:AppBar(
         elevation: 0,
         title: Text(widget.title.toString() ),
         actions: [
@@ -241,7 +248,7 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
       ),
       body: PaginationList<T>(
         future: (_page) =>
-            service.getList<T>(widget.service!, _page, serviceParser!, filterById: widget.filterById, connection: widget.connection, search: searchText.trim(),filters: widget.filters),
+            service.getList<T>(widget.service!, _page, serviceParser!,customServiceURL:widget.customServiceURL, filterById: widget.filterById, connection: widget.connection, search: searchText.trim(),filters: widget.filters,),
         listCount:()=>  context.read<ModuleProvider>().listCount(service:widget.service!,search: searchText.trim()),
         reset: reset,
         listItem: listItem!,

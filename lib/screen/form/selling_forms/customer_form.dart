@@ -132,19 +132,24 @@ class _CustomerFormState extends State<CustomerForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
+        for (var k in data.keys) print("➡️ $k: ${data[k]}");
         data['credit_limits'] = [{}];
+        data['customer_type'] =  customerType[0];
         data['customer_name'] = data['lead_name'];
-        data['lead_name'] = data['name'];
-        data.remove('print_formats');
-        data.remove('conn');
-        data.remove('comments');
-        data.remove('attachments');
-        data.remove('docstatus');
-        data.remove('name');
-        data.remove('_pageData');
-        data.remove('_pageId');
-        data.remove('_availablePdfFormat');
-        data.remove('_currentModule');
+        data['latitude'] = 0.0;
+        data['longitude'] = 0.0;
+
+
+        //from lead
+        if(data['doctype']=='Lead'){
+          data['lead_name'] = data['name'];
+        }
+        // From Opportunity
+        if(data['doctype']=='Opportunity'){
+          data['opportunity_name'] = data['name'];
+          data['customer_name'] = data['party_name'];
+        }
+
 
         // from user defaults
         data['default_currency'] = context
@@ -155,6 +160,18 @@ class _CustomerFormState extends State<CustomerForm> {
         data['country'] =
             context.read<UserProvider>().companyDefaults['country'];
 
+
+        data['doctype']= "Customer";
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
 
         setState(() {});
       });
@@ -244,13 +261,18 @@ class _CustomerFormState extends State<CustomerForm> {
                                   builder: (_) => marketSegmentScreen()))),
                       CustomTextField('industry', tr('Industry'),
                           initialValue: data['industry'],
+                          disableValidation: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => industryScreen()))),
                       CustomTextField('tax_id', tr('Tax ID'),
                           onSave: (key, value) => data[key] = value,
-                          initialValue: data['tax_id']),
+                          initialValue: data['tax_id'],
+                        disableValidation: true,
+
+                      ),
+
                       if (!removeWhenUpdate)
                         CheckBoxWidget('disabled', 'Disabled'.tr(),
                             initialValue: data['disabled'] == 1,
@@ -259,22 +281,30 @@ class _CustomerFormState extends State<CustomerForm> {
                       if (removeWhenUpdate)
                         CustomTextField('email_id', tr('Email Address'),
                             initialValue: data['email_id'],
+                            disableValidation: true,
+
                             keyboardType: TextInputType.emailAddress,
                             validator: mailValidation,
                             onSave: (key, value) => data[key] = value),
                       if (removeWhenUpdate)
                         CustomTextField('mobile_no', tr('Mobile No'),
                             initialValue: data['mobile_no'],
+                            disableValidation: true,
+
                             keyboardType: TextInputType.phone,
                             validator: validateMobile,
                             onSave: (key, value) => data[key] = value),
                       if (removeWhenUpdate)
                         CustomTextField('address_line1', tr('Address'),
                             onSave: (key, value) => data[key] = value,
-                            initialValue: data['address_line1']),
+                            initialValue: data['address_line1'],
+                          disableValidation: true,
+                        ),
                       if (removeWhenUpdate)
                         CustomTextField('city', 'City',
                             onSave: (key, value) => data[key] = value,
+                            disableValidation: true,
+
                             initialValue: data['city']),
                       if (removeWhenUpdate)
                         CustomTextField('country', tr('Country'),
@@ -305,6 +335,8 @@ class _CustomerFormState extends State<CustomerForm> {
                         'default_currency',
                         'Currency',
                         initialValue: data['default_currency'],
+                        disableValidation: true,
+
                         onSave: (key, value) => data[key] = value,
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
@@ -312,6 +344,8 @@ class _CustomerFormState extends State<CustomerForm> {
                       ),
                       CustomTextField('default_price_list', 'Price List'.tr(),
                           initialValue: data['default_price_list'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () async {
                             final res = await Navigator.of(context).push(
@@ -332,6 +366,8 @@ class _CustomerFormState extends State<CustomerForm> {
                       CustomTextField(
                           'payment_terms', 'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onChanged: (value) => data['payment_terms'] = value,
                           onPressed: () => Navigator.of(context).push(
