@@ -1,6 +1,8 @@
 import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/screen/form/selling_forms/sales_order_form.dart';
 import 'package:next_app/core/cloud_system_widgets.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_button.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_consts.dart';
 import 'package:next_app/widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,22 @@ class QuotationPage extends StatelessWidget {
           color: color,
           items: model.card1Items,
           header: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Quotation',
+                  data: data,
+                  items: fromQuotation,
+                  disableCreate: (
+                          data['status'].toString() != "Ordered" &&
+                          data['docstatus'].toString() == "1"&&
+                          data['quotation_to'].toString() == "Customer")
+                      ? false
+                      : true,
+                ),
+              ],
+            ),
             Stack(
               alignment: Alignment.center,
               children: [
@@ -52,7 +70,8 @@ class QuotationPage extends StatelessWidget {
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
             Text('Quotation To: ' + (data['quotation_to'] ?? 'none')),
-            Text('Customer: ' + (data['party_name'] ?? 'none')),
+            Text('${data['quotation_to'] ?? ""} : ' +
+                (data['party_name'] ?? 'none')),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['customer_name'] ?? 'none'),

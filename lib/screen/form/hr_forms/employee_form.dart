@@ -147,7 +147,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         'first_name',
                         tr('First Name'),
                         clearButton: true,
-                        disableValidation: true,
                         onChanged: (value) => data['first_name'] = value,
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['first_name'],
@@ -162,14 +161,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         initialValue: data['last_name'],
                       ),
 
-                      // CustomTextField(
-                      //   'full_name',
-                      //   tr('Full Name'),
-                      //   enabled: false,
-                      //   disableValidation: true,
-                      //   onSave: (key, value) => data[key] = value,
-                      //   initialValue: data['full_name']
-                      // ),
                       CustomTextField('gender', tr('Gender'),
                           clearButton: true,
                           initialValue: data['gender'],

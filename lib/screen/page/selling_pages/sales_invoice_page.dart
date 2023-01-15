@@ -1,5 +1,7 @@
 import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/core/cloud_system_widgets.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_button.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_consts.dart';
 import 'package:next_app/widgets/map_view.dart';
 import 'package:next_app/widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,21 +33,41 @@ class SalesInvoicePage extends StatelessWidget {
           color: color,
           items: model.card1Items,
           header: [
+            Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Sales Invoice',
+                  data: data,
+                  items: data['status'].toString() != "Paid" ? fromSalesInvoice:fromSalesInvoice2,
+                  disableCreate: (data['docstatus'].toString() == "1"
+                      &&
+                      data['is_return'].toString() == "0"
+                  ) ?  false:true,
+                ),
+                if (data['docstatus'] != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child:
+                    context.read<ModuleProvider>().submitDocumentWidget(),
+                  ),
+              ],
+            ),
             Stack(
               alignment: Alignment.center,
               children: [
                 Text('Sales Invoice',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child:
-                          context.read<ModuleProvider>().submitDocumentWidget(),
-                    ),
-                  )
+                // if (data['docstatus'] != null)
+                //   Align(
+                //     alignment: Alignment.centerRight,
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(right: 12.0),
+                //       child:
+                //           context.read<ModuleProvider>().submitDocumentWidget(),
+                //     ),
+                //   )
               ],
             ),
             Padding(
@@ -120,8 +142,8 @@ class SalesInvoicePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: CustomMapView(
-            latitude: data['latitude'],
-            longitude: data['longitude'],
+            latitude: data['latitude'] ?? 0.0,
+            longitude: data['longitude'] ?? 0.0,
           ),
         ),
 

@@ -39,7 +39,6 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
     "update_stock": 0,
     'is_subcontracted': "No",
     'bill_no': '',
-
   };
 
   Map<String, dynamic> selectedSupplierData = {
@@ -51,7 +50,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
-      showSnackBar('Fill required fields', context);
+      showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
     if (InheritedForm.of(context).items.isEmpty) {
@@ -73,6 +72,11 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
       data['items'].add(element.toJson);
     });
 
+    //DocFromPage Mode from Purchase Invoice
+    data['items'].forEach((element) {
+      element['purchase_invoice'] = data['purchase_invoice'];
+    });
+
     showLoadingDialog(
         context,
         provider.isEditing
@@ -85,13 +89,12 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
     data['child_purchase_taxes_and_charges'] = null;
 
     for (var k in data.keys) print("➡️ $k: ${data[k]}");
-    dev.log("➡️ 00001 $data ");
-    final res = await handleRequest(
+
+     final res = await handleRequest(
         () async => provider.isEditing
             ? await provider.updatePage(data)
             : await server.postRequest(PURCHASE_INVOICE_POST, {'data': data}),
         context);
-    print('00000000000000 res:$res');
 
     Navigator.pop(context);
 
@@ -99,6 +102,17 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
       return;
     else if (provider.isEditing && res == null)
       Navigator.pop(context);
+    else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['purchase_invoice_name'] != null)
+        context
+            .read<ModuleProvider>()
+            .pushPage(res['message']['purchase_invoice_name']);
+      Navigator.of(context)
+          .push(MaterialPageRoute(
+        builder: (_) => GenericPage(),
+      ))
+          .then((value) => Navigator.pop(context));
+    }
     else if (res != null && res['message']['purchase_invoice_name'] != null) {
       provider.pushPage(res['message']['purchase_invoice_name']);
       Navigator.of(context)
@@ -113,6 +127,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
   @override
   void initState() {
     super.initState();
+    //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
@@ -137,6 +152,80 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
         data['buying_price_list'];
 
       });
+
+    //DocFromPage Mode
+    if (context.read<ModuleProvider>().isCreateFromPage) {
+      Future.delayed(Duration.zero, () {
+        data = context.read<ModuleProvider>().createFromPageData;
+
+        InheritedForm.of(context).items.clear();
+
+        data['posting_date'] = DateTime.now().toIso8601String();
+        data['is_return'] = 0;
+        data['update_stock'] = 0;
+        data['is_subcontracted'] = "No";
+        data['bill_no'] = "";
+        data['conversion_rate'] = 1;
+
+
+        // from Purchase Invoice
+        if(data['doctype']=='Purchase Invoice'){
+
+          data['purchase_invoice_item'].forEach((element) {
+            InheritedForm.of(context)
+                .items
+                .add(ItemSelectModel.fromJson(element));
+          });
+          InheritedForm.of(context).data['buying_price_list'] =
+          data['buying_price_list'];
+
+          data['return_against'] = data['name'];
+          data['is_return'] = 1;
+        }
+
+        _getSupplierData(data['supplier_name']).then((value) => setState(() {
+          data['due_date'] = DateTime.now()
+              .add(Duration(
+              days: int.parse(
+                  (selectedSupplierData['credit_days'] ?? 0).toString())))
+              .toIso8601String();
+
+          if (data['buying_price_list'] !=
+              selectedSupplierData['default_price_list']) {
+            data['buying_price_list'] =
+            selectedSupplierData['default_price_list'];
+
+            InheritedForm.of(context).data['buying_price_list'] =
+            selectedSupplierData['default_price_list'];
+          }
+          data['currency'] = selectedSupplierData['default_currency'];
+          data['price_list_currency'] = selectedSupplierData['default_currency'];
+          // data['payment_terms_template'] = selectedSupplierData['payment_terms'];
+          // data['customer_address'] =
+          //     selectedSupplierData["customer_primary_address"];
+          // data['contact_person'] =
+          //     selectedSupplierData["customer_primary_contact"];
+        }));
+
+
+
+
+        data['doctype'] = "Purchase Invoice";
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('organization_lead');
+         setState(() {});
+      });
+    }
   }
 
 
@@ -144,7 +233,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        InheritedForm.of(context).data['selling_price_list'] = null;
+        InheritedForm.of(context).data['buying_price_list'] = null;
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
         if (isGoBack != null) {
           if (isGoBack) {
@@ -445,14 +534,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                 Group(
                   child: Column(
                     children: [
-                      //TODO Waiting Admin review Delete or update later
-                      //SizedBox(height: 4),
-                      // CustomTextField(
-                      //   'bill_no',
-                      //   'Invoice No',
-                      //   initialValue: data['bill_no'] ?? '',
-                      //   onSave: (key, value) => data[key] = value,
-                      // ),
+
                       SizedBox(height: 8),
                       CustomTextField('cost_center', 'Cost Center',
                           disableValidation: true,
@@ -468,18 +550,11 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => projectScreen()))),
-                      // not editable
-                      // CustomTextField(
-                      //   'currency',
-                      //   'Currency',
-                      //   initialValue: 'EGP', //data['currency'],
-                      //   onSave: (key, value) => data[key] = value,
-                      //   enabled: false,
-                      //   clearButton: false,
-                      //   disableValidation: false,
-                      // ),
+
                       CustomTextField('currency', 'Currency',
                           initialValue: data['currency'],
+                          disableValidation: true,
+
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(

@@ -1,7 +1,12 @@
+import 'package:next_app/core/constants.dart';
+import 'package:next_app/provider/module/module_provider.dart';
+import 'package:next_app/screen/other/notification_screen.dart';
+import 'package:next_app/screen/page/generic_page.dart';
 import 'package:next_app/service/service_constants.dart';
 import 'package:next_app/widgets/tow_value_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/list_models/hr_list_model/expense_table_model.dart';
 import '../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../service/service.dart';
@@ -790,39 +795,57 @@ Widget uomListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
-Widget brandListScreen() => GenericListScreen<String>(
-  title: 'Select Brand',
-  service: 'Brand',
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+Widget filteredUOMListScreen(String itemCode) => GenericListScreen<Map<String, dynamic>>(
 
+  title: 'Select UoM',
+  service: 'UOM',
+  customServiceURL: 'method/ecs_mobile.general.get_item_uoms',
+  filters:{'item_code':itemCode},
+  listItem: (value) => SingleValueTile(value['uom'],
+      onTap: (context) => Navigator.of(context).pop(value)),
+
+  serviceParser: (data) {
+    List<Map<String, dynamic>> _list = [];
+    List.from(data['message']).forEach((element) => _list.add(element));
+    return ListModel<Map<String, dynamic>>(_list);
+  },
+  // serviceParser: (data) {
+  //   List<Map<String, dynamic>> _list = [];
+  //  List.from(data['message']).forEach((element) => _list.add(element));
+  //   return ListModel<Map<String, dynamic>>(_list);
+  // },
+);
+Widget brandListScreen() => GenericListScreen<String>(
+      title: 'Select Brand',
+      service: 'Brand',
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 
 Widget assetCategoryListScreen() => Builder(builder: (context) {
-  return GenericListScreen<Map<String, dynamic>>(
-    title: 'Select Asset Category',
-    service: APIService.ASSET_CATEGORY,
-    listItem: (value) => ListCard(
-        onPressed: (context) => Navigator.of(context).pop(value['name']),
-        id: value['name'] ?? tr('none'),
-        title: value['asset_category_name'] ?? tr('none'),
-        names: [],
-        values: [],
-        status: value['status'] ?? tr('none')),
-    serviceParser: (data) {
-      List<Map<String, dynamic>> _list = [];
-      List.from(data['message']).forEach((element) => _list.add(element));
-      return ListModel<Map<String, dynamic>>(_list);
-    },
-  );
-});
-
+      return GenericListScreen<Map<String, dynamic>>(
+        title: 'Select Asset Category',
+        service: APIService.ASSET_CATEGORY,
+        listItem: (value) => ListCard(
+            onPressed: (context) => Navigator.of(context).pop(value['name']),
+            id: value['name'] ?? tr('none'),
+            title: value['asset_category_name'] ?? tr('none'),
+            names: [],
+            values: [],
+            status: value['status'] ?? tr('none')),
+        serviceParser: (data) {
+          List<Map<String, dynamic>> _list = [];
+          List.from(data['message']).forEach((element) => _list.add(element));
+          return ListModel<Map<String, dynamic>>(_list);
+        },
+      );
+    });
 
 Widget departmentListScreen() => GenericListScreen<String>(
       title: 'Select Department',
@@ -1009,19 +1032,20 @@ Widget loanTypeListScreen() => GenericListScreen<Map<String, dynamic>>(
     );
 
 Widget bankAccountScreen() => GenericListScreen<String>(
-  title: 'Select Bank Account ',
-  service: APIService.BANK_ACCOUNT,
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+      title: 'Select Bank Account ',
+      service: APIService.BANK_ACCOUNT,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 
-Widget journalEntryPartyTypeListScreen({Map<String, dynamic>? filters,String? account}) =>
+Widget journalEntryPartyTypeListScreen(
+        {Map<String, dynamic>? filters, String? account}) =>
     Builder(builder: (context) {
       return GenericListScreen<Map<String, String?>>(
         title: 'Select Party Type',
@@ -1044,9 +1068,43 @@ Widget journalEntryPartyTypeListScreen({Map<String, dynamic>? filters,String? ac
         serviceParser: (data) {
           List<Map<String, String?>> _list = [];
           List.from(data['message']).forEach(
-                  (element) => _list.add(Map<String, String?>.from(element)));
+              (element) => _list.add(Map<String, String?>.from(element)));
           return ListModel<Map<String, String?>>(_list);
         },
       );
     });
 
+Widget getNotificationListScreen() => Builder(builder: (context) {
+      return GenericListScreen<Map<String, dynamic>>(
+        title: 'Notification',
+        service: APIService.NOTIFICATION_LOG,
+        disableAppBar: true,
+        listItem: (value) => NotificationCard(
+          onPressed: (_) {
+            context.read<ModuleProvider>().setModule = value['document_type'].toString();
+            context.read<ModuleProvider>().pushPage(value['document_name'].toString());
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => GenericPage(),
+              // settings:
+              // isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
+            ));
+
+          },
+          id: value['name'] ?? tr('none'),
+          for_user: value['for_user']?? tr('none'),
+          from_user: value['from_user']?? tr('none'),
+          document_name: value['document_name']?? tr('none'),
+          document_type: value['document_type']?? tr('none'),
+          read: value['read'] ??tr('none'),
+          subject: value['subject']?? tr('none'),
+          email_content: value['email_content']?? tr('none'),
+          type: value['type']?? tr('none'),
+        ),
+        serviceParser: (data) {
+          List<Map<String, dynamic>> _list = [];
+          List.from(data['message']).forEach(
+              (element) => _list.add(Map<String, dynamic>.from(element)));
+          return ListModel<Map<String, dynamic>>(_list);
+        },
+      );
+    });

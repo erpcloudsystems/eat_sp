@@ -59,7 +59,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
-      showSnackBar('Fill required fields', context);
+      showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
 

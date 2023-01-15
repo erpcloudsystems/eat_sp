@@ -85,10 +85,18 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
     ];
 
+    List<String> appBarTitles = [
+      'App Settings',
+      'User Profile',
+      widget.title,
+      'Notification',
+      ''
+    ];
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text(widget.title),
+        title: Text(appBarTitles[_page]),
         centerTitle: true,
       ),
       bottomNavigationBar: getBottomNavigationBar(

@@ -494,6 +494,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                                 .description =
                                                             value;
                                                       },
+                                                      disableValidation: true,
+
                                                       onSave: (key, value) =>
                                                           InheritedExpenseForm.of(
                                                                       context)

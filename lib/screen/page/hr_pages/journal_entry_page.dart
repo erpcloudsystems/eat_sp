@@ -44,6 +44,17 @@ class JournalEntryPage extends StatelessWidget {
                 Text('Journal Entry',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
+
+                if (data['docstatus'] != null)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child:
+                      context.read<ModuleProvider>().submitDocumentWidget(),
+                    ),
+                  )
+
               ],
             ),
             Padding(

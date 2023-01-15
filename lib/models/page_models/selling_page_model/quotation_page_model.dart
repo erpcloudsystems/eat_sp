@@ -35,7 +35,6 @@ class QuotationPageModel {
       {tr("Contact"): data['contact_display'] ?? tr('none'), tr("Mobile No"): data['contact_mobile'] ?? tr('none')},
       {tr("Address"): data['address_display'] != null ? formatDescription(data['address_display']) : tr('none')},
       {tr("Contact Email"): data['contact_email'] ?? tr('none')},
-      {tr('From Lead'): data['lead_name'] ?? tr('none')},
 
     ];
   }

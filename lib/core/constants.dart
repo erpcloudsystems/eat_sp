@@ -29,6 +29,7 @@ const String KEnableGpsSnackBar='Enable Location To Approve your current locatio
 const String KPermanentlyDeniedSnackBar='Allow Location Permission form app settings';
 const String KLocationGrantedSnackBar='Location Granted';
 const String KLocationNotifySnackBar='Location will be submitted to approve current location';
+const String KFillRequiredSnackBar='Fill required fields and submit';
 
 
     String mapStatus(int status) {

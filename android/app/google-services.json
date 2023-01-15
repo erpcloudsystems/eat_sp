@@ -1,21 +1,20 @@
 {
   "project_info": {
-    "project_number": "28320993107",
-    "firebase_url": "https://next-app-2ed59-default-rtdb.firebaseio.com",
-    "project_id": "next-app-2ed59",
-    "storage_bucket": "next-app-2ed59.appspot.com"
+    "project_number": "554398885603",
+    "project_id": "nextapp-9fd93",
+    "storage_bucket": "nextapp-9fd93.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:28320993107:android:e8ce6261c2bd0e83281ba6",
+        "mobilesdk_app_id": "1:554398885603:android:3c01bfe691674105cc07d6",
         "android_client_info": {
           "package_name": "mobi.nextapp.next_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "28320993107-hahi75dok1o6p69f7nhj7e3ec027pr9m.apps.googleusercontent.com",
+          "client_id": "554398885603-daou0enrvftqb9scaplmja12eqt4ince.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "mobi.nextapp.next_app",
@@ -23,20 +22,20 @@
           }
         },
         {
-          "client_id": "28320993107-tt4u7sq0drjlr7815i17b976jvhh6vfj.apps.googleusercontent.com",
+          "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnW8KasTRVeHAhbol-fmxHyHqcR7J-uEg"
+          "current_key": "AIzaSyAm3_r2PGRYdttl7O7BoTxn0Q9nTRMXIrs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "28320993107-tt4u7sq0drjlr7815i17b976jvhh6vfj.apps.googleusercontent.com",
+              "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -29,7 +29,7 @@ class _AddressFormState extends State<AddressForm> {
     "posting_date": DateTime.now().toIso8601String(),
     "is_primary_address": 0,
     "address_type": 'Billing',
-     "links": [{}],
+    "links": [{}],
     "latitude": 0.0,
     "longitude": 0.0,
   };
@@ -41,35 +41,28 @@ class _AddressFormState extends State<AddressForm> {
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
-    if(data['links']?[0]['link_doctype'] ==null) {
+    if (data['links']?[0]['link_doctype'] == null) {
       showSnackBar('Link Document Type is Mandatory', context);
       return;
     }
-    if(data['links']?[0]['link_name'] ==null){
-   showSnackBar('Link Name is Mandatory',context);
-   return;
- }
+    if (data['links']?[0]['link_name'] == null) {
+      showSnackBar('Link Name is Mandatory', context);
+      return;
+    }
 
-    if(location == LatLng(0.0, 0.0)
-
-    ) {
-      showSnackBar(
-          KEnableGpsSnackBar,
-          context)  ;
-      Future.delayed(Duration(seconds: 1), () async{
-
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar(KEnableGpsSnackBar, context);
+      Future.delayed(Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
-
       });
       return;
     }
 
-    if (!context.read<ModuleProvider>().isEditing){
+    if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
       data['location'] = gpsService.placemarks[0].subAdministrativeArea;
     }
-
 
     _formKey.currentState!.save();
 
@@ -120,7 +113,8 @@ class _AddressFormState extends State<AddressForm> {
         data['longitude'] = 0.0;
 
         if (data['reference'] != null) {
-          data['links'][0]['link_doctype'] = data['reference'][0]['link_doctype'];
+          data['links'][0]['link_doctype'] =
+              data['reference'][0]['link_doctype'];
           data['links'][0]['link_name'] = data['reference'][0]['link_name'];
         }
 
@@ -129,9 +123,9 @@ class _AddressFormState extends State<AddressForm> {
   }
 
   @override
-  void didChangeDependencies()  {
+  void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.delayed(Duration.zero, () async{
+    Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
   }
@@ -170,7 +164,7 @@ class _AddressFormState extends State<AddressForm> {
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Group(
@@ -182,6 +176,7 @@ class _AddressFormState extends State<AddressForm> {
                           'address_title',
                           'Address Title',
                           initialValue: data['address_title'],
+                          disableValidation: true,
                           onChanged: (value) => data['address_title'] = value,
                           onSave: (key, value) => data[key] = value,
                         ),
@@ -220,16 +215,20 @@ class _AddressFormState extends State<AddressForm> {
                       child: Column(
                     children: [
                       SizedBox(height: 8),
-                      CustomDropDown('link_doctype', 'Link Document Type'.tr(),
-                          items: linkDocumentTypeList,
-                          defaultValue: data['links']?[0]['link_doctype'],
-                          onChanged: (value) => setState(() {
-                                data['links']?[0]['link_name'] = null;
-                                data['links']?[0]['link_doctype'] = value;
-                              }),
-
+                      CustomDropDown(
+                        'link_doctype',
+                        'Link Document Type'.tr(),
+                        items: linkDocumentTypeList,
+                        defaultValue: data['links']?[0]['link_doctype'],
+                        onChanged: (value) => setState(() {
+                          data['links']?[0]['link_name'] = null;
+                          data['links']?[0]['link_doctype'] = value;
+                        }),
                       ),
-                      Divider(color: Colors.grey.shade300, height: 1, thickness: 0.9),
+                      Divider(
+                          color: Colors.grey.shade300,
+                          height: 1,
+                          thickness: 0.9),
                       if (data['links']?[0]['link_doctype'] ==
                           linkDocumentTypeList[0])
                         CustomTextField(
@@ -253,7 +252,8 @@ class _AddressFormState extends State<AddressForm> {
                             return id;
                           },
                         ),
-                      if (data['links']?[0]['link_doctype'] == linkDocumentTypeList[1])
+                      if (data['links']?[0]['link_doctype'] ==
+                          linkDocumentTypeList[1])
                         CustomTextField(
                           'link_name',
                           'Link Name',
@@ -286,14 +286,17 @@ class _AddressFormState extends State<AddressForm> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 6),
-                            child: Icon(Icons.warning_amber,color: Colors.amber,size: 22),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.amber, size: 22),
                           ),
                           Flexible(
-                              child: Text(KLocationNotifySnackBar,textAlign: TextAlign.start,)),
+                              child: Text(
+                            KLocationNotifySnackBar,
+                            textAlign: TextAlign.start,
+                          )),
                         ],
                       ),
                       SizedBox(height: 8),
-
                     ],
                   )),
                   SizedBox(height: 56),

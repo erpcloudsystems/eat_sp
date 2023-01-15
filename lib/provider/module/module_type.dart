@@ -1,4 +1,4 @@
-import 'package:next_app/screen/form/stock_forms/item_form.dart';
+ import 'package:next_app/screen/form/stock_forms/item_form.dart';
 import 'package:next_app/screen/form/stock_forms/stock_entry_form.dart';
 import 'package:next_app/screen/page/stock_pages/delivery_note_page.dart';
 import 'package:next_app/screen/page/selling_pages/opportunity_page.dart';
@@ -183,7 +183,7 @@ class ModuleType {
         this._pageWidget = pageWidget ?? const SizedBox();
 
   /// check if it's first time to push a page_models or not
-  static bool _isFirstRoute(BuildContext context) {
+  static bool isFirstRoute(BuildContext context) {
     final routeName = ModalRoute.of(context)?.settings.name;
 
     return routeName == null;
@@ -207,7 +207,7 @@ class ModuleType {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => GenericPage(),
       settings:
-          _isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
+          isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
     ));
   }
 
@@ -279,8 +279,8 @@ class ModuleType {
           onPressed: (context) => _onListCardPressed(context, item.id),
         );
       },
+      createForm: InheritedForm(child: OpportunityForm()),
       serviceParser: (data) => OpportunityListModel.fromJson(data),
-      createForm: OpportunityForm(),
       editPage: (pageData) {
         pageData["doctype"] = ["Quotation"];
         var items;
@@ -771,7 +771,7 @@ class ModuleType {
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: MaterialRequestForm()),
+    createForm:  InheritedForm(child:MaterialRequestForm()),
     serviceParser: (data) => MaterialListModel.fromJson(data),
     pageService: MATERIAL_REQUEST_PAGE,
     pageWidget: MaterialRequestPage(),
@@ -1069,7 +1069,7 @@ class ModuleType {
         values: [
           item.employee,
           item.logType,
-          '${item.time.day}/${item.time.month}/${item.time.year}',
+          '${item.time.hour}:${item.time.minute}}',
           item.shift,
           item.deviceId.toString(),
         ],
@@ -1294,7 +1294,5 @@ class ModuleType {
     },
     filter: JournalEntryFilter(),
   );
-
-
 
 }

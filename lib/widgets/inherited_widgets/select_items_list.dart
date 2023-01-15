@@ -35,26 +35,29 @@ class SelectedItemsList extends StatefulWidget {
 class _SelectedItemsListState extends State<SelectedItemsList> {
   @override
   void dispose() {
-    print('dispose called');
-    _items?.clear();
+    // _items?.clear();
     super.dispose();
   }
 
-  List? _items;
+  @override
+  void deactivate() {
+    InheritedForm.of(context)
+        .items
+        .clear(); // this to clear items before go new form
+
+    super.deactivate();
+  }
+
+  // List? _items;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      print('123E1${InheritedForm.of(context).items}');
-      if (InheritedForm.of(context).items.isNotEmpty)
-        print('123E1${InheritedForm.of(context).items[0].netRate}');
-      _items = InheritedForm.of(context).items;
+      // _items = InheritedForm.of(context).items;
 
-      if (!context.read<ModuleProvider>().isEditing) {
-        print('123E2${InheritedForm.of(context).items}');
-        if (InheritedForm.of(context).items.isNotEmpty)
-          print('123E2${InheritedForm.of(context).items[0].netRate}');
-
+      // Adding Mode only
+      if ((!context.read<ModuleProvider>().isEditing) &&
+          (!context.read<ModuleProvider>().isCreateFromPage)) {
         InheritedForm.of(context).items.clear();
       }
     });
@@ -63,9 +66,9 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    print('123E3${InheritedForm.of(context).items}');
-    if (InheritedForm.of(context).items.isNotEmpty)
-      print('123E3${InheritedForm.of(context).items[0].netRate}');
+    // print('123E3${InheritedForm.of(context).items}');
+    // if (InheritedForm.of(context).items.isNotEmpty)
+    //   print('123E3${InheritedForm.of(context).items[0].netRate}');
 
     return Column(
       children: [
@@ -189,6 +192,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 8),
                             child: Stack(
+                              clipBehavior: Clip.none,
                               alignment: Alignment.bottomCenter,
                               children: [
                                 Container(
@@ -201,120 +205,176 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                       bottom: 8.0, left: 16, right: 16),
                                   padding: const EdgeInsets.only(
                                       left: 16, right: 16),
-                                  child: Row(
+                                  child: Column(
                                     children: [
-                                      Expanded(
-                                          child: CustomTextField(
-                                        InheritedForm.of(context)
-                                                .items[index]
-                                                .itemCode +
-                                            'Quantity',
-                                        'Quantity',
-                                        validator: (value) =>
-                                            numberValidationToast(
-                                                value, 'Quantity',
-                                                isInt: true),
-                                        keyboardType: TextInputType.number,
-                                        disableError: true,
-                                        initialValue: InheritedForm.of(context)
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: CustomTextField(
+                                                InheritedForm.of(context)
+                                                    .items[index]
+                                                    .itemCode +
+                                                    'Quantity',
+                                                'Quantity',
+                                                validator: (value) =>
+                                                    numberValidationToast(
+                                                        value, 'Quantity',
+                                                        isInt: true),
+                                                keyboardType: TextInputType.number,
+                                                disableError: true,
+                                                initialValue:
+                                                InheritedForm.of(context)
                                                     .items[index]
                                                     .qty ==
-                                                0
-                                            ? null
-                                            : InheritedForm.of(context)
-                                                .items[index]
-                                                .qty
-                                                .toString(),
-                                        onChanged: (value) {
-                                          int? _value = int.tryParse(value);
-                                          if (_value != null)
-                                            InheritedForm.of(context)
-                                                .items[index]
-                                                .qty = _value;
-                                          Future.delayed(Duration(seconds: 1),
-                                              () => setState(() {}));
-                                        },
-                                      )),
-                                      SizedBox(width: 12),
-                                      Expanded(
-                                          child: NumberTextField(
-                                        InheritedForm.of(context)
-                                                .items[index]
-                                                .itemCode +
-                                            'Rate',
-                                        InheritedForm.of(context)
-                                                .items[index]
-                                                .enableEdit
-                                            ? 'Net Rate'
-                                            : 'Rate',
-                                        initialValue: !InheritedForm.of(context)
-                                                .items[index]
-                                                .enableEdit
-                                            ? InheritedForm.of(context)
-                                                .items[index]
-                                                .netRate
-                                            : (InheritedForm.of(context)
-                                                        .items[index]
-                                                        .netRate ==
                                                     0
-                                                ? null
-                                                : InheritedForm.of(context)
+                                                    ? null
+                                                    : InheritedForm.of(context)
+                                                    .items[index]
+                                                    .qty
+                                                    .toString(),
+                                                onChanged: (value) {
+                                                  int? _value = int.tryParse(value);
+                                                  if (_value != null)
+                                                    InheritedForm.of(context)
+                                                        .items[index]
+                                                        .qty = _value;
+                                                  Future.delayed(
+                                                      Duration(seconds: 1),
+                                                          () => setState(() {}));
+                                                },
+                                              )),
+                                          SizedBox(width: 6),
+                                          Expanded(
+                                              child: NumberTextField(
+                                                InheritedForm.of(context)
+                                                    .items[index]
+                                                    .itemCode +
+                                                    'Rate',
+                                                InheritedForm.of(context)
+                                                    .items[index]
+                                                    .enableEdit
+                                                    ? 'Net Rate'
+                                                    : 'Rate',
+                                                initialValue: !InheritedForm.of(
+                                                    context)
+                                                    .items[index]
+                                                    .enableEdit
+                                                    ? InheritedForm.of(context)
+                                                    .items[index]
+                                                    .netRate
+                                                    : (InheritedForm.of(context)
+                                                    .items[index]
+                                                    .netRate ==
+                                                    0
+                                                    ? null
+                                                    : InheritedForm.of(context)
                                                     .items[index]
                                                     .rate),
-                                        onPressed: InheritedForm.of(context)
-                                                .items[index]
-                                                .enableEdit
-                                            ? null
-                                            : () async {},
-                                        validator: (value) =>
-                                            numberValidationToast(
-                                                value, 'Rate'),
-                                        keyboardType: TextInputType.number,
-                                        disableError: true,
-                                        onChanged: (value) {
-                                          final item = InheritedForm.of(context)
-                                              .items[index];
-                                          double? _value =
-                                              double.tryParse(value);
-                                          if (_value != null)
-                                            setState(() {
-                                              InheritedForm.of(context)
-                                                  .items[index]
-                                                  .netRate = _value;
-                                              InheritedForm.of(context)
-                                                  .items[index]
-                                                  .rate = (_value * (item.taxPercent /100)) +
-                                                  _value;
-                                              InheritedForm.of(context)
-                                                      .items[index]
-                                                      .vat =
-                                                  _value *
-                                                      item.taxPercent /
-                                                      100;
-                                            });
-                                        },
-                                        //onSave: (_, value) => _items[index].rate = double.parse(value),
-                                      )),
-                                      SizedBox(width: 12),
-                                      Expanded(
-                                          child: Column(
-                                        children: [
-                                          Text('Total',
-                                              style: const TextStyle(
-                                                  fontSize: 16)),
-                                          SingleChildScrollView(
-                                              physics: BouncingScrollPhysics(),
-                                              scrollDirection: Axis.horizontal,
-                                              child: Text(
-                                                  currency(
-                                                      InheritedForm.of(context)
-                                                          .items[index]
-                                                          .total),
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                  maxLines: 1)),
+                                                onPressed: InheritedForm.of(context)
+                                                    .items[index]
+                                                    .enableEdit
+                                                    ? null
+                                                    : () async {},
+                                                validator: (value) =>
+                                                    numberValidationToast(
+                                                        value, 'Rate'),
+                                                keyboardType: TextInputType.number,
+                                                disableError: true,
+                                                onChanged: (value) {
+                                                  final item =
+                                                  InheritedForm.of(context)
+                                                      .items[index];
+                                                  double? _value =
+                                                  double.tryParse(value);
+                                                  if (_value != null) {
+                                                    InheritedForm.of(context)
+                                                        .items[index]
+                                                        .netRate = _value;
+                                                    InheritedForm.of(context)
+                                                        .items[index]
+                                                        .rate = (_value *
+                                                        (item.taxPercent /
+                                                            100)) +
+                                                        _value;
+                                                    InheritedForm.of(context)
+                                                        .items[index]
+                                                        .vat =
+                                                        _value *
+                                                            item.taxPercent /
+                                                            100;
+                                                  }
+                                                  Future.delayed(
+                                                      Duration(seconds: 1),
+                                                          () => setState(() {}));
+                                                },
+                                                //onSave: (_, value) => _items[index].rate = double.parse(value),
+                                              )),
+                                          SizedBox(width: 6),
+                                          Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Text('Total',
+                                                      style: const TextStyle(
+                                                          fontSize: 16)),
+                                                  SingleChildScrollView(
+                                                      physics:
+                                                      BouncingScrollPhysics(),
+                                                      scrollDirection:
+                                                      Axis.horizontal,
+                                                      child: Text(
+                                                          currency(InheritedForm.of(
+                                                              context)
+                                                              .items[index]
+                                                              .total),
+                                                          style: const TextStyle(
+                                                              fontSize: 16),
+                                                          maxLines: 1)),
+                                                ],
+                                              )),
+                                          SizedBox(width: 6),
+                                          Expanded(
+                                              child: CustomTextField(
+                                                'uom',
+                                                'UOM',
+                                                disableError: true,
+                                                initialValue:
+                                                InheritedForm.of(context)
+                                                    .items[index]
+                                                    .stockUom
+                                                    .toString(),
+                                                onPressed: () async {
+                                                  final res =
+                                                  await Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          filteredUOMListScreen(InheritedForm.of(context)
+                                                              .items[index].itemCode.toString())));
+
+                                                  if (res != null) {
+                                                    InheritedForm.of(context)
+                                                        .items[index].stockUom = res;
+
+                                                    setState(() {});
+
+                                                  }
+                                                },
+                                                // onChanged: (value) {
+                                                //   int? _value = int.tryParse(value);
+                                                //   if (_value != null)
+                                                //     InheritedForm.of(context)
+                                                //         .items[index]
+                                                //         .qty = _value;
+                                                //   Future.delayed(Duration(seconds: 1),
+                                                //           () => setState(() {}));
+                                                // },
+                                              )),
                                         ],
-                                      ))
+                                      ),
+                                      Row(
+                                        children: [
+
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -348,7 +408,8 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                           'Code',
                                           'Group',
                                           'UoM',
-                                          'Tax'
+                                          'Tax',
+                                          '',
                                         ],
                                         values: [
                                           InheritedForm.of(context)
@@ -373,7 +434,8 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                             .items[index]
                                             .imageUrl),
                                   ),
-                                )
+                                ),
+
                               ],
                             ),
                           )),
@@ -394,13 +456,9 @@ class _Totals extends StatelessWidget {
     double netTotal = 0;
 
     InheritedForm.of(context).items.forEach((item) {
-     // print('rcff${item.priceListRate}');
-
       netTotal += item.total;
-      vat += (item.total * (item.taxPercent/100));
+      vat += (item.total * (item.taxPercent / 100));
       total = netTotal + vat;
-
-      print('rcff${total}');
     });
 
     return Row(

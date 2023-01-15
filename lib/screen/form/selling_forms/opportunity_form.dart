@@ -1,4 +1,5 @@
 import 'package:next_app/models/list_models/stock_list_model/item_table_model.dart';
+import 'package:next_app/models/page_models/model_functions.dart';
 import 'package:next_app/models/page_models/selling_page_model/opportunity_page_model.dart';
 import 'package:next_app/provider/user/user_provider.dart';
 import 'package:next_app/service/service.dart';
@@ -9,6 +10,7 @@ import 'package:next_app/widgets/dialog/loading_dialog.dart';
 import 'package:next_app/widgets/form_widgets.dart';
 import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
 import 'package:next_app/widgets/item_card.dart';
+import 'package:next_app/widgets/list_card.dart';
 import 'package:next_app/widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +35,9 @@ class _OpportunityFormState extends State<OpportunityForm> {
     "opportunity_from": "Customer",
     "posting_date": DateTime.now().toIso8601String(),
     "transaction_date": DateTime.now().toIso8601String(),
-    "with_items": 0,
   };
-
-  Map<String, dynamic> selectedCstData = {
-  };
+  double totalAmount = 0;
+  Map<String, dynamic> selectedCstData = {};
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
@@ -51,8 +51,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
     _formKey.currentState!.save();
 
     data['items'] = [];
-    if (data['with_items'] == 1)
-      _items.forEach((element) => data['items'].add(element.toJson));
+    _items.forEach((element) => data['items'].add(element.toJson));
 
     showLoadingDialog(
         context,
@@ -62,7 +61,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
 
     final server = APIService();
 
-    // for (var k in data.keys) print("$k: ${data[k]}");
+    for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -80,11 +79,10 @@ class _OpportunityFormState extends State<OpportunityForm> {
         context.read<ModuleProvider>().pushPage(res['message']['opportunity']);
       Navigator.of(context)
           .push(MaterialPageRoute(
-        builder: (_) => GenericPage(),
-      ))
+            builder: (_) => GenericPage(),
+          ))
           .then((value) => Navigator.pop(context));
-    }
-    else if (res != null && res['message']['opportunity'] != null) {
+    } else if (res != null && res['message']['opportunity'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['opportunity']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
@@ -124,7 +122,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
     super.initState();
 
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing){
+    if (context.read<ModuleProvider>().isEditing) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
 
@@ -138,22 +136,29 @@ class _OpportunityFormState extends State<OpportunityForm> {
       });
     }
 
-
     //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
 
-
-        data['doctype']= "Opportunity";
-        data['opportunity_from']= "Customer";
-        data['posting_date']= DateTime.now().toIso8601String();
-        data['transaction_date']= DateTime.now().toIso8601String();
-        data['with_items']= 0;
+        data['doctype'] = "Opportunity";
+        data['posting_date'] = DateTime.now().toIso8601String();
+        data['transaction_date'] = DateTime.now().toIso8601String();
 
         data['customer_name'] = data['lead_name'];
-        data['party_name'] = data['lead_name'];
-        data['lead_name'] = data['name'];
+        data['party_name'] = data['name'];
+        data['opportunity_from'] = "Lead"; //data['name'];
+
+        _getCustomerData(data['customer_name']).then((value) => setState(() {
+              data['currency'] = selectedCstData['default_currency'];
+              data['price_list_currency'] = selectedCstData['default_currency'];
+              data['payment_terms_template'] = selectedCstData['payment_terms'];
+              data['customer_address'] =
+                  selectedCstData["customer_primary_address"];
+              data['contact_person'] =
+                  selectedCstData["customer_primary_contact"];
+            }));
+
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');
@@ -167,32 +172,22 @@ class _OpportunityFormState extends State<OpportunityForm> {
         data.remove('status');
         data.remove('organization_lead');
 
-        _getCustomerData(data['customer_name']).then((value) => setState(() {
-
-          data['valid_till'] = DateTime.now()
-              .add(Duration(
-              days: int.parse((selectedCstData[
-              'quotation_validaty_days']??"0").toString())))
-              .toIso8601String();
-
-
-
-          data['currency'] = selectedCstData['default_currency'] ;
-          data['price_list_currency'] = selectedCstData['default_currency'] ;
-          data['payment_terms_template'] = selectedCstData['payment_terms'] ;
-          data['customer_address'] = selectedCstData["customer_primary_address"];
-          data['contact_person'] = selectedCstData["customer_primary_contact"];
-
-
-        }));
-
         setState(() {});
       });
     }
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    InheritedForm.of(context).data['selling_price_list'] = '';
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _items.forEach((item) {
+      totalAmount += item.total;
+    });
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
@@ -243,7 +238,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
                       CustomTextField(
                         'party_name',
-                        'Customer',
+                        data['opportunity_from'].toString().tr(),
                         initialValue: data['party_name'],
                         onPressed: () async {
                           String? id;
@@ -287,41 +282,36 @@ class _OpportunityFormState extends State<OpportunityForm> {
                         },
                       ),
                       if (data['customer_name'] != null)
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              child: Text(data['customer_name']!,
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black)),
-                            )),
-                      if (data['customer_name'] != null)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 2, right: 2),
-                          child: Divider(
-                              color: Colors.grey, height: 1, thickness: 0.7),
+                        CustomTextField(
+                          'customer_name',
+                          data['opportunity_from'] ?? '',
+                          initialValue: data['customer_name'],
+                          disableValidation: true,
+                          enabled: false,
                         ),
                       DatePicker('transaction_date', 'Date'.tr(),
                           initialValue: data['transaction_date'],
                           onChanged: (value) =>
                               setState(() => data['transaction_date'] = value)),
                       if (_type == quotationType.customer)
-                        CustomTextField('customer_group', 'Customer Group',
+                        CustomTextField('customer_group', 'Customer Group'.tr(),
                             initialValue: data['customer_group'],
+                            disableValidation: true,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => customerGroupScreen()))),
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['territory'],
+                          disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => territoryScreen()))),
                       if (_type == quotationType.customer)
-                        CustomTextField('customer_address', 'Customer Address',
+                        CustomTextField(
+                            'customer_address', 'Customer Address'.tr(),
                             initialValue: data['customer_address'],
+                            disableValidation: true,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
                                 data['customer_address'] == null,
@@ -339,7 +329,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                               return res;
                             }),
                       if (_type == quotationType.customer)
-                        CustomTextField('contact_person', 'Contact Person',
+                        CustomTextField('contact_person', 'Contact Person'.tr(),
                             initialValue: data['contact_person'],
                             disableValidation: true,
                             onSave: (key, value) => data[key] = value,
@@ -368,7 +358,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                     children: [
                       SizedBox(height: 4),
                       if (_type == quotationType.lead)
-                        CustomTextField('campaign', 'Campaign',
+                        CustomTextField('campaign', 'Campaign'.tr(),
                             onSave: (key, value) => data[key] = value,
                             initialValue: data['campaign'],
                             disableValidation: true,
@@ -379,63 +369,68 @@ class _OpportunityFormState extends State<OpportunityForm> {
                         CustomTextField('source', 'Source',
                             onSave: (key, value) => data[key] = value,
                             initialValue: data['source'],
+                            disableValidation: true,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => sourceScreen()))),
                       CustomTextField('opportunity_type', 'Opportunity Type',
                           initialValue: data['opportunity_type'],
+                          disableValidation: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => opportunityTypeScreen()))),
-                      //TODO: convert to User list screen
-                      CustomTextField('contact_by', 'Next Contact By'.tr(),
-                          initialValue: data['contact_by'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => userListScreen()))),
-                      DatePicker('contact_date', tr('Next Contact Date'),
-                          initialValue: data['contact_date'],
-                          disableValidation: true,
-                          onChanged: (value) =>
-                              setState(() => data['contact_date'] = value)),
-                      CustomTextField('to_discuss', 'To Discuss'.tr(),
-                          initialValue: data['to_discuss'],
-                          onSave: (key, value) => data[key] = value),
-                      CheckBoxWidget('with_items', 'With Items'.tr(),
-                          initialValue: data['with_items'] == 1 ? true : false,
-                          onChanged: (id, value) {
-                        setState(() => data[id] = value ? 1 : 0);
-                        if (value)
-                          Future.delayed(Duration(milliseconds: 100))
-                              .then((value) => _controller.animateTo(
-                                    _controller.position.pixels + 200,
-                                    curve: Curves.easeOut,
-                                    duration: const Duration(milliseconds: 500),
-                                  ));
-                      }),
+                      if (_type == quotationType.lead)
+                        // CustomTextField('contact_by', 'Next Contact By'.tr(),
+                        //     initialValue: data['contact_by'],
+                        //
+                        //     disableValidation: true,
+                        //     onSave: (key, value) => data[key] = value,
+                        //     onPressed: () => Navigator.of(context).push(
+                        //         MaterialPageRoute(
+                        //             builder: (_) => userListScreen()))),
+                        // if (_type == quotationType.lead)
+                        //   DatePicker('contact_date', tr('Next Contact Date'),
+                        //       initialValue: data['contact_date'],
+                        //       disableValidation: true,
+                        //       onChanged: (value) =>
+                        //           setState(() => data['contact_date'] = value)),
+                        CustomTextField('to_discuss', 'To Discuss'.tr(),
+                            initialValue: data['to_discuss'],
+                            disableValidation: true,
+                            onSave: (key, value) => data[key] = value),
+                      // CheckBoxWidget('with_items', 'With Items'.tr(),
+                      //     initialValue: data['with_items'] == 1 ? true : false,
+                      //     onChanged: (id, value) {
+                      //   setState(() => data[id] = value ? 1 : 0);
+                      //   if (value)
+                      //     Future.delayed(Duration(milliseconds: 100))
+                      //         .then((value) => _controller.animateTo(
+                      //               _controller.position.pixels + 200,
+                      //               curve: Curves.easeOut,
+                      //               duration: const Duration(milliseconds: 500),
+                      //             ));
+                      // }),
                     ],
                   ),
                 ),
 
                 SizedBox(height: 8),
                 Container(
-                    // duration: Duration(seconds: 2),
-                    height: data['with_items'] == 1 ? null : 0,
                     child: Column(
-                      children: [
-                        Card(
-                          elevation: 1,
-                          margin: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 8),
-                              child: Padding(
+                  children: [
+                    Card(
+                      elevation: 1,
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 8),
+                          child: Column(
+                            children: [
+                              Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
@@ -459,8 +454,8 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                           itemListScreen('')));
                                           if (res != null &&
                                               !_items.contains(res))
-                                            setState(() => _items.add(
-                                                ItemQuantity(res, qty: 0)));
+                                            setState(() =>
+                                                _items.add(ItemQuantity(res)));
                                         },
                                         child: Icon(Icons.add,
                                             size: 25, color: Colors.white),
@@ -469,131 +464,190 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                   ],
                                 ),
                               ),
-                            ),
+                              Divider(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTitle(
+                                      title: 'Total',
+                                      value: currency(totalAmount)),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.55),
-                            child: _items.isEmpty
-                                ? Center(
-                                    child: Text('no items added',
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 16)))
-                                : ListView.builder(
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.55),
+                        child: _items.isEmpty
+                            ? Center(
+                                child: Text('no items added',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 16)))
+                            : ListView.builder(
                                 physics: BouncingScrollPhysics(),
-
-                                    padding: const EdgeInsets.only(bottom: 12),
-                                    itemCount: _items.length,
-                                    itemBuilder: (context, index) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Stack(
-                                            alignment: Alignment.bottomCenter,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                            bottom:
-                                                                Radius.circular(
-                                                                    8)),
-                                                    border: Border.all(
-                                                        color: Colors.blue)),
-                                                margin: const EdgeInsets.only(
-                                                    bottom: 8.0,
-                                                    left: 16,
-                                                    right: 16),
-                                                padding: const EdgeInsets.only(
-                                                    left: 16, right: 16),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child: CustomTextField(
-                                                      _items[index].itemCode +
-                                                          'Quantity',
+                                padding: const EdgeInsets.only(bottom: 12),
+                                itemCount: _items.length,
+                                itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Stack(
+                                        alignment: Alignment.bottomCenter,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        bottom:
+                                                            Radius.circular(8)),
+                                                border: Border.all(
+                                                    color: Colors.blue)),
+                                            margin: const EdgeInsets.only(
+                                                bottom: 8.0,
+                                                left: 16,
+                                                right: 16),
+                                            padding: const EdgeInsets.only(
+                                                left: 16, right: 16),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    child: CustomTextField(
+                                                  _items[index].itemCode +
                                                       'Quantity',
-                                                      initialValue:
-                                                          _items[index].qty == 0
-                                                              ? null
-                                                              : _items[index]
-                                                                  .qty
-                                                                  .toString(),
-                                                      validator: (value) =>
-                                                          numberValidationToast(
-                                                              value, 'Quantity',
-                                                              isInt: true),
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      disableError: true,
-                                                      onSave: (_, value) =>
-                                                          _items[index].qty =
-                                                              int.parse(value),
-                                                    )),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 62),
-                                                child: Dismissible(
-                                                  key: Key(
-                                                      _items[index].itemCode),
-                                                  direction: DismissDirection
-                                                      .endToStart,
-                                                  onDismissed: (_) => setState(
-                                                      () => _items
-                                                          .removeAt(index)),
-                                                  background: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        color: Colors.red),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16),
-                                                        child: Icon(
-                                                          Icons.delete_forever,
-                                                          color: Colors.white,
-                                                          size: 30,
-                                                        ),
-                                                      ),
+                                                  'Quantity',
+                                                  initialValue:
+                                                      _items[index].qty == 0
+                                                          ? null
+                                                          : _items[index]
+                                                              .qty
+                                                              .toString(),
+                                                  validator: (value) =>
+                                                      numberValidationToast(
+                                                          value, 'Quantity',
+                                                          isInt: true),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  disableError: true,
+                                                  onSave: (_, value) =>
+                                                      _items[index].qty =
+                                                          int.parse(value),
+                                                  onChanged: (value) {
+                                                    _items[index].qty =
+                                                        int.parse(value);
+                                                    _items[index].total =
+                                                        _items[index].qty *
+                                                            _items[index].rate;
+                                                    Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () => setState(() {}));
+                                                  },
+                                                )),
+                                                SizedBox(width: 12),
+                                                Expanded(
+                                                    child: CustomTextField(
+                                                  'rate',
+                                                  'Rate',
+                                                  initialValue:
+                                                      _items[index].rate == 0.0
+                                                          ? null
+                                                          : _items[index]
+                                                              .rate
+                                                              .toString(),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  disableError: true,
+                                                  onSave: (_, value) =>
+                                                      _items[index].rate =
+                                                          double.parse(value),
+                                                  onChanged: (value) {
+                                                    _items[index].rate =
+                                                        double.parse(value);
+                                                    _items[index].total =
+                                                        _items[index].qty *
+                                                            _items[index].rate;
+                                                    Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () => setState(() {}));
+                                                  },
+                                                )),
+                                                SizedBox(width: 12),
+                                                Expanded(
+                                                    child: CustomTextField(
+                                                  'amount',
+                                                  'Amount',
+                                                  initialValue: (_items[index]
+                                                              .qty *
+                                                          _items[index].rate)
+                                                      .toString(),
+                                                  enabled: false,
+                                                  disableError: true,
+                                                )),
+                                                SizedBox(width: 12),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 62),
+                                            child: Dismissible(
+                                              key: Key(_items[index].itemCode),
+                                              direction:
+                                                  DismissDirection.endToStart,
+                                              onDismissed: (_) => setState(
+                                                  () => _items.removeAt(index)),
+                                              background: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    color: Colors.red),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16),
+                                                    child: Icon(
+                                                      Icons.delete_forever,
+                                                      color: Colors.white,
+                                                      size: 30,
                                                     ),
                                                   ),
-                                                  child: ItemCard(
-                                                      names: const [
-                                                        'Code',
-                                                        'Group',
-                                                        'UoM'
-                                                      ],
-                                                      values: [
-                                                        _items[index].itemName,
-                                                        _items[index].itemCode,
-                                                        _items[index].group,
-                                                        _items[index].stockUom
-                                                      ],
-                                                      imageUrl: _items[index]
-                                                          .imageUrl),
                                                 ),
                                               ),
-                                            ],
+                                              child: ItemCard(
+                                                  names: const [
+                                                    'Code',
+                                                    'Group',
+                                                    'UoM'
+                                                  ],
+                                                  values: [
+                                                    _items[index].itemName,
+                                                    _items[index].itemCode,
+                                                    _items[index].group,
+                                                    _items[index].stockUom
+                                                  ],
+                                                  imageUrl:
+                                                      _items[index].imageUrl),
+                                            ),
                                           ),
-                                        )),
-                          ),
-                        )
-                      ],
-                    )),
+                                        ],
+                                      ),
+                                    )),
+                      ),
+                    )
+                  ],
+                )),
               ],
             ),
           ),

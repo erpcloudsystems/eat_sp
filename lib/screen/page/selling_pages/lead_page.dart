@@ -26,16 +26,16 @@ class LeadPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
-
-
         PageCard(
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.end,
+              mainAxisAlignment:  MainAxisAlignment.start,
               children: [
                 CreateFromPageButton(
+                  doctype: 'Lead',
                   data: data,
                   items: fromLead,
+                  disableCreate: data['status'].toString() == "Converted" ? true: false,
                 ),
               ],
             ),

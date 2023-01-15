@@ -965,17 +965,22 @@ class CustomDropDown extends StatefulWidget {
   final List<String> items;
   final String? defaultValue;
   final bool clear;
+  final bool enable;
   final double fontSize;
   final VoidCallback? onClear;
   final DropdownMenuItem<String> Function(String)? itemBuilder;
   final void Function(String value)? onChanged;
+  final void Function()? onTap;
+
 
   const CustomDropDown(this.id, this.title,
       {required this.items,
       this.defaultValue,
       this.itemBuilder,
       this.onChanged,
+      this.onTap,
       this.clear = false,
+      this.enable = true,
       this.fontSize = 14.0,
       this.onClear,
       Key? key})
@@ -1016,14 +1021,15 @@ class _CustomDropDownState extends State<CustomDropDown> {
             value: _value, //?? widget.defaultValue,
             borderRadius: BorderRadius.circular(5),
             isExpanded: false,
+            onTap:widget.onTap,
             underline: null,
             menuMaxHeight: 300,
             hint: Text('none'.tr()),
-            onChanged: (value) {
+            onChanged: (widget.enable)?(value) {
               if (value == null) return;
               setState(() => _value = value);
               if (widget.onChanged != null) widget.onChanged!(value);
-            },
+            }:null,
             items: widget.items
                 .map((e) => widget.itemBuilder != null
                     ? widget.itemBuilder!(e)

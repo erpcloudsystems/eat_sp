@@ -2,6 +2,8 @@ import 'package:next_app/provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_button.dart';
+import 'package:next_app/widgets/create_from_page/create_from_page_consts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:next_app/models/page_models/selling_page_model/sales_order_model.dart';
@@ -29,21 +31,34 @@ class SalesOrderPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
+            Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Sales Order',
+                  data: data,
+                  items: fromSalesOrder,
+                  disableCreate: data['docstatus'].toString() == "1" ?  false:true,
+                ),
+                if (data['docstatus'] != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child:
+                  context.read<ModuleProvider>().submitDocumentWidget(),
+                ),
+              ],
+            ),
             Stack(
               alignment: Alignment.center,
               children: [
                 Text('Sales Order',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child:
-                          context.read<ModuleProvider>().submitDocumentWidget(),
-                    ),
-                  )
+                // if (data['docstatus'] != null)
+                //   Align(
+                //     alignment: Alignment.centerRight,
+                //     child:
+                //   )
               ],
             ),
             Padding(
