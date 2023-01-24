@@ -9,9 +9,7 @@ import 'package:next_app/widgets/snack_bar.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,7 +19,6 @@ import 'package:printing/printing.dart';
 import '../../widgets/dialog/loading_dialog.dart';
 import '../../core/constants.dart';
 import '../models/list_models/list_model.dart';
-import 'dart:developer' as dev;
 
 class APIService {
   //Selling model
@@ -35,6 +32,7 @@ class APIService {
   static const SALES_INVOICE = 'Sales Invoice';
   static const PAYMENT_ENTRY = 'Payment Entry';
   static const CUSTOMER_VISIT = 'Customer Visit';
+  static const DRIVER = 'Driver';
 
   //Stock model
   static const ITEM = 'Item';

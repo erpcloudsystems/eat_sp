@@ -9,17 +9,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:next_app/service/local_notification_service.dart';
-import 'package:next_app/service/service.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants.dart';
 import 'provider/user/user_provider.dart';
 import 'screen/other/login_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import 'service/server_exception.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override

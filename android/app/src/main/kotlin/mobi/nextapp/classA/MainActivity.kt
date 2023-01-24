@@ -1,4 +1,4 @@
-package mobi.nextapp.next_app
+package mobi.nextapp.classA
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
