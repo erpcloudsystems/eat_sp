@@ -283,7 +283,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               data['customer'] = res['name'];
                               data['customer_name'] = res['customer_name'];
                               data['driver'] = res[
-                                  'driver']; //+++++++++++++++++++++++++++++++++++++++++++++++++
+                                  'driver']; 
                               data['territory'] = res['territory'];
                               data['customer_group'] = res['customer_group'];
                               data['customer_address'] =
@@ -490,30 +490,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             : null,
                       ),
                       //__________________________________________________________________________________________
-                      // CustomTextField('customer_address', 'Customer Address',
-                      //     initialValue: data['customer_address'],
-                      //     onSave: (key, value) => data[key] = value,
-                      //     liestenToInitialValue: data['customer_address'] == null,
-                      //     onPressed: () async {
-                      //       if (data['customer'] == null) return showSnackBar('Please select a customer to first', context);
-                      //
-                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => customerAddressScreen(data['customer'])));
-                      //       data['customer_address'] = res;
-                      //       return res;
-                      //     }),
-                      // CustomTextField('contact_person', 'Contact Person',
-                      //     initialValue: data['contact_person'],
-                      //     disableValidation: true,
-                      //     onSave: (key, value) => data[key] = value,
-                      //     onPressed: () async {
-                      //       if (data['customer_name'] == null) {
-                      //         showSnackBar('Please select a customer', context);
-                      //         return null;
-                      //       }
-                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => contactScreen(data['customer'])));
-                      //       return res;
-                      //     }),
-                      //__________________________________________________________________________________________
                       CustomTextField('driver', 'driver',
                           initialValue: data['driver'],
                           onSave: (key, value) => data[key] = value,
@@ -524,8 +500,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               ),
                             );
                             data['driver'] = res;
-                            log(data['driver'] = res);
-                            log(data.toString());
                             return res;
                           }),
                       //__________________________________________________________________________________________
@@ -672,13 +646,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             )),
                       if (_terms != null)
                         Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      // CustomTextField(
-                      //   'terms',
-                      //   'Terms & Conditions Details',
-                      //   onSave: (key, value) => data[key] = value.isEmpty ? null : value,
-                      //   validator: (value) => null,
-                      // ),
-
                       CustomTextField(
                         'sales_partner',
                         'Sales Partner'.tr(),
@@ -693,36 +660,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                     ],
                   ),
                 ),
-
-                ///
-                /// group 3
-                ///
-                // Group(
-                //   child: Column(
-                //     children: [
-                //       CustomDropDown('apply_discount_on', 'Apply Additional Discount On',
-                //           items: grandTotalList, defaultValue: grandTotalList[0], onChanged: (value) => data['apply_discount_on'] = value),
-                //       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                //       CustomTextField(
-                //         'additional_discount_percentage',
-                //         'Additional Discount Percentage',
-                //         hintText: '0',
-                //         validator: (value) => numberValidation(value!.isEmpty ? '0': value),
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //       CustomTextField(
-                //         'discount_amount',
-                //         'Additional Discount Amount (Company Currency)',
-                //         hintText: '0',
-                //         validator: (value) => numberValidation(value!.isEmpty ? '0': value),
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
                 SizedBox(height: 8),
                 SelectedItemsList(),
               ],

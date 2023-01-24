@@ -42,7 +42,7 @@ class _QuotationFormState extends State<QuotationForm> {
     'conversion_rate': 1,
   };
   Map<String, dynamic> selectedCstData = {
-    'quotation_validaty_days':'0',
+    'quotation_validaty_days': '0',
   };
 
   //used to        clear all fields when change Quotation type(customer or lead)
@@ -61,8 +61,8 @@ class _QuotationFormState extends State<QuotationForm> {
     data['currency'] = null;
     data['price_list_currency'] = null;
 
-     if (data['source'] != null) data['source'] = null;
-     if (data['campaign'] != null) data['campaign'] = null;
+    if (data['source'] != null) data['source'] = null;
+    if (data['campaign'] != null) data['campaign'] = null;
 
     if (newType == KQuotationToList.last)
       setState(() => _type = quotationType.customer);
@@ -91,8 +91,6 @@ class _QuotationFormState extends State<QuotationForm> {
         .items
         .forEach((element) => data['items'].add(element.toJson));
 
-
-
     showLoadingDialog(
         context,
         provider.isEditing
@@ -114,26 +112,26 @@ class _QuotationFormState extends State<QuotationForm> {
 
     InheritedForm.of(context).data['selling_price_list'] = null;
 
-    if(provider.isEditing && res == false) return;
+    if (provider.isEditing && res == false)
+      return;
     //else if (provider.isEditing && res == null) Navigator.pop(context);\
     else if (provider.isEditing) Navigator.pop(context);
-
 
     if (context.read<ModuleProvider>().isCreateFromPage) {
       if (res != null && res['message']['quotation'] != null)
         context.read<ModuleProvider>().pushPage(res['message']['quotation']);
       Navigator.of(context)
           .push(MaterialPageRoute(
-        builder: (_) => GenericPage(),
-      ))
+            builder: (_) => GenericPage(),
+          ))
           .then((value) => Navigator.pop(context));
-    }
-    else if (res != null && res['message']['quotation'] != null) {
+    } else if (res != null && res['message']['quotation'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['quotation']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
+
   Future<void> _getCustomerData(String customer) async {
     selectedCstData = Map<String, dynamic>.from(
         await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
@@ -143,20 +141,21 @@ class _QuotationFormState extends State<QuotationForm> {
   void initState() {
     super.initState();
     //Adding Mode
-    if(!context.read<ModuleProvider>().isEditing){
-      data['tc_name'] = context.read<UserProvider>().companyDefaults['default_selling_terms'];
-      setState(() {
-      });
+    if (!context.read<ModuleProvider>().isEditing) {
+      data['tc_name'] =
+          context.read<UserProvider>().companyDefaults['default_selling_terms'];
+      setState(() {});
     }
     //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
-          selectedCstData['address_line1'] = formatDescription(data['address_line1']);
-          selectedCstData['city'] = data['city'];
-          selectedCstData['country'] = data['country'];
-        }));
+              selectedCstData['address_line1'] =
+                  formatDescription(data['address_line1']);
+              selectedCstData['city'] = data['city'];
+              selectedCstData['country'] = data['country'];
+            }));
 
         final items = QuotationPageModel(context, data).items;
 
@@ -175,50 +174,49 @@ class _QuotationFormState extends State<QuotationForm> {
         data = context.read<ModuleProvider>().createFromPageData;
         print('asdfsf1${data}');
 
-        data['transaction_date']= DateTime.now().toIso8601String();
-        data['apply_discount_on']= grandTotalList[0];
-        data['order_type']= orderTypeList[0];
-        data['conversion_rate']= 1;
-
+        data['transaction_date'] = DateTime.now().toIso8601String();
+        data['apply_discount_on'] = grandTotalList[0];
+        data['order_type'] = orderTypeList[0];
+        data['conversion_rate'] = 1;
 
         //from lead
-        if(data['doctype']=='Lead'){
+        if (data['doctype'] == 'Lead') {
           data['customer_name'] = data['lead_name'];
           data['party_name'] = data['name'];
           data['quotation_to'] = KQuotationToList[0];
         }
         // From Opportunity
-        if(data['doctype']=='Opportunity'){
+        if (data['doctype'] == 'Opportunity') {
           data['opportunity'] = data['name'];
           data['customer_name'] = data['party_name'];
           data['party_name'] = data['customer_name'];
         }
 
         _getCustomerData(data['customer_name']).then((value) => setState(() {
+              data['valid_till'] = DateTime.now()
+                  .add(Duration(
+                      days: int.parse(
+                          (selectedCstData['quotation_validaty_days'] ?? "0")
+                              .toString())))
+                  .toIso8601String();
 
-          data['valid_till'] = DateTime.now()
-              .add(Duration(
-              days: int.parse((selectedCstData[
-              'quotation_validaty_days']??"0").toString())))
-              .toIso8601String();
+              if (data['selling_price_list'] !=
+                  selectedCstData['default_price_list']) {
+                data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+                InheritedForm.of(context).data['selling_price_list'] =
+                    selectedCstData['default_price_list'];
+              }
+              data['currency'] = selectedCstData['default_currency'];
+              data['price_list_currency'] = selectedCstData['default_currency'];
+              data['payment_terms_template'] = selectedCstData['payment_terms'];
+              data['customer_address'] =
+                  selectedCstData["customer_primary_address"];
+              data['contact_person'] =
+                  selectedCstData["customer_primary_contact"];
+            }));
 
-          if (data['selling_price_list'] !=
-              selectedCstData['default_price_list']) {
-            data['selling_price_list'] =
-            selectedCstData['default_price_list'];
-            InheritedForm.of(context)
-                .data['selling_price_list'] =
-            selectedCstData['default_price_list'];
-          }
-          data['currency'] = selectedCstData['default_currency'] ;
-          data['price_list_currency'] = selectedCstData['default_currency'] ;
-          data['payment_terms_template'] = selectedCstData['payment_terms'] ;
-          data['customer_address'] = selectedCstData["customer_primary_address"];
-          data['contact_person'] = selectedCstData["customer_primary_contact"];
-
-        }));
-
-        data['doctype']= "Quotation";
+        data['doctype'] = "Quotation";
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');
@@ -240,15 +238,13 @@ class _QuotationFormState extends State<QuotationForm> {
 
   @override
   Widget build(BuildContext context) {
-
     //  print('========== Quotation Rebuild ============');
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
         if (isGoBack != null) {
           if (isGoBack) {
-
-              InheritedForm.of(context).data['selling_price_list'] = null;
+            InheritedForm.of(context).data['selling_price_list'] = null;
 
             return Future.value(true);
           } else {
@@ -259,7 +255,9 @@ class _QuotationFormState extends State<QuotationForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title:(context.read<ModuleProvider>().isEditing) ? Text("Edit Quotation") : Text("Create Quotation"),
+          title: (context.read<ModuleProvider>().isEditing)
+              ? Text("Edit Quotation")
+              : Text("Create Quotation"),
           actions: [
             Material(
                 color: Colors.transparent,
@@ -293,7 +291,7 @@ class _QuotationFormState extends State<QuotationForm> {
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
                       CustomTextField(
                         'party_name',
-                        data['quotation_to']??'',
+                        data['quotation_to'] ?? '',
                         initialValue: data['party_name'],
                         onPressed: () async {
                           String? id;
@@ -310,8 +308,10 @@ class _QuotationFormState extends State<QuotationForm> {
                               setState(() {
                                 data['valid_till'] = DateTime.now()
                                     .add(Duration(
-                                    days: int.parse((selectedCstData[
-                                    'quotation_validaty_days']??"0").toString())))
+                                        days: int.parse((selectedCstData[
+                                                    'quotation_validaty_days'] ??
+                                                "0")
+                                            .toString())))
                                     .toIso8601String();
                                 data['party_name'] = res['name'];
                                 data['customer_name'] = res['customer_name'];
@@ -347,9 +347,9 @@ class _QuotationFormState extends State<QuotationForm> {
                               setState(() {
                                 data['valid_till'] = DateTime.now()
                                     .add(Duration(
-                                    days: int.parse(selectedCstData[
-                                    'quotation_validaty_days'].toString() ??
-                                        '0')))
+                                        days: int.parse(selectedCstData[
+                                                'quotation_validaty_days']
+                                            .toString())))
                                     .toIso8601String();
                                 data['party_name'] = res['name'];
                                 data['customer_name'] = res['lead_name'];
@@ -367,7 +367,7 @@ class _QuotationFormState extends State<QuotationForm> {
                       if (data['customer_name'] != null)
                         CustomTextField(
                           'customer_name',
-                          data['quotation_to']??'',
+                          data['quotation_to'] ?? '',
                           initialValue: data['customer_name'],
                           enabled: false,
                         ),
@@ -383,7 +383,9 @@ class _QuotationFormState extends State<QuotationForm> {
                                 DateTime.now()
                                     .add(Duration(
                                         days: int.parse((selectedCstData[
-                                                'quotation_validaty_days']??"0").toString())))
+                                                    'quotation_validaty_days'] ??
+                                                "0")
+                                            .toString())))
                                     .toIso8601String()),
                           ),
                         ),
@@ -395,16 +397,19 @@ class _QuotationFormState extends State<QuotationForm> {
                           onChanged: (value) =>
                               setState(() => data['valid_till'] = value),
                           //firstDate: DateTime.parse(data['transaction_date']),
-                              disableValidation: true,
+                          disableValidation: true,
 
-                              initialValue: data['valid_till'] ??
+                          initialValue: data['valid_till'] ??
                               ((selectedCstData['quotation_validaty_days'] !=
                                       '0')
                                   ? DateTime.now()
-                                      .add(Duration(
+                                      .add(
+                                        Duration(
                                           days: int.parse(selectedCstData[
-                                                  'quotation_validaty_days'].toString() ??
-                                              '0')))
+                                                  'quotation_validaty_days']
+                                              .toString()),
+                                        ),
+                                      )
                                       .toIso8601String()
                                   : null),
                         )),
@@ -413,7 +418,6 @@ class _QuotationFormState extends State<QuotationForm> {
                         CustomTextField('customer_group', 'Customer Group',
                             initialValue: data['customer_group'],
                             disableValidation: true,
-
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => customerGroupScreen()))),
@@ -424,8 +428,6 @@ class _QuotationFormState extends State<QuotationForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => territoryScreen()))),
-
-
                       if (_type == quotationType.customer)
                         CustomExpandableTile(
                           hideArrow: data['customer_name'] == null,
@@ -436,7 +438,7 @@ class _QuotationFormState extends State<QuotationForm> {
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               liestenToInitialValue:
-                              data['customer_address'] == null,
+                                  data['customer_address'] == null,
                               onPressed: () async {
                                 if (data['customer_name'] == null)
                                   return showSnackBar(
@@ -449,7 +451,7 @@ class _QuotationFormState extends State<QuotationForm> {
                                 setState(() {
                                   data['customer_address'] = res['name'];
                                   selectedCstData['address_line1'] =
-                                  res['address_line1'];
+                                      res['address_line1'];
                                   selectedCstData['city'] = res['city'];
                                   selectedCstData['country'] = res['country'];
                                 });
@@ -457,23 +459,23 @@ class _QuotationFormState extends State<QuotationForm> {
                               }),
                           children: (data['customer_address'] != null)
                               ? <Widget>[
-                            ListTile(
-                              trailing: Icon(Icons.location_on),
-                              title: Text(
-                                  selectedCstData['address_line1'] ?? ''),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.location_city),
-                              title: Text(selectedCstData['city'] ?? ''),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.flag),
-                              title: Text(selectedCstData['country'] ?? ''),
-                            )
-                          ]
+                                  ListTile(
+                                    trailing: Icon(Icons.location_on),
+                                    title: Text(
+                                        selectedCstData['address_line1'] ?? ''),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.location_city),
+                                    title: Text(selectedCstData['city'] ?? ''),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.flag),
+                                    title:
+                                        Text(selectedCstData['country'] ?? ''),
+                                  )
+                                ]
                               : null,
                         ),
-
                       if (_type == quotationType.customer)
                         CustomExpandableTile(
                           hideArrow: data['customer_name'] == null,
@@ -491,47 +493,47 @@ class _QuotationFormState extends State<QuotationForm> {
                                 }
                                 final res = await Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (_) =>
-                                            contactScreen(data['customer_name'])));
+                                        builder: (_) => contactScreen(
+                                            data['customer_name'])));
                                 setState(() {
                                   data['contact_person'] = res['name'];
-                                  selectedCstData['contact_display'] = res['contact_display'];
+                                  selectedCstData['contact_display'] =
+                                      res['contact_display'];
                                   selectedCstData['phone'] = res['phone'];
-                                  selectedCstData['mobile_no'] = res['mobile_no'];
+                                  selectedCstData['mobile_no'] =
+                                      res['mobile_no'];
                                   selectedCstData['email_id'] = res['email_id'];
                                 });
                                 return res['name'];
                               }),
                           children: (data['contact_person'] != null)
                               ? <Widget>[
-                            ListTile(
-                              trailing: Icon(Icons.person),
-                              title: Text('' +
-                                  (selectedCstData['contact_display'] ??
-                                      '')),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.phone_iphone),
-                              title: Text('Mobile :  ' +
-                                  (selectedCstData['mobile_no'] ??
-                                      'none')),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.call),
-                              title: Text('Phone :  ' +
-                                  (selectedCstData['phone'] ??
-                                      'none')),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.alternate_email),
-                              title: Text('' +
-                                  (selectedCstData['email_id'] ??
-                                      'none')),
-                            )
-                          ]
+                                  ListTile(
+                                    trailing: Icon(Icons.person),
+                                    title: Text('' +
+                                        (selectedCstData['contact_display'] ??
+                                            '')),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.phone_iphone),
+                                    title: Text('Mobile :  ' +
+                                        (selectedCstData['mobile_no'] ??
+                                            'none')),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.call),
+                                    title: Text('Phone :  ' +
+                                        (selectedCstData['phone'] ?? 'none')),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.alternate_email),
+                                    title: Text('' +
+                                        (selectedCstData['email_id'] ??
+                                            'none')),
+                                  )
+                                ]
                               : null,
                         ),
-
                       if (_type == quotationType.lead)
                         CustomTextField('campaign', 'Campaign',
                             onSave: (key, value) => data[key] = value,
@@ -636,7 +638,6 @@ class _QuotationFormState extends State<QuotationForm> {
                           'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms_template'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -664,43 +665,6 @@ class _QuotationFormState extends State<QuotationForm> {
                   ),
                 ),
 
-                // ///
-                // /// group 3
-                // ///
-                // Group(
-                //   child: Column(
-                //     children: [
-                //       CustomDropDown('apply_discount_on', 'Apply Additional Discount On',
-                //           items: grandTotalList, defaultValue: grandTotalList[0], onChanged: (value) => data['apply_discount_on'] = value),
-                //       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                //       CustomTextField(
-                //         'additional_discount_percentage',
-                //         'Additional Discount Percentage',
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //       CustomTextField(
-                //         'discount_amount',
-                //         'Additional Discount Amount (Company Currency)',
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('Net Total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('VAT', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('Total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
                 SizedBox(height: 8),
                 SelectedItemsList(),
               ],
