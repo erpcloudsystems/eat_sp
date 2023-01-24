@@ -121,7 +121,6 @@ flutter:
       - assets/hr.png
       - assets/locale/
       - assets/lottie/
-      - images/
 
   #   - images/a_dot_ham.jpeg
 
