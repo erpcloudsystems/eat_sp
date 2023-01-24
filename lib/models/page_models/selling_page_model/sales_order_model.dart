@@ -10,7 +10,8 @@ class SalesOrderPageModel {
   final BuildContext context;
 
   SalesOrderPageModel(this.context, this.data)
-      : items = List<Map<String, dynamic>>.from(data['items'] ?? [])..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
+      : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
+          ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
   final List<Map<String, dynamic>> items;
 
@@ -24,45 +25,119 @@ class SalesOrderPageModel {
   List<Map<String, String>> get card1Items {
     return [
       {
-        tr("Date"): data['transaction_date'] == null ? tr('none') : reverse(data['transaction_date']),
-        tr("Delivery Date"): data['delivery_date'] == null ? tr('none') : reverse(data['delivery_date'])
+        tr("Date"): data['transaction_date'] == null
+            ? tr('none')
+            : reverse(data['transaction_date']),
+        tr("Delivery Date"): data['delivery_date'] == null
+            ? tr('none')
+            : reverse(data['delivery_date'])
       },
-      {tr("Status"): data['status'] ?? tr('none'), tr("Tax Id"): data['tax_id'] ?? tr('none')},
-      {tr("Customer Group"): data['customer_group'] ?? tr('none'), tr("Territory"): data['territory'] ?? tr('none')},
-      {tr("Customer Address"): data['customer_address'] ?? tr('none'), tr("Address"): formatDescription(data['address_display'] ?? tr('none'))},
-      {tr("Contact"): data['contact_display'] ?? tr('none'), tr("Mobile No"): data['contact_mobile'] ?? tr('none')},
-      {tr("Contact Email"): data['contact_email'] ?? tr('none')},
+      {
+        tr("Status"): data['status'] ?? tr('none'),
+        tr("Tax Id"): data['tax_id'] ?? tr('none')
+      },
+      {
+        tr("Customer Group"): data['customer_group'] ?? tr('none'),
+        tr("Territory"): data['territory'] ?? tr('none')
+      },
+      {
+        tr("Customer Address"): data['customer_address'] ?? tr('none'),
+        tr("Address"): formatDescription(data['address_display'] ?? tr('none'))
+      },
+      {
+        tr("Contact"): data['contact_display'] ?? tr('none'),
+        tr("Mobile No"): data['contact_mobile'] ?? tr('none')
+      },
+      {
+        tr("Contact Email"): data['contact_email'] ?? tr('none'),
+        'driver': data['driver'] ?? tr('none'),
+      },
     ];
   }
 
   List<Map<String, String>> get card2Items {
     return [
-      {tr("Project"): data['project'] ?? tr('none'), tr("Order Type"): data['order_type'] ?? tr('none')},
-      {tr("Currency"): data['currency'] ?? tr('none'), tr("Exchange Rate"): currency(data['conversion_rate'])},
-      {tr("Price List"): data['selling_price_list'] ?? tr('none'), tr("Price List Currency"): data['price_list_currency'] ?? tr('none')},
-      {tr("Price List Exchange Rate"): currency(data['plc_conversion_rate']), tr("Ignore Pricing Rule"): data['ignore_pricing_rule'].toString()},
-      {tr("Set Source Warehouse"): data['set_warehouse'] ?? tr('none'), tr("Campaign"): data['campaign'] ?? tr('none')},
-      {tr("Source"): data['source'] ?? tr('none'), tr("Terms & Conditions"): data['tc_name'] ?? tr('none')},
+      {
+        tr("Project"): data['project'] ?? tr('none'),
+        tr("Order Type"): data['order_type'] ?? tr('none')
+      },
+      {
+        tr("Currency"): data['currency'] ?? tr('none'),
+        tr("Exchange Rate"): currency(data['conversion_rate'])
+      },
+      {
+        tr("Price List"): data['selling_price_list'] ?? tr('none'),
+        tr("Price List Currency"): data['price_list_currency'] ?? tr('none')
+      },
+      {
+        tr("Price List Exchange Rate"): currency(data['plc_conversion_rate']),
+        tr("Ignore Pricing Rule"): data['ignore_pricing_rule'].toString()
+      },
+      {
+        tr("Set Source Warehouse"): data['set_warehouse'] ?? tr('none'),
+        tr("Campaign"): data['campaign'] ?? tr('none')
+      },
+      {
+        tr("Source"): data['source'] ?? tr('none'),
+        tr("Terms & Conditions"): data['tc_name'] ?? tr('none')
+      },
       // {tr("Terms & Conditions Details"): data['terms'] != null ? formatDescription(data['terms']) : tr('none')},
-      {tr("Payment Terms Template"): data['payment_terms_template'] ?? tr('none'), tr("Sales Partner"): data['sales_partner'] ?? tr('none')},
-      {tr("Commission Rate"): percent(data['commission_rate']), tr("Total Commission"): data['total_commission'].toString()},
+      {
+        tr("Payment Terms Template"):
+            data['payment_terms_template'] ?? tr('none'),
+        tr("Sales Partner"): data['sales_partner'] ?? tr('none')
+      },
+      {
+        tr("Commission Rate"): percent(data['commission_rate']),
+        tr("Total Commission"): data['total_commission'].toString()
+      },
     ];
   }
 
   List<Map<String, String>> get card3Items {
     return [
-      {tr("Total Quantity"): data['total_qty'].toString(), tr("Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_total'])},
-      {tr("Net Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_net_total'])},
-      {tr("Total"): currency(data['total']), tr("Net Total"): currency(data['net_total'])},
-      {tr("Total Taxes and Charges ") + context.read<UserProvider>().defaultCurrency: currency(data['base_total_taxes_and_charges'])},
-      {tr("Total Taxes and Charges"): currency(data['total_taxes_and_charges']), tr("Apply Additional Discount On"): data['apply_discount_on'] ?? tr('none')},
-      {tr("Additional Discount Amount ") + context.read<UserProvider>().defaultCurrency: currency(data['base_discount_amount'])},
       {
-        tr("Additional Discount Percentage"): percent(data['additional_discount_percentage']),
+        tr("Total Quantity"): data['total_qty'].toString(),
+        tr("Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_total'])
+      },
+      {
+        tr("Net Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_net_total'])
+      },
+      {
+        tr("Total"): currency(data['total']),
+        tr("Net Total"): currency(data['net_total'])
+      },
+      {
+        tr("Total Taxes and Charges ") +
+                context.read<UserProvider>().defaultCurrency:
+            currency(data['base_total_taxes_and_charges'])
+      },
+      {
+        tr("Total Taxes and Charges"):
+            currency(data['total_taxes_and_charges']),
+        tr("Apply Additional Discount On"):
+            data['apply_discount_on'] ?? tr('none')
+      },
+      {
+        tr("Additional Discount Amount ") +
+                context.read<UserProvider>().defaultCurrency:
+            currency(data['base_discount_amount'])
+      },
+      {
+        tr("Additional Discount Percentage"):
+            percent(data['additional_discount_percentage']),
         tr("Additional Discount Amount"): currency(data['discount_amount'])
       },
-      {tr("Grand Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_grand_total'])},
-      {tr("In Words ") + context.read<UserProvider>().defaultCurrency: data['base_in_words'] ?? tr('none')},
+      {
+        tr("Grand Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_grand_total'])
+      },
+      {
+        tr("In Words ") + context.read<UserProvider>().defaultCurrency:
+            data['base_in_words'] ?? tr('none')
+      },
       {tr("Grand Total"): currency(data['grand_total'])},
       {tr("In Words"): data['in_words'] ?? tr('none')},
     ];
@@ -82,7 +157,8 @@ class SalesOrderPageModel {
   List<MapEntry<String, String>> getTaxesCard(int index) {
     return [
       MapEntry(tr("Type"), data['taxes'][index]['charge_type'] ?? tr('none')),
-      MapEntry(tr("Account Head"), data['taxes'][index]['account_head'] ?? tr('none')),
+      MapEntry(tr("Account Head"),
+          data['taxes'][index]['account_head'] ?? tr('none')),
       MapEntry(tr("Rate"), data['taxes'][index]['rate'].toString()),
       MapEntry(tr("Tax Amount"), currency(data['taxes'][index]['tax_amount'])),
       MapEntry(tr("Total"), currency(data['taxes'][index]['total'])),
@@ -91,11 +167,24 @@ class SalesOrderPageModel {
 
   List<MapEntry<String, String>> getPaymentCard(int index) {
     return [
-      MapEntry(tr('Payment Term'), (data['payment_schedule'][index]['payment_term'] ?? tr('none')).toString()),
-      MapEntry(tr('Description'), (data['payment_schedule'][index]['description'] ?? tr('none')).toString().trim()),
-      MapEntry(tr('Due Date'), data['payment_schedule'][index]['due_date'] != null ? reverse(data['payment_schedule'][index]['due_date']) : tr('none')),
-      MapEntry(tr('Invoice Portion'), percent(data['payment_schedule'][index]['invoice_portion'])),
-      MapEntry(tr('Payment Amount'), currency(data['payment_schedule'][index]['payment_amount'])),
+      MapEntry(
+          tr('Payment Term'),
+          (data['payment_schedule'][index]['payment_term'] ?? tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Description'),
+          (data['payment_schedule'][index]['description'] ?? tr('none'))
+              .toString()
+              .trim()),
+      MapEntry(
+          tr('Due Date'),
+          data['payment_schedule'][index]['due_date'] != null
+              ? reverse(data['payment_schedule'][index]['due_date'])
+              : tr('none')),
+      MapEntry(tr('Invoice Portion'),
+          percent(data['payment_schedule'][index]['invoice_portion'])),
+      MapEntry(tr('Payment Amount'),
+          currency(data['payment_schedule'][index]['payment_amount'])),
     ];
   }
 
@@ -149,7 +238,9 @@ class SalesOrderPageModel {
 
   List<String> itemListValues(int index) {
     return [
-      data['items'][index]['delivery_date'] == null ? tr('none') : reverse(data['items'][index]['delivery_date']),
+      data['items'][index]['delivery_date'] == null
+          ? tr('none')
+          : reverse(data['items'][index]['delivery_date']),
       data['items'][index]['item_code'] ?? tr('none'),
       data['items'][index]['item_name'] ?? tr('none'),
       data['items'][index]['description'] ?? tr('none'),
@@ -209,7 +300,8 @@ class SalesOrderPageModel {
       tr('Tax Amount After Discount Amount'),
       tr('Tax Amount ') + context.read<UserProvider>().defaultCurrency,
       tr('Total ') + context.read<UserProvider>().defaultCurrency,
-      tr('Tax Amount After Discount Amount ') + context.read<UserProvider>().defaultCurrency,
+      tr('Tax Amount After Discount Amount ') +
+          context.read<UserProvider>().defaultCurrency,
     ];
   }
 
@@ -252,7 +344,8 @@ class SalesOrderPageModel {
   List<String> paymentListValues(int index) {
     return [
       data['payment_schedule'][index]['payment_term'] ?? tr('none'),
-      ((data['payment_schedule'][index]['description'] ?? tr('none')) as String).trim(),
+      ((data['payment_schedule'][index]['description'] ?? tr('none')) as String)
+          .trim(),
       reverse(data['payment_schedule'][index]['due_date']),
       data['payment_schedule'][index]['mode_of_payment'] ?? tr('none'),
       percent(data['payment_schedule'][index]['invoice_portion']),

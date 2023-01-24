@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:next_app/models/page_models/selling_page_model/sales_order_model.dart';
 import 'package:next_app/service/service.dart';
 import 'package:next_app/service/service_constants.dart';
@@ -95,6 +97,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['sales_order'] != null) {
+      log(data.toString());
       context.read<ModuleProvider>().pushPage(res['message']['sales_order']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
@@ -160,7 +163,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
 
-         data['posting_date'] = DateTime.now().toIso8601String();
+        data['posting_date'] = DateTime.now().toIso8601String();
         data['is_return'] = 0;
         data['update_stock'] = 1;
         data['latitude'] = 0.0;
@@ -168,12 +171,11 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
         data['conversion_rate'] = 1;
 
         // from Quotation
-        if(data['doctype']=='Quotation'){
-        data['prevdoc_docname'] = data['name'];
-        data['customer'] = data['party_name'];
-        data['customer_name'] = data['party_name'];
+        if (data['doctype'] == 'Quotation') {
+          data['prevdoc_docname'] = data['name'];
+          data['customer'] = data['party_name'];
+          data['customer_name'] = data['party_name'];
         }
-
 
         _getCustomerData(data['customer_name']).then((value) => setState(() {
               data['due_date'] = DateTime.now()
@@ -280,6 +282,8 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             setState(() {
                               data['customer'] = res['name'];
                               data['customer_name'] = res['customer_name'];
+                              data['driver'] = res[
+                                  'driver']; //+++++++++++++++++++++++++++++++++++++++++++++++++
                               data['territory'] = res['territory'];
                               data['customer_group'] = res['customer_group'];
                               data['customer_address'] =
@@ -346,8 +350,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               setState(() => data['delivery_date'] = value),
                           firstDate: DateTime.parse(data['transaction_date']),
                           initialValue: data['delivery_date'],
-
-                            )),
+                        )),
                       ]),
                       if (data['tax_id'] != null)
                         Align(
@@ -366,47 +369,26 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           child: Divider(
                               color: Colors.grey, height: 1, thickness: 0.7),
                         ),
-                      CustomTextField('customer_group', 'Customer Group',
-                          initialValue: data['customer_group'],
-                          disableValidation: true,
-
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => customerGroupScreen()))),
+                      CustomTextField(
+                        'customer_group',
+                        'Customer Group',
+                        initialValue: data['customer_group'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => customerGroupScreen()),
+                        ),
+                      ),
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['territory'],
                           clearButton: true,
                           disableValidation: true,
-
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => territoryScreen()))),
-                      // CustomTextField('customer_address', 'Customer Address',
-                      //     initialValue: data['customer_address'],
-                      //     onSave: (key, value) => data[key] = value,
-                      //     liestenToInitialValue: data['customer_address'] == null,
-                      //     onPressed: () async {
-                      //       if (data['customer'] == null) return showSnackBar('Please select a customer to first', context);
-                      //
-                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => customerAddressScreen(data['customer'])));
-                      //       data['customer_address'] = res;
-                      //       return res;
-                      //     }),
-                      // CustomTextField('contact_person', 'Contact Person',
-                      //     initialValue: data['contact_person'],
-                      //     disableValidation: true,
-                      //     onSave: (key, value) => data[key] = value,
-                      //     onPressed: () async {
-                      //       if (data['customer_name'] == null) {
-                      //         showSnackBar('Please select a customer', context);
-                      //         return null;
-                      //       }
-                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => contactScreen(data['customer'])));
-                      //       return res;
-                      //     }),
                       CustomExpandableTile(
                         hideArrow: data['customer'] == null,
                         title: CustomTextField(
@@ -507,6 +489,46 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               ]
                             : null,
                       ),
+                      //__________________________________________________________________________________________
+                      // CustomTextField('customer_address', 'Customer Address',
+                      //     initialValue: data['customer_address'],
+                      //     onSave: (key, value) => data[key] = value,
+                      //     liestenToInitialValue: data['customer_address'] == null,
+                      //     onPressed: () async {
+                      //       if (data['customer'] == null) return showSnackBar('Please select a customer to first', context);
+                      //
+                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => customerAddressScreen(data['customer'])));
+                      //       data['customer_address'] = res;
+                      //       return res;
+                      //     }),
+                      // CustomTextField('contact_person', 'Contact Person',
+                      //     initialValue: data['contact_person'],
+                      //     disableValidation: true,
+                      //     onSave: (key, value) => data[key] = value,
+                      //     onPressed: () async {
+                      //       if (data['customer_name'] == null) {
+                      //         showSnackBar('Please select a customer', context);
+                      //         return null;
+                      //       }
+                      //       final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => contactScreen(data['customer'])));
+                      //       return res;
+                      //     }),
+                      //__________________________________________________________________________________________
+                      CustomTextField('driver', 'driver',
+                          initialValue: data['driver'],
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => driverList(),
+                              ),
+                            );
+                            data['driver'] = res;
+                            log(data['driver'] = res);
+                            log(data.toString());
+                            return res;
+                          }),
+                      //__________________________________________________________________________________________
                       SizedBox(height: 8),
                     ],
                   ),
@@ -538,7 +560,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           initialValue: data['currency'],
                           clearButton: true,
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -547,7 +568,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         'conversion_rate',
                         'Exchange Rate'.tr(),
                         disableValidation: true,
-
                         initialValue: '${data['conversion_rate'] ?? ''}',
                         hintText: '1',
                         clearButton: true,
@@ -561,7 +581,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('selling_price_list', 'Price List'.tr(),
                           initialValue: data['selling_price_list'],
                           disableValidation: true,
-
                           clearButton: true, onPressed: () async {
                         final res = await Navigator.of(context).push(
                             MaterialPageRoute(
@@ -608,7 +627,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           hintText: '1',
                           clearButton: true,
                           disableValidation: true,
-
                           validator: (value) =>
                               numberValidation(value, allowNull: true),
                           keyboardType: TextInputType.number,
@@ -619,7 +637,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           'set_warehouse', 'Set Source Warehouse'.tr(),
                           initialValue: data['set_warehouse'],
                           disableValidation: true,
-
                           clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
@@ -630,9 +647,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms_template'],
                           disableValidation: true,
-
                           clearButton: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -640,7 +655,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('tc_name', 'Terms & Conditions'.tr(),
                           initialValue: data['tc_name'],
                           disableValidation: true,
-
                           clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(

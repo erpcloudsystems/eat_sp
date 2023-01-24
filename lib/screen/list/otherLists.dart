@@ -1,4 +1,3 @@
-import 'package:next_app/core/constants.dart';
 import 'package:next_app/provider/module/module_provider.dart';
 import 'package:next_app/screen/other/notification_screen.dart';
 import 'package:next_app/screen/page/generic_page.dart';
@@ -7,10 +6,8 @@ import 'package:next_app/widgets/tow_value_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/list_models/hr_list_model/expense_table_model.dart';
 import '../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../service/service.dart';
-import '../../widgets/form_widgets.dart';
 import '/models/list_models/list_model.dart';
 import '/widgets/item_card.dart';
 import '/widgets/list_card.dart';
@@ -272,6 +269,21 @@ Widget customerGroupScreen() => GenericListScreen<String>(
       },
     );
 
+//_________________________________________________________________________________________________________________
+Widget driverList() => GenericListScreen<String>(
+      title: 'Select driver',
+      service: APIService.DRIVER,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['full_name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
+
+//_________________________________________________________________________________________________________________
 Widget supplierGroupScreen() => GenericListScreen<String>(
       title: 'Select Supplier Group',
       service: APIService.SUPPLIER_GROUP,
@@ -795,26 +807,26 @@ Widget uomListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
-Widget filteredUOMListScreen(String itemCode) => GenericListScreen<Map<String, dynamic>>(
+Widget filteredUOMListScreen(String itemCode) =>
+    GenericListScreen<Map<String, dynamic>>(
+      title: 'Select UoM',
+      service: 'UOM',
+      customServiceURL: 'method/ecs_mobile.general.get_item_uoms',
+      filters: {'item_code': itemCode},
+      listItem: (value) => SingleValueTile(value['uom'],
+          onTap: (context) => Navigator.of(context).pop(value)),
 
-  title: 'Select UoM',
-  service: 'UOM',
-  customServiceURL: 'method/ecs_mobile.general.get_item_uoms',
-  filters:{'item_code':itemCode},
-  listItem: (value) => SingleValueTile(value['uom'],
-      onTap: (context) => Navigator.of(context).pop(value)),
-
-  serviceParser: (data) {
-    List<Map<String, dynamic>> _list = [];
-    List.from(data['message']).forEach((element) => _list.add(element));
-    return ListModel<Map<String, dynamic>>(_list);
-  },
-  // serviceParser: (data) {
-  //   List<Map<String, dynamic>> _list = [];
-  //  List.from(data['message']).forEach((element) => _list.add(element));
-  //   return ListModel<Map<String, dynamic>>(_list);
-  // },
-);
+      serviceParser: (data) {
+        List<Map<String, dynamic>> _list = [];
+        List.from(data['message']).forEach((element) => _list.add(element));
+        return ListModel<Map<String, dynamic>>(_list);
+      },
+      // serviceParser: (data) {
+      //   List<Map<String, dynamic>> _list = [];
+      //  List.from(data['message']).forEach((element) => _list.add(element));
+      //   return ListModel<Map<String, dynamic>>(_list);
+      // },
+    );
 Widget brandListScreen() => GenericListScreen<String>(
       title: 'Select Brand',
       service: 'Brand',
@@ -1081,24 +1093,26 @@ Widget getNotificationListScreen() => Builder(builder: (context) {
         disableAppBar: true,
         listItem: (value) => NotificationCard(
           onPressed: (_) {
-            context.read<ModuleProvider>().setModule = value['document_type'].toString();
-            context.read<ModuleProvider>().pushPage(value['document_name'].toString());
+            context.read<ModuleProvider>().setModule =
+                value['document_type'].toString();
+            context
+                .read<ModuleProvider>()
+                .pushPage(value['document_name'].toString());
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => GenericPage(),
               // settings:
               // isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
             ));
-
           },
           id: value['name'] ?? tr('none'),
-          for_user: value['for_user']?? tr('none'),
-          from_user: value['from_user']?? tr('none'),
-          document_name: value['document_name']?? tr('none'),
-          document_type: value['document_type']?? tr('none'),
-          read: value['read'] ??tr('none'),
-          subject: value['subject']?? tr('none'),
-          email_content: value['email_content']?? tr('none'),
-          type: value['type']?? tr('none'),
+          for_user: value['for_user'] ?? tr('none'),
+          from_user: value['from_user'] ?? tr('none'),
+          document_name: value['document_name'] ?? tr('none'),
+          document_type: value['document_type'] ?? tr('none'),
+          read: value['read'] ?? tr('none'),
+          subject: value['subject'] ?? tr('none'),
+          email_content: value['email_content'] ?? tr('none'),
+          type: value['type'] ?? tr('none'),
         ),
         serviceParser: (data) {
           List<Map<String, dynamic>> _list = [];
