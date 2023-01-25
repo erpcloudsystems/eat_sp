@@ -9,9 +9,6 @@ class DismissKeyboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onHorizontalDragCancel: (){
-      //   FocusManager.instance.primaryFocus!.unfocus(); // to close KB if scrolled screen
-      // },
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus &&
