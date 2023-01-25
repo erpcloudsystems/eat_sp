@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:next_app/models/new_version_models/check_url_validation_model.dart';
 import 'package:next_app/provider/module/module_type.dart';
 import 'package:next_app/service/server_exception.dart';
 import 'package:next_app/service/service_constants.dart';
@@ -135,6 +137,26 @@ class APIService {
     print('Logout out successfully');
   }
 
+  Future<bool> checkUrlValidation(String url) async {
+    try {
+      final response = await dio.get(
+          'https://nextapp.mobi/api/method/ecs_ecs.api.check_domain?url=$url');
+      log(response.toString());
+      final CheckUrlValidationModel data =
+          CheckUrlValidationModel.fromJson(response.data);
+      if (data.message == 'Domain Is Active') {
+        return true;
+      }
+      if (data.message == 'Domain Is Inactive') {
+        return false;
+      }
+    } on DioError catch (error) {
+      log(error.message, name: 'check url error');
+      throw ServerException(error.message);
+    }
+    return false;
+  }
+
   Future<Map<String, dynamic>?> login(
       String url, Map<String, dynamic> body) async {
     try {
@@ -157,7 +179,6 @@ class APIService {
         print("login response" + response.toString());
 
         return Map<String, dynamic>.from(response.data);
-        // return data = UserModel.fromJson(myMap);
       } else if (response.data['message'] != null)
         throw ServerException((response.data['message']).toString());
     } on ServerException catch (e) {
@@ -754,8 +775,8 @@ class APIService {
           }
         }
       }
-    }else
-    return {};
+    } else
+      return {};
   }
 
   Future getImage(String image) async {
