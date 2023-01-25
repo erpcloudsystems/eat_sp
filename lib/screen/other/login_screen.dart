@@ -28,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? pass;
   String? url;
   bool _isLoading = false;
-
   bool rememberMe = false;
 
   void _login() async{
@@ -40,10 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         await context.read<UserProvider>().login(userNameController.text, passwordController.text, urlController.text, rememberMe);
       }
-      // on ServerException catch(e){
-      //   setState(() => _isLoading = false);
-      //   Fluttertoast.showToast(msg: e.message);
-      // }
       catch (e) {
         setState(() => _isLoading = false);
         print(e);
@@ -72,8 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset("assets/logo.png", width: 280, height: screenHeight / 4, fit: BoxFit.contain),
                   SizedBox(height: 10),
                   Container(
-                    // width: screenWidth - 30,
-                    //height: screenHeight / 1.7,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.transparent, width: 1.5),
