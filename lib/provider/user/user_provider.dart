@@ -105,8 +105,8 @@ class UserProvider extends ChangeNotifier {
       if (url.endsWith('/'))
         url = url.replaceRange(url.length - 1, url.length, '');
       service.changeUrl(url); // to set baseUrl for all app
-      final res = await service.login("method/ecs_mobile.api.login",
-          {"usr": username, "pwd": password, 'url': url});
+      final res = await service.login(
+          "method/ecs_mobile.api.login", {"usr": username, "pwd": password});
 
       if (res != null &&
           res['message']['success_key'].toString().toLowerCase() == 'true') {
@@ -152,9 +152,8 @@ class UserProvider extends ChangeNotifier {
         throw ServerException("invalid credentials");
       }
     } else if (checkUrlValidation == false) {
-      Fluttertoast.showToast(msg: 'Please call ERPCloud.systems');
+      Fluttertoast.showToast(msg: 'Domain is inactive');
       notifyListeners();
-      // return Future.value('Please call ERPCloud.systems');
     }
   }
 }
