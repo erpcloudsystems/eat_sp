@@ -1,16 +1,12 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:next_app/screen/Drawer/drawer_screen.dart';
 import 'package:next_app/service/local_notification_service.dart';
 import 'package:next_app/widgets/dialog/loading_dialog.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 
-import '../core/constants.dart';
 import '../provider/user/user_provider.dart';
-import '../service/service.dart';
 import '../widgets/botton_navigation_bar.dart';
-import '../widgets/dialog/awsom_dialogs.dart';
 import 'other/app_settings.dart';
 import 'other/notification_screen.dart';
 import 'other/user_profile.dart';
@@ -28,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   final _one = GlobalKey();
   final _two = GlobalKey();
+
+  String release = '';
 
   @override
   void initState() {
@@ -79,45 +77,28 @@ class _HomeScreenState extends State<HomeScreen> {
       if (res == true) userProvider.logout();
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        title: Text(appBarTitles[_page]),
-        centerTitle: true,
-        elevation: 1,
-        // actions: [
-        //   IconButton(onPressed: (){
-        //     ShowCaseWidget.of(context).startShowCase([_one, _two,]);
-        //   }, icon:Icon(
-        //       Icons.help
-        //   ))
-        // ],
-        ///// for logout from home
-        // leading: _page == 2
-        //     ? IconButton(
-        //       onPressed: logout,
-        //       icon: Icon(Icons.logout),
-        //       splashRadius: 24,
-        //     )
-        //     : null,
+    return UpgradeAlert(
+      upgrader: Upgrader(
+        shouldPopScope: () => true,
       ),
-      /* drawer: Drawer(child: Container(color: Colors.red,)),*/
-      bottomNavigationBar: getBottomNavigationBar(
-          key: _bottomNavigationKey,
-          index: indexNow,
-          onTap: (index) {
-            // if (index == 4) {
-            //   Navigator.push(context, MaterialPageRoute(builder: (context) => CustomDrawer())).then((value) => setState(() {
-            //     _page = 2;
-            //   }));
-            // }
-            setState(() {
-              _page = index;
-            });
-          }),
-      extendBody: true,
-      body:
-          Container(padding: EdgeInsets.only(bottom: 50), child: pages[_page]),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(appBarTitles[_page]),
+          centerTitle: true,
+          elevation: 1,
+        ),
+        bottomNavigationBar: getBottomNavigationBar(
+            key: _bottomNavigationKey,
+            index: indexNow,
+            onTap: (index) {
+              setState(() {
+                _page = index;
+              });
+            }),
+        extendBody: true,
+        body: Container(
+            padding: EdgeInsets.only(bottom: 50), child: pages[_page]),
+      ),
     );
   }
 }

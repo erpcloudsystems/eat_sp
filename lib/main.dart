@@ -9,17 +9,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:next_app/service/local_notification_service.dart';
-import 'package:next_app/service/service.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants.dart';
 import 'provider/user/user_provider.dart';
 import 'screen/other/login_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import 'service/server_exception.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -36,7 +31,7 @@ GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 ///****** 1- For Push Notifications ******///
 
 String deviceTokenToSendPushNotification = '';
-bool isTokenRefreshed= false;
+bool isTokenRefreshed = false;
 
 // receive msg when app is Terminated (Background Handler)
 // This work only when app is in the Background solution for OnMessage issue
@@ -62,21 +57,10 @@ Future<void> getDeviceTokenToSendNotification() async {
   FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
     // Note: This callback is fired at each app startup and whenever a new token is generated.
     deviceTokenToSendPushNotification = fcmToken.toString();
-    isTokenRefreshed=true;
+    isTokenRefreshed = true;
   }).onError((err) {
     print('❌❌ Can\'t get a Notification Token ERROR IS:$err');
   });
-
-  // NotificationSettings settings = await _fcm.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
-  //
 }
 
 ///****** 1- End Push Notifications ******///
@@ -169,7 +153,6 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide(color: APPBAR_COLOR)),
         ),
       ),
-      // home: MyHomePage(title: 'Flutter Demo Home Page'),
       home: Consumer<UserProvider>(
         builder: (BuildContext context, userProvider, Widget? child) {
           return userProvider.user == null
