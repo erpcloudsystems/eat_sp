@@ -1,12 +1,12 @@
-import 'package:next_app/service/service.dart';
-import 'package:next_app/service/service_constants.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/list/otherLists.dart';
-import 'package:next_app/widgets/dialog/loading_dialog.dart';
-import 'package:next_app/widgets/form_widgets.dart';
+import '../../../service/service.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../list/otherLists.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../../../widgets/snack_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants.dart';

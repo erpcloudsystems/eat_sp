@@ -1,9 +1,9 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../../models/list_models/list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants.dart';
-import 'package:next_app/service/service.dart';
+import '../../service/service.dart';
 import '../../provider/module/module_provider.dart';
 import '/widgets/pagination.dart';
 

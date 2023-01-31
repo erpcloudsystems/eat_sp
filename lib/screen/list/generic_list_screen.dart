@@ -1,8 +1,8 @@
-import 'package:next_app/core/showcase_consts.dart';
-import 'package:next_app/models/list_models/list_model.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/provider/user/user_provider.dart';
-import 'package:next_app/screen/filter_screen.dart';
+import '../../core/showcase_consts.dart';
+import '../../models/list_models/list_model.dart';
+import '../../provider/module/module_provider.dart';
+import '../../provider/user/user_provider.dart';
+import '../filter_screen.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

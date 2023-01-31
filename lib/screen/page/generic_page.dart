@@ -1,8 +1,8 @@
 import 'package:badges/badges.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/page/page_screen.dart';
-import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
-import 'package:next_app/widgets/nothing_here.dart';
+import '../../provider/module/module_provider.dart';
+import 'page_screen.dart';
+import '../../widgets/inherited_widgets/select_items_list.dart';
+import '../../widgets/nothing_here.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

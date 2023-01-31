@@ -1,8 +1,8 @@
-import 'package:next_app/provider/user/user_provider.dart';
-import 'package:next_app/widgets/custom_loading.dart';
+import '../provider/user/user_provider.dart';
+import 'custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:next_app/main.dart';
+import '../main.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../core/constants.dart';

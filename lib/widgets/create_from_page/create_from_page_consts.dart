@@ -1,17 +1,17 @@
-import 'package:next_app/screen/form/buying_forms/purchase_invoce_form.dart';
-import 'package:next_app/screen/form/buying_forms/purchase_order_form.dart';
-import 'package:next_app/screen/form/buying_forms/supplier_quotation_form.dart';
-import 'package:next_app/screen/form/selling_forms/customer_form.dart';
-import 'package:next_app/screen/form/selling_forms/opportunity_form.dart';
-import 'package:next_app/screen/form/selling_forms/payment_entry_form.dart';
-import 'package:next_app/screen/form/selling_forms/quotation_form.dart';
+import '../../screen/form/buying_forms/purchase_invoce_form.dart';
+import '../../screen/form/buying_forms/purchase_order_form.dart';
+import '../../screen/form/buying_forms/supplier_quotation_form.dart';
+import '../../screen/form/selling_forms/customer_form.dart';
+import '../../screen/form/selling_forms/opportunity_form.dart';
+import '../../screen/form/selling_forms/payment_entry_form.dart';
+import '../../screen/form/selling_forms/quotation_form.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:next_app/screen/form/selling_forms/sales_invoice_form.dart';
-import 'package:next_app/screen/form/selling_forms/sales_order_form.dart';
-import 'package:next_app/screen/form/stock_forms/delivery_note_form.dart';
-import 'package:next_app/screen/form/stock_forms/material_request_form.dart';
-import 'package:next_app/screen/form/stock_forms/purchase_receipt_form.dart';
-import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
+import '../../screen/form/selling_forms/sales_invoice_form.dart';
+import '../../screen/form/selling_forms/sales_order_form.dart';
+import '../../screen/form/stock_forms/delivery_note_form.dart';
+import '../../screen/form/stock_forms/material_request_form.dart';
+import '../../screen/form/stock_forms/purchase_receipt_form.dart';
+import '../inherited_widgets/select_items_list.dart';
 
 
 

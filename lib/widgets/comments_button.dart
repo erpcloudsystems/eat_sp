@@ -1,6 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:next_app/provider/module/module_provider.dart';
+import '../provider/module/module_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../core/constants.dart';

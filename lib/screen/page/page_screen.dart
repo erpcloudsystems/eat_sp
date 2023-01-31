@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:next_app/core/constants.dart';
-import 'package:next_app/service/server_exception.dart';
-import 'package:next_app/service/service.dart';
-import 'package:next_app/service/service_constants.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/provider/user/user_provider.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../../core/constants.dart';
+import '../../service/server_exception.dart';
+import '../../service/service.dart';
+import '../../service/service_constants.dart';
+import '../../provider/module/module_provider.dart';
+import '../../provider/user/user_provider.dart';
+import '../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

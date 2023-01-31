@@ -1,9 +1,9 @@
-import 'package:next_app/core/constants.dart';
-import 'package:next_app/models/page_models/stock_page_model/item_page_model.dart';
-import 'package:next_app/service/service.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/provider/user/user_provider.dart';
-import 'package:next_app/screen/table_screen.dart';
+import '../../../core/constants.dart';
+import '../../../models/page_models/stock_page_model/item_page_model.dart';
+import '../../../service/service.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../table_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

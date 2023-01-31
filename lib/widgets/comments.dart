@@ -1,5 +1,5 @@
-import 'package:next_app/models/page_models/model_functions.dart';
-import 'package:next_app/provider/module/module_provider.dart';
+import '../models/page_models/model_functions.dart';
+import '../provider/module/module_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

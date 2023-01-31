@@ -1,13 +1,13 @@
-import 'package:next_app/models/page_models/stock_page_model/delivery_note_page_model.dart';
-import 'package:next_app/provider/module/module_provider.dart';
+import '../../../models/page_models/stock_page_model/delivery_note_page_model.dart';
+import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants.dart';
 
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import 'package:next_app/service/service.dart';
-import 'package:next_app/service/service_constants.dart';
+import '../../../service/service.dart';
+import '../../../service/service_constants.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../provider/user/user_provider.dart';
 import '../../list/otherLists.dart';

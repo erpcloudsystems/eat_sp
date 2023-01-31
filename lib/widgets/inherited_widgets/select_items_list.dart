@@ -1,6 +1,6 @@
-import 'package:next_app/models/list_models/stock_list_model/item_table_model.dart';
-import 'package:next_app/models/page_models/model_functions.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../models/page_models/model_functions.dart';
+import '../snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

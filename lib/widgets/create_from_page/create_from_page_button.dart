@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:next_app/widgets/inherited_widgets/select_items_list.dart';
+import '../inherited_widgets/select_items_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/module/module_provider.dart';

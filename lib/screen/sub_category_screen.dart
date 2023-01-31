@@ -1,7 +1,7 @@
-import 'package:next_app/core/shared_pref.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/drawer/drawer_screen.dart';
-import 'package:next_app/screen/home_screen.dart';
+import '../core/shared_pref.dart';
+import '../provider/module/module_provider.dart';
+import 'drawer/drawer_screen.dart';
+import 'home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';

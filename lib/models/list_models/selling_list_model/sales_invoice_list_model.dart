@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class SalesInvoiceListModel extends ListModel<SalesInvoiceItemModel> {
   SalesInvoiceListModel(List<SalesInvoiceItemModel>? list) : super(list);

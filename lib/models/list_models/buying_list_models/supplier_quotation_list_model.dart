@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class SupplierQuotationListModel extends ListModel<SupplierQuotationItemModel> {
   SupplierQuotationListModel(List<SupplierQuotationItemModel>? list)

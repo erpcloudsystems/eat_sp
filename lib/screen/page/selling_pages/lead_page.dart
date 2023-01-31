@@ -1,11 +1,11 @@
-import 'package:next_app/core/constants.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/form/selling_forms/customer_form.dart';
+import '../../../core/constants.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../form/selling_forms/customer_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:next_app/models/page_models/selling_page_model/lead_page_model.dart';
+import '../../../models/page_models/selling_page_model/lead_page_model.dart';
 import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';

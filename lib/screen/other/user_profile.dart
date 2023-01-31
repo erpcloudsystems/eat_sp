@@ -1,4 +1,4 @@
-import 'package:next_app/widgets/under_development.dart';
+import '../../widgets/under_development.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

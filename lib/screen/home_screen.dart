@@ -1,6 +1,6 @@
-import 'package:next_app/screen/Drawer/drawer_screen.dart';
-import 'package:next_app/service/local_notification_service.dart';
-import 'package:next_app/widgets/dialog/loading_dialog.dart';
+import 'Drawer/drawer_screen.dart';
+import '../service/local_notification_service.dart';
+import '../widgets/dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';

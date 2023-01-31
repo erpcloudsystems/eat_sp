@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import 'list_model.dart';
 
 class OrderListModel extends ListModel<OrderItemModel> {
   OrderListModel(List<OrderItemModel>? list) : super(list);

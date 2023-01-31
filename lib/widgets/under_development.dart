@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:collection';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:next_app/main.dart';
-import 'package:next_app/provider/user/user_provider.dart';
+import '../main.dart';
+import '../provider/user/user_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 

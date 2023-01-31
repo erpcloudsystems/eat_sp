@@ -1,12 +1,12 @@
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/core/cloud_system_widgets.dart';
-import 'package:next_app/widgets/page_group.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'package:next_app/models/page_models/selling_page_model/sales_invoice_page_model.dart';
+import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
 import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
 import '../../../service/service.dart';

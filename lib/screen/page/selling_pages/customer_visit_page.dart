@@ -1,10 +1,10 @@
-import 'package:next_app/provider/module/module_provider.dart';
+import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
-import 'package:next_app/widgets/page_group.dart';
+import '../../../widgets/page_group.dart';
 
 import '../../../core/constants.dart';
 import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';

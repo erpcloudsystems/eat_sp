@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class OpportunityListModel extends ListModel<OpportunityItemModel> {
   OpportunityListModel(List<OpportunityItemModel>? list) : super(list);

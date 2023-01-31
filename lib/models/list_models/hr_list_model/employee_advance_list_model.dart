@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class EmployeeAdvanceListModel extends ListModel<EmployeeAdvanceItemModel> {
   EmployeeAdvanceListModel(List<EmployeeAdvanceItemModel>? list) : super(list);

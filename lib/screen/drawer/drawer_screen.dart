@@ -1,9 +1,9 @@
-import 'package:next_app/provider/user/user_provider.dart';
-import 'package:next_app/screen/drawer/aboutus_screen.dart';
-import 'package:next_app/screen/drawer/faq_screen.dart';
-import 'package:next_app/screen/other/app_settings.dart';
-import 'package:next_app/screen/other/login_screen.dart';
-import 'package:next_app/widgets/dialog/loading_dialog.dart';
+import '../../provider/user/user_provider.dart';
+import 'aboutus_screen.dart';
+import 'faq_screen.dart';
+import '../other/app_settings.dart';
+import '../other/login_screen.dart';
+import '../../widgets/dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

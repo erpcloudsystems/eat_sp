@@ -1,5 +1,5 @@
-import 'package:next_app/screen/filter_screen.dart';
-import 'package:next_app/screen/list/otherLists.dart';
+import '../../../screen/filter_screen.dart';
+import '../../../screen/list/otherLists.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 

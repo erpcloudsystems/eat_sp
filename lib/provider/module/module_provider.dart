@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:next_app/models/list_models/list_model.dart';
-import 'package:next_app/provider/module/module_type.dart';
-import 'package:next_app/service/server_exception.dart';
-import 'package:next_app/service/service.dart';
-import 'package:next_app/service/service_constants.dart';
-import 'package:next_app/screen/page/page_screen.dart';
-import 'package:next_app/core/cloud_system_widgets.dart';
-import 'package:next_app/widgets/dialog/loading_dialog.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../../models/list_models/list_model.dart';
+import 'module_type.dart';
+import '../../service/server_exception.dart';
+import '../../service/service.dart';
+import '../../service/service_constants.dart';
+import '../../screen/page/page_screen.dart';
+import '../../core/cloud_system_widgets.dart';
+import '../../widgets/dialog/loading_dialog.dart';
+import '../../widgets/snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';

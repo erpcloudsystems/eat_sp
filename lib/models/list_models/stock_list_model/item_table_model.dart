@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class ItemTableModel extends ListModel<ItemModel> {
   ItemTableModel(List<ItemModel>? list) : super(list);

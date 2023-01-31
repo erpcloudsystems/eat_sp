@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:next_app/core/constants.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../core/constants.dart';
+import '../widgets/snack_bar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trust_location/trust_location.dart';
 import 'package:geocoding/geocoding.dart';

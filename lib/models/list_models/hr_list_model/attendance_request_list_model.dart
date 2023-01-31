@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class AttendanceRequestListModel extends ListModel<AttendanceRequestItemModel> {
   AttendanceRequestListModel(List<AttendanceRequestItemModel>? list)

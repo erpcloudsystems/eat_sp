@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:next_app/models/new_version_models/check_url_validation_model.dart';
-import 'package:next_app/provider/module/module_type.dart';
-import 'package:next_app/service/server_exception.dart';
-import 'package:next_app/service/service_constants.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import '../models/new_version_models/check_url_validation_model.dart';
+import '../provider/module/module_type.dart';
+import 'server_exception.dart';
+import 'service_constants.dart';
+import '../widgets/snack_bar.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';

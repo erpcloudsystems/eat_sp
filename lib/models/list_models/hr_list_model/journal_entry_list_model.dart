@@ -1,4 +1,4 @@
-import 'package:next_app/models/list_models/list_model.dart';
+import '../list_model.dart';
 
 class JournalEntryListModel extends ListModel<JournalEntryItemModel> {
   JournalEntryListModel(List<JournalEntryItemModel>? list) : super(list);

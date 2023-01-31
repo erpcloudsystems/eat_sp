@@ -1,20 +1,20 @@
- import 'package:next_app/screen/form/stock_forms/item_form.dart';
-import 'package:next_app/screen/form/stock_forms/stock_entry_form.dart';
-import 'package:next_app/screen/page/stock_pages/delivery_note_page.dart';
-import 'package:next_app/screen/page/selling_pages/opportunity_page.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/Quotation_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/address_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/cusotmer_filter.dart';
-import 'package:next_app/widgets/filter_widgets/stock_filters/delivery_note_filter.dart';
-import 'package:next_app/widgets/filter_widgets/stock_filters/item_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/lead_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/opportunity_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/payment_entry_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/sales_invoice_filter.dart';
-import 'package:next_app/widgets/filter_widgets/selling_filters/sales_order_filter.dart';
-import 'package:next_app/widgets/filter_widgets/stock_filters/stock_entry_filter.dart';
-import 'package:next_app/widgets/inherited_widgets/contact/add_phone.dart';
-import 'package:next_app/widgets/pagination.dart';
+import '../../screen/form/stock_forms/item_form.dart';
+import '../../screen/form/stock_forms/stock_entry_form.dart';
+import '../../screen/page/stock_pages/delivery_note_page.dart';
+import '../../screen/page/selling_pages/opportunity_page.dart';
+import '../../widgets/filter_widgets/selling_filters/Quotation_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/address_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/cusotmer_filter.dart';
+import '../../widgets/filter_widgets/stock_filters/delivery_note_filter.dart';
+import '../../widgets/filter_widgets/stock_filters/item_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/lead_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/opportunity_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/payment_entry_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/sales_invoice_filter.dart';
+import '../../widgets/filter_widgets/selling_filters/sales_order_filter.dart';
+import '../../widgets/filter_widgets/stock_filters/stock_entry_filter.dart';
+import '../../widgets/inherited_widgets/contact/add_phone.dart';
+import '../../widgets/pagination.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -123,8 +123,8 @@ import '../../models/list_models/stock_list_model/purchase_receipt_list_model.da
 import '../../models/list_models/selling_list_model/quotation_list_model.dart';
 import '../../models/list_models/selling_list_model/sales_invoice_list_model.dart';
 import '../../models/list_models/stock_list_model/stock_entry_list_model.dart';
-import 'package:next_app/models/page_models/model_functions.dart';
-import 'package:next_app/service/service_constants.dart';
+import '../../models/page_models/model_functions.dart';
+import '../../service/service_constants.dart';
 
 class ModuleType {
   final String _genericListService, _title, _pageService;

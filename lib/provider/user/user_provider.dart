@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:next_app/main.dart';
-import 'package:next_app/service/server_exception.dart';
+import '../../main.dart';
+import '../../service/server_exception.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:next_app/service/service.dart';
+import '../../service/service.dart';
 import '../../core/shared_pref.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -106,7 +106,7 @@ class UserProvider extends ChangeNotifier {
         url = url.replaceRange(url.length - 1, url.length, '');
       service.changeUrl(url); // to set baseUrl for all app
       final res = await service.login(
-          "method/ecs_mobile.api.login", {"usr": username, "pwd": password});
+          "method/ecs_mobile.api.login", {"usr": username, "pwd": password, "url": url});
 
       if (res != null &&
           res['message']['success_key'].toString().toLowerCase() == 'true') {

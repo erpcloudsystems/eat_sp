@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/home_screen.dart';
-import 'package:next_app/screen/other/splash_screen.dart';
+import 'provider/module/module_provider.dart';
+import 'screen/home_screen.dart';
+import 'screen/other/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Next App',
+      title: 'ClassA',
       scaffoldMessengerKey: scaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,

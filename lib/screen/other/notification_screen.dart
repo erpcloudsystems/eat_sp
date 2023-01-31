@@ -1,8 +1,8 @@
-import 'package:next_app/core/constants.dart';
-import 'package:next_app/provider/module/module_provider.dart';
-import 'package:next_app/screen/list/generic_list_screen.dart';
-import 'package:next_app/screen/list/otherLists.dart';
-import 'package:next_app/widgets/under_development.dart';
+import '../../core/constants.dart';
+import '../../provider/module/module_provider.dart';
+import '../list/generic_list_screen.dart';
+import '../list/otherLists.dart';
+import '../../widgets/under_development.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

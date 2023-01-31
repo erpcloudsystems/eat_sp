@@ -1,4 +1,4 @@
-import 'package:next_app/models/page_models/model_functions.dart';
+import '../model_functions.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class EmployeePageModel {

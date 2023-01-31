@@ -1,5 +1,6 @@
-import 'package:next_app/models/list_models/list_model.dart';
 import 'package:uuid/uuid.dart';
+
+import '../list_model.dart';
 
 class AccountTableModel extends ListModel<AccountModel> {
   AccountTableModel(List<AccountModel>? list) : super(list);

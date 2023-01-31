@@ -1,4 +1,4 @@
-import 'package:next_app/core/constants.dart';
+import '../core/constants.dart';
 import 'package:flutter/material.dart';
 
 class DualValueWidget extends StatelessWidget {

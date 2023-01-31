@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:next_app/widgets/list_card.dart';
-import 'package:next_app/widgets/snack_bar.dart';
+import 'list_card.dart';
+import 'snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:next_app/core/constants.dart';
+import '../core/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants.dart';

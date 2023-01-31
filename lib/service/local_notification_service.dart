@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:next_app/screen/sub_category_screen.dart';
+import '../screen/sub_category_screen.dart';
 
 void notificationConfig(BuildContext context) async{
 
