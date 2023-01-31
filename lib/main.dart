@@ -31,7 +31,7 @@ GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 ///****** 1- For Push Notifications ******///
 
 String deviceTokenToSendPushNotification = '';
-bool isTokenRefreshed= false;
+bool isTokenRefreshed = false;
 
 // receive msg when app is Terminated (Background Handler)
 // This work only when app is in the Background solution for OnMessage issue
@@ -57,21 +57,10 @@ Future<void> getDeviceTokenToSendNotification() async {
   FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
     // Note: This callback is fired at each app startup and whenever a new token is generated.
     deviceTokenToSendPushNotification = fcmToken.toString();
-    isTokenRefreshed=true;
+    isTokenRefreshed = true;
   }).onError((err) {
     print('❌❌ Can\'t get a Notification Token ERROR IS:$err');
   });
-
-  // NotificationSettings settings = await _fcm.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
-  //
 }
 
 ///****** 1- End Push Notifications ******///
@@ -164,7 +153,6 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide(color: APPBAR_COLOR)),
         ),
       ),
-      // home: MyHomePage(title: 'Flutter Demo Home Page'),
       home: Consumer<UserProvider>(
         builder: (BuildContext context, userProvider, Widget? child) {
           return userProvider.user == null
