@@ -1,3 +1,7 @@
+import '../core/showcase_consts.dart';
+import '../provider/module/module_provider.dart';
+import '../provider/user/user_provider.dart';
+import '../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../core/showcase_consts.dart';
@@ -64,8 +68,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   splashRadius: 20,
                   icon: Icon(Icons.clear, color: Colors.black),
                   onPressed: () {
-                    // Navigator.pushReplacement(context, new MaterialPageRoute(
-                    //     builder: (context) => this.build(context)));
                     values.clear();
                     context.read<ModuleProvider>().filter = {'':''};
                     Navigator.pushReplacement(
@@ -73,11 +75,6 @@ class _FilterScreenState extends State<FilterScreen> {
                         MaterialPageRoute(
                             builder: (BuildContext context) => super.widget));
                     setState(() {
-                      //values.clear();
-                      //_children = context.read<ModuleProvider>().currentModule.filter!.fields;
-                      //_filter = SalesInvoiceFilter(key: UniqueKey());
-                      //_filter = new SalesOrderFilter();
-                      //_filter = context.read<ModuleProvider>().currentModule.filterWidget!;
                     });
                   },
                 ),
@@ -85,8 +82,6 @@ class _FilterScreenState extends State<FilterScreen> {
           splashRadius: 20,
           icon: Icon(Icons.clear, color: Colors.black),
           onPressed: () {
-            // Navigator.pushReplacement(context, new MaterialPageRoute(
-            //     builder: (context) => this.build(context)));
             values.clear();
             context.read<ModuleProvider>().filter = {'':''};
             Navigator.pushReplacement(
@@ -94,11 +89,6 @@ class _FilterScreenState extends State<FilterScreen> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => super.widget));
             setState(() {
-              //values.clear();
-              //_children = context.read<ModuleProvider>().currentModule.filter!.fields;
-              //_filter = SalesInvoiceFilter(key: UniqueKey());
-              //_filter = new SalesOrderFilter();
-              //_filter = context.read<ModuleProvider>().currentModule.filterWidget!;
             });
           },
         ),

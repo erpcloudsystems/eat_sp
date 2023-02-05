@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+1
+version: 1.0.2+2
 
 environment:
   sdk: ">=2.15.0-110.0.dev <3.0.0"
@@ -30,12 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   provider: ^6.0.4
   intl: ^0.17.0
-  flutter_barcode_scanner: ^2.0.0
   google_fonts: ^2.1.0
   path_provider: ^2.0.8
   open_file: ^3.2.1
-  passwordfield: ^0.1.0
-  http: ^0.13.3
   dio: ^4.0.0
   file_picker: ^4.3.0
   fluttertoast: ^8.0.9
@@ -43,11 +40,7 @@ dependencies:
   shared_preferences: ^2.0.0
   dio_cookie_manager: ^2.0.0
 
-  #  infinite_scroll_pagination: ^3.1.0
-
-  #  loadmore: ^2.0.1
   horizontal_data_table: ^4.1.2
-  #  fwfh_text_style: ^2.7.3+1
   printing: ^5.7.1
   auto_size_text: ^3.0.0
   #permission_handler:
@@ -57,10 +50,7 @@ dependencies:
 
 
 #  flutter_widget_from_html_core:
-#  flutter_html:
-#  html: ^0.15.0
   image_picker: ^0.8.4+13
-  scrollable_positioned_list: ^0.3.5
   #GPS
   geolocator: ^9.0.2
   trust_location: ^2.0.13
@@ -75,19 +65,11 @@ dependencies:
   #Alert
   cool_alert: ^1.1.0
   quickalert: ^1.0.0
-  awesome_snackbar_content: ^0.0.8
-  flutter_beautiful_popup: ^1.7.0
-  stylish_dialog: ^0.1.3
-  emoji_alert: ^1.1.0
-  #status_alert: ^1.0.0
-  #notification alert
-  edge_alert: ^0.0.1
   lottie: ^1.4.0
   showcaseview: ^1.1.8
   share_plus: ^4.5.3
   url_launcher: ^6.1.6
   badges: ^2.0.3
-  getwidget: ^3.0.1
 
   #Firebase
   firebase_messaging: ^14.1.4
@@ -101,6 +83,7 @@ dependencies:
 
 
 dev_dependencies:
+  dependency_validator: ^3.0.0
   flutter_test:
     sdk: flutter
   change_app_package_name: ^1.1.0  
