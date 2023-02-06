@@ -282,8 +282,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             setState(() {
                               data['customer'] = res['name'];
                               data['customer_name'] = res['customer_name'];
-                              data['driver'] = res[
-                                  'driver']; 
+                              data['driver'] = res['driver'];
                               data['territory'] = res['territory'];
                               data['customer_group'] = res['customer_group'];
                               data['customer_address'] =
@@ -502,6 +501,18 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             data['driver'] = res;
                             return res;
                           }),
+                      CustomTextField('vehicle', 'vehicle',
+                          initialValue: data['vehicle'],
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => vehiclesList(),
+                              ),
+                            );
+                            data['vehicle'] = res;
+                            return res;
+                          }),
                       //__________________________________________________________________________________________
                       SizedBox(height: 8),
                     ],
@@ -515,7 +526,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                   child: Column(
                     children: [
                       SizedBox(height: 4),
-
                       CustomTextField('project', 'Project'.tr(),
                           disableValidation: true,
                           clearButton: true,
@@ -523,13 +533,11 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => projectScreen()))),
-
                       CustomDropDown('order_type', 'Order Type'.tr(),
                           items: orderTypeList,
                           defaultValue: data['order_type'] ?? orderTypeList[0],
                           onChanged: (value) => data['order_type'] = value),
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-
                       CustomTextField('currency', 'Currency'.tr(),
                           initialValue: data['currency'],
                           clearButton: true,
@@ -551,7 +559,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         onSave: (key, value) =>
                             data[key] = double.tryParse(value) ?? 1,
                       ),
-
                       CustomTextField('selling_price_list', 'Price List'.tr(),
                           initialValue: data['selling_price_list'],
                           disableValidation: true,
@@ -594,7 +601,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             )),
                       if (data['price_list_currency'] != null)
                         Divider(color: Colors.grey, height: 1, thickness: 0.7),
-
                       CustomTextField('plc_conversion_rate',
                           'Price List Exchange Rate'.tr(),
                           initialValue: '${data['plc_conversion_rate'] ?? ''}',
@@ -606,17 +612,15 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           keyboardType: TextInputType.number,
                           onSave: (key, value) =>
                               data[key] = double.tryParse(value) ?? 1),
-
                       CustomTextField(
                           'set_warehouse', 'Set Source Warehouse'.tr(),
                           initialValue: data['set_warehouse'],
-                          disableValidation: true,
+                          disableValidation: false,
                           clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => warehouseScreen()))),
-
                       CustomTextField('payment_terms_template',
                           'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms_template'],

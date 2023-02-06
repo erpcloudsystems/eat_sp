@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import '../../provider/module/module_provider.dart';
 import 'page_screen.dart';
-import '../../widgets/inherited_widgets/select_items_list.dart';
 import '../../widgets/nothing_here.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +73,6 @@ class GenericPage extends StatelessWidget {
                           fontSize: 13, color: Colors.white, height: 1.5),
                     ),
                     stackFit: StackFit.passthrough,
-                    // position:BadgePosition.topStart(),
                     badgeColor: Colors.redAccent,
                     elevation: 0,
                     showBadge: ((context

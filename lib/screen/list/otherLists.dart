@@ -277,8 +277,22 @@ Widget driverList() => GenericListScreen<String>(
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
         List<String> _list = [];
+        List.from(data['message']).forEach(
+            (element) => _list.add(element['full_name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
+
+//_________________________________________________________________________________________________________________
+Widget vehiclesList() => GenericListScreen<String>(
+      title: 'Select vehicle',
+      service: APIService.VEHICLE,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
         List.from(data['message'])
-            .forEach((element) => _list.add(element['full_name'] ?? tr('none')));
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
         return ListModel<String>(_list);
       },
     );

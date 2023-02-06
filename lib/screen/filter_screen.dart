@@ -4,10 +4,6 @@ import '../provider/user/user_provider.dart';
 import '../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../core/showcase_consts.dart';
-import '../provider/module/module_provider.dart';
-import '../provider/user/user_provider.dart';
-import '../widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 

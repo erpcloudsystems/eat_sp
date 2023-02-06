@@ -22,7 +22,7 @@ class AboutUs extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Next App',
+                  Text('ClassA app',
                       style:
                       TextStyle(fontSize: 35, fontWeight: FontWeight.w600)),
                   Container(
@@ -34,19 +34,19 @@ class AboutUs extends StatelessWidget {
                   Text('Version',
                       style:
                       TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('1.0',
+                  Text('1.0.2',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Text('Last Update',
                       style:
                       TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('November 2022',
+                  Text('February 2023',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Text(
-                      'Next App is cloud ERP System on mobile to make your work easier .',
+                      'ClassA App is cloud ERP System on mobile to make your work easier .',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
@@ -65,10 +65,6 @@ class AboutUs extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 30),
-
-                  // Text('Term of services',
-                  //     style:
-                  //     TextStyle(fontSize: 22, fontWeight: FontWeight.w400)),
                 ],
               ),
             ),
@@ -81,39 +77,3 @@ class AboutUs extends StatelessWidget {
 
 
 
-
-//
-// Container(
-// child: ButtonTheme(
-// height: ScreenUtil().setHeight(50),
-// minWidth: ScreenUtil().setWidth(230),
-// child: RaisedButton(
-// color: Colors.blue,
-// shape: RoundedRectangleBorder(
-// borderRadius: BorderRadius.circular(10)),
-// splashColor: Colors.white.withAlpha(40),
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.center,
-// children: <Widget>[
-// Text('Share App',
-// textAlign: TextAlign.center),
-// SizedBox(
-// width: ScreenUtil().setWidth(10)),
-// Icon(Icons.share),
-// ],
-// ),
-//
-
-//
-// //===================================================
-// //Perform a function when you press the share button
-// //===================================================
-// onPressed: () {
-// setState(() {
-// Share.share(
-// 'https://google.com',
-// subject: 'FlutterX UI',
-// );
-// });
-// },
-// ))),

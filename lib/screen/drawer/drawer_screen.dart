@@ -2,7 +2,6 @@ import '../../provider/user/user_provider.dart';
 import 'aboutus_screen.dart';
 import 'faq_screen.dart';
 import '../other/app_settings.dart';
-import '../other/login_screen.dart';
 import '../../widgets/dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +36,6 @@ class CustomDrawer extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               title: Text(drawerNames[index],
-               // textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -45,9 +43,6 @@ class CustomDrawer extends StatelessWidget {
               onTap: () async{
                 if(drawerNames[index] == 'Logout'){
                     logout(context);
-                    // Navigator.push(context,MaterialPageRoute(builder: (c)=>LoginScreen()));
-
-
                   return;
                 }
                 Navigator.push(context, MaterialPageRoute(builder: (c)=>drawerPages[index]!));

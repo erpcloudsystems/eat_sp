@@ -1,10 +1,6 @@
 import '../../core/constants.dart';
-import '../../provider/module/module_provider.dart';
-import '../list/generic_list_screen.dart';
 import '../list/otherLists.dart';
-import '../../widgets/under_development.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   NotificationScreen({Key? key}) : super(key: key);

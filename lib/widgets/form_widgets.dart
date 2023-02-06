@@ -396,14 +396,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             focusedBorder:  UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusColor: widget.onPressed != null ? Colors.grey : null,
-            contentPadding: const EdgeInsets.all(2),
-            // focusedBorder: widget.onPressed != null
-            //     ? UnderlineInputBorder(
-            //         borderSide: BorderSide(color: Colors.grey))
-            //     : null,
+            focusColor: widget.onPressed != null ? Colors.grey : null,   
             errorStyle: widget.disableError ? TextStyle(height: 0) : null,
-           // suffix: !widget.disableValidation && !widget.clearButton
             suffix:  !widget.clearButton
                 ? null
                 : SizedBox(

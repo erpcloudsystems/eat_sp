@@ -46,10 +46,13 @@ class SalesOrderPageModel {
       },
       {
         tr("Contact"): data['contact_display'] ?? tr('none'),
-        tr("Mobile No"): data['contact_mobile'] ?? tr('none')
       },
       {
+        tr("Mobile No"): data['contact_mobile'] ?? tr('none'),
         tr("Contact Email"): data['contact_email'] ?? tr('none'),
+      },
+      {
+        tr("Vehicle"): data['vehicle'] ?? tr('none'),
         'driver': data['driver'] ?? tr('none'),
       },
     ];

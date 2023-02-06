@@ -1,4 +1,3 @@
-import '../core/shared_pref.dart';
 import '../provider/module/module_provider.dart';
 import 'drawer/drawer_screen.dart';
 import 'home_screen.dart';

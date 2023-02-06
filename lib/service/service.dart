@@ -35,6 +35,7 @@ class APIService {
   static const PAYMENT_ENTRY = 'Payment Entry';
   static const CUSTOMER_VISIT = 'Customer Visit';
   static const DRIVER = 'Driver';
+  static const VEHICLE = 'Vehicle';
 
   //Stock model
   static const ITEM = 'Item';
@@ -241,8 +242,6 @@ class APIService {
           print(
               "getList Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
   }
