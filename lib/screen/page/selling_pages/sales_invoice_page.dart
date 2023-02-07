@@ -206,7 +206,6 @@ class SalesInvoicePage extends StatelessWidget {
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
-                            //shrinkWrap: true,
                             itemCount: model.items.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 ItemWithImageCard(
@@ -251,7 +250,6 @@ class SalesInvoicePage extends StatelessWidget {
                                   values: model.taxesCardValues(index),
                                 )),
 
-                    //
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
                         ? NothingHere()

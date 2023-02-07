@@ -15,7 +15,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants.dart';
 
-import '../../../models/list_models/list_model.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../service/gps_services.dart';
@@ -224,11 +223,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
               }
               data['currency'] = selectedCstData['default_currency'];
               data['price_list_currency'] = selectedCstData['default_currency'];
-              // data['payment_terms_template'] = selectedCstData['payment_terms'];
-              // data['customer_address'] =
-              //     selectedCstData["customer_primary_address"];
-              // data['contact_person'] =
-              //     selectedCstData["customer_primary_contact"];
             }));
 
         data['doctype'] = "Sales Invoice";
@@ -319,9 +313,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             if (res != null) {
                               id = res['name'];
                               await _getCustomerData(res['name']);
-                              // selectedCstData = Map<String, dynamic>.from(
-                              //     await APIService().getPage(
-                              //         CUSTOMER_PAGE, res['name']))['message'];
                               setState(() {
                                 data['due_date'] = DateTime.now()
                                     .add(Duration(
@@ -554,6 +545,20 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                 ]
                               : null,
                         ),
+                        //__________________________________________________________________________________________
+                        CustomTextField('driver', 'driver',
+                            initialValue: data['driver'],
+                            onSave: (key, value) => data[key] = value,
+                            disableValidation: false,
+                            onPressed: () async {
+                              final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => driverList(),
+                                ),
+                              );
+                              data['driver'] = res;
+                              return res;
+                            }),
                         SizedBox(height: 8),
                       ],
                     ),
@@ -608,7 +613,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         ),
                         CustomTextField('selling_price_list', 'Price List'.tr(),
                             initialValue: data['selling_price_list'],
-
                             clearButton: true, onPressed: () async {
                           final res = await Navigator.of(context).push(
                               MaterialPageRoute(
@@ -737,36 +741,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       ],
                     ),
                   ),
-
-                  ///
-                  /// group 3
-                  ///
-                  // Group(
-                  //   child: Column(
-                  //     children: [
-                  //       CustomDropDown('apply_discount_on', 'Apply Additional Discount On',
-                  //           items: grandTotalList, defaultValue: grandTotalList[0], onChanged: (value) => data['apply_discount_on'] = value),
-                  //       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                  //       CustomTextField(
-                  //         'additional_discount_percentage',
-                  //         'Additional Discount Percentage',
-                  //         hintText: '0',
-                  //         disableValidation: true,
-                  //         keyboardType: TextInputType.number,
-                  //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                  //       ),
-                  //       CustomTextField(
-                  //         'discount_amount',
-                  //         'Additional Discount Amount (Company Currency)',
-                  //         hintText: '0',
-                  //         disableValidation: true,
-                  //         keyboardType: TextInputType.number,
-                  //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
                   SizedBox(height: 8),
                   SelectedItemsList(),
                 ],

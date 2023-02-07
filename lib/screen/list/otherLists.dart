@@ -150,10 +150,6 @@ class AddressTile extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                //   child: Text('Title:  ', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey.shade800)),
-                // ),
                 Flexible(
                     child: Text(data['address_title'] ?? tr('none'),
                         textAlign: TextAlign.center,
@@ -167,18 +163,12 @@ class AddressTile extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                //   child: Text('Line:  ', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey.shade800)),
-                // ),
                 Flexible(
                     child: Text(data['address_line1'] ?? tr('none'),
                         textAlign: TextAlign.center)),
               ],
             ),
           ),
-
-          //SizedBox(height: 8),
           Divider(color: Colors.grey, height: 10, thickness: 0.7, indent: 60),
         ],
       ),
@@ -224,25 +214,6 @@ class CurrencyTile extends StatelessWidget {
   }
 }
 
-// class TermsWidget extends StatelessWidget {
-//   final String title;
-//   final String html;
-//   final void Function(BuildContext context)? onTap;
-//
-//   const TermsWidget(this.title, this.html, {Key? key, this.onTap}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Text(title),
-//         HtmlWidget(html),
-//         Divider(color: Colors.grey, height: 1, thickness: 0.7),
-//       ],
-//     );
-//   }
-// }
-
 Widget territoryScreen() => GenericListScreen<String>(
       title: 'Select Territory',
       service: APIService.TERRITORY,
@@ -270,15 +241,20 @@ Widget customerGroupScreen() => GenericListScreen<String>(
     );
 
 //_________________________________________________________________________________________________________________
+String? driverId;
 Widget driverList() => GenericListScreen<String>(
       title: 'Select driver',
       service: APIService.DRIVER,
-      listItem: (value) => SingleValueTile(value,
-          onTap: (context) => Navigator.of(context).pop(value)),
+      listItem: (value) => SingleValueTile(
+        value,
+        onTap: (context) => Navigator.of(context).pop(driverId),
+      ),
       serviceParser: (data) {
         List<String> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(element['full_name'] ?? tr('none')));
+        List.from(data['message']).forEach((element) {
+          driverId = element['name'];
+          _list.add(element['full_name'] ?? tr('none'));
+        });
         return ListModel<String>(_list);
       },
     );

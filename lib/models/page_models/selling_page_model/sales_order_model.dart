@@ -53,7 +53,7 @@ class SalesOrderPageModel {
       },
       {
         tr("Vehicle"): data['vehicle'] ?? tr('none'),
-        'driver': data['driver'] ?? tr('none'),
+        'driver': data['driver_name'] ?? tr('none'),
       },
     ];
   }
@@ -84,7 +84,6 @@ class SalesOrderPageModel {
         tr("Source"): data['source'] ?? tr('none'),
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none')
       },
-      // {tr("Terms & Conditions Details"): data['terms'] != null ? formatDescription(data['terms']) : tr('none')},
       {
         tr("Payment Terms Template"):
             data['payment_terms_template'] ?? tr('none'),
@@ -199,7 +198,6 @@ class SalesOrderPageModel {
       tr('Description'),
       tr('Item Group'),
       tr('Brand'),
-      //    tr('Image'),
       tr('Quantity'),
       tr('Stock UOM'),
       tr('UOM'),
@@ -249,7 +247,6 @@ class SalesOrderPageModel {
       data['items'][index]['description'] ?? tr('none'),
       data['items'][index]['item_group'] ?? tr('none'),
       data['items'][index]['brand'] ?? tr('none'),
-      //  data['items'][index]['image'] ,
       data['items'][index]['qty'].toString(),
       data['items'][index]['uom'] ?? tr('none'),
       data['items'][index]['uom'] ?? tr('none'),

@@ -492,6 +492,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('driver', 'driver',
                           initialValue: data['driver'],
                           onSave: (key, value) => data[key] = value,
+                          disableValidation: false,
                           onPressed: () async {
                             final res = await Navigator.of(context).push(
                               MaterialPageRoute(
@@ -504,6 +505,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField('vehicle', 'vehicle',
                           initialValue: data['vehicle'],
                           onSave: (key, value) => data[key] = value,
+                          disableValidation: false,
                           onPressed: () async {
                             final res = await Navigator.of(context).push(
                               MaterialPageRoute(

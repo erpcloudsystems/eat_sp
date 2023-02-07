@@ -54,11 +54,6 @@ class SalesOrderPage extends StatelessWidget {
                 Text('Sales Order',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                // if (data['docstatus'] != null)
-                //   Align(
-                //     alignment: Alignment.centerRight,
-                //     child:
-                //   )
               ],
             ),
             Padding(
@@ -70,7 +65,6 @@ class SalesOrderPage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['customer_name'] ?? 'none'),
             ),
-            //   Text(data['lead_name'] ?? 'none'),
             SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
@@ -141,7 +135,6 @@ class SalesOrderPage extends StatelessWidget {
                         unselectedLabelStyle: GoogleFonts.cairo(
                             fontSize: 16, fontWeight: FontWeight.w600),
                         unselectedLabelColor: Colors.grey.shade600,
-                        //indicatorPadding: EdgeInsets.zero,
                         isScrollable: false,
                         labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                         padding: EdgeInsets.zero,
@@ -157,7 +150,6 @@ class SalesOrderPage extends StatelessWidget {
                         : ListView.builder(
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
-                            //shrinkWrap: true,
                             itemCount: model.items.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 ItemWithImageCard(
