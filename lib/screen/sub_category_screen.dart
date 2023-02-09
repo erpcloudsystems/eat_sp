@@ -170,8 +170,6 @@ class HomeItem extends StatelessWidget {
                         child: Image.network(
                           imageUrl,
                           headers: APIService().getHeaders,
-                          // width: 45,
-                          // height: 45,
                           loadingBuilder: (context, child, progress) {
                             return progress != null
                                 ? SizedBox(
