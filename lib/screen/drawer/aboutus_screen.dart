@@ -1,14 +1,35 @@
-
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AboutUs extends StatelessWidget {
+class AboutUs extends StatefulWidget {
   const AboutUs({Key? key}) : super(key: key);
+
+  @override
+  State<AboutUs> createState() => _AboutUsState();
+}
+
+class _AboutUsState extends State<AboutUs> {
+  String versionNumber = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _getPackageInfo();
+  }
+
+  Future<void> _getPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      versionNumber = info.version;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
@@ -24,7 +45,7 @@ class AboutUs extends StatelessWidget {
                 children: <Widget>[
                   Text('ClassA app',
                       style:
-                      TextStyle(fontSize: 35, fontWeight: FontWeight.w600)),
+                          TextStyle(fontSize: 35, fontWeight: FontWeight.w600)),
                   Container(
                     width: 150,
                     height: 2,
@@ -33,22 +54,22 @@ class AboutUs extends StatelessWidget {
                   SizedBox(height: 30),
                   Text('Version',
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('1.0.2',
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+                  Text(versionNumber,
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Text('Last Update',
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
                   Text('February 2023',
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Text(
                       'ClassA App is cloud ERP System on mobile to make your work easier .',
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -56,12 +77,14 @@ class AboutUs extends StatelessWidget {
                     children: [
                       Text('Powered by'),
                       TextButton(
-                        onPressed: (){
+                        onPressed: () {
                           launchUrl(Uri.parse('https://www.erpcloud.systems/'));
-                        } ,
-                        child:Text('ERPCloud.systems',style: TextStyle(color: Colors.blue),),
+                        },
+                        child: Text(
+                          'ERPCloud.systems',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
-
                     ],
                   ),
                   SizedBox(height: 30),
@@ -74,6 +97,3 @@ class AboutUs extends StatelessWidget {
     );
   }
 }
-
-
-
