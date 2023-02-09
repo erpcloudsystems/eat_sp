@@ -3,7 +3,7 @@ description: ClassA mobile application by ERPCloud.systems.
 
 publish_to: 'none' 
 
-version: 1.0.3+3
+version: 1.0.4+4
 
 environment:
   sdk: ">=2.15.0-110.0.dev <3.0.0"
