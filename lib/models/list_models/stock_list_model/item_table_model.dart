@@ -23,11 +23,11 @@ class ItemTableModel extends ListModel<ItemModel> {
 class ItemModel {
   final String itemCode;
   final String itemName;
-   String stockUom;
+  String stockUom;
   final String group;
   final String imageUrl;
 
-   ItemModel(
+  ItemModel(
       {required this.imageUrl,
       required this.itemCode,
       required this.itemName,
@@ -74,8 +74,7 @@ class ItemSelectModel extends ItemModel {
 
   bool get enableEdit => _enableEdit;
 
-  //old double get total => _qty * rate.toDouble();
-  double get total => _qty * priceListRate.toDouble();
+  double get total => _qty * rate.toDouble();
   double get grandTotal => _qty * netRate.toDouble();
 
   int get qty => _qty;
@@ -85,11 +84,15 @@ class ItemSelectModel extends ItemModel {
   factory ItemSelectModel.fromJson(Map<String, dynamic> json) {
     final item = ItemSelectModel(
       ItemModel.fromJson(json),
-      vat: double.tryParse((json['item_tax_template']?? (json['tax_percent']?? 0).toString())) ?? 0 ,
+      vat: double.tryParse((json['item_tax_template'] ??
+              (json['tax_percent'] ?? 0).toString())) ??
+          0,
       netRate: json['net_rate'] ?? 9999999999,
       rate: json['price_list_rate'] ?? 88888888,
       priceListRate: json['price_list_rate'] ?? 77777777,
-      taxPercent:double.tryParse((json['item_tax_template']?? (json['tax_percent']?? 0).toString())) ?? 0 ,
+      taxPercent: double.tryParse((json['item_tax_template'] ??
+              (json['tax_percent'] ?? 0).toString())) ??
+          0,
       enableEdit: true, // (json['price_list_rate'] ?? 0) <= 0,
     );
     if (json['qty'] != null) item.qty = (json['qty'] as double).toInt();
@@ -136,7 +139,8 @@ class ItemQuantity extends ItemModel {
   double total;
   String actualQty;
 
-  ItemQuantity(ItemModel itemModel, {this.qty=0, this.rate =0.0, this.total=0.0,this.actualQty=''})
+  ItemQuantity(ItemModel itemModel,
+      {this.qty = 0, this.rate = 0.0, this.total = 0.0, this.actualQty = ''})
       : super(
             itemName: itemModel.itemName,
             itemCode: itemModel.itemCode,

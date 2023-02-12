@@ -3,6 +3,7 @@ import '../../models/page_models/model_functions.dart';
 import '../snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import '../../provider/module/module_provider.dart';
 import '../../screen/list/otherLists.dart';
@@ -350,24 +351,24 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                                           filteredUOMListScreen(InheritedForm.of(context)
                                                               .items[index].itemCode.toString())));
 
-                                                  if (res != null) {
-                                                    InheritedForm.of(context)
-                                                        .items[index].stockUom = res;
-
-                                                    setState(() {});
-
-                                                  }
-                                                },
-                                                // onChanged: (value) {
-                                                //   int? _value = int.tryParse(value);
-                                                //   if (_value != null)
-                                                //     InheritedForm.of(context)
-                                                //         .items[index]
-                                                //         .qty = _value;
-                                                //   Future.delayed(Duration(seconds: 1),
-                                                //           () => setState(() {}));
-                                                // },
-                                              )),
+                                              if (res != null) {
+                                                log(res.toString());
+                                                InheritedForm.of(context)
+                                                    .items[index]
+                                                    .stockUom = res['uom'];
+                                                setState(() {
+                                                  InheritedForm.of(context)
+                                                      .items[index]
+                                                      .rate = res[
+                                                          'conversion_factor'] *
+                                                      InheritedForm.of(context)
+                                                          .items[index]
+                                                          .priceListRate;
+                                                });
+                                              }
+                                              return res['uom'];
+                                            },
+                                          )),
                                         ],
                                       ),
                                       Row(

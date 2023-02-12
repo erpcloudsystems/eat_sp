@@ -14,7 +14,6 @@ import '../../widgets/filter_widgets/selling_filters/sales_invoice_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/sales_order_filter.dart';
 import '../../widgets/filter_widgets/stock_filters/stock_entry_filter.dart';
 import '../../widgets/inherited_widgets/contact/add_phone.dart';
-import '../../widgets/pagination.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -454,7 +453,6 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
 
-      // return InheritedForm(child: QuotationForm(), items: items);
     },
     filter: SalesInvoiceFilter(),
   );

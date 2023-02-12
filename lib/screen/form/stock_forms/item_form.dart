@@ -1,27 +1,16 @@
 import 'dart:io';
 import '../../../core/constants.dart';
 
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../main.dart';
 import '../../../service/service.dart';
 import '../../../service/service_constants.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
 import '../../list/otherLists.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
-import '../../../core/constants.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../models/page_models/stock_page_model/item_page_model.dart';
 import '../../../widgets/inherited_widgets/item/add_uom_list.dart';
 import '../../../widgets/inherited_widgets/item/uom_table_model.dart';
 import '../../page/generic_page.dart';
@@ -80,7 +69,7 @@ class _ItemFormState extends State<ItemForm> {
             : await server.postRequest(ITEM_POST, {'data': data}),
         context);
 
-    Navigator.pop(context); // to remove showLoadingDialog from screen
+    Navigator.pop(context);
 
     if (provider.isEditing && res == false)
       return;
@@ -92,11 +81,7 @@ class _ItemFormState extends State<ItemForm> {
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
-  // Future<void> _getSupplierData(String supplier) async {
-  //   selectedSupplierData = Map<String, dynamic>.from(
-  //       await APIService().getPage(SUPPLIER_PAGE, supplier))['message'];
-  // }
-
+ 
   @override
   void initState() {
     super.initState();

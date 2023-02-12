@@ -806,11 +806,6 @@ Widget filteredUOMListScreen(String itemCode) =>
         List.from(data['message']).forEach((element) => _list.add(element));
         return ListModel<Map<String, dynamic>>(_list);
       },
-      // serviceParser: (data) {
-      //   List<Map<String, dynamic>> _list = [];
-      //  List.from(data['message']).forEach((element) => _list.add(element));
-      //   return ListModel<Map<String, dynamic>>(_list);
-      // },
     );
 Widget brandListScreen() => GenericListScreen<String>(
       title: 'Select Brand',
