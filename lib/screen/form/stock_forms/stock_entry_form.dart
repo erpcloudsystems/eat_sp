@@ -181,7 +181,9 @@ class _StockEntryFormState extends State<StockEntryForm> {
                             onSave: (key, value) => data[key] = value,
                             initialValue: data['from_warehouse'],
                             clearButton: true,
-                            onClear: (){data['from_warehouse'] = null;},
+                            onClear: () {
+                              data['from_warehouse'] = null;
+                            },
                             onPressed: () async {
                               final res = await Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -198,8 +200,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
                                 print(
                                     'Actual Qty (at source/target) ${actualQty}');
                               }
-                              setState(() {
-                              });
+                              setState(() {});
 
                               return res;
                             }),
@@ -220,7 +221,6 @@ class _StockEntryFormState extends State<StockEntryForm> {
                           disableValidation: true,
                           initialValue: data['project'],
                           clearButton: true,
-
                           onSave: (key, value) =>
                               data[key] = value.isEmpty ? null : value,
                           onPressed: () => Navigator.of(context).push(
@@ -261,12 +261,6 @@ class _StockEntryFormState extends State<StockEntryForm> {
                                         style: ElevatedButton.styleFrom(
                                             padding: EdgeInsets.zero),
                                         onPressed: () async {
-                                          // if (data['from_warehouse'] == null) {
-                                          //   showSnackBar(
-                                          //       'Source warehouse first',
-                                          //       context);
-                                          //   return;
-                                          // }
                                           final res =
                                               await Navigator.of(context).push(
                                                   MaterialPageRoute(
@@ -348,80 +342,87 @@ class _StockEntryFormState extends State<StockEntryForm> {
                                             padding: const EdgeInsets.only(
                                                 left: 16, right: 16),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Expanded(
-                                                    child: CustomTextField(
-                                                  _items[index].itemCode +
-                                                      'Quantity',
-                                                  'Quantity',
-                                                  initialValue:
-                                                      _items[index].qty == 0
-                                                          ? null
-                                                          : _items[index]
-                                                              .qty
-                                                              .toString(),
-                                                  validator: (value) =>
-                                                      numberValidationToast(
-                                                          value, 'Quantity',
-                                                          isInt: true),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  disableError: true,
-                                                  onSave: (_, value) =>
+                                                  child: CustomTextField(
+                                                    _items[index].itemCode +
+                                                        'Quantity',
+                                                    'Quantity',
+                                                    initialValue:
+                                                        _items[index].qty == 0
+                                                            ? null
+                                                            : _items[index]
+                                                                .qty
+                                                                .toString(),
+                                                    validator: (value) =>
+                                                        numberValidationToast(
+                                                            value, 'Quantity',
+                                                            isInt: true),
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    disableError: true,
+                                                    onSave: (_, value) =>
+                                                        _items[index].qty =
+                                                            int.parse(value),
+                                                    onChanged: (value) {
                                                       _items[index].qty =
-                                                          int.parse(value),
-                                                  onChanged: (value) {
-                                                    _items[index].qty =
-                                                        int.parse(value);
-                                                    _items[index].total =
-                                                        _items[index].qty *
-                                                            _items[index].rate;
-                                                    Future.delayed(
-                                                        Duration(seconds: 1),
-                                                        () => setState(() {}));
-                                                  },
-                                                )),
-                                                SizedBox(width: 12),
+                                                          int.parse(value);
+                                                      _items[index].total =
+                                                          _items[index].qty *
+                                                              _items[index]
+                                                                  .rate;
+                                                      Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () =>
+                                                              setState(() {}));
+                                                    },
+                                                  ),
+                                                ),
                                                 Expanded(
-                                                    child: CustomTextField(
-                                                  'rate',
-                                                  'Rate',
-                                                  initialValue:
-                                                      _items[index].rate == 0.0
-                                                          ? null
-                                                          : _items[index]
-                                                              .rate
-                                                              .toString(),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  disableError: true,
-                                                  onSave: (_, value) =>
-                                                      _items[index].rate =
-                                                          double.parse(value),
-                                                  onChanged: (value) {
-                                                    _items[index].rate =
-                                                        double.parse(value);
-                                                    _items[index].total =
-                                                        _items[index].qty *
-                                                            _items[index].rate;
-                                                    Future.delayed(
-                                                        Duration(seconds: 1),
-                                                        () => setState(() {}));
-                                                  },
-                                                )),
-                                                SizedBox(width: 12),
-                                                Expanded(
-                                                    child: CustomTextField(
-                                                  'amount',
-                                                  'Amount',
-                                                  initialValue: (_items[index]
-                                                              .qty *
-                                                          _items[index].rate)
-                                                      .toString(),
-                                                  enabled: false,
-                                                  disableError: true,
-                                                )),
-                                                SizedBox(width: 12),
+                                                  child: CustomTextField(
+                                                    'uom',
+                                                    'UOM',
+                                                    disableError: true,
+                                                    initialValue:
+                                                        _items[index].stockUom,
+                                                    onPressed: () async {
+                                                      final res =
+                                                          await Navigator.of(
+                                                                  context)
+                                                              .push(
+                                                        MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              filteredUOMListScreen(
+                                                            _items[index]
+                                                                .itemCode
+                                                                .toString(),
+                                                          ),
+                                                        ),
+                                                      );
+
+                                                      if (res != null) {
+                                                        _items[index].stockUom =
+                                                            res['uom'];
+
+                                                        setState(() {});
+                                                      }
+                                                    },
+                                                    onSave: (_, value) =>
+                                                        _items[index].stockUom =
+                                                            value,
+                                                    onChanged: (value) {
+                                                      _items[index].stockUom =
+                                                          value;
+                                                      Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () =>
+                                                              setState(() {}));
+                                                    },
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
