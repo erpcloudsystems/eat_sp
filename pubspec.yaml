@@ -63,6 +63,7 @@ dependencies:
   flutter_local_notifications: ^9.9.1
   upgrader: ^4.8.1
   package_info_plus: ^1.4.2
+  equatable: ^2.0.5
 
 
 dev_dependencies:

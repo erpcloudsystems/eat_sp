@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:ClassA/models/new_version_models/driver_model.dart';
+
 import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 import '../../../service/service.dart';
 import '../../../service/service_constants.dart';
@@ -446,7 +450,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           title: CustomTextField(
                               'customer_address', 'Customer Address',
                               initialValue: data['customer_address'],
-                              disableValidation: true,
+                              disableValidation: false,
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               liestenToInitialValue:
@@ -545,7 +549,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                 ]
                               : null,
                         ),
-                        //__________________________________________________________________________________________
                         CustomTextField('driver', 'driver',
                             initialValue: data['driver'],
                             onSave: (key, value) => data[key] = value,
@@ -556,8 +559,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                   builder: (_) => driverList(),
                                 ),
                               );
-                              data['driver'] = res;
-                              return res;
+                              data['driver'] = res['name'];
+                              log(data['driver']);
+                              return res['name'];
                             }),
                         SizedBox(height: 8),
                       ],

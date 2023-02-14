@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:ClassA/models/new_version_models/driver_model.dart';
+
 import '../../provider/module/module_provider.dart';
 import '../other/notification_screen.dart';
 import '../page/generic_page.dart';
@@ -240,26 +244,19 @@ Widget customerGroupScreen() => GenericListScreen<String>(
       },
     );
 
-//_________________________________________________________________________________________________________________
-String? driverId;
-Widget driverList() => GenericListScreen<String>(
+Widget driverList() => GenericListScreen<Map<String, String?>>(
       title: 'Select driver',
       service: APIService.DRIVER,
-      listItem: (value) => SingleValueTile(
-        value,
-        onTap: (context) => Navigator.of(context).pop(driverId),
-      ),
+      listItem: (value) => SingleValueTile(value['full_name']!,
+          onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message']).forEach((element) {
-          driverId = element['name'];
-          _list.add(element['full_name'] ?? tr('none'));
-        });
-        return ListModel<String>(_list);
+        List<Map<String, String?>> _list = [];
+        List.from(data['message']).forEach(
+            (element) => _list.add(Map<String, String?>.from(element)));
+        return ListModel<Map<String, String?>>(_list);
       },
     );
 
-//_________________________________________________________________________________________________________________
 Widget vehiclesList() => GenericListScreen<String>(
       title: 'Select vehicle',
       service: APIService.VEHICLE,
@@ -273,7 +270,6 @@ Widget vehiclesList() => GenericListScreen<String>(
       },
     );
 
-//_________________________________________________________________________________________________________________
 Widget supplierGroupScreen() => GenericListScreen<String>(
       title: 'Select Supplier Group',
       service: APIService.SUPPLIER_GROUP,
