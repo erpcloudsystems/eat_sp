@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:ClassA/models/new_version_models/driver_model.dart';
-
 import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 import '../../../service/service.dart';
 import '../../../service/service_constants.dart';

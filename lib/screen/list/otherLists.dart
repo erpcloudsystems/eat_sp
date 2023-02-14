@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:ClassA/models/new_version_models/driver_model.dart';
 
 import '../../provider/module/module_provider.dart';
 import '../other/notification_screen.dart';
