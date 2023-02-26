@@ -11,7 +11,12 @@ class TableScreen extends StatefulWidget {
   final List<MapEntry<String, String>> columnsName;
   final List<Map> table;
 
-  const TableScreen({required this.title, required this.columnsName, required this.table, Key? key}) : super(key: key);
+  const TableScreen({
+    required this.title,
+    required this.columnsName,
+    required this.table,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TableScreen> createState() => _TableScreenState();
@@ -40,15 +45,18 @@ class _TableScreenState extends State<TableScreen> {
         child: HorizontalDataTable(
           leftHandSideColumnWidth: KLeftColumnWidth,
           // to make the table takes full width always
-          rightHandSideColumnWidth: (widget.columnsName.length - 1) * KColumnWidth <= MediaQuery.of(context).size.width - KLeftColumnWidth
-              ? MediaQuery.of(context).size.width - KLeftColumnWidth - 0.1
-              : (widget.columnsName.length - 1) * KColumnWidth,
+          rightHandSideColumnWidth:
+              (widget.columnsName.length - 1) * KColumnWidth <=
+                      MediaQuery.of(context).size.width - KLeftColumnWidth
+                  ? MediaQuery.of(context).size.width - KLeftColumnWidth - 0.1
+                  : (widget.columnsName.length - 1) * KColumnWidth,
           isFixedHeader: true,
           headerWidgets: _getTitleWidget(),
           leftSideItemBuilder: _generateFirstColumnRow,
           rightSideItemBuilder: _generateRightHandSideColumnRow,
           itemCount: table.length,
-          rowSeparatorWidget: const Divider(color: Colors.black54, height: 1.0, thickness: 0.0),
+          rowSeparatorWidget:
+              const Divider(color: Colors.black54, height: 1.0, thickness: 0.0),
           leftHandSideColBackgroundColor: Color(0xFFFFFFFF),
           rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
           verticalScrollbarStyle: const ScrollbarStyle(
@@ -81,12 +89,19 @@ class _TableScreenState extends State<TableScreen> {
     return widget.columnsName
         .map((title) => TextButton(
               style: TextButton.styleFrom(
-                padding: title.key == widget.columnsName[0].key ? const EdgeInsets.only(left: 12) : EdgeInsets.zero,
+                padding: title.key == widget.columnsName[0].key
+                    ? const EdgeInsets.only(left: 12)
+                    : EdgeInsets.zero,
               ),
               child: _getTitleItemWidget(
-                  title.value + (sortKey == title.key ? (isAscending ? ' ↓' : ' ↑') : ''),
-                  title.key == widget.columnsName[0].key ? KLeftColumnWidth : KColumnWidth,
-                  title.key == widget.columnsName[0].key ? Alignment.centerLeft : null),
+                  title.value +
+                      (sortKey == title.key ? (isAscending ? ' ↓' : ' ↑') : ''),
+                  title.key == widget.columnsName[0].key
+                      ? KLeftColumnWidth
+                      : KColumnWidth,
+                  title.key == widget.columnsName[0].key
+                      ? Alignment.centerLeft
+                      : null),
               onPressed: () {
                 sortKey = title.key;
                 isAscending = !isAscending;
@@ -96,12 +111,14 @@ class _TableScreenState extends State<TableScreen> {
         .toList();
   }
 
-  Widget _getTitleItemWidget(String label, double width, [AlignmentGeometry? alignment]) {
+  Widget _getTitleItemWidget(String label, double width,
+      [AlignmentGeometry? alignment]) {
     return Container(
-      child: Text(label, style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+      child: Text(label,
+          style: TextStyle(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center),
       width: width,
       height: 56,
-      // padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
       alignment: alignment ?? Alignment.center,
     );
   }
@@ -109,10 +126,15 @@ class _TableScreenState extends State<TableScreen> {
   ///left side item builder
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
-      // child: Text(table[index][widget.columnsName[0].key].toString(), style: TextStyle(fontSize: 14),),
-      child: RichText(text: TextSpan(text: table[index].values.first.toString(), style: GoogleFonts.cairo(color: Colors.black))),
+      child: RichText(
+          text: TextSpan(
+              text: table[index].values.first.toString(),
+              style: GoogleFonts.cairo(color: Colors.black))),
       width: KLeftColumnWidth,
-      constraints: BoxConstraints(minHeight: KRowHeight, maxWidth: KLeftColumnWidth, minWidth: KLeftColumnWidth),
+      constraints: BoxConstraints(
+          minHeight: KRowHeight,
+          maxWidth: KLeftColumnWidth,
+          minWidth: KLeftColumnWidth),
       // height: KRowHeight,
       padding: EdgeInsets.fromLTRB(12, 4, 4, 4),
       alignment: Alignment.centerLeft,
@@ -125,7 +147,9 @@ class _TableScreenState extends State<TableScreen> {
 
     // 14 for emulator , 15.3 for real device
     TextPainter textPainter = TextPainter(
-        text: TextSpan(text: table[index].values.first.toString(), style: GoogleFonts.cairo()),
+        text: TextSpan(
+            text: table[index].values.first.toString(),
+            style: GoogleFonts.cairo()),
         //better to pass this from master widget if ltr and rtl both supported
         // maxLines: widget.maxLines,
         textDirection: TextDirection.ltr);
@@ -141,8 +165,8 @@ class _TableScreenState extends State<TableScreen> {
     for (int i = 1; i < widget.columnsName.length; i++)
       children.add(
         Container(
-          // child: RichText(text: TextSpan(text: table[index].values.first.toString(), style: GoogleFonts.cairo(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 15.6))),
-          child: Text(table[index].values.toList()[i].toString(), textAlign: TextAlign.center),
+          child: Text(table[index].values.toList()[i].toString(),
+              textAlign: TextAlign.center),
           width: KColumnWidth,
           padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
           alignment: Alignment.center,

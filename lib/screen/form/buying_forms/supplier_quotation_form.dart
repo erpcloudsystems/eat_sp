@@ -112,8 +112,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['quotation_name'] != null) {
-      context.read<ModuleProvider>().pushPage(
-          res['message']['quotation_name']);
+      context.read<ModuleProvider>().pushPage(res['message']['quotation_name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
@@ -129,22 +128,22 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
     super.initState();
 
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing){
+    if (context.read<ModuleProvider>().isEditing) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
-          selectedSupplierData['address_line1'] =
-              formatDescription(data['address_line1']);
+              selectedSupplierData['address_line1'] =
+                  formatDescription(data['address_line1']);
 
-          selectedSupplierData['city'] = data['city'];
-          selectedSupplierData['country'] = data['country'];
+              selectedSupplierData['city'] = data['city'];
+              selectedSupplierData['country'] = data['country'];
 
-          selectedSupplierData['contact_display'] =
-              formatDescription(data['contact_display']);
-          selectedSupplierData['mobile_no'] = data['mobile_no'];
-          selectedSupplierData['phone'] = data['phone'];
-          selectedSupplierData['email_id'] = data['email_id'];
-        }));
+              selectedSupplierData['contact_display'] =
+                  formatDescription(data['contact_display']);
+              selectedSupplierData['mobile_no'] = data['mobile_no'];
+              selectedSupplierData['phone'] = data['phone'];
+              selectedSupplierData['email_id'] = data['email_id'];
+            }));
 
         //print('➡️ This is existing data: $data');
         final items = SupplierQuotationPageModel(context, data).items;
@@ -153,7 +152,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
             .items
             .add(ItemSelectModel.fromJson(element)));
         InheritedForm.of(context).data['buying_price_list'] =
-        data['buying_price_list'];
+            data['buying_price_list'];
 
         setState(() {});
       });
@@ -177,17 +176,16 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         data['transaction_date'] = DateTime.now().toIso8601String();
         data['apply_discount_on'] = grandTotalList[0];
 
-
         // From Opportunity
-        if(data['doctype']=='Opportunity'){
+        if (data['doctype'] == 'Opportunity') {
           data['opportunity'] = data['name'];
         }
 
         _getSupplierData(data['customer_name']).then((value) => setState(() {
-          data['currency'] = selectedSupplierData['default_currency'];
-          data['price_list_currency'] = selectedSupplierData['default_currency'];
-
-        }));
+              data['currency'] = selectedSupplierData['default_currency'];
+              data['price_list_currency'] =
+                  selectedSupplierData['default_currency'];
+            }));
 
         data.remove('print_formats');
         data.remove('conn');
@@ -205,13 +203,11 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         setState(() {});
       });
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    InheritedForm.of(context)
-        .data['selling_price_list']='';
+    InheritedForm.of(context).data['selling_price_list'] = '';
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
@@ -471,7 +467,6 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                 Group(
                   child: Column(
                     children: [
-
                       CustomTextField('currency', 'Currency',
                           initialValue: data['currency'],
                           onSave: (key, value) => data[key] = value,

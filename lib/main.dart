@@ -1,20 +1,23 @@
 import 'dart:io';
-
-import 'provider/module/module_provider.dart';
-import 'screen/home_screen.dart';
-import 'screen/other/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
+import 'new_version/core/global/dependency_container.dart' as di;
 import 'core/constants.dart';
+import 'new_version/core/global/bloc_observer.dart';
+import 'new_version/core/global/state_managment.dart';
+import 'new_version/core/resources/routes.dart';
 import 'provider/user/user_provider.dart';
+import 'screen/home_screen.dart';
 import 'screen/other/login_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'screen/other/splash_screen.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -71,6 +74,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
+  await di.init();
+  Bloc.observer = MyBlocObserver();
 
   // for Firebase Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -97,12 +102,7 @@ void main() async {
           path: 'assets/locale', // <-- change the path of the translation files
           fallbackLocale: Locale('en'),
           child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<UserProvider>(
-                  create: (_) => UserProvider()),
-              ChangeNotifierProvider<ModuleProvider>(
-                  create: (_) => ModuleProvider()),
-            ],
+            providers: StateManagement.stateManagement,
             child: MyApp(),
           )),
     );
@@ -112,62 +112,66 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'NextApp',
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: ThemeData(
-        textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
-        primaryColor: MAIN_COLOR,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-            .copyWith(secondary: Colors.blue),
-        scaffoldBackgroundColor: Colors.grey.shade200,
-        appBarTheme: AppBarTheme(
-            titleSpacing: 0.0,
-            color: APPBAR_COLOR,
-            elevation: 1,
-            foregroundColor: Colors.black,
-            iconTheme: IconThemeData(color: Colors.white),
-            toolbarTextStyle: TextTheme(
-              // center text style
-              headline6: GoogleFonts.cairo(
-                  fontStyle: FontStyle.normal,
-                  color: Colors.white,
-                  fontSize: 18),
-            ).bodyText2,
-            // Side text style
-            titleTextStyle: TextTheme(
-              // appBar text style
-              headline6: GoogleFonts.cairo(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+    return ScreenUtilInit(
+      builder: (context, child) => 
+       MaterialApp(
+        title: 'NextApp',
+        scaffoldMessengerKey: scaffoldMessengerKey,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        theme: ThemeData(
+          textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
+          primaryColor: Color(0xffF9F9F9),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+              .copyWith(secondary: Colors.blue),
+          scaffoldBackgroundColor: Colors.grey.shade200,
+          appBarTheme: AppBarTheme(
+              titleSpacing: 0.0,
+              color: APPBAR_COLOR,
+              elevation: 1,
+              foregroundColor: Colors.black,
+              iconTheme: IconThemeData(color: Colors.white),
+              toolbarTextStyle: TextTheme(
+                // center text style
+                headline6: GoogleFonts.cairo(
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white,
+                    fontSize: 18),
+              ).bodyText2,
               // Side text style
-            ).headline6),
-        tabBarTheme: TabBarTheme(
-          indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(color: APPBAR_COLOR)),
+              titleTextStyle: TextTheme(
+                // appBar text style
+                headline6: GoogleFonts.cairo(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+                // Side text style
+              ).headline6),
+          tabBarTheme: TabBarTheme(
+            indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(color: APPBAR_COLOR)),
+          ),
         ),
-      ),
-      home: Consumer<UserProvider>(
-        builder: (BuildContext context, userProvider, Widget? child) {
-          return userProvider.user == null
-              ? Center(
-                  child: FutureBuilder(
-                      future: userProvider.getUserData(),
-                      builder: (_, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting)
-                          return SplashScreen();
-
-                        return LoginScreen();
-                      }),
-                )
-              : HomeScreen();
-        },
+        home: Consumer<UserProvider>(
+          builder: (BuildContext context, userProvider, Widget? child) {
+            return userProvider.user == null
+                ? Center(
+                    child: FutureBuilder(
+                        future: userProvider.getUserData(),
+                        builder: (_, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting)
+                            return SplashScreen();
+    
+                          return LoginScreen();
+                        }),
+                  )
+                : HomeScreen();
+          },
+        ),
+        routes: Routes.routes,
       ),
     );
   }

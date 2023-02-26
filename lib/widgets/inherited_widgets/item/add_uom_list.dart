@@ -177,7 +177,8 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                         stops: [0.0, 0.05, 0.97, 1.0],
                       ).createShader(bounds);
                     },
-                    child: ListView.builder(physics: BouncingScrollPhysics(),
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         controller: _uomScrollController,
                         // reverse: true,
                         itemCount: InheritedUOMForm.of(context).uoms.length,
@@ -223,8 +224,8 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                             bottom: Radius.circular(8),
                                             top: Radius.circular(8),
                                           ),
-                                          border:
-                                              Border.all(color: Colors.transparent),
+                                          border: Border.all(
+                                              color: Colors.transparent),
                                           boxShadow: [
                                             BoxShadow(
                                               color:

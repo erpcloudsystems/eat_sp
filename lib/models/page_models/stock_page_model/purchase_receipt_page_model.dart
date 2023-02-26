@@ -35,7 +35,7 @@ class PurchaseReceiptPageModel {
       },
       //{
       //   tr("Tax Id"): data['tax_id'] ?? tr('none'),
-       //},
+      //},
       {
         tr("Supplier Address"): data['supplier_address'] != null
             ? formatDescription(data['supplier_address'])
@@ -47,7 +47,8 @@ class PurchaseReceiptPageModel {
       {
         tr("City"): data['city'] ?? tr('none'),
         tr("Country"): data['country'] ?? tr('none'),
-      },{
+      },
+      {
         tr("Contact Person"): data['contact_person'] ?? tr('none'),
         tr("Contact Display"): data['contact_display'] ?? tr('none'),
       },
@@ -81,7 +82,6 @@ class PurchaseReceiptPageModel {
         tr("Is Return"): data['is_return'].toString(),
         tr("Source Warehouse"): data['set_warehouse'] ?? tr('none'),
       },
-
       {
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none'),
         // tr("Payment Terms Template"):
@@ -123,8 +123,7 @@ class PurchaseReceiptPageModel {
         tr("Apply Additional Discount On"): data['apply_discount_on'].toString()
       },
       {
-        tr("Discount Amount ") +
-                context.read<UserProvider>().defaultCurrency:
+        tr("Discount Amount ") + context.read<UserProvider>().defaultCurrency:
             currency(data['base_discount_amount']),
       },
       (data['base_discount_amount'] == data['discount_amount'])
@@ -133,12 +132,10 @@ class PurchaseReceiptPageModel {
               tr("Discount Amount  ") + "(${data['currency']})":
                   currency(data['discount_amount'])
             },
-
       {
         tr("Additional Discount Percentage"):
-        percent(data['additional_discount_percentage']),
+            percent(data['additional_discount_percentage']),
       },
-
       {
         tr("Grand Total  ") + context.read<UserProvider>().defaultCurrency:
             currency(data['base_grand_total'])
@@ -149,15 +146,13 @@ class PurchaseReceiptPageModel {
       },
       (data['base_grand_total'] == data['grand_total'])
           ? {}
-          :
-      {
+          : {
               tr("Grand Total ") + "(${data['currency']})":
                   currency(data['grand_total'])
             },
       (data['base_grand_total'] == data['grand_total'])
           ? {}
-          :
-      {
+          : {
               tr("In Words  ") + "(${data['currency']})":
                   data['in_words'] ?? tr('none')
             },

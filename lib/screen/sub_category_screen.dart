@@ -1,10 +1,10 @@
-import '../provider/module/module_provider.dart';
 import 'drawer/drawer_screen.dart';
 import 'home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import '../provider/module/module_provider.dart';
 import '../provider/user/user_provider.dart';
 import '../service/service.dart';
 import '../widgets/botton_navigation_bar.dart';
@@ -65,12 +65,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               Navigator.of(context).push(PageRouteBuilder(
                 pageBuilder: (context, animation1, animation2) =>
                     ShowCaseWidget(
-                  onFinish: ()  {
+                  onFinish: () {
                     userProvider.setShowcaseProgress('list_tut');
                   },
-                      onComplete:(index,key){
+                  onComplete: (index, key) {
                     userProvider.setShowcaseProgress('list_tut');
-                      } ,
+                  },
                   builder:
                       Builder(builder: (context) => GenericListScreen.module()),
                 ),
@@ -81,11 +81,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       ),
       NotificationScreen(),
       CustomDrawer(),
-
     ];
 
     List<String> appBarTitles = [
-      'App Settings',
+      'Reports',
       'User Profile',
       widget.title,
       'Notification',
@@ -121,12 +120,12 @@ class HomeItem extends StatelessWidget {
   final String imageUrl, title;
   final VoidCallback onPressed;
 
-  const HomeItem(
-      {required this.title,
-      required this.imageUrl,
-      required this.onPressed,
-      Key? key})
-      : super(key: key);
+  const HomeItem({
+    required this.title,
+    required this.imageUrl,
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

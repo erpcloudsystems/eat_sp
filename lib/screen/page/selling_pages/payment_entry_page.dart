@@ -22,46 +22,57 @@ class PaymentEntryPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: PageCard(
-            color: statusColor(data['status'] ?? 'none') != Colors.transparent ? statusColor(data['status'] ?? 'none') : null,
+            color: statusColor(data['status'] ?? 'none') != Colors.transparent
+                ? statusColor(data['status'] ?? 'none')
+                : null,
             header: [
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  Text('Payment Entry', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text('Payment Entry',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16)),
                   if (data['docstatus'] != null)
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 12.0),
-                        child: context.read<ModuleProvider>().submitDocumentWidget(),
+                        child: context
+                            .read<ModuleProvider>()
+                            .submitDocumentWidget(),
                       ),
                     )
                 ],
               ),
               Padding(
-                  padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(context.read<ModuleProvider>().pageId,
+                      style: const TextStyle(fontWeight: FontWeight.bold))),
               Divider(color: Colors.grey.shade400, thickness: 1),
             ],
             items: model.card1Items,
             swapWidgets: [
               SwapWidget(
                   data['payment_type'] == 'Internal Transfer' ? 1 : 3,
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceAround, mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.circle, color: statusColor(data['status'] ?? 'none'), size: 12),
-                    SizedBox(width: 8),
-                    FittedBox(
-                      child: Text(data['status'] ?? 'none'),
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.circle,
+                            color: statusColor(data['status'] ?? 'none'),
+                            size: 12),
+                        SizedBox(width: 8),
+                        FittedBox(
+                          child: Text(data['status'] ?? 'none'),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ]),
                   widgetNumber: 2)
             ],
           ),
         ),
-
-    CommentsButton(color: color),
-
-    ],
+        CommentsButton(color: color),
+      ],
     );
   }
 }

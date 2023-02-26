@@ -35,7 +35,6 @@ class _CustomerFormState extends State<CustomerForm> {
   LatLng location = LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
-
   final _formKey = GlobalKey<FormState>();
 
   // any widgets below this condition will not be shown
@@ -44,16 +43,10 @@ class _CustomerFormState extends State<CustomerForm> {
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if(location == LatLng(0.0, 0.0)
-
-    ) {
-      showSnackBar(
-          'Enable Location Permission for this action',
-          context)  ;
-      Future.delayed(Duration(seconds: 1), () async{
-
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar('Enable Location Permission for this action', context);
+      Future.delayed(Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
-
       });
       return;
     }
@@ -63,11 +56,10 @@ class _CustomerFormState extends State<CustomerForm> {
     final server = APIService();
     final provider = context.read<ModuleProvider>();
 
-    if (!context.read<ModuleProvider>().isEditing){
+    if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
       data['location'] = gpsService.placemarks[0].subAdministrativeArea;
-
     }
     showLoadingDialog(
         context,
@@ -118,7 +110,7 @@ class _CustomerFormState extends State<CustomerForm> {
       setState(() {});
     }
 //Editing Mode
-    if (context.read<ModuleProvider>().isEditing){
+    if (context.read<ModuleProvider>().isEditing) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         removeWhenUpdate = data.isEmpty;
@@ -134,22 +126,20 @@ class _CustomerFormState extends State<CustomerForm> {
         data = context.read<ModuleProvider>().createFromPageData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
         data['credit_limits'] = [{}];
-        data['customer_type'] =  customerType[0];
+        data['customer_type'] = customerType[0];
         data['customer_name'] = data['lead_name'];
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
 
-
         //from lead
-        if(data['doctype']=='Lead'){
+        if (data['doctype'] == 'Lead') {
           data['lead_name'] = data['name'];
         }
         // From Opportunity
-        if(data['doctype']=='Opportunity'){
+        if (data['doctype'] == 'Opportunity') {
           data['opportunity_name'] = data['name'];
           data['customer_name'] = data['party_name'];
         }
-
 
         // from user defaults
         data['default_currency'] = context
@@ -160,8 +150,7 @@ class _CustomerFormState extends State<CustomerForm> {
         data['country'] =
             context.read<UserProvider>().companyDefaults['country'];
 
-
-        data['doctype']= "Customer";
+        data['doctype'] = "Customer";
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');
@@ -178,12 +167,10 @@ class _CustomerFormState extends State<CustomerForm> {
     }
   }
 
-
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     location = await gpsService.getCurrentLocation(context);
-
   }
 
   @override
@@ -219,7 +206,7 @@ class _CustomerFormState extends State<CustomerForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -266,11 +253,12 @@ class _CustomerFormState extends State<CustomerForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => industryScreen()))),
-                      CustomTextField('tax_id', tr('Tax ID'),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['tax_id'],
+                      CustomTextField(
+                        'tax_id',
+                        tr('Tax ID'),
+                        onSave: (key, value) => data[key] = value,
+                        initialValue: data['tax_id'],
                         disableValidation: true,
-
                       ),
 
                       if (!removeWhenUpdate)
@@ -282,7 +270,6 @@ class _CustomerFormState extends State<CustomerForm> {
                         CustomTextField('email_id', tr('Email Address'),
                             initialValue: data['email_id'],
                             disableValidation: true,
-
                             keyboardType: TextInputType.emailAddress,
                             validator: mailValidation,
                             onSave: (key, value) => data[key] = value),
@@ -290,21 +277,21 @@ class _CustomerFormState extends State<CustomerForm> {
                         CustomTextField('mobile_no', tr('Mobile No'),
                             initialValue: data['mobile_no'],
                             disableValidation: true,
-
                             keyboardType: TextInputType.phone,
                             validator: validateMobile,
                             onSave: (key, value) => data[key] = value),
                       if (removeWhenUpdate)
-                        CustomTextField('address_line1', tr('Address'),
-                            onSave: (key, value) => data[key] = value,
-                            initialValue: data['address_line1'],
+                        CustomTextField(
+                          'address_line1',
+                          tr('Address'),
+                          onSave: (key, value) => data[key] = value,
+                          initialValue: data['address_line1'],
                           disableValidation: true,
                         ),
                       if (removeWhenUpdate)
                         CustomTextField('city', 'City',
                             onSave: (key, value) => data[key] = value,
                             disableValidation: true,
-
                             initialValue: data['city']),
                       if (removeWhenUpdate)
                         CustomTextField('country', tr('Country'),
@@ -336,7 +323,6 @@ class _CustomerFormState extends State<CustomerForm> {
                         'Currency',
                         initialValue: data['default_currency'],
                         disableValidation: true,
-
                         onSave: (key, value) => data[key] = value,
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
@@ -345,7 +331,6 @@ class _CustomerFormState extends State<CustomerForm> {
                       CustomTextField('default_price_list', 'Price List'.tr(),
                           initialValue: data['default_price_list'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () async {
                             final res = await Navigator.of(context).push(
@@ -367,7 +352,6 @@ class _CustomerFormState extends State<CustomerForm> {
                           'payment_terms', 'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onChanged: (value) => data['payment_terms'] = value,
                           onPressed: () => Navigator.of(context).push(
@@ -385,9 +369,9 @@ class _CustomerFormState extends State<CustomerForm> {
                   child: Column(
                     children: [
                       CustomTextField('credit_limit', 'Credit Limit'.tr(),
-                          initialValue: (data['credit_limits']?[0]
-                                  ['credit_limit']??'')
-                              .toString(),
+                          initialValue:
+                              (data['credit_limits']?[0]['credit_limit'] ?? '')
+                                  .toString(),
                           disableValidation: true,
                           keyboardType: TextInputType.number,
                           onSave: (key, value) =>

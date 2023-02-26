@@ -22,8 +22,6 @@ class LoanApplicationPageModel {
         tr("Posting Date"): reverse(data['posting_date']),
         tr('Status'): data['status'] ?? tr('none'),
       },
-
-
     ];
   }
 
@@ -31,29 +29,27 @@ class LoanApplicationPageModel {
     return [
       {
         tr("Loan Type"): data['loan_type'] ?? tr('none'),
-        tr("Is Term Loan"): data['is_term_loan'].toString() ,
+        tr("Is Term Loan"): data['is_term_loan'].toString(),
       },
       {
         tr("Loan Amount"): data['loan_amount'].toString(),
         tr("Is Secured Loan"): data['is_secured_loan'].toString(),
       },
       {
-        tr("Rate of Interest"): data['rate_of_interest'].toString()+ " %" ,
+        tr("Rate of Interest"): data['rate_of_interest'].toString() + " %",
         tr("Maximum Loan Amount"): data['maximum_loan_amount'].toString(),
       },
       {
-        tr("Repayment Method"): data['repayment_method']?? tr('none'),
+        tr("Repayment Method"): data['repayment_method'] ?? tr('none'),
         tr("Total Payable Amount"): data['total_payable_amount'].toString(),
-      },{
+      },
+      {
         tr("Return Amount"): data['return_amount'].toString(),
         tr("Total Payable Interest"): data['total_payable_interest'].toString(),
-      },{
+      },
+      {
         tr("Description"): data['description'].toString(),
       },
-
     ];
   }
-
-
-
 }

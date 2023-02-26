@@ -20,7 +20,7 @@ class MaterialRequestPage extends StatelessWidget {
 
     final Color? color = context.read<ModuleProvider>().color;
 
-    final model = MaterialRequestPageModel(context,data);
+    final model = MaterialRequestPageModel(context, data);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -31,19 +31,24 @@ class MaterialRequestPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Material Request   ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('Material Request   ',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                      child: context.read<ModuleProvider>().submitDocumentWidget(),
+                      child:
+                          context.read<ModuleProvider>().submitDocumentWidget(),
                     ),
                   )
               ],
             ),
             Padding(
-                padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
+                padding: const EdgeInsets.all(4.0),
+                child: Text(context.read<ModuleProvider>().pageId,
+                    style: const TextStyle(fontWeight: FontWeight.bold))),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -52,24 +57,24 @@ class MaterialRequestPage extends StatelessWidget {
                 2,
                 color != null
                     ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.circle, color: statusColor(data['status'] ?? 'none'), size: 12),
-                    SizedBox(width: 8),
-                    FittedBox(
-                      child: Text(data['status'] ?? 'none'),
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ],
-                )
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.circle,
+                              color: statusColor(data['status'] ?? 'none'),
+                              size: 12),
+                          SizedBox(width: 8),
+                          FittedBox(
+                            child: Text(data['status'] ?? 'none'),
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ],
+                      )
                     : Text(data['status'] ?? 'none'),
                 widgetNumber: 2)
           ],
         ),
-
         CommentsButton(color: color),
-
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: DefaultTabController(
@@ -102,49 +107,47 @@ class MaterialRequestPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: TabBarView(
-                      children: [
-                        data['items'] == null || data['items'].isEmpty
-                            ? NothingHere()
-                            : ListView.builder(physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          //shrinkWrap: true,
-                          itemCount: model.items.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              ItemWithImageCard(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PageDetailsDialog(
-                                              title: model.items[index]
-                                              ['name'] ??
-                                                  'none',
-                                              names: model.subList1Names,
-                                              values:
-                                              model.subList1Item(index));
-                                        });
-                                  },
-                                  id: model.items[index]['idx'].toString(),
-                                  imageUrl:
-                                  model.items[index]['image'].toString(),
-                                  itemName: model.items[index]['item_name'],
-                                names: model.getItemCard(index),),
-                        ),
-
-                        data['conn'] == null || data['conn'].isEmpty
-                            ? NothingHere()
-                            : ListView.builder(physics: BouncingScrollPhysics(),
+                  child: TabBarView(children: [
+                    data['items'] == null || data['items'].isEmpty
+                        ? NothingHere()
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            //shrinkWrap: true,
+                            itemCount: model.items.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                ItemWithImageCard(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return PageDetailsDialog(
+                                          title: model.items[index]['name'] ??
+                                              'none',
+                                          names: model.subList1Names,
+                                          values: model.subList1Item(index));
+                                    });
+                              },
+                              id: model.items[index]['idx'].toString(),
+                              imageUrl: model.items[index]['image'].toString(),
+                              itemName: model.items[index]['item_name'],
+                              names: model.getItemCard(index),
+                            ),
+                          ),
+                    data['conn'] == null || data['conn'].isEmpty
+                        ? NothingHere()
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(
                                 imageUrl:
-                                data['conn'][index]['icon'] ?? tr('none'),
+                                    data['conn'][index]['icon'] ?? tr('none'),
                                 docTypeId:
-                                data['conn'][index]['name'] ?? tr('none'),
+                                    data['conn'][index]['name'] ?? tr('none'),
                                 count:
-                                data['conn'][index]['count'].toString())),
-                      ]),
+                                    data['conn'][index]['count'].toString())),
+                  ]),
                 )
               ],
             ),

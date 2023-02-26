@@ -26,22 +26,17 @@ class UOMModel {
   String uom;
   double conversionFactor;
 
-
-
-  UOMModel(
-      {
-        required this.id,
-        required this.uom,
-        required this.conversionFactor,
-
-      });
+  UOMModel({
+    required this.id,
+    required this.uom,
+    required this.conversionFactor,
+  });
 
   factory UOMModel.fromJson(Map<String, dynamic> json) {
     return UOMModel(
       id: json['id'] ?? Uuid().v1().toString(),
       uom: json['uom'] ?? '',
       conversionFactor: json['conversion_factor'] ?? 0.0,
-
     );
   }
 
@@ -54,12 +49,8 @@ class UOMModel {
   }
 
   @override
-  bool operator ==(Object other) =>
-      other is UOMModel && this.uom == other.uom;
+  bool operator ==(Object other) => other is UOMModel && this.uom == other.uom;
 
   @override
   int get hashCode => uom.hashCode;
-
 }
-
-

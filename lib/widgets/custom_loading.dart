@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CustomLoadingWithImage extends StatefulWidget {
@@ -8,7 +7,8 @@ class CustomLoadingWithImage extends StatefulWidget {
   State<CustomLoadingWithImage> createState() => _CustomLoadingWithImageState();
 }
 
-class _CustomLoadingWithImageState extends State<CustomLoadingWithImage> with SingleTickerProviderStateMixin{
+class _CustomLoadingWithImageState extends State<CustomLoadingWithImage>
+    with SingleTickerProviderStateMixin {
   double curtain = 1.0;
   bool selected = false;
 
@@ -24,7 +24,7 @@ class _CustomLoadingWithImageState extends State<CustomLoadingWithImage> with Si
         setState(() {});
       });
     controller.forward();
-   // changeColors();
+    // changeColors();
   }
 
   Future changeColors() async {
@@ -45,52 +45,42 @@ class _CustomLoadingWithImageState extends State<CustomLoadingWithImage> with Si
     load();
   }
 
-
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return
-
-      Center(
-        child: Container(
-          margin: EdgeInsets.only(bottom: 25),
-          width: 180,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    color: Colors.grey,
-
-                  ),
-                  ClipRect(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: animation.value,
-                      child: Image.asset(
-                        'assets/logo.png',
-                      ),
+    return Center(
+      child: Container(
+        margin: EdgeInsets.only(bottom: 25),
+        width: 180,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Image.asset(
+                  'assets/logo.png',
+                  color: Colors.grey,
+                ),
+                ClipRect(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: animation.value,
+                    child: Image.asset(
+                      'assets/logo.png',
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
-      );
-
-
-
+      ),
+    );
   }
 }
-

@@ -7,8 +7,6 @@ class FAQ extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnderDevelopmentScreen(
-        message:'FAQ still under development'
-    );
+    return UnderDevelopmentScreen(message: 'FAQ still under development');
   }
 }

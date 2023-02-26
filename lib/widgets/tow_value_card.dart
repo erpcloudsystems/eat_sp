@@ -5,7 +5,8 @@ class TowValueCard extends StatelessWidget {
   final String first, second;
   final void Function(BuildContext context)? onTap;
 
-  const TowValueCard(this.first, this.second, {required this.onTap, Key? key}) : super(key: key);
+  const TowValueCard(this.first, this.second, {required this.onTap, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

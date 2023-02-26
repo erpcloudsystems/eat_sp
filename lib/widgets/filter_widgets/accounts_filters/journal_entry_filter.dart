@@ -1,17 +1,16 @@
-import '../../../screen/filter_screen.dart';
-import '../../../screen/list/otherLists.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../screen/filter_screen.dart';
 import '../../form_widgets.dart';
 
 class JournalEntryFilter extends StatefulWidget {
   const JournalEntryFilter({Key? key}) : super(key: key);
 
   static const List<String> _entryTypeList = [
-   'Journal Entry',
-   'Inter Company Journal Entry',
-   'Bank Entry',
+    'Journal Entry',
+    'Inter Company Journal Entry',
+    'Bank Entry',
     'Cash Entry',
     'Credit Card Entry',
     'Debit Note',
@@ -50,7 +49,6 @@ class _JournalEntryFilterState extends State<JournalEntryFilter> {
           defaultValue: _values['filter1'],
           clear: true,
         ),
-
         DatePicker(
           'filter2',
           'From Date'.tr(),
@@ -59,7 +57,9 @@ class _JournalEntryFilterState extends State<JournalEntryFilter> {
             setState(() {
               _values['filter2'] = value;
               // remove date to if it's before from date
-              if (_values['filter3'] != null && DateTime.parse(_values['filter3']).isBefore(DateTime.parse(_values['filter2']))) {
+              if (_values['filter3'] != null &&
+                  DateTime.parse(_values['filter3'])
+                      .isBefore(DateTime.parse(_values['filter2']))) {
                 _values.remove('filter3');
                 _dateTo = '';
               }
@@ -73,7 +73,9 @@ class _JournalEntryFilterState extends State<JournalEntryFilter> {
         DatePicker(
           'filter3',
           'To Date'.tr(),
-          firstDate: _values['filter2'] != null ? DateTime.parse(_values['filter2']) : null,
+          firstDate: _values['filter2'] != null
+              ? DateTime.parse(_values['filter2'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

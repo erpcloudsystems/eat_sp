@@ -67,20 +67,17 @@ class LoanApplicationPage extends StatelessWidget {
             SwapWidget(
                 1,
                 Checkbox(
-                    value:
-                    (data['is_term_loan'] ?? 0) == 0 ? false : true,
+                    value: (data['is_term_loan'] ?? 0) == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 2),
             SwapWidget(
                 2,
                 Checkbox(
-                    value:
-                    (data['is_term_loan'] ?? 0) == 0 ? false : true,
+                    value: (data['is_term_loan'] ?? 0) == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 2),
           ],
         ),
-
 
         CommentsButton(color: color),
 

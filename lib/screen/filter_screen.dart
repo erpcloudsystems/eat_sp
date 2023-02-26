@@ -31,65 +31,65 @@ class _FilterScreenState extends State<FilterScreen> {
     super.initState();
   }
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(!context.read<UserProvider>().showcaseProgress!.contains('filter_tut'))
-      Future.delayed(Duration.zero,(){
-        ShowCaseWidget.of(showCaseContext).startShowCase([clearFiltersGK,chooseFiltersGK,applyFiltersGK]);
+    if (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut'))
+      Future.delayed(Duration.zero, () {
+        ShowCaseWidget.of(showCaseContext)
+            .startShowCase([clearFiltersGK, chooseFiltersGK, applyFiltersGK]);
       });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      onFinish: ()  {
-       context.read<UserProvider>().setShowcaseProgress('filter_tut');
+      onFinish: () {
+        context.read<UserProvider>().setShowcaseProgress('filter_tut');
       },
-      builder:
-      Builder(builder: (context) {
-        showCaseContext= context;
+      builder: Builder(builder: (context) {
+        showCaseContext = context;
         return Scaffold(
           appBar: AppBar(
             title: Text('Filter'.tr()),
             actions: [
-              (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
-              CustomShowCase(
-                globalKey: clearFiltersGK,
-                title: 'Clear Filter',
-                description: 'Click here to clear all filters',
-                child: IconButton(
-                  splashRadius: 20,
-                  icon: Icon(Icons.clear, color: Colors.black),
-                  onPressed: () {
-                    values.clear();
-                    context.read<ModuleProvider>().filter = {'':''};
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => super.widget));
-                    setState(() {
-                    });
-                  },
-                ),
-              ): IconButton(
-          splashRadius: 20,
-          icon: Icon(Icons.clear, color: Colors.black),
-          onPressed: () {
-            values.clear();
-            context.read<ModuleProvider>().filter = {'':''};
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => super.widget));
-            setState(() {
-            });
-          },
-        ),
-
-
+              (!context
+                      .read<UserProvider>()
+                      .showcaseProgress!
+                      .contains('filter_tut'))
+                  ? CustomShowCase(
+                      globalKey: clearFiltersGK,
+                      title: 'Clear Filter',
+                      description: 'Click here to clear all filters',
+                      child: IconButton(
+                        splashRadius: 20,
+                        icon: Icon(Icons.clear, color: Colors.black),
+                        onPressed: () {
+                          values.clear();
+                          context.read<ModuleProvider>().filter = {'': ''};
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      super.widget));
+                          setState(() {});
+                        },
+                      ),
+                    )
+                  : IconButton(
+                      splashRadius: 20,
+                      icon: Icon(Icons.clear, color: Colors.black),
+                      onPressed: () {
+                        values.clear();
+                        context.read<ModuleProvider>().filter = {'': ''};
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    super.widget));
+                        setState(() {});
+                      },
+                    ),
             ],
           ),
           body: Column(
@@ -97,61 +97,72 @@ class _FilterScreenState extends State<FilterScreen> {
               Expanded(
                 child: Group(
                   child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-                    child:
-                    (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
-                    CustomShowCase(
-                        globalKey: chooseFiltersGK,
-                        title: 'Filter by',
-                        description: 'Click here to choose your filter',
-                        overlayPadding: EdgeInsets.symmetric(horizontal: 22,vertical: 10),
-
-                        child: _filter):_filter,
+                    physics: BouncingScrollPhysics(),
+                    child: (!context
+                            .read<UserProvider>()
+                            .showcaseProgress!
+                            .contains('filter_tut'))
+                        ? CustomShowCase(
+                            globalKey: chooseFiltersGK,
+                            title: 'Filter by',
+                            description: 'Click here to choose your filter',
+                            overlayPadding: EdgeInsets.symmetric(
+                                horizontal: 22, vertical: 10),
+                            child: _filter)
+                        : _filter,
                   ),
                 ),
               ),
-
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                 child: ElevatedButton(
-
-                    style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                       // maximumSize: Size.fromWidth(106),
-                        primary: APPBAR_COLOR, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
-                    onPressed: () {
-                      context.read<ModuleProvider>().filter = values;
-                      Navigator.of(context).pop();
-
-                    },
-                    child:
-                    (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) ?
-                    CustomShowCase(
-                      globalKey: applyFiltersGK,
-                      title: 'Apply',
-                      description: 'Click here to get results',
-                      overlayPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Apply Filter',style: TextStyle(color: Colors.black,fontSize: 14.5),),
-                        ],
-                      ),
-                    ):
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Apply Filter',style: TextStyle(color: Colors.black,fontSize: 14.5),),
-                      ],
-                    ),
+                      primary: APPBAR_COLOR,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
+                  onPressed: () {
+                    context.read<ModuleProvider>().filter = values;
+                    Navigator.of(context).pop();
+                  },
+                  child: (!context
+                          .read<UserProvider>()
+                          .showcaseProgress!
+                          .contains('filter_tut'))
+                      ? CustomShowCase(
+                          globalKey: applyFiltersGK,
+                          title: 'Apply',
+                          description: 'Click here to get results',
+                          overlayPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Apply Filter',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 14.5),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Apply Filter',
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 14.5),
+                            ),
+                          ],
+                        ),
                 ),
               )
             ],
           ),
         );
-      } ),
-    )
-
-      ;
+      }),
+    );
   }
 }

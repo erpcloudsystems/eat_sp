@@ -131,9 +131,7 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          
-          
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -230,13 +228,13 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
                     child: Column(
                   children: [
                     //if (data['pending_amount'] != null)
-                      CustomTextField(
-                        'pending_amount',
-                        'Pending Amount',
-                        initialValue:
-                        currency((data['pending_amount']??0.0).toDouble()),
-                        enabled: false,
-                      ),
+                    CustomTextField(
+                      'pending_amount',
+                      'Pending Amount',
+                      initialValue:
+                          currency((data['pending_amount'] ?? 0.0).toDouble()),
+                      enabled: false,
+                    ),
                     NumberTextField(
                       'advance_amount',
                       'Advance Amount',
@@ -277,7 +275,7 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
                     CustomTextField('company', tr('Company'),
                         initialValue: data['company'],
                         onSave: (key, value) => data[key] = value,
-                        onPressed: () async{
+                        onPressed: () async {
                           final res = await Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => companyListScreen()));

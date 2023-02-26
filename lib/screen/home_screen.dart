@@ -1,3 +1,6 @@
+import 'package:upgrader/upgrader.dart';
+
+import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import 'Drawer/drawer_screen.dart';
 import '../service/local_notification_service.dart';
 import '../widgets/dialog/loading_dialog.dart';
@@ -7,7 +10,6 @@ import 'package:upgrader/upgrader.dart';
 
 import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
-import 'other/app_settings.dart';
 import 'other/notification_screen.dart';
 import 'other/user_profile.dart';
 import 'sub_category_screen.dart';
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      AppSettings(),
+      ModulesPage(),
       UserProfile(),
       GridView.count(
         padding: const EdgeInsets.only(top: 20, right: 6, left: 6, bottom: 50),
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       CustomDrawer(),
     ];
     List<String> appBarTitles = [
-      'App Settings',
+      'Modules',
       'User Profile',
       'Home',
       'Notification',

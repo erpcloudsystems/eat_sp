@@ -8,13 +8,24 @@ class StockEntryPageModel {
 
   StockEntryPageModel(this.data)
       : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
-    ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
+          ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
   List<Map<String, String>> get card1Items {
     return [
-      {tr("Stock Entry Type"): data['stock_entry_type'] ?? tr('none'), tr("Purpose"): data['purpose'] ?? tr('none')},
-      {tr("Date"): data['posting_date'] == null ? tr('none') : reverse(data['posting_date']), tr("Status"): data['status'] ?? tr('none')},
-      {tr("From Warehouse"): data['from_warehouse'] ?? tr('none'), tr("To Warehouse"): data['to_warehouse'] ?? tr('none')},
+      {
+        tr("Stock Entry Type"): data['stock_entry_type'] ?? tr('none'),
+        tr("Purpose"): data['purpose'] ?? tr('none')
+      },
+      {
+        tr("Date"): data['posting_date'] == null
+            ? tr('none')
+            : reverse(data['posting_date']),
+        tr("Status"): data['status'] ?? tr('none')
+      },
+      {
+        tr("From Warehouse"): data['from_warehouse'] ?? tr('none'),
+        tr("To Warehouse"): data['to_warehouse'] ?? tr('none')
+      },
       {tr("Project"): data['project'] ?? tr('none')}
     ];
   }

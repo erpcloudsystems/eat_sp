@@ -1,17 +1,15 @@
-import '../../core/showcase_consts.dart';
-import '../../models/list_models/list_model.dart';
-import '../../provider/module/module_provider.dart';
-import '../../provider/user/user_provider.dart';
-import '../filter_screen.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import '../../service/service.dart';
-import '../../core/constants.dart';
 import '/widgets/pagination.dart';
-
+import '../../core/constants.dart';
+import '../../core/showcase_consts.dart';
+import '../../models/list_models/list_model.dart';
+import '../../provider/module/module_provider.dart';
+import '../../provider/user/user_provider.dart';
+import '../../service/service.dart';
+import '../filter_screen.dart';
 
 /// this is a generic paginated list screen,
 /// specify which datatype to deal with, this is the data model which used at service model parser
@@ -77,13 +75,14 @@ class GenericListScreen<T> extends StatefulWidget {
   }
 
   @override
-  createState() => _useProvider ? _GenericListModuleScreenState() : _GenericListScreenState<T>(listItem, serviceParser);
+  createState() => _useProvider
+      ? _GenericListModuleScreenState()
+      : _GenericListScreenState<T>(listItem, serviceParser);
 }
 
 /// this state class of [GenericListScreen] is to handle state object based on provider
 /// it sends to provider the search text and current page_models and the provider handles the request for the List Screen
 class _GenericListModuleScreenState extends State<GenericListScreen> {
-
   final APIService service = APIService();
 
   String searchText = '';
@@ -98,86 +97,94 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
     reset.value = !reset.value;
   }
 
-
   @override
   void didChangeDependencies() {
-    if (!_isInit) moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
-     userProvider = Provider.of<UserProvider>(context, listen: false);
+    if (!_isInit)
+      moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+    userProvider = Provider.of<UserProvider>(context, listen: false);
     super.didChangeDependencies();
-    if(!userProvider.showcaseProgress!.contains('list_tut'))
-    Future.delayed(Duration.zero,(){
-      ShowCaseWidget.of(context).startShowCase([createGK, filterGK,listSearchGK,countGK]);
-    });
+    if (!userProvider.showcaseProgress!.contains('list_tut'))
+      Future.delayed(Duration.zero, () {
+        ShowCaseWidget.of(context)
+            .startShowCase([createGK, filterGK, listSearchGK, countGK]);
+      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: widget.disableAppBar? null: AppBar(
-        elevation: 0,
-        title: Text(moduleProvider.currentModule.title),
-        actions: [
-          // Text('${Provider.of<ModuleProvider>(context,).loadCount} of '
-          //     '${Provider.of<ModuleProvider>(context,).totalListCount}'),
-          if (moduleProvider.currentModule.createForm != null)
-            CustomShowCase(
-              globalKey: createGK,
-              title: 'Create',
-              description: 'Click here to create new document',
-              child: IconButton(
-                splashRadius: 20,
-                onPressed: () {
-                  // notifying the provider to disable page update
-                  moduleProvider.iAmCreatingAForm();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => moduleProvider.currentModule.createForm!)).then((value) {
-                    // to auto reload List after new create
-                     reset.value = !reset.value;
-                     //context.read<ModuleProvider>().filter = {'': ''};
-                  });
-                },
-                icon: Icon(Icons.add, color: APPBAR_ICONS_COLOR),
-              ),
-            ),
-
-          if (moduleProvider.currentModule.filterWidget != null)
-            CustomShowCase(
-              globalKey: filterGK,
-              title: 'Filter',
-              description: 'Click here to filter',
-              child: IconButton(
-                splashRadius: 20,
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen())),
-                icon: Icon(Icons.filter_list_alt, color: APPBAR_ICONS_COLOR),
-              ),
-            ),
-
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
-          child: CustomShowCase(
-            globalKey: listSearchGK,
-            title: 'Search',
-            description: 'Click here to Search in your documents',
-            overlayPadding: const EdgeInsets.only(top:6),
-            child:  Column(
-              children: [
-                SearchBar(search: _search),
+      appBar: widget.disableAppBar
+          ? null
+          : AppBar(
+              elevation: 0,
+              title: Text(moduleProvider.currentModule.title),
+              actions: [
+                if (moduleProvider.currentModule.createForm != null)
+                  CustomShowCase(
+                    globalKey: createGK,
+                    title: 'Create',
+                    description: 'Click here to create new document',
+                    child: IconButton(
+                      splashRadius: 20,
+                      onPressed: () {
+                        // notifying the provider to disable page update
+                        moduleProvider.iAmCreatingAForm();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => moduleProvider
+                                    .currentModule.createForm!)).then((value) {
+                          // to auto reload List after new create
+                          reset.value = !reset.value;
+                        });
+                      },
+                      icon: Icon(Icons.add, color: APPBAR_ICONS_COLOR),
+                    ),
+                  ),
+                if (moduleProvider.currentModule.filterWidget != null)
+                  CustomShowCase(
+                    globalKey: filterGK,
+                    title: 'Filter',
+                    description: 'Click here to filter',
+                    child: IconButton(
+                      splashRadius: 20,
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FilterScreen())),
+                      icon: Icon(Icons.filter_list_alt,
+                          color: APPBAR_ICONS_COLOR),
+                    ),
+                  ),
               ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
+                child: CustomShowCase(
+                  globalKey: listSearchGK,
+                  title: 'Search',
+                  description: 'Click here to Search in your documents',
+                  overlayPadding: const EdgeInsets.only(top: 6),
+                  child: Column(
+                    children: [
+                      SearchBar(search: _search),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
       body: Selector<ModuleProvider, Map<String, dynamic>>(
           selector: (_, provider) => provider.filter,
           builder: (context, _, __) {
             reset.value = !reset.value;
             return PaginationList(
-              future: (_page) => moduleProvider.listService(page: _page, search: searchText.trim()),
-              listCount: ()=> moduleProvider.listCount(search: searchText.trim()),
+              future: (_page) => moduleProvider.listService(
+                  page: _page, search: searchText.trim()),
+              listCount: () =>
+                  moduleProvider.listCount(search: searchText.trim()),
               reset: reset,
               listItem: moduleProvider.currentModule.listItem,
-              search:searchText,
+              search: searchText,
             );
           }),
     );
@@ -207,52 +214,65 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    if(!userProvider.showcaseProgress!.contains('list_tut'))
-      Future.delayed(Duration.zero,(){
-        ShowCaseWidget.of(context).startShowCase([createGK, filterGK,listSearchGK,countGK]);
+    if (!userProvider.showcaseProgress!.contains('list_tut'))
+      Future.delayed(Duration.zero, () {
+        ShowCaseWidget.of(context)
+            .startShowCase([createGK, filterGK, listSearchGK, countGK]);
       });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: widget.disableAppBar? null:AppBar(
-        elevation: 0,
-        title: Text(widget.title.toString() ),
-        actions: [
-          if (widget.createForm != null)
-            CustomShowCase(
-              globalKey: createGK,
-              title: 'Create',
-              description: 'Click here to create new document',
-              child: IconButton(
-                splashRadius: 20,
-                onPressed: () {
-                  // notifying the provider to disable page update
-                  context.read<ModuleProvider>().iAmCreatingAForm();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => widget.createForm!));
-                },
-                icon: Icon(Icons.add, color: APPBAR_ICONS_COLOR),
+      appBar: widget.disableAppBar
+          ? null
+          : AppBar(
+              elevation: 0,
+              title: Text(widget.title.toString()),
+              actions: [
+                if (widget.createForm != null)
+                  CustomShowCase(
+                    globalKey: createGK,
+                    title: 'Create',
+                    description: 'Click here to create new document',
+                    child: IconButton(
+                      splashRadius: 20,
+                      onPressed: () {
+                        // notifying the provider to disable page update
+                        context.read<ModuleProvider>().iAmCreatingAForm();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => widget.createForm!));
+                      },
+                      icon: Icon(Icons.add, color: APPBAR_ICONS_COLOR),
+                    ),
+                  ),
+                // SizedBox(width: 8 )
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
+                child: SearchBar(search: _search),
               ),
             ),
-          // SizedBox(width: 8 )
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
-          child: SearchBar(search: _search),
-        ),
-      ),
       body: PaginationList<T>(
-        future: (_page) =>
-            service.getList<T>(widget.service!, _page, serviceParser!,customServiceURL:widget.customServiceURL, filterById: widget.filterById, connection: widget.connection, search: searchText.trim(),filters: widget.filters,),
-        listCount:()=>  context.read<ModuleProvider>().listCount(service:widget.service!,search: searchText.trim()),
+        future: (_page) => service.getList<T>(
+          widget.service!,
+          _page,
+          serviceParser!,
+          customServiceURL: widget.customServiceURL,
+          filterById: widget.filterById,
+          connection: widget.connection,
+          search: searchText.trim(),
+          filters: widget.filters,
+        ),
+        listCount: () => context
+            .read<ModuleProvider>()
+            .listCount(service: widget.service!, search: searchText.trim()),
         reset: reset,
         listItem: listItem!,
-        search:searchText,
+        search: searchText,
       ),
     );
   }

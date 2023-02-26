@@ -29,15 +29,20 @@ class MaterialItemModel {
   final String setWarehouse;
   final String status;
 
-  MaterialItemModel({required this.id, required this.requestType, required this.setWarehouse, required this.status, required this.transactionDate});
+  MaterialItemModel(
+      {required this.id,
+      required this.requestType,
+      required this.setWarehouse,
+      required this.status,
+      required this.transactionDate});
 
   factory MaterialItemModel.fromJson(Map<String, dynamic> json) {
     return MaterialItemModel(
-      id : json['name'] ?? 'none',
-      requestType : json['material_request_type'] ?? 'none',
-      setWarehouse : json['set_warehouse'] ?? 'none',
-      status : json['status'] ?? 'none',
-      transactionDate : DateTime.parse(json['transaction_date'] ?? 'none'),
+      id: json['name'] ?? 'none',
+      requestType: json['material_request_type'] ?? 'none',
+      setWarehouse: json['set_warehouse'] ?? 'none',
+      status: json['status'] ?? 'none',
+      transactionDate: DateTime.parse(json['transaction_date'] ?? 'none'),
     );
   }
 

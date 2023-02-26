@@ -49,7 +49,8 @@ class _PurchaseReceiptFilterState extends State<PurchaseReceiptFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectSupplierScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectSupplierScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
@@ -70,7 +71,8 @@ class _PurchaseReceiptFilterState extends State<PurchaseReceiptFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter4'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => warehouseScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => warehouseScreen()));
             print('777777 ${res.runtimeType}');
             if (res != null) _values['filter4'] = res;
             return _values['filter4'];
@@ -84,7 +86,9 @@ class _PurchaseReceiptFilterState extends State<PurchaseReceiptFilter> {
             setState(() {
               _values['filter5'] = value;
               // remove date to if it's before from date
-              if (_values['filter6'] != null && DateTime.parse(_values['filter6']).isBefore(DateTime.parse(_values['filter5']))) {
+              if (_values['filter6'] != null &&
+                  DateTime.parse(_values['filter6'])
+                      .isBefore(DateTime.parse(_values['filter5']))) {
                 _values.remove('filter6');
                 _dateTo = '';
               }
@@ -96,7 +100,9 @@ class _PurchaseReceiptFilterState extends State<PurchaseReceiptFilter> {
         DatePicker(
           'filter6',
           'To Date'.tr(),
-          firstDate: _values['filter5'] != null ? DateTime.parse(_values['filter5']) : null,
+          firstDate: _values['filter5'] != null
+              ? DateTime.parse(_values['filter5'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

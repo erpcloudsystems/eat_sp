@@ -26,9 +26,13 @@ class _CustomMapViewState extends State<CustomMapView> {
       Marker(
         width: 80,
         height: 80,
-        point:  LatLng(double.parse(widget.latitude.toString()),
+        point: LatLng(double.parse(widget.latitude.toString()),
             double.parse(widget.longitude.toString())),
-        builder: (ctx) => Icon(Icons.location_on,color:Colors.redAccent,size: 40,),
+        builder: (ctx) => Icon(
+          Icons.location_on,
+          color: Colors.redAccent,
+          size: 40,
+        ),
       ),
     ];
   }
@@ -69,8 +73,8 @@ class _CustomMapViewState extends State<CustomMapView> {
                       double.parse(widget.longitude.toString())),
                   zoom: 14,
 
-                   minZoom: 2,
-                   maxZoom: 30,
+                  minZoom: 2,
+                  maxZoom: 30,
                   // swPanBoundary: LatLng(double.parse(latitude.toString()) ,double.parse(longitude.toString())),
                   // nePanBoundary: LatLng(double.parse(latitude.toString()) ,double.parse(longitude.toString())),
                 ),
@@ -85,7 +89,6 @@ class _CustomMapViewState extends State<CustomMapView> {
                     // urlTemplate:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
                   ),
                   MarkerLayer(markers: markers),
-
                 ],
               ),
             ),
@@ -95,14 +98,16 @@ class _CustomMapViewState extends State<CustomMapView> {
           bottom: 10,
           right: 10,
           child: Align(
-           alignment: Alignment.bottomRight,
+            alignment: Alignment.bottomRight,
             child: Container(
               decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(8)
-              ),
+                  color: Colors.orange.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(8)),
               child: IconButton(
-                icon: Icon(Icons.my_location,color: Colors.black87,),
+                icon: Icon(
+                  Icons.my_location,
+                  color: Colors.black87,
+                ),
                 onPressed: () {
                   _mapController.move(
                       LatLng(widget.latitude, widget.longitude), 14);

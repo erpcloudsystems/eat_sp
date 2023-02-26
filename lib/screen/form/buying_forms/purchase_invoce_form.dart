@@ -1,6 +1,3 @@
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../main.dart';
 import '../../../service/service.dart';
 import '../../../service/service_constants.dart';
 import '../../../provider/module/module_provider.dart';
@@ -13,7 +10,6 @@ import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
 import '../../../models/page_models/model_functions.dart';
@@ -90,7 +86,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
 
     for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
-     final res = await handleRequest(
+    final res = await handleRequest(
         () async => provider.isEditing
             ? await provider.updatePage(data)
             : await server.postRequest(PURCHASE_INVOICE_POST, {'data': data}),
@@ -109,16 +105,16 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
             .pushPage(res['message']['purchase_invoice_name']);
       Navigator.of(context)
           .push(MaterialPageRoute(
-        builder: (_) => GenericPage(),
-      ))
+            builder: (_) => GenericPage(),
+          ))
           .then((value) => Navigator.pop(context));
-    }
-    else if (res != null && res['message']['purchase_invoice_name'] != null) {
+    } else if (res != null && res['message']['purchase_invoice_name'] != null) {
       provider.pushPage(res['message']['purchase_invoice_name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
+
   Future<void> _getSupplierData(String supplier) async {
     selectedSupplierData = Map<String, dynamic>.from(
         await APIService().getPage(SUPPLIER_PAGE, supplier))['message'];
@@ -133,15 +129,16 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
         data = context.read<ModuleProvider>().updateData;
 
         _getSupplierData(data['supplier']).then((value) => setState(() {
-          selectedSupplierData['address_line1'] = formatDescription(data['address_line1']);
-          selectedSupplierData['city'] = data['city'];
-          selectedSupplierData['country'] = data['country'];
+              selectedSupplierData['address_line1'] =
+                  formatDescription(data['address_line1']);
+              selectedSupplierData['city'] = data['city'];
+              selectedSupplierData['country'] = data['country'];
 
-          selectedSupplierData['contact_display'] = data['contact_display'];
-          selectedSupplierData['mobile_no'] = data['mobile_no'];
-          selectedSupplierData['phone'] = data['phone'];
-          selectedSupplierData['email_id'] = data['email_id'];
-        }));
+              selectedSupplierData['contact_display'] = data['contact_display'];
+              selectedSupplierData['mobile_no'] = data['mobile_no'];
+              selectedSupplierData['phone'] = data['phone'];
+              selectedSupplierData['email_id'] = data['email_id'];
+            }));
 
         final items = PurchaseInvoicePageModel(context, data).items;
 
@@ -149,8 +146,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
             .items
             .add(ItemSelectModel.fromJson(element)));
         InheritedForm.of(context).data['buying_price_list'] =
-        data['buying_price_list'];
-
+            data['buying_price_list'];
       });
 
     //DocFromPage Mode
@@ -167,48 +163,44 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
         data['bill_no'] = "";
         data['conversion_rate'] = 1;
 
-
         // from Purchase Invoice
-        if(data['doctype']=='Purchase Invoice'){
-
+        if (data['doctype'] == 'Purchase Invoice') {
           data['purchase_invoice_item'].forEach((element) {
             InheritedForm.of(context)
                 .items
                 .add(ItemSelectModel.fromJson(element));
           });
           InheritedForm.of(context).data['buying_price_list'] =
-          data['buying_price_list'];
+              data['buying_price_list'];
 
           data['return_against'] = data['name'];
           data['is_return'] = 1;
         }
 
         _getSupplierData(data['supplier_name']).then((value) => setState(() {
-          data['due_date'] = DateTime.now()
-              .add(Duration(
-              days: int.parse(
-                  (selectedSupplierData['credit_days'] ?? 0).toString())))
-              .toIso8601String();
+              data['due_date'] = DateTime.now()
+                  .add(Duration(
+                      days: int.parse((selectedSupplierData['credit_days'] ?? 0)
+                          .toString())))
+                  .toIso8601String();
 
-          if (data['buying_price_list'] !=
-              selectedSupplierData['default_price_list']) {
-            data['buying_price_list'] =
-            selectedSupplierData['default_price_list'];
+              if (data['buying_price_list'] !=
+                  selectedSupplierData['default_price_list']) {
+                data['buying_price_list'] =
+                    selectedSupplierData['default_price_list'];
 
-            InheritedForm.of(context).data['buying_price_list'] =
-            selectedSupplierData['default_price_list'];
-          }
-          data['currency'] = selectedSupplierData['default_currency'];
-          data['price_list_currency'] = selectedSupplierData['default_currency'];
-          // data['payment_terms_template'] = selectedSupplierData['payment_terms'];
-          // data['customer_address'] =
-          //     selectedSupplierData["customer_primary_address"];
-          // data['contact_person'] =
-          //     selectedSupplierData["customer_primary_contact"];
-        }));
-
-
-
+                InheritedForm.of(context).data['buying_price_list'] =
+                    selectedSupplierData['default_price_list'];
+              }
+              data['currency'] = selectedSupplierData['default_currency'];
+              data['price_list_currency'] =
+                  selectedSupplierData['default_currency'];
+              // data['payment_terms_template'] = selectedSupplierData['payment_terms'];
+              // data['customer_address'] =
+              //     selectedSupplierData["customer_primary_address"];
+              // data['contact_person'] =
+              //     selectedSupplierData["customer_primary_contact"];
+            }));
 
         data['doctype'] = "Purchase Invoice";
         data.remove('print_formats');
@@ -223,11 +215,10 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-         setState(() {});
+        setState(() {});
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +237,9 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title:  (context.read<ModuleProvider>().isEditing) ? Text("Edit Purchase Invoice") : Text("Create Purchase Invoice"),
+          title: (context.read<ModuleProvider>().isEditing)
+              ? Text("Edit Purchase Invoice")
+              : Text("Create Purchase Invoice"),
           actions: [
             Material(
                 color: Colors.transparent,
@@ -293,23 +286,23 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                               data['supplier_name'] = res['supplier_name'];
                               data['tax_id'] = selectedSupplierData["tax_id"];
                               data['supplier_address'] = selectedSupplierData[
-                              "supplier_primary_address"];
+                                  "supplier_primary_address"];
                               data['contact_person'] = selectedSupplierData[
-                              "supplier_primary_contact"];
+                                  "supplier_primary_contact"];
                               data['contact_mobile'] =
-                              selectedSupplierData["mobile_no"];
+                                  selectedSupplierData["mobile_no"];
                               data['contact_email'] =
-                              selectedSupplierData["email_id"];
+                                  selectedSupplierData["email_id"];
                               data['currency'] =
-                              selectedSupplierData['default_currency'];
+                                  selectedSupplierData['default_currency'];
                               if (data['buying_price_list'] !=
                                   selectedSupplierData['default_price_list']) {
                                 data['buying_price_list'] =
-                                selectedSupplierData['default_price_list'];
+                                    selectedSupplierData['default_price_list'];
                                 InheritedForm.of(context).items.clear();
                                 InheritedForm.of(context)
-                                    .data['buying_price_list'] =
-                                selectedSupplierData['default_price_list'];
+                                        .data['buying_price_list'] =
+                                    selectedSupplierData['default_price_list'];
                               }
                               data['due_date'] = DateTime.now()
                                   .add(Duration(days: int.parse('1')))
@@ -340,31 +333,31 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                       Row(children: [
                         Flexible(
                             child: DatePicker(
-                              'posting_date',
-                              'Date'.tr(),
-                              initialValue: data['posting_date'] ?? 'none',
-                              onChanged: (value) =>
-                                  setState(() => data['posting_date'] = value),
-                              lastDate: DateTime.tryParse(data['due_date'] ??
-                                  DateTime.now()
-                                      .add(Duration(days: int.parse('30')))
-                                      .toIso8601String()),
-                            )),
+                          'posting_date',
+                          'Date'.tr(),
+                          initialValue: data['posting_date'] ?? 'none',
+                          onChanged: (value) =>
+                              setState(() => data['posting_date'] = value),
+                          lastDate: DateTime.tryParse(data['due_date'] ??
+                              DateTime.now()
+                                  .add(Duration(days: int.parse('30')))
+                                  .toIso8601String()),
+                        )),
                         SizedBox(width: 10),
                         Flexible(
                             child: DatePicker(
-                              'due_date',
-                              'Due Date',
-                              onChanged: (value) =>
-                                  setState(() => data['due_date'] = value),
-                              initialValue: data['due_date'] ??
-                                  ((selectedSupplierData['name'].toString() !=
+                          'due_date',
+                          'Due Date',
+                          onChanged: (value) =>
+                              setState(() => data['due_date'] = value),
+                          initialValue: data['due_date'] ??
+                              ((selectedSupplierData['name'].toString() !=
                                       'noName')
-                                      ? DateTime.now()
+                                  ? DateTime.now()
                                       .add(Duration(days: int.parse('30')))
                                       .toIso8601String()
-                                      : null),
-                            )),
+                                  : null),
+                        )),
                       ]),
                       if (data['tax_id'] != null)
                         Align(
@@ -392,7 +385,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
-                            data['supplier_address'] == null,
+                                data['supplier_address'] == null,
                             onPressed: () async {
                               if (data['supplier'] == null)
                                 return showSnackBar(
@@ -405,97 +398,96 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                               setState(() {
                                 data['supplier_address'] = res['name'];
                                 selectedSupplierData['address_line1'] =
-                                res['address_line1'];
+                                    res['address_line1'];
                                 selectedSupplierData['city'] = res['city'];
                                 selectedSupplierData['country'] =
-                                res['country'];
+                                    res['country'];
                               });
                               return res['name'];
                             }),
                         children: (data['supplier_address'] != null)
                             ? <Widget>[
-                          ListTile(
-                            trailing: Icon(Icons.location_on),
-                            title: Text(
-                                selectedSupplierData['address_line1'] ??
-                                    ''),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.location_city),
-                            title: Text(
-                                selectedSupplierData['city'] ?? ''),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.flag),
-                            title: Text(
-                                selectedSupplierData['country'] ?? ''),
-                          )
-                        ]
+                                ListTile(
+                                  trailing: Icon(Icons.location_on),
+                                  title: Text(
+                                      selectedSupplierData['address_line1'] ??
+                                          ''),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.location_city),
+                                  title:
+                                      Text(selectedSupplierData['city'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.flag),
+                                  title: Text(
+                                      selectedSupplierData['country'] ?? ''),
+                                )
+                              ]
                             : null,
                       ),
                       CustomExpandableTile(
                         hideArrow: data['supplier'] == null,
                         title:
-                        CustomTextField('contact_person', 'Contact Person',
-                            initialValue: data['contact_person'],
-                            disableValidation: true,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              if (data['supplier'] == null) {
-                                showSnackBar(
-                                    'Please select a supplier', context);
-                                return null;
-                              }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          contactScreen(data['supplier'])));
-                              setState(() {
-                                data['contact_person'] = res['name'];
-                                data['contact_mobile'] = res['mobile_no'];
-                                data['contact_email'] = res['email_id'];
+                            CustomTextField('contact_person', 'Contact Person',
+                                initialValue: data['contact_person'],
+                                disableValidation: true,
+                                clearButton: false,
+                                onSave: (key, value) => data[key] = value,
+                                onPressed: () async {
+                                  if (data['supplier'] == null) {
+                                    showSnackBar(
+                                        'Please select a supplier', context);
+                                    return null;
+                                  }
+                                  final res = await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              contactScreen(data['supplier'])));
+                                  setState(() {
+                                    data['contact_person'] = res['name'];
+                                    data['contact_mobile'] = res['mobile_no'];
+                                    data['contact_email'] = res['email_id'];
 
-                                selectedSupplierData[
-                                'contact_display'] =
-                                res['contact_person'];
-                                selectedSupplierData['mobile_no'] =
-                                res['mobile_no'];
-                                selectedSupplierData['phone'] =
-                                res['phone'];
-                                selectedSupplierData['email_id'] =
-                                res['email_id'];
-                              });
-                              return res['name'];
-                            }),
+                                    selectedSupplierData['contact_display'] =
+                                        res['contact_person'];
+                                    selectedSupplierData['mobile_no'] =
+                                        res['mobile_no'];
+                                    selectedSupplierData['phone'] =
+                                        res['phone'];
+                                    selectedSupplierData['email_id'] =
+                                        res['email_id'];
+                                  });
+                                  return res['name'];
+                                }),
                         children: (data['contact_person'] != null)
                             ? <Widget>[
-                          ListTile(
-                            trailing: Icon(Icons.person),
-                            title: Text('' +
-                                (selectedSupplierData[
-                                'contact_display'] ??
-                                    '')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.phone_iphone),
-                            title: Text('Mobile :  ' +
-                                (selectedSupplierData['mobile_no'] ??
-                                    'none')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.call),
-                            title: Text('Phone : ' +
-                                (selectedSupplierData['phone'] ??
-                                    'none')),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.alternate_email),
-                            title: Text(
-                                '' + ((selectedSupplierData['email_id']) ??
-                                    'none')),
-                          )
-                        ]
+                                ListTile(
+                                  trailing: Icon(Icons.person),
+                                  title: Text('' +
+                                      (selectedSupplierData[
+                                              'contact_display'] ??
+                                          '')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.phone_iphone),
+                                  title: Text('Mobile :  ' +
+                                      (selectedSupplierData['mobile_no'] ??
+                                          'none')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.call),
+                                  title: Text('Phone : ' +
+                                      (selectedSupplierData['phone'] ??
+                                          'none')),
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.alternate_email),
+                                  title: Text('' +
+                                      ((selectedSupplierData['email_id']) ??
+                                          'none')),
+                                )
+                              ]
                             : null,
                       ),
                       CheckBoxWidget('is_return', 'Is Return',
@@ -534,7 +526,6 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                 Group(
                   child: Column(
                     children: [
-
                       SizedBox(height: 8),
                       CustomTextField('cost_center', 'Cost Center',
                           disableValidation: true,
@@ -550,11 +541,9 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => projectScreen()))),
-
                       CustomTextField('currency', 'Currency',
                           initialValue: data['currency'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -569,7 +558,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                             numberValidation(value, allowNull: true),
                         keyboardType: TextInputType.number,
                         onSave: (key, value) =>
-                        data[key] = double.tryParse(value) ?? 1,
+                            data[key] = double.tryParse(value) ?? 1,
                       ),
                       CustomTextField(
                         'plc_conversion_rate',
@@ -581,27 +570,27 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                             numberValidation(value, allowNull: true),
                         keyboardType: TextInputType.number,
                         onSave: (key, value) =>
-                        data[key] = double.tryParse(value) ?? 1,
+                            data[key] = double.tryParse(value) ?? 1,
                       ),
                       CustomTextField('buying_price_list', 'Price List'.tr(),
                           initialValue: data['buying_price_list'],
                           disableValidation: true, onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => buyingPriceListScreen()));
-                            if (res != null && res.isNotEmpty) {
-                              setState(() {
-                                if (data['buying_price_list'] != res['name']) {
-                                  InheritedForm.of(context).items.clear();
-                                  InheritedForm.of(context)
-                                      .data['buying_price_list'] = res['name'];
-                                  data['buying_price_list'] = res['name'];
-                                }
-                                data['price_list_currency'] = res['currency'];
-                              });
-                              return res['name'];
+                        final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => buyingPriceListScreen()));
+                        if (res != null && res.isNotEmpty) {
+                          setState(() {
+                            if (data['buying_price_list'] != res['name']) {
+                              InheritedForm.of(context).items.clear();
+                              InheritedForm.of(context)
+                                  .data['buying_price_list'] = res['name'];
+                              data['buying_price_list'] = res['name'];
                             }
-                          }),
+                            data['price_list_currency'] = res['currency'];
+                          });
+                          return res['name'];
+                        }
+                      }),
                       CustomTextField(
                           'price_list_currency', 'Price List Currency',
                           initialValue: data['price_list_currency'],
@@ -619,16 +608,17 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                       CheckBoxWidget(
                           'ignore_pricing_rule', 'Ignore Pricing Rule',
                           initialValue:
-                          data['ignore_pricing_rule'] == 1 ? true : false,
+                              data['ignore_pricing_rule'] == 1 ? true : false,
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                       if (data['update_stock'] == 1)
-                      CustomTextField('set_warehouse', 'Set Accepted Warehouse'.tr(),
-                          initialValue: data['set_warehouse'],
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => warehouseScreen()))),
+                        CustomTextField(
+                            'set_warehouse', 'Set Accepted Warehouse'.tr(),
+                            initialValue: data['set_warehouse'],
+                            onSave: (key, value) => data[key] = value,
+                            onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => warehouseScreen()))),
                     ],
                   ),
                 ),
@@ -638,37 +628,37 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                 ///
                 Group(
                     child: Column(
-                      children: [
-                        //if (data['payment_terms_template'] != null)
-                        CustomTextField(
-                            'payment_terms_template', 'Payment Terms Template'.tr(),
-                            initialValue: data['payment_terms_template'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => paymentTermsScreen()))),
-                        //if (data['tc_name'] != null)
-                        CustomTextField('tc_name', 'Terms & Conditions'.tr(),
-                            initialValue: data['tc_name'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => termsConditionScreen()))),
-                        if (_terms != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(_terms!,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black)),
-                              )),
-                        if (_terms != null)
-                          Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      ],
-                    )),
+                  children: [
+                    //if (data['payment_terms_template'] != null)
+                    CustomTextField(
+                        'payment_terms_template', 'Payment Terms Template'.tr(),
+                        initialValue: data['payment_terms_template'],
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => paymentTermsScreen()))),
+                    //if (data['tc_name'] != null)
+                    CustomTextField('tc_name', 'Terms & Conditions'.tr(),
+                        initialValue: data['tc_name'],
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => termsConditionScreen()))),
+                    if (_terms != null)
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Text(_terms!,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black)),
+                          )),
+                    if (_terms != null)
+                      Divider(color: Colors.grey, height: 1, thickness: 0.7),
+                  ],
+                )),
 
                 ///
                 /// group 4

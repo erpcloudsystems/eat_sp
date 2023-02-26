@@ -45,21 +45,22 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
     final server = APIService();
     final provider = context.read<ModuleProvider>();
 
-
-    data['expenses']=[];
+    data['expenses'] = [];
     InheritedExpenseForm.of(context).expense.forEach((element) {
       data['expenses'].add(element.toJson);
     });
 
-
-print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
+    print(
+        'rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
     data['taxes'][0].remove('charge_type');
-    data['taxes'][0]['rate'] = double.tryParse((InheritedExpenseForm.of(context).taxData['rate']??0.0).toString());
-    data['taxes'][0]['cost_center'] = InheritedExpenseForm.of(context).taxData['cost_center'];
-    data['taxes'][0]['total'] = InheritedExpenseForm.of(context).taxData['total'];
-    data['taxes'][0]['tax_amount'] = InheritedExpenseForm.of(context).taxData['tax_amount'];
-
-
+    data['taxes'][0]['rate'] = double.tryParse(
+        (InheritedExpenseForm.of(context).taxData['rate'] ?? 0.0).toString());
+    data['taxes'][0]['cost_center'] =
+        InheritedExpenseForm.of(context).taxData['cost_center'];
+    data['taxes'][0]['total'] =
+        InheritedExpenseForm.of(context).taxData['total'];
+    data['taxes'][0]['tax_amount'] =
+        InheritedExpenseForm.of(context).taxData['tax_amount'];
 
     showLoadingDialog(
         context,
@@ -94,20 +95,19 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
     selectedEmployeeData = Map<String, dynamic>.from(
         await APIService().getPage(EMPLOYEE_PAGE, employee))['message'];
 
-    data['cost_center']= Map<String, dynamic>.from(
-        await APIService().genericGet('method/ecs_mobile.general.general_service?doctype='+APIService.COMPANY))['message'][0]['round_off_cost_center'];
-
+    data['cost_center'] = Map<String, dynamic>.from(await APIService()
+        .genericGet('method/ecs_mobile.general.general_service?doctype=' +
+            APIService.COMPANY))['message'][0]['round_off_cost_center'];
   }
 
   @override
   void initState() {
     super.initState();
 
-      data['taxes'] = context.read<UserProvider>().defaultTax;
+    data['taxes'] = context.read<UserProvider>().defaultTax;
 
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
-
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
@@ -115,7 +115,8 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
         expenses.forEach((element) => InheritedExpenseForm.of(context)
             .expense
             .add(ExpenseModel.fromJson(element)));
-        InheritedExpenseForm.of(context).taxData['rate'] = data['taxes'][0]['rate'].toString();
+        InheritedExpenseForm.of(context).taxData['rate'] =
+            data['taxes'][0]['rate'].toString();
 
         setState(() {});
       });
@@ -155,13 +156,10 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          
-          
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 8),
-
                 Group(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -207,7 +205,7 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
                           enabled: false,
                         ),
                       CustomTextField(
-                          'expense_approver','Expense Approver'.tr(),
+                          'expense_approver', 'Expense Approver'.tr(),
                           initialValue: data['expense_approver'],
                           onSave: (key, value) => data[key] = value,
                           onPressed: () async {
@@ -225,67 +223,61 @@ print('rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
                     ],
                   ),
                 ),
-
                 Group(
                     child: Column(
-                      children: [
-
-                        Row(children: [
-                          Flexible(
-                              child: DatePicker(
-                                'posting_date',
-                                'Posting Date'.tr(),
-                                initialValue: data['posting_date'],
-                                onChanged: (value) =>
-                                    setState(() => data['posting_date'] = value),
-                              )),
-                          SizedBox(width: 10),
-                        ]),
-                        // Mansy told me to delete From Page & Create @17/10/2022
-                        // CustomTextField('company', tr('Company'),
-                        //     initialValue: data['company'],
-                        //     onSave: (key, value) => data[key] = value,
-                        //     onPressed: () async {
-                        //       final res = await Navigator.of(context).push(
-                        //           MaterialPageRoute(
-                        //               builder: (_) => companyListScreen()));
-                        //
-                        //       return res['name'];
-                        //     }),
-                        CustomTextField('payable_account', tr('Payable Account'),
-                            initialValue: data['payable_account'],
-                            disableValidation: true,
-
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => accountListScreen(
-                                          filters: {"filter1": "Payable"})));
-                              return res['name'];
-                            }),
-                        CustomTextField('project', 'Project'.tr(),
-                            initialValue: data['project'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => projectScreen()))),
-                        CustomTextField('cost_center', 'Cost Center',
-                            disableValidation: true,
-                            clearButton: true,
-                            initialValue: data['cost_center'] ?? '',
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => costCenterScreen()))),
-
-                      ],
-                    )),
-
+                  children: [
+                    Row(children: [
+                      Flexible(
+                          child: DatePicker(
+                        'posting_date',
+                        'Posting Date'.tr(),
+                        initialValue: data['posting_date'],
+                        onChanged: (value) =>
+                            setState(() => data['posting_date'] = value),
+                      )),
+                      SizedBox(width: 10),
+                    ]),
+                    // Mansy told me to delete From Page & Create @17/10/2022
+                    // CustomTextField('company', tr('Company'),
+                    //     initialValue: data['company'],
+                    //     onSave: (key, value) => data[key] = value,
+                    //     onPressed: () async {
+                    //       final res = await Navigator.of(context).push(
+                    //           MaterialPageRoute(
+                    //               builder: (_) => companyListScreen()));
+                    //
+                    //       return res['name'];
+                    //     }),
+                    CustomTextField('payable_account', tr('Payable Account'),
+                        initialValue: data['payable_account'],
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => accountListScreen(
+                                      filters: {"filter1": "Payable"})));
+                          return res['name'];
+                        }),
+                    CustomTextField('project', 'Project'.tr(),
+                        initialValue: data['project'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => projectScreen()))),
+                    CustomTextField('cost_center', 'Cost Center',
+                        disableValidation: true,
+                        clearButton: true,
+                        initialValue: data['cost_center'] ?? '',
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => costCenterScreen()))),
+                  ],
+                )),
                 SelectedExpensesList(),
-
                 SizedBox(height: 30),
               ],
             ),

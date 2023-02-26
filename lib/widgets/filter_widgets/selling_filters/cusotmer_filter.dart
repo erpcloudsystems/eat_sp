@@ -30,7 +30,8 @@ class _CustomerFilterState extends State<CustomerFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter1'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => customerGroupScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => customerGroupScreen()));
             if (res != null) _values['filter1'] = res;
             return _values['filter1'];
           },
@@ -43,7 +44,8 @@ class _CustomerFilterState extends State<CustomerFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => territoryScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => territoryScreen()));
             if (res != null) _values['filter2'] = res;
             return _values['filter2'];
           },

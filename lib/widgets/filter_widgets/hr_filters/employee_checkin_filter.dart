@@ -27,7 +27,6 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
     _values = FilterScreen.of(context).values;
     _dateTo = _values['filter4'];
 
-
     return Column(
       children: [
         CustomDropDown(
@@ -61,18 +60,17 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
               initialValue: _values['filter3'],
               onChanged: (value) {
                 setState(() {
-                  if(_timeFrom == null){
+                  if (_timeFrom == null) {
                     _values['filter3'] = value;
-
-                  }else{
+                  } else {
                     _values['filter3'] =
-                        (value.toString().split("T")[0]) +
-                            "T" +
-                            _timeFrom!;
+                        (value.toString().split("T")[0]) + "T" + _timeFrom!;
                   }
                   //remove date to if it's before from date
-                   if (_values['filter4'] != null && DateTime.parse(_values['filter4']).isBefore(DateTime.parse(_values['filter3']))) {
-                     _values.remove('filter4');
+                  if (_values['filter4'] != null &&
+                      DateTime.parse(_values['filter4'])
+                          .isBefore(DateTime.parse(_values['filter3']))) {
+                    _values.remove('filter4');
                     _dateTo = '';
                   }
                 });
@@ -92,12 +90,12 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
             onChanged: (value) {
               setState(() {
                 _timeFrom = value;
-                if(_values['filter3'] != null){
+                if (_values['filter3'] != null) {
                   _values['filter3'] =
                       (_values['filter3'].toString().split("T")[0]) +
                           "T" +
                           _timeFrom!;
-                }else{
+                } else {
                   _values['filter3'] =
                       (DateTime.now().toIso8601String().split("T")[0]) +
                           "T" +
@@ -108,11 +106,9 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
             clear: true,
             onClear: () => setState(() {
               _values.remove('filter3');
-
             }),
           )),
         ]),
-
         Row(children: [
           Flexible(
             child: DatePicker(
@@ -124,14 +120,11 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
               initialValue: _values['filter4'],
               onChanged: (value) {
                 setState(() {
-                  if(_timeTo == null){
+                  if (_timeTo == null) {
                     _values['filter4'] = value;
-
-                  }else{
+                  } else {
                     _values['filter4'] =
-                        (value.toString().split("T")[0]) +
-                            "T" +
-                            _timeTo!;
+                        (value.toString().split("T")[0]) + "T" + _timeTo!;
                   }
                 });
               },
@@ -144,34 +137,31 @@ class _EmployeeCheckinFilterState extends State<EmployeeCheckinFilter> {
           SizedBox(width: 10),
           Flexible(
               child: TimePicker(
-                'time',
-                'Time'.tr(),
-                initialValue: _values['filter4'],
-                onChanged: (value) {
-                  setState(() {
-                    _timeTo = value;
-                    if(_values['filter4'] != null){
-                      _values['filter4'] =
-                          (_values['filter4'].toString().split("T")[0]) +
-                              "T" +
-                              _timeTo!;
-                    }else{
-                      _values['filter4'] =
-                          (DateTime.now().toIso8601String().split("T")[0]) +
-                              "T" +
-                              _timeTo!;
-                    }
-                  });
-                },
-                clear: true,
-                onClear: () => setState(() {
-                  _values.remove('filter4');
-
-                }),
-              )),
+            'time',
+            'Time'.tr(),
+            initialValue: _values['filter4'],
+            onChanged: (value) {
+              setState(() {
+                _timeTo = value;
+                if (_values['filter4'] != null) {
+                  _values['filter4'] =
+                      (_values['filter4'].toString().split("T")[0]) +
+                          "T" +
+                          _timeTo!;
+                } else {
+                  _values['filter4'] =
+                      (DateTime.now().toIso8601String().split("T")[0]) +
+                          "T" +
+                          _timeTo!;
+                }
+              });
+            },
+            clear: true,
+            onClear: () => setState(() {
+              _values.remove('filter4');
+            }),
+          )),
         ]),
-
-
       ],
     );
   }

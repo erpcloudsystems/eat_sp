@@ -1,8 +1,7 @@
+import '../new_version/core/resources/strings_manager.dart';
 import '../provider/user/user_provider.dart';
 import 'custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import '../main.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../core/constants.dart';
@@ -10,8 +9,6 @@ import '../core/showcase_consts.dart';
 import '../models/list_models/list_model.dart';
 import '../provider/module/module_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../screen/list/generic_list_screen.dart';
 
 class PaginationList<T> extends StatefulWidget {
   final Future<ListModel<T>?> Function(int pageCount) future;
@@ -49,13 +46,14 @@ class _PaginationListState<T> extends State<PaginationList> {
   _PaginationListState(this.listItem);
 
   Future<void> getItems() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
 
     pageCount += PAGINATION_PAGE_LENGTH;
 
     final res = await widget.future(pageCount) as ListModel<T>?;
 
-    listCount = await widget.listCount() ;
+    listCount = await widget.listCount();
 
     newLoadCount += res?.list.length ?? 0;
     Provider.of<ModuleProvider>(context, listen: false).setLoadCount =
@@ -100,10 +98,20 @@ class _PaginationListState<T> extends State<PaginationList> {
   @override
   void initState() {
     super.initState();
+//__________________________________________________________________________________________________________________
+    // this function starts the new version architecture.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.read<ModuleProvider>().currentModule.genericListService ==
+          ConstantStrings.newVersion) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: ((context) =>
+                context.read<ModuleProvider>().currentModule.pageWidget)));
+      }
+    });
+//__________________________________________________________________________________________________________________
     widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
     getItems();
-
   }
 
   @override
@@ -115,7 +123,6 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   @override
   Widget build(BuildContext context) {
-
     return LayoutBuilder(builder: (context, snapshot) {
       if (items.isNotEmpty) {
         return Stack(
@@ -123,7 +130,6 @@ class _PaginationListState<T> extends State<PaginationList> {
           children: [
             Positioned.fill(
               top: 27,
-              //bottom: 27,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: RefreshIndicator(
@@ -136,7 +142,8 @@ class _PaginationListState<T> extends State<PaginationList> {
                       getItems();
                     });
                   },
-                  child: ListView.builder(physics: BouncingScrollPhysics(),
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     controller: _scrollController,
                     itemCount: _noMoreItems ? items.length + 1 : items.length,
                     padding:
@@ -159,17 +166,13 @@ class _PaginationListState<T> extends State<PaginationList> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                       right: 18,
-                      //left: 18,
                       top: 3,
                     ),
                     child: Container(
-                        // height: 27,
-                        //alignment:Alignment.centerRight,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 0),
                         margin: const EdgeInsets.only(bottom: 0),
                         decoration: BoxDecoration(
-                          // color: APPBAR_COLOR,
                           borderRadius: BorderRadius.circular(0),
                         ),
                         child: Row(
@@ -185,35 +188,41 @@ class _PaginationListState<T> extends State<PaginationList> {
                                   height: 1.5),
                             ),
                             //this to avoid Duplicate GlobalKey
-                            (!context.read<UserProvider>().showcaseProgress!.contains('list_tut')) ?
-                            Showcase(
-                              key:  countGK ,
-                              title: 'Count',
-                              titleTextStyle: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
-                              description: 'This is the count of your documents',
-                              shapeBorder: CircleBorder(),
-                              radius: BorderRadius.all(Radius.circular(4)),
-                              // showArrow: false,
-                              //tipBorderRadius: BorderRadius.all(Radius.circular(8)),
-                              overlayPadding: EdgeInsets.only(left: 40,right: 8,top: 2,bottom: 2),
-                              blurValue: 1,
-                              child:  Text(
-                                '$listCount',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.5),
-                              ),
-                            ):
-      Text(
-      '$listCount',
-      style: TextStyle(
-      color: Colors.black87,
-      fontSize: 13,
-      fontWeight: FontWeight.w600,
-      height: 1.5),
-      ),
+                            (!context
+                                    .read<UserProvider>()
+                                    .showcaseProgress!
+                                    .contains('list_tut'))
+                                ? Showcase(
+                                    key: countGK,
+                                    title: 'Count',
+                                    titleTextStyle: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18),
+                                    description:
+                                        'This is the count of your documents',
+                                    shapeBorder: CircleBorder(),
+                                    radius:
+                                        BorderRadius.all(Radius.circular(4)),
+                                    overlayPadding: EdgeInsets.only(
+                                        left: 40, right: 8, top: 2, bottom: 2),
+                                    blurValue: 1,
+                                    child: Text(
+                                      '$listCount',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.5),
+                                    ),
+                                  )
+                                : Text(
+                                    '$listCount',
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.5),
+                                  ),
                           ],
                         )),
                   )),
@@ -242,7 +251,6 @@ class _PaginationListState<T> extends State<PaginationList> {
             CustomLoadingWithImage(),
           ],
         ));
-
       return Center(child: Text("No Data"));
     });
   }
@@ -293,7 +301,6 @@ class _SearchBarState extends State<SearchBar> {
                     EdgeInsets.only(left: 15, bottom: 7, top: 0, right: 15),
                 disabledBorder: InputBorder.none,
                 suffixIcon: IconButton(
-                  //  onTap: () => {service!.getQuotationList(url.toString(), fields, pageCount, filters: controller.text)},
                   icon: Icon(Icons.search),
                   onPressed: () {
                     FocusScope.of(context).unfocus();

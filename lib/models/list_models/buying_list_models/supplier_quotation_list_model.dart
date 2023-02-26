@@ -51,8 +51,8 @@ class SupplierQuotationItemModel {
       currency: json['currency'] ?? 'none',
       //transactionDate: DateTime.parse(json['transaction_date'] ?? 'none'),
       //validTill: DateTime.parse(json['valid_till'] ?? '1999-01-01'),
-      grandTotal: json['grand_total']?? 'none',
-      status: json['status']?? 'none',
+      grandTotal: json['grand_total'] ?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

@@ -81,7 +81,7 @@ class _ItemFormState extends State<ItemForm> {
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
- 
+
   @override
   void initState() {
     super.initState();
@@ -187,20 +187,22 @@ class _ItemFormState extends State<ItemForm> {
                                                 ),
                                         ),
                                       ),
-                                      onTap: _addedImage == true ? null: () async {
-                                        var res = await context
-                                            .read<ModuleProvider>()
-                                            .uploadImage(context);
-                                        if (res != null &&
-                                            res['imageUrl'] != null &&
-                                            res['imageFile'] != null) {
-                                          _imageUrl = res['imageUrl'];
-                                          _pickedImage = res['imageFile'];
-                                          _addedImage = true;
-                                          data['image'] = _imageUrl;
-                                          setState(() {});
-                                        }
-                                      }),
+                                      onTap: _addedImage == true
+                                          ? null
+                                          : () async {
+                                              var res = await context
+                                                  .read<ModuleProvider>()
+                                                  .uploadImage(context);
+                                              if (res != null &&
+                                                  res['imageUrl'] != null &&
+                                                  res['imageFile'] != null) {
+                                                _imageUrl = res['imageUrl'];
+                                                _pickedImage = res['imageFile'];
+                                                _addedImage = true;
+                                                data['image'] = _imageUrl;
+                                                setState(() {});
+                                              }
+                                            }),
                                   _addedImage == false
                                       ? Container()
                                       : Positioned.fill(

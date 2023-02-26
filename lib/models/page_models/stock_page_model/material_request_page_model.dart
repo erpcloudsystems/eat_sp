@@ -21,7 +21,6 @@ class MaterialRequestPageModel {
 
   List<Map<String, String>> get card1Items {
     return [
-
       {
         tr("Transaction Date"): data['transaction_date'] == null
             ? tr('none')
@@ -29,23 +28,23 @@ class MaterialRequestPageModel {
         tr("Required By Date"): data['schedule_date'] == null
             ? tr('none')
             : reverse(data['schedule_date']),
-
       },
       {
         tr("Purpose"): data['material_request_type'] ?? tr('none'),
         //tr("Purpose"): data['purpose'] ?? tr('none')
         tr("Status"): data['status'] ?? tr('none')
       },
-      (data['material_request_type'] == 'Customer Provided')?
-      {
-        tr("Customer"): data['customer'] ?? tr('none'),
-      }:{},
+      (data['material_request_type'] == 'Customer Provided')
+          ? {
+              tr("Customer"): data['customer'] ?? tr('none'),
+            }
+          : {},
 
-      (data['material_request_type'] == 'Material Transfer')?
-      {
-        tr("Source Warehouse"): data['set_from_warehouse'] ?? tr('none'),
-      }:
-      {},
+      (data['material_request_type'] == 'Material Transfer')
+          ? {
+              tr("Source Warehouse"): data['set_from_warehouse'] ?? tr('none'),
+            }
+          : {},
       {
         tr("Target Warehouse"): data['set_warehouse'] ?? tr('none'),
         //tr("To Warehouse"): data['to_warehouse'] ?? tr('none')

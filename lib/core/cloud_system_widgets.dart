@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
-Widget CustomTextField(String title, TextEditingController controller, int width, int height) {
+Widget CustomTextField(
+    String title, TextEditingController controller, int width, int height) {
   return Container(
     width: width.toDouble(),
     height: height.toDouble(),
@@ -21,7 +22,8 @@ Widget CustomTextField(String title, TextEditingController controller, int width
   );
 }
 
-Widget DatePicker(String dpTitle, TextEditingController controller, BuildContext context, int width, int height) {
+Widget DatePicker(String dpTitle, TextEditingController controller,
+    BuildContext context, int width, int height) {
   return Container(
     width: width.toDouble(),
     height: height.toDouble(),
@@ -30,7 +32,8 @@ Widget DatePicker(String dpTitle, TextEditingController controller, BuildContext
       readOnly: true,
       enabled: true,
       controller: controller,
-      decoration: InputDecoration(suffixIcon: Icon(Icons.date_range), labelText: dpTitle),
+      decoration: InputDecoration(
+          suffixIcon: Icon(Icons.date_range), labelText: dpTitle),
       onTap: () async {
         FocusScope.of(context).requestFocus(new FocusNode());
 
@@ -73,8 +76,8 @@ Widget statusText(Color statusColor, String text) {
 Color statusColor(String status) {
   switch (status) {
     case 'Random':
-      return Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)
-      ;
+      return Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+          .withOpacity(1.0);
     case "Closed":
       return Colors.red;
     case "Lost":
@@ -130,7 +133,7 @@ Color statusColor(String status) {
     case 'Hold':
       return Colors.black;
 
-      //HR
+    //HR
     case 'Approved':
       return Colors.green;
     case 'Open':
@@ -140,19 +143,16 @@ Color statusColor(String status) {
     case 'Rejected':
       return Colors.red;
 
-     case 'Active':
+    case 'Active':
       return Colors.green;
-     case 'Inactive':
+    case 'Inactive':
       return Colors.red;
-     case 'Suspended':
+    case 'Suspended':
       return Colors.orange;
-     case 'Left':
+    case 'Left':
       return Colors.grey;
-      case 'Claimed':
+    case 'Claimed':
       return Colors.blue;
-
-
-
 
     default:
       return Colors.transparent;

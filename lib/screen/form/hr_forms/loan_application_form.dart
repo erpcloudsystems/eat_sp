@@ -120,7 +120,7 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -160,7 +160,6 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                               setState(() {
                                 data['applicant'] = res['name'];
                                 data['applicant_name'] = res['employee_name'];
-
                               });
                             }
                             return id;
@@ -186,7 +185,6 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                               setState(() {
                                 data['applicant'] = res['name'];
                                 data['applicant_name'] = res['customer_name'];
-
                               });
                             }
 
@@ -244,7 +242,7 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                               MaterialPageRoute(
                                   builder: (_) => loanTypeListScreen()));
                           setState(() {
-                          data['loan_type'] = res['name'];
+                            data['loan_type'] = res['name'];
                             data['is_term_loan'] = res['is_term_loan'];
                             data['rate_of_interest'] = res['rate_of_interest'];
                           });
@@ -290,7 +288,6 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                       tr('Reason'),
                       onChanged: (value) => data['description'] = value,
                       disableValidation: true,
-
                       onSave: (key, value) => data[key] = value,
                       initialValue: data['description'],
                     ),

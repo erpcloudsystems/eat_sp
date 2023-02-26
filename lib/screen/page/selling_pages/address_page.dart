@@ -61,7 +61,6 @@ class AddressPage extends StatelessWidget {
             Divider(color: Colors.white, thickness: 1),
           ],
           items: model.card1Items,
-
         ),
 
         PageCard(
@@ -72,7 +71,7 @@ class AddressPage extends StatelessWidget {
                 2,
                 Checkbox(
                     value:
-                    (data['is_primary_address'] ?? 0) == 0 ? false : true,
+                        (data['is_primary_address'] ?? 0) == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 1)
           ],
@@ -80,15 +79,23 @@ class AddressPage extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.all(6.0),
-          child: CustomMapView(latitude: data['latitude'], longitude: data['longitude'],),
+          child: CustomMapView(
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+          ),
         ),
 
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100.0,vertical: 5),
-          child: ElevatedButton(onPressed: (){
-            MapsLauncher.launchCoordinates(data['latitude'], data['longitude']);
-
-          }, child: Text("Open in Maps",style: TextStyle(fontWeight: FontWeight.w600),),
+          padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
+          child: ElevatedButton(
+            onPressed: () {
+              MapsLauncher.launchCoordinates(
+                  data['latitude'], data['longitude']);
+            },
+            child: Text(
+              "Open in Maps",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         SizedBox(

@@ -1,21 +1,17 @@
 import 'dart:async';
 
-import '../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../models/page_models/model_functions.dart';
-import '../snack_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import '../../models/page_models/model_functions.dart';
 import '../../models/list_models/accounts_list_models/account_table_model.dart';
-import '../../models/list_models/hr_list_model/expense_table_model.dart';
 import '../../provider/module/module_provider.dart';
 import '../../screen/list/otherLists.dart';
 import '../../service/service.dart';
-import '../form_widgets.dart';
-import '../item_card.dart';
-import '../list_card.dart';
 import '../ondismiss_tutorial.dart';
+import '../form_widgets.dart';
+import '../list_card.dart';
 
 class InheritedAccountForm extends InheritedWidget {
   InheritedAccountForm(
@@ -223,7 +219,8 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                         stops: [0.0, 0.05, 0.97, 1.0],
                       ).createShader(bounds);
                     },
-                    child: ListView.builder(physics: BouncingScrollPhysics(),
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         controller: _scrollController,
                         // reverse: true,
                         itemCount:
@@ -265,7 +262,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                       ),
                                       child: DissmissTutorial(
                                         isSlid: isSlid,
-                                        height:155,
+                                        height: 155,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
@@ -663,16 +660,15 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                     child: CustomTextField(
                                                       'credit_in_account_currency',
                                                       'Credit'.tr(),
-                                                      initialValue:(InheritedAccountForm
-                                                          .of(
-                                                          context)
-                                                          .account[
-                                                      index]
-                                                          .creditInAccountCurrency ==
-                                                          0.0)
+                                                      initialValue: (InheritedAccountForm
+                                                                      .of(
+                                                                          context)
+                                                                  .account[
+                                                                      index]
+                                                                  .creditInAccountCurrency ==
+                                                              0.0)
                                                           ? ""
-                                                          :
-                                                      InheritedAccountForm
+                                                          : InheritedAccountForm
                                                                   .of(context)
                                                               .account[index]
                                                               .creditInAccountCurrency

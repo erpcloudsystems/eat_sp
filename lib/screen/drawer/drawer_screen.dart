@@ -9,13 +9,18 @@ import 'package:provider/provider.dart';
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
 
-  final drawerNames = ['App Setting', 'About Us', 'FAQ','Logout'];
-  final drawerPages = [AppSettings(), AboutUs(), FAQ(),null];
-  final drawerIcons = [Icons.settings,Icons.info,Icons.question_answer,Icons.logout];
+  final drawerNames = ['App Setting', 'About Us', 'FAQ', 'Logout'];
+  final drawerPages = [AppSettings(), AboutUs(), FAQ(), null];
+  final drawerIcons = [
+    Icons.settings,
+    Icons.info,
+    Icons.question_answer,
+    Icons.logout
+  ];
 
   void logout(BuildContext context) async {
     final res =
-    await checkDialog(context, 'Are you sure do you want to logout ?');
+        await checkDialog(context, 'Are you sure do you want to logout ?');
     if (res == true) context.read<UserProvider>().logout();
   }
 
@@ -23,7 +28,6 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-
       body: Center(
         child: ListView.separated(
           physics: BouncingScrollPhysics(),
@@ -45,7 +49,8 @@ class CustomDrawer extends StatelessWidget {
                     logout(context);
                   return;
                 }
-                Navigator.push(context, MaterialPageRoute(builder: (c)=>drawerPages[index]!));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => drawerPages[index]!));
               },
             );
           },
@@ -54,4 +59,3 @@ class CustomDrawer extends StatelessWidget {
     ));
   }
 }
-

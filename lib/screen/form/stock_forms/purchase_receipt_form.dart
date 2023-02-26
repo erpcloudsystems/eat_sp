@@ -162,7 +162,6 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
         InheritedForm.of(context).items.clear();
 
-
         data['posting_date'] = DateTime.now().toIso8601String();
         data['is_return'] = 0;
         data['is_subcontracted'] = "No";
@@ -178,7 +177,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                 .add(ItemSelectModel.fromJson(element));
           });
           InheritedForm.of(context).data['buying_price_list'] =
-          data['buying_price_list'];
+              data['buying_price_list'];
 
           data['purchase_invoice'] = data['name'];
           data['project'] = data['project'];
@@ -283,7 +282,6 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                             //     await APIService().getPage(
                             //         SUPPLIER_PAGE, res['name']))['message'];
                             setState(() {
-
                               data['name'] = res['name'];
                               data['supplier'] = res['name'];
                               data['supplier_name'] = res['supplier_name'];
@@ -474,8 +472,8 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                       CustomTextField(
                         'conversion_rate',
                         'Exchange Rate'.tr(),
-                        initialValue: '${data['conversion_rate'] ?? '1'}',                          disableValidation: true,
-
+                        initialValue: '${data['conversion_rate'] ?? '1'}',
+                        disableValidation: true,
                         hintText: 'ex:1.0',
                         clearButton: true,
                         validator: (value) =>
@@ -487,8 +485,8 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                       CustomTextField(
                         'plc_conversion_rate',
                         'Price List Exchange Rate'.tr(),
-                        initialValue: '${data['conversion_rate'] ?? '1'}',                          disableValidation: true,
-
+                        initialValue: '${data['conversion_rate'] ?? '1'}',
+                        disableValidation: true,
                         hintText: 'ex:1.0',
                         clearButton: true,
                         validator: (value) =>
@@ -499,7 +497,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                       ),
                       CustomTextField('buying_price_list', 'Price List'.tr(),
                           initialValue: data['buying_price_list'],
-                            onPressed: () async {
+                          onPressed: () async {
                         final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (_) => buyingPriceListScreen()));

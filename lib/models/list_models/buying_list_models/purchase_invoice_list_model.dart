@@ -28,23 +28,23 @@ class PurchaseInvoiceItemModel {
   final String status;
   final String currency;
 
-  PurchaseInvoiceItemModel(
-      {required this.id,
-        required this.name,
-        required this.postingDate,//TODO make sure that this exist
-        required this.grandTotal,
-        required this.status,
-        required this.currency,
-      });
+  PurchaseInvoiceItemModel({
+    required this.id,
+    required this.name,
+    required this.postingDate, //TODO make sure that this exist
+    required this.grandTotal,
+    required this.status,
+    required this.currency,
+  });
 
   factory PurchaseInvoiceItemModel.fromJson(Map<String, dynamic> json) {
     return PurchaseInvoiceItemModel(
-      id: json['name']??'none',
-      name: json['supplier']??'none',
-      postingDate: DateTime.parse(json['posting_date']??'none'),
-      grandTotal: json['grand_total']?? 'none',
-      currency: json['currency']?? 'none',
-      status: json['status']?? 'none',
+      id: json['name'] ?? 'none',
+      name: json['supplier'] ?? 'none',
+      postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
+      grandTotal: json['grand_total'] ?? 'none',
+      currency: json['currency'] ?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

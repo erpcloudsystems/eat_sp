@@ -51,7 +51,8 @@ class _PaymentEntryFilterState extends State<PaymentEntryFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter3'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => modeOfPaymentScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => modeOfPaymentScreen()));
             if (res != null) _values['filter3'] = res;
             return _values['filter3'];
           },
@@ -82,8 +83,10 @@ class _PaymentEntryFilterState extends State<PaymentEntryFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter5'],
           onPressed: () async {
-            final res = await Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => _values['filter4'] == KPaymentPartyList[0] ? selectCustomerScreen() : supplierListScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => _values['filter4'] == KPaymentPartyList[0]
+                    ? selectCustomerScreen()
+                    : supplierListScreen()));
             if (res != null) _values['filter5'] = res['name'];
             return _values['filter5'];
           },
@@ -96,7 +99,9 @@ class _PaymentEntryFilterState extends State<PaymentEntryFilter> {
             setState(() {
               _values['filter6'] = value;
               // remove date to if it's before from date
-              if (_values['filter7'] != null && DateTime.parse(_values['filter7']).isBefore(DateTime.parse(_values['filter6']))) {
+              if (_values['filter7'] != null &&
+                  DateTime.parse(_values['filter7'])
+                      .isBefore(DateTime.parse(_values['filter6']))) {
                 _values.remove('filter7');
                 _dateTo = '';
               }
@@ -108,7 +113,9 @@ class _PaymentEntryFilterState extends State<PaymentEntryFilter> {
         DatePicker(
           'filter7',
           'To Date'.tr(),
-          firstDate: _values['filter7'] != null ? DateTime.parse(_values['filter7']) : null,
+          firstDate: _values['filter7'] != null
+              ? DateTime.parse(_values['filter7'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

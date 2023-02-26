@@ -1,9 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import '../core/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../core/constants.dart';
 import '../core/cloud_system_widgets.dart';
+import '../core/constants.dart';
 
 ///this is a generic class presents any list card
 class ListCard extends StatelessWidget {
@@ -13,15 +11,15 @@ class ListCard extends StatelessWidget {
   final List<String> names, values;
   final void Function(BuildContext context)? onPressed;
 
-  const ListCard(
-      {Key? key,
-      required this.id,
-      this.title = '',
-      this.status = '',
-      required this.names,
-      required this.values,
-      this.onPressed})
-      : assert(names.length == values.length),
+  const ListCard({
+    Key? key,
+    required this.id,
+    this.title = '',
+    this.status = '',
+    required this.names,
+    required this.values,
+    this.onPressed,
+  })  : assert(names.length == values.length),
         super(key: key);
 
   @override
@@ -36,7 +34,6 @@ class ListCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
-        //color: Colors.white,
         borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
         border: Border.all(color: Colors.transparent),
         boxShadow: [
@@ -60,7 +57,6 @@ class ListCard extends StatelessWidget {
             child: Ink(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-                // border: Border.all(color: statusColor(status) == Colors.transparent ? Colors.grey.shade400 : statusColor(status), width: 1.2),
               ),
               child: IntrinsicHeight(
                 child: Row(
@@ -107,7 +103,6 @@ class ListCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-
                             if (names.isNotEmpty)
                               Divider(
                                 thickness: 1,
@@ -120,15 +115,12 @@ class ListCard extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   ListTitle(title: names[0], value: values[0]),
-                                  //Container(width: 1, color: Colors.grey.shade200, height: 42),
                                   if (names.length > 1)
                                     ListTitle(
                                         title: names[1], value: values[1]),
-                                  //Container(width: 1, color: Colors.grey.shade200, height: 42),
                                   if (names.length > 2)
                                     ListTitle(
                                         title: names[2], value: values[2]),
-
                                   if (statusColor(status) != Colors.transparent)
                                     SizedBox(width: 6)
                                 ],
@@ -156,8 +148,6 @@ class ListCard extends StatelessWidget {
                                   SizedBox(width: 6)
                               ],
                             ),
-                            // Divider(thickness: 1, color: Colors.grey.shade300,height: 10),
-                            // SizedBox(height: 25,child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),),),
                           ],
                         ),
                       ),
@@ -222,7 +212,6 @@ class ListTitle extends StatelessWidget {
     );
   }
 }
-
 
 ///simple function takes a date and returns a formatted String: day-month-year
 String formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';

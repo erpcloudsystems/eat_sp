@@ -31,31 +31,30 @@ class AddressItemModel {
   final String linkName;
   final String status;
 
-  AddressItemModel(
-      {required this.id,
-        required this.addressTitle,
-        required this.addressType,
-        required this.addressLine1,
-        required this.city,
-        required this.country,
-        required this.linkDocType,
-        required this.linkName,
-        required this.status,
-      });
+  AddressItemModel({
+    required this.id,
+    required this.addressTitle,
+    required this.addressType,
+    required this.addressLine1,
+    required this.city,
+    required this.country,
+    required this.linkDocType,
+    required this.linkName,
+    required this.status,
+  });
 
   factory AddressItemModel.fromJson(Map<String, dynamic> json) {
     return AddressItemModel(
-      id: json['name']??'none',
-      addressTitle: json['address_title']??'none',
-      addressType: json['address_type']??'none',
-      addressLine1: json['address_line1']??'none',
-      city: json['city']??'none',
-      country: json['country']??'none',
-      linkDocType: json['link_doctype']??'none',
-      linkName: json['link_name']??'none',
+      id: json['name'] ?? 'none',
+      addressTitle: json['address_title'] ?? 'none',
+      addressType: json['address_type'] ?? 'none',
+      addressLine1: json['address_line1'] ?? 'none',
+      city: json['city'] ?? 'none',
+      country: json['country'] ?? 'none',
+      linkDocType: json['link_doctype'] ?? 'none',
+      linkName: json['link_name'] ?? 'none',
       status: 'Random',
     );
-
   }
 
   Map<String, dynamic> toJson() {

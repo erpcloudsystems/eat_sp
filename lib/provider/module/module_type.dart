@@ -1,3 +1,4 @@
+import '../../new_version/core/resources/strings_manager.dart';
 import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
@@ -304,7 +305,7 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.name,
-        status:item.status,
+        status: item.status,
         names: [
           'Group'.tr(),
           'Type'.tr(),
@@ -335,8 +336,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
-      // return InheritedForm(child: QuotationForm(), items: items);
     },
     filter: CustomerFilter(),
   );
@@ -375,8 +374,6 @@ class ModuleType {
           e['tax_percent'] = _taxPercent(e['item_tax_template']);
           return ItemSelectModel.fromJson(e);
         }).toList();
-
-        // return InheritedForm(child: QuotationForm(), items: items);
       },
       filter: QuotationFilter());
 
@@ -412,8 +409,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
-      // return InheritedForm(child: QuotationForm(), items: items);
     },
   );
 
@@ -452,7 +447,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
     },
     filter: SalesInvoiceFilter(),
   );
@@ -508,10 +502,10 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.customer,
-        status:item.status,
+        status: item.status,
         names: [
           'Customer Address'.tr(),
-           'Posting Date'.tr(),
+          'Posting Date'.tr(),
           'Time'.tr(),
         ],
         values: [
@@ -528,12 +522,9 @@ class ModuleType {
     pageWidget: CustomerVisitPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Customer Visit"];
-
     },
     filter: CustomerVisitFilter(),
   );
-
-
 
   static final address = ModuleType._(
     genericListService: 'Address',
@@ -573,7 +564,7 @@ class ModuleType {
     filter: AddressFilter(),
   );
 
-  static final contact  = ModuleType._(
+  static final contact = ModuleType._(
     genericListService: 'Contact',
     title: 'Contact',
     listItem: (item) {
@@ -581,7 +572,7 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.firstName,
-          status:item.status,
+        status: item.status,
         names: [
           'User'.tr(),
           'Mobile No'.tr(),
@@ -611,7 +602,6 @@ class ModuleType {
     filter: ContactFilter(),
   );
 
-
   // Stock
   static final item = ModuleType._(
     genericListService: 'Item',
@@ -624,10 +614,9 @@ class ModuleType {
         onPressed: (context) => _onListCardPressed(context, item.itemCode),
       );
     },
-    createForm: InheritedUOMForm(child:ItemForm()),
+    createForm: InheritedUOMForm(child: ItemForm()),
     editPage: (pageData) {
       pageData["doctype"] = ["Item"];
-
     },
     serviceParser: (data) => ItemTableModel.fromJson(data),
     pageService: ITEM_PAGE,
@@ -769,7 +758,7 @@ class ModuleType {
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm:  InheritedForm(child:MaterialRequestForm()),
+    createForm: InheritedForm(child: MaterialRequestForm()),
     serviceParser: (data) => MaterialListModel.fromJson(data),
     pageService: MATERIAL_REQUEST_PAGE,
     pageWidget: MaterialRequestPage(),
@@ -901,7 +890,8 @@ class ModuleType {
       //TODO Check @Run
       pageData["doctype"] = ["Purchase Invoice"];
       var items;
-      items = List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
+      items =
+          List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
       //items = List<Map<String, dynamic>>.from(pageData['items']);
       items = items.map((e) {
         //TODO check Later
@@ -954,7 +944,7 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-      },
+    },
     filter: PurchaseOrderFilter(), //TODO (waiting for backend)
   );
 
@@ -1120,7 +1110,7 @@ class ModuleType {
       );
     },
     createForm: InheritedForm(child: AttendanceRequestForm()),
-    serviceParser: (data) =>  AttendanceRequestListModel.fromJson(data),
+    serviceParser: (data) => AttendanceRequestListModel.fromJson(data),
     pageService: ATTENDANCE_REQUEST_PAGE,
     pageWidget: AttendanceRequestPage(),
     editPage: (pageData) {
@@ -1174,7 +1164,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
     },
     filter: EmployeeAdvanceFilter(),
   );
@@ -1203,7 +1192,7 @@ class ModuleType {
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm:InheritedExpenseForm(child: ExpenseClaimForm()),
+    createForm: InheritedExpenseForm(child: ExpenseClaimForm()),
     serviceParser: (data) => ExpenseClaimListModel.fromJson(data),
     pageService: EXPENSE_CLAIM_PAGE,
     pageWidget: ExpenseClaimPage(),
@@ -1216,7 +1205,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
     },
     filter: ExpenseClaimFilter(),
   );
@@ -1278,11 +1266,12 @@ class ModuleType {
           '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
           item.modeOfPayment,
           item.chequeNo,
-          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',        ],
+          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',
+        ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedAccountForm(child:JournalEntryForm()),
+    createForm: InheritedAccountForm(child: JournalEntryForm()),
     serviceParser: (data) => JournalEntryListModel.fromJson(data),
     pageService: JOURNAL_ENTRY_PAGE,
     pageWidget: JournalEntryPage(),
@@ -1292,4 +1281,18 @@ class ModuleType {
     filter: JournalEntryFilter(),
   );
 
+  ///__________________________________________New version modules____________________________________
+
+  //__________________________________________Project module____________________________________
+  static final task = ModuleType._(
+    genericListService: ConstantStrings.newVersion,
+    title: DocTypesName.task,
+    listItem: (item) => SizedBox(),
+    serviceParser: (data) => ListModel([]),
+    pageService: null,
+    pageWidget: SizedBox(),
+    editPage: (pageData) {},
+  );
+
+  
 }

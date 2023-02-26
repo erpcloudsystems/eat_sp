@@ -11,7 +11,11 @@ showSnackBar(String message, BuildContext context, {Color? color}) {
       backgroundColor: color ?? Theme.of(context).colorScheme.secondary,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
-      content: Text(message,style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400),)));
+      content: Text(
+        message,
+        style: TextStyle(
+            color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400),
+      )));
 }
 
 showErrorSnackBar(String message, error, BuildContext context, {Color? color}) {
@@ -29,25 +33,23 @@ showErrorSnackBar(String message, error, BuildContext context, {Color? color}) {
               onPressed: () {
                 showDialog(
                     context: (context),
-                    builder: (_) =>AlertDialog(
-
-                      backgroundColor: Colors.white,
-                      insetPadding: EdgeInsets.all(10),
-                      content: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                                child: Center(
-                                    child: Text(error,
-                                        style: const TextStyle(
-                                            fontWeight:
-                                            FontWeight.bold)))),
-                          ],
-                        ),
-                      ),
-                    ));
+                    builder: (_) => AlertDialog(
+                          backgroundColor: Colors.white,
+                          insetPadding: EdgeInsets.all(10),
+                          content: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Container(
+                                    child: Center(
+                                        child: Text(error,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold)))),
+                              ],
+                            ),
+                          ),
+                        ));
               },
               child: Text('More'))
         ],

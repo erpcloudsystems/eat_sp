@@ -15,7 +15,6 @@ class LeaveApplicationPageModel {
         tr("Posting Date"): reverse(data['posting_date']),
         tr("Status"): data['status'] ?? tr('none'),
       },
-
       {
         tr("Department"): formatDescription(data['department'] ?? tr('none')),
       },
@@ -23,7 +22,6 @@ class LeaveApplicationPageModel {
         tr("Leave Approver"): data['leave_approver'] ?? tr('none'),
         tr("Leave Approver Name"): data['leave_approver_name'] ?? tr('none')
       },
-
     ];
   }
 
@@ -35,20 +33,16 @@ class LeaveApplicationPageModel {
       },
       {
         tr("Leave Type"): data['leave_type'] ?? tr('none'),
-        tr("Leave Balance Before Application"): data['leave_balance'].toString(),
+        tr("Leave Balance Before Application"):
+            data['leave_balance'].toString(),
       },
       {
-        tr("Half Day"): data['half_day'].toString() ,
+        tr("Half Day"): data['half_day'].toString(),
         tr("Total Leave Days"): data['total_leave_days'].toString(),
       },
       {
         tr("Reason"): data['description'] ?? tr('none'),
       },
-
     ];
   }
-
-
-
-
 }

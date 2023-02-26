@@ -20,7 +20,7 @@ const SALES_INVOICE_PAGE = 'method/ecs_mobile.pages.sales_invoice';
 const SALES_INVOICE_POST = 'method/ecs_mobile.add.sales_invoice';
 const PAYMENT_ENTRY_PAGE = 'method/ecs_mobile.pages.payment_entry';
 const PAYMENT_POST = 'method/ecs_mobile.add.payment_entry';
-const ITEM_RATE_LIST = 'method/ecs_mobile.add.add_item_list';
+const GET_ITEM_LIST = 'method/ecs_mobile.general.get_item_list';
 const CUSTOMER_VISIT_PAGE = 'method/ecs_mobile.pages.customer_visit';
 const CUSTOMER_VISIT_POST = 'method/ecs_mobile.add.customer_visit';
 const ADDRESS_PAGE = 'method/ecs_mobile.pages.address';
@@ -76,11 +76,11 @@ const JOURNAL_ENTRY_PAGE = 'method/ecs_mobile.pages.journal_entry';
 const JOURNAL_ENTRY_POST = 'method/ecs_mobile.add.journal_entry';
 const JOURNAL_ENTRY_UPDATE = '';
 
-
 const EXPENSE_CLAIM_PAGE = 'method/ecs_mobile.pages.expense_claim';
 const EXPENSE_CLAIM_POST = 'method/ecs_mobile.add.expense_claim';
 const EXPENSE_CLAIM_UPDATE = '';
-const PAYABLE_ACCOUNT = 'method/ecs_mobile.general.general_service?doctype=Account';
+const PAYABLE_ACCOUNT =
+    'method/ecs_mobile.general.general_service?doctype=Account';
 
 const CAMPAIGN = 'resource/Campaign';
 const SOURCE = 'resource/Lead Source';
@@ -92,6 +92,11 @@ const ATTACH_FILE = 'method/frappe.client.attach_file';
 const COMMENT = 'method/ecs_mobile.add.comment';
 const NOTIFICATION = 'method/ecs_mobile.notifications.device_tokens';
 const UPDATE_NOTIFICATION_TOKEN = 'resource/Push Notification Details/';
-const PUSH_NOTIFICATION_FILTER_USER_DEVICES = 'method/ecs_mobile.notifications.get_push_notification_details';
+const PUSH_NOTIFICATION_FILTER_USER_DEVICES =
+    'method/ecs_mobile.notifications.get_push_notification_details';
 const PURCHASE_INVOICE_DEFAULT_TAX =
     'method/ecs_mobile.pages.default_tax_template';
+
+// Project
+const TASK_POST = 'method/ecs_mobile.add.task';
+const TASK_PAGE = 'method/ecs_mobile.pages.task';

@@ -15,7 +15,6 @@ class CustomerVisitPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
 
-
     final Color? color = context.read<ModuleProvider>().color;
 
     final model = CustomerVisitPageModel(context, data);
@@ -43,9 +42,7 @@ class CustomerVisitPage extends StatelessWidget {
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
-
         ),
-
         PageCard(
           color: color,
           items: model.card2Items,
@@ -54,26 +51,30 @@ class CustomerVisitPage extends StatelessWidget {
           color: color,
           items: model.card3Items,
         ),
-
         Padding(
           padding: const EdgeInsets.all(6.0),
-          child: CustomMapView(latitude: data['latitude'], longitude: data['longitude'],),
+          child: CustomMapView(
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+          ),
         ),
-
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100.0,vertical: 5),
-          child: ElevatedButton(onPressed: (){
-            MapsLauncher.launchCoordinates(data['latitude'], data['longitude']);
-
-          }, child: Text("Open in Maps",style: TextStyle(fontWeight: FontWeight.w600),),
+          padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
+          child: ElevatedButton(
+            onPressed: () {
+              MapsLauncher.launchCoordinates(
+                  data['latitude'], data['longitude']);
+            },
+            child: Text(
+              "Open in Maps",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         SizedBox(
           height: 8,
         ),
         CommentsButton(color: color),
-
-
         SizedBox(
           height: 25,
         ),

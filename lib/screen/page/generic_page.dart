@@ -1,11 +1,11 @@
-import 'package:badges/badges.dart' as badge;
-import '../../provider/module/module_provider.dart';
-import 'page_screen.dart';
-import '../../widgets/nothing_here.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants.dart';
+import '../../provider/module/module_provider.dart';
+import '../../widgets/nothing_here.dart';
+import 'page_screen.dart';
 
 class GenericPage extends StatelessWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -66,7 +66,7 @@ class GenericPage extends StatelessWidget {
             child: IconButton(
                 onPressed: () => showAttachments(context),
                 splashRadius: 20,
-                icon: badge.Badge(
+                icon: badges.Badge(
                     badgeContent: Text(
                       '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
                       style: TextStyle(

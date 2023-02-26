@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DissmissTutorial extends StatefulWidget {
-   DissmissTutorial(
-      {Key? key, required this.child, this.isSlid = false, required this.height})
+  DissmissTutorial(
+      {Key? key,
+      required this.child,
+      this.isSlid = false,
+      required this.height})
       : super(key: key);
 
   final Widget child;

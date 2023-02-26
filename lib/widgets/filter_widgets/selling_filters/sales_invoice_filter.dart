@@ -1,8 +1,8 @@
-import '../../../screen/filter_screen.dart';
-import '../../../screen/list/otherLists.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../screen/filter_screen.dart';
+import '../../../screen/list/otherLists.dart';
 import '../../form_widgets.dart';
 
 class SalesInvoiceFilter extends StatefulWidget {
@@ -56,7 +56,8 @@ class _SalesInvoiceFilterState extends State<SalesInvoiceFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectCustomerScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectCustomerScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
@@ -69,7 +70,9 @@ class _SalesInvoiceFilterState extends State<SalesInvoiceFilter> {
             setState(() {
               _values['filter3'] = value;
               // remove date to if it's before from date
-              if (_values['filter4'] != null && DateTime.parse(_values['filter4']).isBefore(DateTime.parse(_values['filter3']))) {
+              if (_values['filter4'] != null &&
+                  DateTime.parse(_values['filter4'])
+                      .isBefore(DateTime.parse(_values['filter3']))) {
                 _values.remove('filter4');
                 _dateTo = '';
               }
@@ -81,7 +84,9 @@ class _SalesInvoiceFilterState extends State<SalesInvoiceFilter> {
         DatePicker(
           'filter4',
           'To Date'.tr(),
-          firstDate: _values['filter3'] != null ? DateTime.parse(_values['filter3']) : null,
+          firstDate: _values['filter3'] != null
+              ? DateTime.parse(_values['filter3'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

@@ -7,6 +7,7 @@ final createGK = GlobalKey();
 final filterGK = GlobalKey();
 final countGK = GlobalKey();
 final listSearchGK = GlobalKey();
+
 /// Filters Tutorials Keys
 final clearFiltersGK = GlobalKey();
 final chooseFiltersGK = GlobalKey();
@@ -17,10 +18,9 @@ class CustomShowCase extends StatelessWidget {
       {Key? key,
       required this.child,
       required this.title,
-        required  this.description,
+      required this.description,
       this.overlayPadding,
-        required this.globalKey
-      })
+      required this.globalKey})
       : super(key: key);
 
   final String title;
@@ -32,15 +32,16 @@ class CustomShowCase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Showcase(
-        key: globalKey,
-        title: title,
-        titleTextStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-        description: description,
-        shapeBorder: CircleBorder(),
-        radius: BorderRadius.all(Radius.circular(8)),
-        overlayPadding: overlayPadding ?? EdgeInsets.zero,
-        blurValue: 1,
-        // showArrow: false,
-        child: child,);
+      key: globalKey,
+      title: title,
+      titleTextStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+      description: description,
+      shapeBorder: CircleBorder(),
+      radius: BorderRadius.all(Radius.circular(8)),
+      overlayPadding: overlayPadding ?? EdgeInsets.zero,
+      blurValue: 1,
+      // showArrow: false,
+      child: child,
+    );
   }
 }

@@ -22,24 +22,26 @@ class _LoginScreenState extends State<LoginScreen> {
   var urlController = TextEditingController();
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;
-  final APIService service  = APIService();
-  SharedPref pref= SharedPref();
+  final APIService service = APIService();
+  SharedPref pref = SharedPref();
   String? usr;
   String? pass;
   String? url;
   bool _isLoading = false;
   bool rememberMe = false;
 
-  void _login() async{
-    if (userNameController.text.isEmpty || passwordController.text.isEmpty || urlController.text.isEmpty)
+  void _login() async {
+    if (userNameController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        urlController.text.isEmpty)
       Fluttertoast.showToast(msg: tr("login_err"));
     else {
       setState(() => _isLoading = true);
 
       try {
-        await context.read<UserProvider>().login(userNameController.text, passwordController.text, urlController.text, rememberMe);
-      }
-      catch (e) {
+        await context.read<UserProvider>().login(userNameController.text,
+            passwordController.text, urlController.text, rememberMe);
+      } catch (e) {
         setState(() => _isLoading = false);
         print(e);
         Fluttertoast.showToast(msg: e.toString());
@@ -58,24 +60,30 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             height: screenHeight,
             child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(height: 40),
-                  Image.asset("assets/logo.png", width: 280, height: screenHeight / 4, fit: BoxFit.contain),
+                  Image.asset("assets/logo.png",
+                      width: 280,
+                      height: screenHeight / 4,
+                      fit: BoxFit.contain),
                   SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(color: Colors.transparent, width: 1.5),
+                        border:
+                            Border.all(color: Colors.transparent, width: 1.5),
                         borderRadius: new BorderRadius.all(
                           const Radius.circular(10.0),
                         )),
                     child: Column(
                       children: [
-                        Padding(padding: const EdgeInsets.all(8.0), child: Text("Welcome")),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Welcome")),
                         Text("To NextApp"),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
@@ -105,28 +113,41 @@ class _LoginScreenState extends State<LoginScreen> {
                                       suffixIcon: IconButton(
                                         icon: Icon(
                                           // Based on passwordVisible state choose the icon
-                                          _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                                          color: Theme.of(context).primaryColorDark,
+                                          _passwordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
                                         ),
                                         onPressed: () {
                                           // Update the state i.e. toogle the state of passwordVisible variable
                                           setState(() {
-                                            _passwordVisible = !_passwordVisible;
+                                            _passwordVisible =
+                                                !_passwordVisible;
                                           });
                                         },
                                       ),
                                     )),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      children: [Checkbox(value: rememberMe, onChanged: (value)=> setState(()=>rememberMe = !rememberMe)), Text(tr("remember_me"))],
+                                      children: [
+                                        Checkbox(
+                                            value: rememberMe,
+                                            onChanged: (value) => setState(() =>
+                                                rememberMe = !rememberMe)),
+                                        Text(tr("remember_me"))
+                                      ],
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
                                       child: Text(
                                         tr("for_pass"),
-                                        style: TextStyle(color: Color(0xff0488FA)),
+                                        style:
+                                            TextStyle(color: Color(0xff0488FA)),
                                       ),
                                     ),
                                   ],
@@ -135,56 +156,60 @@ class _LoginScreenState extends State<LoginScreen> {
                             )),
                         !_isLoading
                             ? InkWell(
-                          onTap: _login,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Container(
-                              height: 50,
-                              child: Center(
-                                child: Text(
-                                  "Log in",
-                                  style: TextStyle(color: Colors.white, fontSize: 18),
+                                onTap: _login,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Container(
+                                    height: 50,
+                                    child: Center(
+                                      child: Text(
+                                        "Log in",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xff0488FA),
+                                        border: Border.all(
+                                            color: Color(0xffE8E8E8),
+                                            width: 1.5),
+                                        borderRadius: new BorderRadius.all(
+                                          const Radius.circular(10.0),
+                                        )),
+                                  ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: Color(0xff0488FA),
-                                  border: Border.all(color: Color(0xffE8E8E8), width: 1.5),
-                                  borderRadius: new BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  )),
-                            ),
-                          ),
-                        )
+                              )
                             : Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: SizedBox(
-                            height: 50,
-                            child: Center(child: CircularProgressIndicator(
-                              color: CIRCULAR_PROGRESS_COLOR,
-                            )),
-                          ),
-                        )
+                                padding: const EdgeInsets.all(20),
+                                child: SizedBox(
+                                  height: 50,
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: CIRCULAR_PROGRESS_COLOR,
+                                  )),
+                                ),
+                              )
                       ],
                     ),
                   ),
                   SizedBox(height: 10),
-
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     mainAxisSize: MainAxisSize.min,
-                     children: [
-                   Text('Powered by'),
-                   TextButton(
-                     onPressed: (){
-                       launchUrl(Uri.parse('https://www.erpcloud.systems/'));
-                     } ,
-                       child:Text('ERPCloud.systems',style: TextStyle(color: Colors.blue),),
-                   ),
-
-                     ],
-                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Powered by'),
+                      TextButton(
+                        onPressed: () {
+                          launchUrl(Uri.parse('https://www.erpcloud.systems/'));
+                        },
+                        child: Text(
+                          'ERPCloud.systems',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 10),
-
                 ],
               ),
             ),

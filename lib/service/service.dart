@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import '../models/new_version_models/check_url_validation_model.dart';
+import '../new_version/core/global/global_variables.dart';
 import '../provider/module/module_type.dart';
 import 'server_exception.dart';
 import 'service_constants.dart';
@@ -74,7 +75,6 @@ class APIService {
   static const CONTACT = 'Contact';
   static const COST_CENTER = 'Cost Center';
   static const MODE_OF_PAYMENT = 'Mode of Payment';
-  static const PROJECT = 'Project';
   static const ASSET_CATEGORY = 'Asset Category';
   static const TERMS_CONDITION = 'Terms and Conditions';
   static const PAYMENT_TERMS = 'Payment Terms Template';
@@ -98,10 +98,19 @@ class APIService {
   static const LOAN_TYPE = 'Loan Type';
   static const BANK_ACCOUNT = 'Bank Account';
 
+  // Project module
+  static const TASK = 'Task';
+  static const PROJECT = 'Project';
+  static const TIMESHEET = 'Timesheet';
+  static const ISSUE = 'Issue';
+  static const TASK_TYPE = 'Task Type';
+  static const STATUS = 'Status';
+
+  // Reports
+  static const REPORTS = 'Mobile Report';
+
   final BaseOptions options = new BaseOptions(
-    // baseUrl: "https://mobile.erpcloud.systems/api/",
     connectTimeout: 15000,
-    //15 seconds
     receiveTimeout: 13000,
     followRedirects: false,
     validateStatus: (status) => true,
@@ -118,11 +127,16 @@ class APIService {
   APIService._() {
     dio = Dio(options);
     dio.interceptors.add(CookieManager(cookieJar));
+    GlobalVariables().setCookiesForNewVersion = cookieJar;
   }
 
   void changeUrl(String url) {
     _instance.dio.options.baseUrl = url + '/api/';
     print('☕️ ${dio.options.baseUrl}');
+
+    // Here we set the Base url for the new version services.
+    final _globalVariables = GlobalVariables();
+    _globalVariables.setBaseUrl = url + '/api/';
   }
 
   Map<String, String> get getHeaders => _cookie;
@@ -195,14 +209,17 @@ class APIService {
     }
   }
 
-  Future<ListModel<T>?> getList<T>(String service, int pageCount,
-      ListModel<T> Function(Map<String, dynamic>) dataParser,
-      {String? filterById,
-      String? connection,
-      String? search,
-      String? customServiceURL,
-      ModuleType? module,
-      Map<String, dynamic>? filters}) async {
+  Future<ListModel<T>?> getList<T>(
+    String service,
+    int pageCount,
+    ListModel<T> Function(Map<String, dynamic>) dataParser, {
+    String? filterById,
+    String? connection,
+    String? search,
+    String? customServiceURL,
+    ModuleType? module,
+    Map<String, dynamic>? filters,
+  }) async {
     if (search != null && search.isNotEmpty) print('search: $search');
     try {
       var response = await dio.get(
@@ -228,7 +245,6 @@ class APIService {
         if (myMap['message'] is String) {
           return ListModel<T>(<T>[]);
         }
-        // return module!.serviceParser!(myMap);
         return dataParser(myMap);
       }
     } catch (error, stacktrace) {
@@ -306,8 +322,6 @@ class APIService {
           print(
               "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
     return {};
@@ -340,8 +354,6 @@ class APIService {
           print(
               "getCustomList Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
   }
@@ -374,8 +386,6 @@ class APIService {
           print(
               "genericGet Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
     return {};
@@ -506,8 +516,6 @@ class APIService {
           print(
               "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
   }
@@ -540,8 +548,6 @@ class APIService {
           print(
               "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
   }
@@ -681,8 +687,6 @@ class APIService {
           print(
               "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
     return false;
@@ -812,8 +816,6 @@ class APIService {
           print(
               "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
-
-        // return data = OrderListModel.withError("$error");
       }
     }
     return {};
@@ -831,7 +833,6 @@ Future<dynamic> handleRequest(
     showErrorSnackBar(
         e.message.split('!!').first, e.message.substring(22), context,
         color: Colors.red);
-    //showSnackBar(e.message, context, color: Colors.red);
   } on TimeoutException catch (e) {
     // A timeout occurred.
     print('timeout exception: $e');

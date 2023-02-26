@@ -28,25 +28,22 @@ class NotificationCard extends StatelessWidget {
   final String type;
   final void Function(BuildContext context)? onPressed;
 
-  const NotificationCard(
-      {Key? key,
-        required this.id,
-        required this.for_user,
-        required this.from_user,
-        required this.document_name,
-        required this.document_type,
-        required this.read,
-        required this.subject,
-        required this.email_content,
-        required this.type,
-        this.onPressed,})
-      :
-        super(key: key);
+  const NotificationCard({
+    Key? key,
+    required this.id,
+    required this.for_user,
+    required this.from_user,
+    required this.document_name,
+    required this.document_type,
+    required this.read,
+    required this.subject,
+    required this.email_content,
+    required this.type,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
@@ -82,29 +79,30 @@ class NotificationCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: CircleAvatar(
                               radius: 24,
-                              child: Text(for_user.toString()[0],style: TextStyle(fontSize: 24,fontWeight: FontWeight.w400),),
+                              child: Text(
+                                for_user.toString()[0],
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                           Flexible(
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
-                              child: Text(subject, maxLines:3),
+                              child: Text(subject, maxLines: 3),
                             ),
                           ),
-
                           SizedBox(width: 6)
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),

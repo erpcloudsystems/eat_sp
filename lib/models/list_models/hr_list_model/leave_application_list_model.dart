@@ -1,7 +1,8 @@
 import '../list_model.dart';
 
 class LeaveApplicationListModel extends ListModel<LeaveApplicationItemModel> {
-  LeaveApplicationListModel(List<LeaveApplicationItemModel>? list) : super(list);
+  LeaveApplicationListModel(List<LeaveApplicationItemModel>? list)
+      : super(list);
 
   factory LeaveApplicationListModel.fromJson(Map<String, dynamic> json) {
     var _list = <LeaveApplicationItemModel>[];
@@ -30,27 +31,27 @@ class LeaveApplicationItemModel {
   final double totalLeaveDays;
   final String status;
 
-  LeaveApplicationItemModel(
-      {required this.id,
-        required this.name,
-        required this.department,
-        required this.leaveType,
-        required this.fromDate,
-        required this.totalLeaveDays,
-        required this.toDate,
-        required this.status,
-      });
+  LeaveApplicationItemModel({
+    required this.id,
+    required this.name,
+    required this.department,
+    required this.leaveType,
+    required this.fromDate,
+    required this.totalLeaveDays,
+    required this.toDate,
+    required this.status,
+  });
 
   factory LeaveApplicationItemModel.fromJson(Map<String, dynamic> json) {
     return LeaveApplicationItemModel(
-      id: json['name']??'none',
-      name: json['employee_name']??'none',
-      department: json['department']??'none',
-      leaveType: json['leave_type']??'none',
-      fromDate: DateTime.parse(json['from_date']??'none'),
-      toDate: DateTime.parse(json['to_date']??'none'),
+      id: json['name'] ?? 'none',
+      name: json['employee_name'] ?? 'none',
+      department: json['department'] ?? 'none',
+      leaveType: json['leave_type'] ?? 'none',
+      fromDate: DateTime.parse(json['from_date'] ?? 'none'),
+      toDate: DateTime.parse(json['to_date'] ?? 'none'),
       totalLeaveDays: json['total_leave_days'] ?? 'none',
-      status: json['status']?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

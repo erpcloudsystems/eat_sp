@@ -1,8 +1,8 @@
-import '../../../screen/filter_screen.dart';
-import '../../../screen/list/otherLists.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../screen/filter_screen.dart';
+import '../../../screen/list/otherLists.dart';
 import '../../form_widgets.dart';
 
 class SupplierFilter extends StatefulWidget {
@@ -30,7 +30,8 @@ class _SupplierFilterState extends State<SupplierFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter1'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => supplierGroupScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => supplierGroupScreen()));
             if (res != null) _values['filter1'] = res;
             return _values['filter1'];
           },

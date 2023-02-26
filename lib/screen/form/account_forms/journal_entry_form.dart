@@ -1,18 +1,15 @@
-import '../../../models/page_models/model_functions.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../core/constants.dart';
 import '../../../models/list_models/accounts_list_models/account_table_model.dart';
 import '../../../widgets/inherited_widgets/add_account_list.dart';
-import '../../../widgets/inherited_widgets/add_expenses_list.dart';
-import '../../list/otherLists.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 
 class JournalEntryForm extends StatefulWidget {
@@ -47,15 +44,12 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
     final server = APIService();
     final provider = context.read<ModuleProvider>();
 
-
-    data['accounts']=[];
+    data['accounts'] = [];
     InheritedAccountForm.of(context).account.forEach((element) {
       data['accounts'].add(element.toJson);
     });
 
     data['accounts'][0].remove('bank_account');
-
-
 
     showLoadingDialog(
         context,
@@ -107,11 +101,9 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
-
         data['accounts'].forEach((element) => InheritedAccountForm.of(context)
             .account
             .add(AccountModel.fromJson(element)));
-
 
         setState(() {});
       });
@@ -121,7 +113,6 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('7788888787 ${InheritedAccountForm.of(context).data}');
-
   }
 
   @override
@@ -158,7 +149,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -187,45 +178,44 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                     ],
                   ),
                 ),
-                Group(child: Column(children: [
-                  CustomTextField(
-                    'cheque_no',
-                    'Reference Number'.tr(),
-                    initialValue: data['cheque_no'],
-                    onChanged: (value)  =>
-                    data['cheque_no'] = value,
-                    onSave: (key, value) => data[key] = value,
-                    keyboardType: TextInputType.number,
-                    disableError: true,
-                    validator: (value) =>
-                        numberValidationToast(value, 'Reference Number'.tr()),
-                    disableValidation: true,
-                  ),
-                  Row(children: [
-                    Flexible(
-                        child: DatePicker(
+                Group(
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        'cheque_no',
+                        'Reference Number'.tr(),
+                        initialValue: data['cheque_no'],
+                        onChanged: (value) => data['cheque_no'] = value,
+                        onSave: (key, value) => data[key] = value,
+                        keyboardType: TextInputType.number,
+                        disableError: true,
+                        validator: (value) => numberValidationToast(
+                            value, 'Reference Number'.tr()),
+                        disableValidation: true,
+                      ),
+                      Row(children: [
+                        Flexible(
+                            child: DatePicker(
                           'cheque_date',
                           'Reference Date'.tr(),
                           initialValue: data['cheque_date'],
                           onChanged: (value) =>
                               setState(() => data['cheque_date'] = value),
                         )),
-                  ]),
-                  CustomTextField(
-                    'user_remark',
-                    'User Remark'.tr(),
-                    initialValue: data['user_remark'],
-                    onChanged: (value)  =>
-                    data['user_remark'] = value,
-                    onSave: (key, value) => data[key] = value,
-                    disableValidation: true,
-
+                      ]),
+                      CustomTextField(
+                        'user_remark',
+                        'User Remark'.tr(),
+                        initialValue: data['user_remark'],
+                        onChanged: (value) => data['user_remark'] = value,
+                        onSave: (key, value) => data[key] = value,
+                        disableValidation: true,
+                      ),
+                    ],
                   ),
-                ],),),
-
+                ),
                 SelectedAccountsList(),
-                SizedBox(height:8),
-
+                SizedBox(height: 8),
               ],
             ),
           ),
@@ -234,5 +224,3 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
     );
   }
 }
-
-

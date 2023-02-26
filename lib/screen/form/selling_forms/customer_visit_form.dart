@@ -36,39 +36,34 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
   LatLng location = LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
-  Map<String, dynamic> selectedCstData = {'name': 'noName', };
+  Map<String, dynamic> selectedCstData = {
+    'name': 'noName',
+  };
 
   final _formKey = GlobalKey<FormState>();
-
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if(location == LatLng(0.0, 0.0)) {
-      showSnackBar(
-          KEnableGpsSnackBar,
-          context);
-      Future.delayed(Duration(seconds: 1), () async{
-
-      location = await gpsService.getCurrentLocation(context);
-
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar(KEnableGpsSnackBar, context);
+      Future.delayed(Duration(seconds: 1), () async {
+        location = await gpsService.getCurrentLocation(context);
       });
-    return;
+      return;
     }
-
 
     _formKey.currentState!.save();
 
     final server = APIService();
     final provider = context.read<ModuleProvider>();
 
-
     data['docstatus'] = 1;
     data['latitude'] = location.latitude;
     data['longitude'] = location.longitude;
     data['location'] = gpsService.placemarks[0].subAdministrativeArea;
-    if(data['time'].toString().contains('T')){
-    data['time'] = data['time'].toString().split('T')[1].split('.')[0];
+    if (data['time'].toString().contains('T')) {
+      data['time'] = data['time'].toString().split('T')[1].split('.')[0];
     }
 
     showLoadingDialog(
@@ -80,11 +75,10 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
-            () async => provider.isEditing
+        () async => provider.isEditing
             ? await provider.updatePage(data)
             : await server.postRequest(CUSTOMER_VISIT_POST, {'data': data}),
         context);
-
 
     Navigator.pop(context);
 
@@ -94,7 +88,6 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
       Navigator.pop(context);
     else if (res != null &&
         res['message']['customer_visit_data_name'] != null) {
-
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['customer_visit_data_name']);
@@ -103,13 +96,10 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     }
   }
 
-
-
   Future<void> _getCustomerData(String customer) async {
     selectedCstData = Map<String, dynamic>.from(
         await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
     for (var k in selectedCstData.keys) print("➡️ $k: ${selectedCstData[k]}");
-
   }
 
   @override
@@ -122,31 +112,29 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
-        data['time'] = DateTime.now().toIso8601String().split("T")[0] + "T"+ data['time'];
+        data['time'] =
+            DateTime.now().toIso8601String().split("T")[0] + "T" + data['time'];
         _getCustomerData(data['customer']).then((value) => setState(() {
-           selectedCstData['address_line1'] = formatDescription(data['address_line1']);
-          selectedCstData['city'] = data['city'];
-          selectedCstData['country'] = data['country'];
-
-        }));
-
+              selectedCstData['address_line1'] =
+                  formatDescription(data['address_line1']);
+              selectedCstData['city'] = data['city'];
+              selectedCstData['country'] = data['country'];
+            }));
 
         setState(() {});
       });
   }
 
   @override
-  void didChangeDependencies()  {
+  void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.delayed(Duration.zero, () async{
-    location = await gpsService.getCurrentLocation(context);
+    Future.delayed(Duration.zero, () async {
+      location = await gpsService.getCurrentLocation(context);
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
@@ -179,7 +167,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Group(
@@ -206,16 +194,15 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                                 data['customer'] = res['name'];
                                 data['customer_name'] = res['customer_name'];
                                 data['customer_address'] =
-                                res["customer_primary_address"];
+                                    res["customer_primary_address"];
                                 data['contact_person'] =
-                                res["customer_primary_contact"];
+                                    res["customer_primary_contact"];
                               });
                             }
 
                             return id;
                           },
                         ),
-
                         CustomExpandableTile(
                           hideArrow: data['customer'] == null,
                           title: CustomTextField(
@@ -225,7 +212,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                               clearButton: false,
                               onSave: (key, value) => data[key] = value,
                               liestenToInitialValue:
-                              data['customer_address'] == null,
+                                  data['customer_address'] == null,
                               onPressed: () async {
                                 if (data['customer'] == null)
                                   return showSnackBar(
@@ -238,7 +225,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                                 setState(() {
                                   data['customer_address'] = res['name'];
                                   selectedCstData['address_line1'] =
-                                  res['address_line1'];
+                                      res['address_line1'];
                                   selectedCstData['city'] = res['city'];
                                   selectedCstData['country'] = res['country'];
                                 });
@@ -246,51 +233,49 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                               }),
                           children: (data['customer_address'] != null)
                               ? <Widget>[
-                            ListTile(
-                              trailing: Icon(Icons.location_on),
-                              title: Text(
-                                  selectedCstData['address_line1'] ?? ''),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.location_city),
-                              title: Text(selectedCstData['city'] ?? ''),
-                            ),
-                            ListTile(
-                              trailing: Icon(Icons.flag),
-                              title: Text(selectedCstData['country'] ?? ''),
-                            )
-                          ]
+                                  ListTile(
+                                    trailing: Icon(Icons.location_on),
+                                    title: Text(
+                                        selectedCstData['address_line1'] ?? ''),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.location_city),
+                                    title: Text(selectedCstData['city'] ?? ''),
+                                  ),
+                                  ListTile(
+                                    trailing: Icon(Icons.flag),
+                                    title:
+                                        Text(selectedCstData['country'] ?? ''),
+                                  )
+                                ]
                               : null,
                         ),
 
                         Row(children: [
                           Flexible(
                               child: DatePicker(
-                                'posting_date',
-                                'Posting Date'.tr(),
-                                enable: false,
-                                initialValue: data['posting_date'],
-                                onChanged: (value) =>
-                                    setState(() => data['posting_date'] = value),
-                              )),
+                            'posting_date',
+                            'Posting Date'.tr(),
+                            enable: false,
+                            initialValue: data['posting_date'],
+                            onChanged: (value) =>
+                                setState(() => data['posting_date'] = value),
+                          )),
                           SizedBox(width: 10),
                           Flexible(
                               child: TimePicker(
-                                'time',
-                                'Time'.tr(),
-                                enable: false,
-                                initialValue: data['time'],
-                                onChanged: (value) {
-                                  //value on that shap: (10:01:00)
-                                  setState(() {
-                                    data['time'] = value;
-                                  });
-                                },
-                              ))
+                            'time',
+                            'Time'.tr(),
+                            enable: false,
+                            initialValue: data['time'],
+                            onChanged: (value) {
+                              //value on that shap: (10:01:00)
+                              setState(() {
+                                data['time'] = value;
+                              });
+                            },
+                          ))
                         ]),
-
-
-
                         CustomTextField(
                           'description',
                           'Description'.tr(),
@@ -305,18 +290,20 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,color: Colors.amber,size: 22),
+                              child: Icon(Icons.warning_amber,
+                                  color: Colors.amber, size: 22),
                             ),
                             Flexible(
-                                child: Text(KLocationNotifySnackBar,textAlign: TextAlign.start,)),
+                                child: Text(
+                              KLocationNotifySnackBar,
+                              textAlign: TextAlign.start,
+                            )),
                           ],
                         ),
                         SizedBox(height: 8),
-
                       ],
                     ),
                   ),
-
                   SizedBox(height: 100),
                 ],
               ),

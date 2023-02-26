@@ -1,17 +1,21 @@
-import '../core/constants.dart';
-import '../provider/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../core/constants.dart';
+import '../provider/user/user_provider.dart';
 import '../service/service.dart';
-
 
 class ItemCard extends StatelessWidget {
   final List<String> names, values;
   final String imageUrl;
   final void Function(BuildContext context)? onPressed;
 
-  const ItemCard({Key? key, this.names = const ['Code', 'Group', 'UoM'], required this.values, required this.imageUrl, this.onPressed})
+  const ItemCard(
+      {Key? key,
+      this.names = const ['Code', 'Group', 'UoM'],
+      required this.values,
+      required this.imageUrl,
+      this.onPressed})
       : super(key: key);
 
   @override
@@ -19,13 +23,15 @@ class ItemCard extends StatelessWidget {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
       child: InkWell(
         onTap: onPressed == null ? null : () => onPressed!(context),
         borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
         child: Ink(
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS), border: Border.all(width: 1, color: Colors.blueAccent.shade100)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
+              border: Border.all(width: 1, color: Colors.blueAccent.shade100)),
           child: Column(
             children: [
               Padding(
@@ -48,10 +54,17 @@ class ItemCard extends StatelessWidget {
                           // width: 45,
                           // height: 45,
                           loadingBuilder: (context, child, progress) {
-                            return progress != null ? SizedBox(child: Icon(Icons.image, color: Colors.grey, size: 40)) : child;
+                            return progress != null
+                                ? SizedBox(
+                                    child: Icon(Icons.image,
+                                        color: Colors.grey, size: 40))
+                                : child;
                           },
-                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return SizedBox(child: Icon(Icons.image, color: Colors.grey, size: 40));
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return SizedBox(
+                                child: Icon(Icons.image,
+                                    color: Colors.grey, size: 40));
                           },
                         ),
                       ),
@@ -70,8 +83,10 @@ class ItemCard extends StatelessWidget {
                             for (int i = 1; i < values.length; i++)
                               Wrap(
                                 children: [
-                                  _CardItem(title: names[i - 1], value: values[i]),
-                                  if (i != values.length - 1) Divider(color: Colors.grey),
+                                  _CardItem(
+                                      title: names[i - 1], value: values[i]),
+                                  if (i != values.length - 1)
+                                    Divider(color: Colors.grey),
                                 ],
                               ),
                           ],
@@ -90,7 +105,8 @@ class ItemCard extends StatelessWidget {
 class _CardItem extends StatelessWidget {
   final String title, value;
 
-  const _CardItem({Key? key, required this.title, required this.value}) : super(key: key);
+  const _CardItem({Key? key, required this.title, required this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

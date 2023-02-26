@@ -65,21 +65,17 @@ class ContactPage extends StatelessWidget {
                 3,
                 Checkbox(
                     value:
-                    (data['is_primary_contact'] ?? 0) == 0 ? false : true,
+                        (data['is_primary_contact'] ?? 0) == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 2)
           ],
         ),
-
-        if(data['links']!=null)
-        PageCard(
-          color: color,
-          items: model.card2Items,
-        ),
-
+        if (data['links'] != null)
+          PageCard(
+            color: color,
+            items: model.card2Items,
+          ),
         CommentsButton(color: color),
-
-
         SizedBox(
           height: 25,
         )

@@ -10,7 +10,8 @@ class PurchaseOrderPageModel {
   final BuildContext context;
 
   PurchaseOrderPageModel(this.context, this.data)
-      : items = List<Map<String, dynamic>>.from(data['purchase_order_items'] ?? [])
+      : items = List<Map<String, dynamic>>.from(
+            data['purchase_order_items'] ?? [])
           ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
   final List<Map<String, dynamic>> items;
@@ -31,9 +32,7 @@ class PurchaseOrderPageModel {
       {
         tr("Supplier Address"): data['supplier_address'] ?? tr('none'),
         tr("Status"): data['status'] ?? tr('none'),
-
       },
-
       {tr("Address"): formatDescription(data['address_display'] ?? tr('none'))},
       {
         tr("Contact"): data['contact_display'] ?? tr('none'),
@@ -66,7 +65,8 @@ class PurchaseOrderPageModel {
       },
       {
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none'),
-        tr("Payment Terms Template"): data['payment_terms_template'] ?? tr('none'),
+        tr("Payment Terms Template"):
+            data['payment_terms_template'] ?? tr('none'),
       },
     ];
   }

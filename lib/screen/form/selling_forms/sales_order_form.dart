@@ -367,18 +367,14 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           child: Divider(
                               color: Colors.grey, height: 1, thickness: 0.7),
                         ),
-                      CustomTextField(
-                        'customer_group',
-                        'Customer Group',
-                        initialValue: data['customer_group'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => customerGroupScreen()),
-                        ),
-                      ),
+                      CustomTextField('customer_group', 'Customer Group',
+                          initialValue: data['customer_group'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => customerGroupScreen()))),
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['territory'],
@@ -589,7 +585,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                       CustomTextField(
                           'set_warehouse', 'Set Source Warehouse'.tr(),
                           initialValue: data['set_warehouse'],
-                          disableValidation: false,
+                          disableValidation: true,
                           clearButton: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(

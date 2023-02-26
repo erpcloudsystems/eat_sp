@@ -29,19 +29,24 @@ class StockEntryPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Stock Entry', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('Stock Entry',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 12.0),
-                      child: context.read<ModuleProvider>().submitDocumentWidget(),
+                      child:
+                          context.read<ModuleProvider>().submitDocumentWidget(),
                     ),
                   )
               ],
             ),
             Padding(
-                padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
+                padding: const EdgeInsets.all(4.0),
+                child: Text(context.read<ModuleProvider>().pageId,
+                    style: const TextStyle(fontWeight: FontWeight.bold))),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -53,7 +58,9 @@ class StockEntryPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.circle, color: statusColor(data['status'] ?? 'none'), size: 12),
+                          Icon(Icons.circle,
+                              color: statusColor(data['status'] ?? 'none'),
+                              size: 12),
                           SizedBox(width: 8),
                           FittedBox(
                             child: Text(data['status'] ?? 'none'),
@@ -65,10 +72,8 @@ class StockEntryPage extends StatelessWidget {
                 widgetNumber: 2)
           ],
         ),
-
-    CommentsButton(color: color),
-
-    SizedBox(
+        CommentsButton(color: color),
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: Column(
             children: [
@@ -79,29 +84,36 @@ class StockEntryPage extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(child: Text('Items', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Center(
+                    child: Text('Items',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold))),
               ),
               Expanded(
                 child: data['items'] == null || data['items'].isEmpty
                     ? NothingHere()
-                    : ListView.builder(physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  //shrinkWrap: true,
-                  itemCount: model.items.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      ItemWithImageCard(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return PageDetailsDialog(
-                                    title: model.items[index]['name'] ?? 'none', names: model.itemListNames, values: model.itemListValues(index));
-                              });
-                        },
-                        id: model.items[index]['idx'].toString(),
-                        imageUrl: model.items[index]['image'].toString(),
-                        names: model.getItemCard(index),
-                        itemName: model.items[index]['item_name'],
+                    : ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        //shrinkWrap: true,
+                        itemCount: model.items.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            ItemWithImageCard(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return PageDetailsDialog(
+                                      title:
+                                          model.items[index]['name'] ?? 'none',
+                                      names: model.itemListNames,
+                                      values: model.itemListValues(index));
+                                });
+                          },
+                          id: model.items[index]['idx'].toString(),
+                          imageUrl: model.items[index]['image'].toString(),
+                          names: model.getItemCard(index),
+                          itemName: model.items[index]['item_name'],
                         ),
                       ),
               )

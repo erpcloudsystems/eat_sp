@@ -1,7 +1,6 @@
 import '../list_model.dart';
 
 class StockEntryListModel extends ListModel<StockEntryItemModel> {
-
   StockEntryListModel(List<StockEntryItemModel>? list) : super(list);
 
   factory StockEntryListModel.fromJson(Map<String, dynamic> json) {
@@ -30,21 +29,22 @@ class StockEntryItemModel {
   DateTime postingDate;
 
   StockEntryItemModel(
-      { required this.id,
-        required  this.stockEntryType,
-        required  this.fromWarehouse,
-        required  this.toWarehouse,
-     required     this.docStatus,
-        required  this.postingDate});
+      {required this.id,
+      required this.stockEntryType,
+      required this.fromWarehouse,
+      required this.toWarehouse,
+      required this.docStatus,
+      required this.postingDate});
 
   factory StockEntryItemModel.fromJson(Map<String, dynamic> json) {
-   return StockEntryItemModel(
-    id : json['name']?? 'none',
-    stockEntryType : json['stock_entry_type']?? 'none',
-    fromWarehouse : json['from_warehouse']?? 'none',
-    toWarehouse : json['to_warehouse']?? 'none',
-    docStatus : json['docstatus']?? 0,
-    postingDate : DateTime.parse(json['posting_date']??''),);
+    return StockEntryItemModel(
+      id: json['name'] ?? 'none',
+      stockEntryType: json['stock_entry_type'] ?? 'none',
+      fromWarehouse: json['from_warehouse'] ?? 'none',
+      toWarehouse: json['to_warehouse'] ?? 'none',
+      docStatus: json['docstatus'] ?? 0,
+      postingDate: DateTime.parse(json['posting_date'] ?? ''),
+    );
   }
 
   Map<String, dynamic> toJson() {

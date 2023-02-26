@@ -46,11 +46,9 @@ class SalesOrderPageModel {
       },
       {
         tr("Contact"): data['contact_display'] ?? tr('none'),
+        tr("Mobile No"): data['contact_mobile'] ?? tr('none')
       },
-      {
-        tr("Mobile No"): data['contact_mobile'] ?? tr('none'),
-        tr("Contact Email"): data['contact_email'] ?? tr('none'),
-      },
+      {tr("Contact Email"): data['contact_email'] ?? tr('none')},
     ];
   }
 
@@ -80,6 +78,7 @@ class SalesOrderPageModel {
         tr("Source"): data['source'] ?? tr('none'),
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none')
       },
+      // {tr("Terms & Conditions Details"): data['terms'] != null ? formatDescription(data['terms']) : tr('none')},
       {
         tr("Payment Terms Template"):
             data['payment_terms_template'] ?? tr('none'),

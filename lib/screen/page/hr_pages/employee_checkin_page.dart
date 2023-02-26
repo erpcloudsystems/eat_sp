@@ -59,15 +59,23 @@ class EmployeeCheckinPage extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.all(6.0),
-          child: CustomMapView(latitude: data['latitude'], longitude: data['longitude'],),
+          child: CustomMapView(
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+          ),
         ),
 
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100.0,vertical: 5),
-          child: ElevatedButton(onPressed: (){
-            MapsLauncher.launchCoordinates(data['latitude'], data['longitude']);
-
-          }, child: Text("Open in Maps",style: TextStyle(fontWeight: FontWeight.w600),),
+          padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
+          child: ElevatedButton(
+            onPressed: () {
+              MapsLauncher.launchCoordinates(
+                  data['latitude'], data['longitude']);
+            },
+            child: Text(
+              "Open in Maps",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         SizedBox(

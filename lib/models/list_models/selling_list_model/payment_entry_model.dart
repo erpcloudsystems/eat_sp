@@ -44,7 +44,6 @@ class PaymentEntryItem {
       required this.paidAmount,
       required this.status});
 
-
   factory PaymentEntryItem.fromJson(Map<String, dynamic> json) {
     return PaymentEntryItem(
       id: json['name'] ?? 'none',

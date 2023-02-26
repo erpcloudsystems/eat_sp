@@ -51,12 +51,12 @@ class _EmployeeAdvanceFilterState extends State<EmployeeAdvanceFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectEmployeeScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectEmployeeScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
         ),
-
         CustomTextField(
           'filter3',
           'Department'.tr(),
@@ -65,7 +65,8 @@ class _EmployeeAdvanceFilterState extends State<EmployeeAdvanceFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter3'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => departmentListScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => departmentListScreen()));
             if (res != null) _values['filter3'] = res;
             return _values['filter3'];
           },
@@ -78,7 +79,9 @@ class _EmployeeAdvanceFilterState extends State<EmployeeAdvanceFilter> {
             setState(() {
               _values['filter4'] = value;
               // remove date to if it's before from date
-              if (_values['filter5'] != null && DateTime.parse(_values['filter5']).isBefore(DateTime.parse(_values['filter4']))) {
+              if (_values['filter5'] != null &&
+                  DateTime.parse(_values['filter5'])
+                      .isBefore(DateTime.parse(_values['filter4']))) {
                 _values.remove('filter5');
                 _dateTo = '';
               }
@@ -92,7 +95,9 @@ class _EmployeeAdvanceFilterState extends State<EmployeeAdvanceFilter> {
         DatePicker(
           'filter5',
           'To Date'.tr(),
-          firstDate: _values['filter4'] != null ? DateTime.parse(_values['filter4']) : null,
+          firstDate: _values['filter4'] != null
+              ? DateTime.parse(_values['filter4'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

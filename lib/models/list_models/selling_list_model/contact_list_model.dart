@@ -31,28 +31,28 @@ class ContactItemModel {
   final String linkName;
   final String status;
 
-  ContactItemModel(
-      {required this.id,
-        required this.firstName,
-        required this.user,
-        required this.mobileNo,
-        required this.phone,
-        required this.emailId,
-        required this.linkDoctype,
-        required this.linkName,
-        required this.status,
-      });
+  ContactItemModel({
+    required this.id,
+    required this.firstName,
+    required this.user,
+    required this.mobileNo,
+    required this.phone,
+    required this.emailId,
+    required this.linkDoctype,
+    required this.linkName,
+    required this.status,
+  });
 
   factory ContactItemModel.fromJson(Map<String, dynamic> json) {
     return ContactItemModel(
-      id: json['name']??'none',
-      firstName: json['first_name']??'none',
-      user: json['user']??'none',
-      mobileNo: json['mobile_no']??'none',
-      phone: json['phone']??'none',
-      emailId: json['email_id']??'none',
-      linkDoctype: json['link_doctype']??'none',
-      linkName: json['link_name']??'none',
+      id: json['name'] ?? 'none',
+      firstName: json['first_name'] ?? 'none',
+      user: json['user'] ?? 'none',
+      mobileNo: json['mobile_no'] ?? 'none',
+      phone: json['phone'] ?? 'none',
+      emailId: json['email_id'] ?? 'none',
+      linkDoctype: json['link_doctype'] ?? 'none',
+      linkName: json['link_name'] ?? 'none',
       status: 'Random',
     );
   }

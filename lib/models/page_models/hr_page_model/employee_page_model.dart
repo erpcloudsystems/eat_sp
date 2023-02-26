@@ -49,7 +49,7 @@ class EmployeePageModel {
   List<Map<String, String>> get card3Items {
     return [
       {
-        tr(''): 'emails',// guide Value for PageExpandableCardItem
+        tr(''): 'emails', // guide Value for PageExpandableCardItem
       },
       {
         tr(''): 'address', // guide Value PageExpandableCardItem
@@ -78,10 +78,9 @@ class EmployeePageModel {
     return [
       {
         tr('Current Address'): data['address']['current_address'] ?? tr('-'),
-        tr('Permanent Address'): data['address']['permanent_address'] ?? tr('-'),
+        tr('Permanent Address'):
+            data['address']['permanent_address'] ?? tr('-'),
       },
     ];
   }
-
-
 }

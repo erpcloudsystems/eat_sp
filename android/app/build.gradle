@@ -42,6 +42,7 @@ android {
         disable "Instantiatable"
         checkReleaseBuilds false
         abortOnError false
+        warning 'deprecation'
     }
 
     sourceSets {

@@ -10,51 +10,45 @@ import 'package:app_settings/app_settings.dart';
 
 import '../widgets/dialog/loading_dialog.dart';
 
-class GPSService{
-
-  GPSService({ this.latitude, this.longitude,this.isMocked});
+class GPSService {
+  GPSService({this.latitude, this.longitude, this.isMocked});
   late LatLng latLang;
-  double? latitude ;
+  double? latitude;
   double? longitude;
   bool? isMocked;
-  List<Placemark> placemarks=[];
+  List<Placemark> placemarks = [];
 
-  Future<LatLng> getCurrentLocation(BuildContext context) async{
-   //Geolocator.requestPermission();
+  Future<LatLng> getCurrentLocation(BuildContext context) async {
+    //Geolocator.requestPermission();
 
-
-    if(!(await Permission.location.request().isGranted)){
+    if (!(await Permission.location.request().isGranted)) {
       Geolocator.requestPermission();
     }
 
+    if ((await Permission.location.request().isPermanentlyDenied)) {
+      //AppSettings.openLocationSettings();
+      Future.delayed(Duration(seconds: 1), () async {
+        final res = await checkDialog(
+            context, KPermanentlyDeniedSnackBar, 'Allow Location');
+        if (res) {
+          AppSettings.openAppSettings();
+        }
+      });
+    }
 
-   if((await Permission.location.request().isPermanentlyDenied)){
-     //AppSettings.openLocationSettings();
-     Future.delayed(Duration(seconds: 1), () async{
-       final res = await checkDialog(
-           context,
-           KPermanentlyDeniedSnackBar,
-           'Allow Location'
-       )  ;
-       if(res){
-         AppSettings.openAppSettings();
-       }
-     });
-   }
-
-    try{
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
 
       showSnackBar(KLocationGrantedSnackBar, context);
 
-      latitude =  position.latitude ;
+      latitude = position.latitude;
       longitude = position.longitude;
       isMocked = position.isMocked;
-      latLang = LatLng(position.latitude,position.longitude);
-      try{
-         placemarks = await placemarkFromCoordinates(latitude!, longitude!);
-
-      }catch(e){
+      latLang = LatLng(position.latitude, position.longitude);
+      try {
+        placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+      } catch (e) {
         print("Fail To get Address from Coordinates.: $e");
       }
 
@@ -62,31 +56,20 @@ class GPSService{
       print('longitude: $longitude');
       print('isMocked:$isMocked');
 
-      if(isMocked == true){
-        showSnackBar(
-            'Please use real location',
-            context)  ;
-        latitude =  0.0 ;
+      if (isMocked == true) {
+        showSnackBar('Please use real location', context);
+        latitude = 0.0;
         longitude = 0.0;
-        latLang = LatLng(0.0,0.0);
-
+        latLang = LatLng(0.0, 0.0);
       }
 
       List<String?> positionCheck = await TrustLocation.getLatLong;
       bool isMockLocation = await TrustLocation.isMockLocation;
       print('isMockLocation Trust Package:$isMockLocation');
-
-
-
     } catch (e) {
       print("Getting location Error: $e");
     }
 
     return latLang;
-
-
   }
-
-
 }
-

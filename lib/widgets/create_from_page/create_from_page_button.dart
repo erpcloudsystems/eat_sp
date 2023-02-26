@@ -19,7 +19,7 @@ class CreateFromPageButton extends StatefulWidget {
     required this.items,
     required this.data,
     required this.doctype,
-     this.disableCreate = false,
+    this.disableCreate = false,
     this.defaultValue,
   }) : super(key: key);
 
@@ -46,11 +46,11 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
     bool isOpend = false;
-    widget.data['doctype']= widget.doctype;
-    return  Container(
+    widget.data['doctype'] = widget.doctype;
+    return Container(
       height: 30,
-     width: 110,
-      margin: EdgeInsets.only(top: 0,left: 4),
+      width: 110,
+      margin: EdgeInsets.only(top: 0, left: 4),
       padding: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -59,28 +59,35 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
       child: IgnorePointer(
         ignoring: widget.disableCreate ?? false,
         child: DropdownButton<String>(
-             value: _value,
+            value: _value,
             borderRadius: BorderRadius.circular(5),
             underline: SizedBox(),
-            alignment:Alignment.centerLeft,
+            alignment: Alignment.centerLeft,
             menuMaxHeight: 300,
-            iconSize:26,
-            isDense:true,
-            isExpanded:true,
+            iconSize: 26,
+            isDense: true,
+            isExpanded: true,
             //iconDisabledColor:Colors.transparent,
             //iconEnabledColor:Colors.transparent,
-            hint: Text('Create'.tr(),style: TextStyle(color:!(widget.disableCreate ?? false) ?  Colors.black87:Colors.grey),textAlign: TextAlign.center,),
+            hint: Text(
+              'Create'.tr(),
+              style: TextStyle(
+                  color: !(widget.disableCreate ?? false)
+                      ? Colors.black87
+                      : Colors.grey),
+              textAlign: TextAlign.center,
+            ),
             onChanged: (value) {
               if (value == null) return;
               _value = value;
               // InheritedForm.of(context).items.clear();
 
-              context
-                  .read<ModuleProvider>()
-                  .pushCreateFromPage(pageData: widget.data, doctype: _value.toString());
+              context.read<ModuleProvider>().pushCreateFromPage(
+                  pageData: widget.data, doctype: _value.toString());
 
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => widget.items[_value.toString()]))
+                  .push(MaterialPageRoute(
+                      builder: (_) => widget.items[_value.toString()]))
                   .then((value) {
                 provider.iAmCreatingAForm();
                 provider.removeCreateFromPage();

@@ -62,19 +62,16 @@ class _LeadFormState extends State<LeadForm> {
   void initState() {
     super.initState();
 
-    if(!context.read<ModuleProvider>().isEditing){
+    if (!context.read<ModuleProvider>().isEditing) {
       data['country'] = context.read<UserProvider>().companyDefaults['country'];
-      setState(() {
-      });
+      setState(() {});
     }
 
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         debugPrint(data.toString());
-        setState(() {
-
-        });
+        setState(() {});
       });
   }
 
@@ -83,10 +80,10 @@ class _LeadFormState extends State<LeadForm> {
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
-        if (isGoBack != null){
-          if(isGoBack){
+        if (isGoBack != null) {
+          if (isGoBack) {
             return Future.value(true);
-          }else{
+          } else {
             return Future.value(false);
           }
         }
@@ -94,7 +91,9 @@ class _LeadFormState extends State<LeadForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing) ? Text("Edit Lead") : Text("Create Lead"),
+          title: (context.read<ModuleProvider>().isEditing)
+              ? Text("Edit Lead")
+              : Text("Create Lead"),
           actions: [
             Material(
                 color: Colors.transparent,
@@ -109,7 +108,7 @@ class _LeadFormState extends State<LeadForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -123,13 +122,6 @@ class _LeadFormState extends State<LeadForm> {
                         initialValue: data['lead_name'],
                         onSave: (key, value) => data[key] = value,
                       ),
-                      // CheckBoxWidget(
-                      //     'organization_lead', tr('Lead Is A Company'),
-                      //     initialValue: (int.parse(
-                      //             '${data['organization_lead'] ?? '0'}') ==
-                      //         1),
-                      //     onChanged: (key, value) =>
-                      //         setState(() => data[key] = value ? 1 : 0)),
                       CustomTextField(
                         'company_name',
                         tr('Company Name'),
@@ -155,7 +147,6 @@ class _LeadFormState extends State<LeadForm> {
                       CustomTextField('territory', tr('Territory'),
                           initialValue: data['territory'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -166,7 +157,6 @@ class _LeadFormState extends State<LeadForm> {
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['address_title'],
                         disableValidation: true,
-
                         onChanged: (value) => data['address_title'] = value,
                       ),
                       CustomTextField(
@@ -175,7 +165,6 @@ class _LeadFormState extends State<LeadForm> {
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['address_line1'],
                         disableValidation: true,
-
                       ),
                       CustomTextField(
                         'city',
@@ -183,27 +172,23 @@ class _LeadFormState extends State<LeadForm> {
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['city'],
                         disableValidation: true,
-
                       ),
                       CustomTextField('country', tr('Country'),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['country'],
                           disableValidation: true,
-
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => countryScreen()))),
                       CustomTextField('mobile_no', tr('Mobile No'),
                           initialValue: data['mobile_no'],
                           disableValidation: true,
-
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
                           onSave: (key, value) => data[key] = value),
                       CustomTextField('email_id', tr('Email Address'),
                           initialValue: data['email_id'],
                           disableValidation: true,
-
                           keyboardType: TextInputType.emailAddress,
                           validator: mailValidation,
                           onSave: (key, value) => data[key] = value),
@@ -218,17 +203,18 @@ class _LeadFormState extends State<LeadForm> {
                 Group(
                   child: Column(
                     children: [
-                      CustomDropDown('status', 'Status'.tr(), items: LeadStatusList,
-                          defaultValue: data["status"] ?? LeadStatusList[0],
-                        onChanged: (value) =>
-                            setState(() {
-                              data['status'] = value;
-                            }),
+                      CustomDropDown(
+                        'status',
+                        'Status'.tr(),
+                        items: LeadStatusList,
+                        defaultValue: data["status"] ?? LeadStatusList[0],
+                        onChanged: (value) => setState(() {
+                          data['status'] = value;
+                        }),
                       ),
                       CustomTextField('source', 'Source'.tr(),
                           onSave: (key, value) => data[key] = value,
                           initialValue: data['source'],
-
                           disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -246,27 +232,6 @@ class _LeadFormState extends State<LeadForm> {
                           defaultValue: requestTypeList[0],
                           onChanged: (value) => data['request_type'] = value),
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      // Deleted By Ziad testing ↓↓↓↓↓↓↓↓↓↓
-                      // CustomTextField('contact_by', 'Next Contact By'.tr(),
-                      //     initialValue: data['contact_by'],
-                      //     disableValidation: true,
-                      //     onSave: (key, value) => data[key] = value,
-                      //     onPressed: () => Navigator.of(context).push(
-                      //         MaterialPageRoute(
-                      //             builder: (_) => userListScreen()))),
-                      // DatePicker('contact_date', tr('Next Contact Date'),
-                      //     initialValue: data['contact_date'],
-                      //     disableValidation: true,
-                      //     onChanged: (value) =>
-                      //         setState(() => data['contact_date'] = value)),
-                      // ConstrainedBox(
-                      //     constraints: BoxConstraints(maxHeight: 250),
-                      //     child: CustomTextField('notes', 'Notes'.tr(),
-                      //         disableValidation: true,
-                      //         maxLines: null,
-                      //         initialValue: data['notes'],
-                      //         onChanged: (value) => data['notes'] = value)),
-                      // Deleted By Ziad testing ↑↑↑↑↑↑↑↑↑↑↑↑↑
                     ],
                   ),
                 ),

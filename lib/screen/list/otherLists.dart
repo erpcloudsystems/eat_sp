@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-
 import '../../provider/module/module_provider.dart';
 import '../other/notification_screen.dart';
 import '../page/generic_page.dart';
@@ -580,7 +577,7 @@ Widget selectLeadScreen() => Builder(builder: (context) {
 Widget itemListScreen(String priceList) => Builder(builder: (context) {
       return CustomListScreen<ItemSelectModel>(
         title: 'Select Items',
-        service: ITEM_RATE_LIST + '?price_list=$priceList',
+        service: GET_ITEM_LIST + '?price_list=$priceList',
         listItem: (item) => ItemCard(
           values: [item.itemName, item.itemCode, item.group, item.stockUom],
           imageUrl: item.imageUrl,
@@ -774,7 +771,6 @@ Widget filteredUOMListScreen(String itemCode) =>
       filters: {'item_code': itemCode},
       listItem: (value) => SingleValueTile(value['uom'],
           onTap: (context) => Navigator.of(context).pop(value)),
-
       serviceParser: (data) {
         List<Map<String, dynamic>> _list = [];
         List.from(data['message']).forEach((element) => _list.add(element));
@@ -1076,3 +1072,30 @@ Widget getNotificationListScreen() => Builder(builder: (context) {
         },
       );
     });
+
+/// Project Lists
+Widget issueListScreen() => GenericListScreen<String>(
+      title: 'Select Issue',
+      service: APIService.ISSUE,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
+
+Widget typeListScreen() => GenericListScreen<String>(
+      title: 'Select Type',
+      service: APIService.TASK_TYPE,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );

@@ -8,13 +8,22 @@ import '../service/service.dart';
 import 'inherited_widgets/add_expenses_list.dart';
 import 'form_widgets.dart';
 
-
 class ExpenseCard extends StatelessWidget {
   final List<String> names, values;
 
   final void Function(BuildContext context)? onPressed;
 
-  const ExpenseCard({Key? key, this.names = const ['Expense Date', 'Expense Type', 'Amount','Sanctioned Amount','Cost Center',], required this.values, this.onPressed})
+  const ExpenseCard(
+      {Key? key,
+      this.names = const [
+        'Expense Date',
+        'Expense Type',
+        'Amount',
+        'Sanctioned Amount',
+        'Cost Center',
+      ],
+      required this.values,
+      this.onPressed})
       : super(key: key);
 
   @override
@@ -22,13 +31,15 @@ class ExpenseCard extends StatelessWidget {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
       child: InkWell(
         onTap: onPressed == null ? null : () => onPressed!(context),
         borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
         child: Ink(
-          decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS), border: Border.all(width: 1, color: Colors.blueAccent.shade100)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
+              border: Border.all(width: 1, color: Colors.blueAccent.shade100)),
           child: Column(
             children: [
               Padding(
@@ -41,22 +52,24 @@ class ExpenseCard extends StatelessWidget {
                   Flexible(
                       // flex: 5,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Text(values[0]),
-                            // Divider(color: Colors.grey),
-                            for (int i = 1; i < values.length; i++)
-                              Column(
-                                children: [
-                                  _CardExpense(title: names[i - 1], value: values[i]),
-                                  if (i != values.length - 1) Divider(color: Colors.grey),
-                                ],
-                              ),
-                          ],
-                        ),
-                      ))
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text(values[0]),
+                        // Divider(color: Colors.grey),
+                        for (int i = 1; i < values.length; i++)
+                          Column(
+                            children: [
+                              _CardExpense(
+                                  title: names[i - 1], value: values[i]),
+                              if (i != values.length - 1)
+                                Divider(color: Colors.grey),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ))
                 ],
               ),
             ],
@@ -71,14 +84,15 @@ class _CardExpense extends StatelessWidget {
   final String title, value;
   final _formKey = GlobalKey<FormState>();
 
-   _CardExpense({Key? key, required this.title, required this.value}) : super(key: key);
+  _CardExpense({Key? key, required this.title, required this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             Text('$title:  '),

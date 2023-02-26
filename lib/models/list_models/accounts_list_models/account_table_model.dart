@@ -33,19 +33,17 @@ class AccountModel {
   double debitInAccountCurrency;
   double creditInAccountCurrency;
 
-
-  AccountModel(
-      {
-        required this.id,
-        required this.account,
-        required this.accountType,
-        required this.balance,
-        required this.bankAccount,
-        required this.partyType,
-        required this.party,
-        required this.debitInAccountCurrency,
-        required this.creditInAccountCurrency,
-      });
+  AccountModel({
+    required this.id,
+    required this.account,
+    required this.accountType,
+    required this.balance,
+    required this.bankAccount,
+    required this.partyType,
+    required this.party,
+    required this.debitInAccountCurrency,
+    required this.creditInAccountCurrency,
+  });
 
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
@@ -54,7 +52,7 @@ class AccountModel {
       accountType: json['account_type'] ?? '',
       balance: json['balance'] ?? 0.0,
       bankAccount: json['bank_account'] ?? '',
-      partyType: json['party_type']?? '',
+      partyType: json['party_type'] ?? '',
       party: json['party'] ?? '',
       debitInAccountCurrency: json['debit_in_account_currency'] ?? 0.0,
       creditInAccountCurrency: json['credit_in_account_currency'] ?? 0.0,
@@ -80,10 +78,7 @@ class AccountModel {
 
   @override
   int get hashCode => account.hashCode;
-
 }
-
-
 
 //class AccountSelectModel extends AccountModel {
 // num rate;

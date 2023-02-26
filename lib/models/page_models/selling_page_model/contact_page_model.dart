@@ -19,32 +19,26 @@ class ContactPageModel {
         tr("Mobile"): data['mobile_no'] ?? tr('none'),
         tr("Phone"): data['phone'] ?? tr('none'),
       },
-
       {
-        tr("Email"): data['email_id']?? tr('none'),
+        tr("Email"): data['email_id'] ?? tr('none'),
         tr("Is Primary Contact"): data['is_primary_contact'].toString(),
       },
-
-
     ];
   }
 
   List<Map<String, String>> get card2Items {
     return [
-      if(data['links']!=null)
-      {
-       // tr("Name"): data['links'][0]['name'] ?? tr('none'),
-        tr("Link Doctype"): data['links'][0]['link_doctype'] ?? tr('none'),
-        tr("Link Name"): data['links'][0]['link_name'] ?? tr('none'),
+      if (data['links'] != null)
+        {
+          // tr("Name"): data['links'][0]['name'] ?? tr('none'),
+          tr("Link Doctype"): data['links'][0]['link_doctype'] ?? tr('none'),
+          tr("Link Name"): data['links'][0]['link_name'] ?? tr('none'),
+        },
+      // if(data['links']!=null)
 
-      },
-     // if(data['links']!=null)
-
-       // {
-     //   tr("Link Title"): data['links'][0]['link_title'] ?? tr('none'),
-     // },
-
-
+      // {
+      //   tr("Link Title"): data['links'][0]['link_title'] ?? tr('none'),
+      // },
     ];
   }
 
@@ -56,12 +50,8 @@ class ContactPageModel {
       },
       {
         tr("Company"): data['company'] ?? tr('none'),
-        tr("Mode of Payment"): data['mode_of_payment']?? tr('none'),
+        tr("Mode of Payment"): data['mode_of_payment'] ?? tr('none'),
       },
-
     ];
   }
-
-
-
 }

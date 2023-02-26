@@ -84,9 +84,9 @@ class PurchaseInvoicePageModel {
       },
       {
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none'),
-        tr("Payment Terms Template"): data['payment_terms_template'] ?? tr('none'),
+        tr("Payment Terms Template"):
+            data['payment_terms_template'] ?? tr('none'),
       },
-
     ];
   }
 
@@ -240,14 +240,27 @@ class PurchaseInvoicePageModel {
 
   List<MapEntry<String, String>> taxesCardValues(int index) {
     return [
-      MapEntry(tr('Account Head'),
-          (data['child_purchase_taxes_and_charges'][index]['account_head'] ?? tr('none')).toString()),
-      MapEntry(tr('Type'),
-          (data['child_purchase_taxes_and_charges'][index]['charge_type'] ?? tr('none')).toString()),
       MapEntry(
-          tr('Rate'), (data['child_purchase_taxes_and_charges'][index]['rate'] ?? tr('none')).toString()),
-      MapEntry(tr('Amount'), currency(data['child_purchase_taxes_and_charges'][index]['tax_amount'])),
-      MapEntry(tr('Total'), currency(data['child_purchase_taxes_and_charges'][index]['total'])),
+          tr('Account Head'),
+          (data['child_purchase_taxes_and_charges'][index]['account_head'] ??
+                  tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Type'),
+          (data['child_purchase_taxes_and_charges'][index]['charge_type'] ??
+                  tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Rate'),
+          (data['child_purchase_taxes_and_charges'][index]['rate'] ??
+                  tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Amount'),
+          currency(
+              data['child_purchase_taxes_and_charges'][index]['tax_amount'])),
+      MapEntry(tr('Total'),
+          currency(data['child_purchase_taxes_and_charges'][index]['total'])),
     ];
   }
 
@@ -272,20 +285,34 @@ class PurchaseInvoicePageModel {
 
   List<String> taxesListValues(int index) {
     return [
-      (data['child_purchase_taxes_and_charges'][index]['charge_type'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['row_id'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['account_head'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['description'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['cost_center'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['rate'] ?? tr('none')).toString(),
-      (data['child_purchase_taxes_and_charges'][index]['account_currency'] ?? tr('none'))
+      (data['child_purchase_taxes_and_charges'][index]['charge_type'] ??
+              tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['row_id'] ?? tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['account_head'] ??
+              tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['description'] ??
+              tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['cost_center'] ??
+              tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['rate'] ?? tr('none'))
+          .toString(),
+      (data['child_purchase_taxes_and_charges'][index]['account_currency'] ??
+              tr('none'))
           .toString(), // TODO reemove it
       currency(data['child_purchase_taxes_and_charges'][index]['tax_amount']),
       currency(data['child_purchase_taxes_and_charges'][index]['total']),
-      currency(data['child_purchase_taxes_and_charges'][index]['tax_amount_after_discount_amount']),
-      currency(data['child_purchase_taxes_and_charges'][index]['base_tax_amount']),
+      currency(data['child_purchase_taxes_and_charges'][index]
+          ['tax_amount_after_discount_amount']),
+      currency(
+          data['child_purchase_taxes_and_charges'][index]['base_tax_amount']),
       currency(data['child_purchase_taxes_and_charges'][index]['base_total']),
-      currency(data['child_purchase_taxes_and_charges'][index]['base_tax_amount_after_discount_amount']),
+      currency(data['child_purchase_taxes_and_charges'][index]
+          ['base_tax_amount_after_discount_amount']),
     ];
   }
 

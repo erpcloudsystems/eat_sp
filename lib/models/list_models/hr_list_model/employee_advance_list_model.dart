@@ -32,31 +32,31 @@ class EmployeeAdvanceItemModel {
   final String company;
   final String advanceAccount;
 
-  EmployeeAdvanceItemModel(
-      {required this.id,
-        required this.name,
-        required this.employee,
-        required this.department,
-        required this.postingDate,
-        required this.purpose,
-        required this.advanceAmount,
-        required this.status,
-        required this.company,
-        required this.advanceAccount,
-      });
+  EmployeeAdvanceItemModel({
+    required this.id,
+    required this.name,
+    required this.employee,
+    required this.department,
+    required this.postingDate,
+    required this.purpose,
+    required this.advanceAmount,
+    required this.status,
+    required this.company,
+    required this.advanceAccount,
+  });
 
   factory EmployeeAdvanceItemModel.fromJson(Map<String, dynamic> json) {
     return EmployeeAdvanceItemModel(
-      id: json['name']??'none',
-      name: json['employee_name']??'none',
-      employee: json['employee']??'none',
-      department: json['department']??'none',
+      id: json['name'] ?? 'none',
+      name: json['employee_name'] ?? 'none',
+      employee: json['employee'] ?? 'none',
+      department: json['department'] ?? 'none',
       postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
-      purpose: json['purpose']??'none',
-      advanceAmount: json['advance_amount']??'none',
-      status: json['status']??'none',
-      company: json['company']??'none',
-      advanceAccount: json['advance_account']?? 'none',
+      purpose: json['purpose'] ?? 'none',
+      advanceAmount: json['advance_amount'] ?? 'none',
+      status: json['status'] ?? 'none',
+      company: json['company'] ?? 'none',
+      advanceAccount: json['advance_account'] ?? 'none',
     );
   }
 

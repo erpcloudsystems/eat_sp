@@ -32,20 +32,21 @@ class SalesOrderPage extends StatelessWidget {
           color: color,
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CreateFromPageButton(
                   doctype: 'Sales Order',
                   data: data,
                   items: fromSalesOrder,
-                  disableCreate: data['docstatus'].toString() == "1" ?  false:true,
+                  disableCreate:
+                      data['docstatus'].toString() == "1" ? false : true,
                 ),
                 if (data['docstatus'] != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child:
-                  context.read<ModuleProvider>().submitDocumentWidget(),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child:
+                        context.read<ModuleProvider>().submitDocumentWidget(),
+                  ),
               ],
             ),
             Stack(

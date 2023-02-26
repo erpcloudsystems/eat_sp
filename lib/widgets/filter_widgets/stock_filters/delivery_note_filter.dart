@@ -49,7 +49,8 @@ class _DeliveryNoteFilterState extends State<DeliveryNoteFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectCustomerScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectCustomerScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
@@ -62,7 +63,9 @@ class _DeliveryNoteFilterState extends State<DeliveryNoteFilter> {
             setState(() {
               _values['filter3'] = value;
               // remove date to if it's before from date
-              if (_values['filter4'] != null && DateTime.parse(_values['filter4']).isBefore(DateTime.parse(_values['filter3']))) {
+              if (_values['filter4'] != null &&
+                  DateTime.parse(_values['filter4'])
+                      .isBefore(DateTime.parse(_values['filter3']))) {
                 _values.remove('filter4');
                 _dateTo = '';
               }
@@ -74,7 +77,9 @@ class _DeliveryNoteFilterState extends State<DeliveryNoteFilter> {
         DatePicker(
           'filter4',
           'To Date'.tr(),
-          firstDate: _values['filter3'] != null ? DateTime.parse(_values['filter3']) : null,
+          firstDate: _values['filter3'] != null
+              ? DateTime.parse(_values['filter3'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;
@@ -87,7 +92,8 @@ class _DeliveryNoteFilterState extends State<DeliveryNoteFilter> {
             initialValue: _values['filter5'],
             onSave: (key, value) => _values[key] = value,
             onPressed: () async {
-              final res = await Navigator.of(context).push(MaterialPageRoute(builder: (_) => warehouseScreen()));
+              final res = await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => warehouseScreen()));
               if (res != null) _values['filter5'] = res;
               return res;
             }),

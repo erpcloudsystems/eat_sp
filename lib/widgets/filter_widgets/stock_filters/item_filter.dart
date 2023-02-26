@@ -29,7 +29,8 @@ class _ItemFilterState extends State<ItemFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter1'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => itemGroupScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => itemGroupScreen()));
             if (res != null) _values['filter1'] = res;
             return _values['filter1'];
           },
@@ -42,7 +43,8 @@ class _ItemFilterState extends State<ItemFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => userListScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => userListScreen()));
             if (res != null) _values['filter2'] = res;
             return _values['filter2'];
           },
@@ -63,7 +65,8 @@ class _ItemFilterState extends State<ItemFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter4'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => uomListScreen()));
+            final res = await Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => uomListScreen()));
             if (res != null) _values['filter4'] = res;
             return _values['filter4'];
           },

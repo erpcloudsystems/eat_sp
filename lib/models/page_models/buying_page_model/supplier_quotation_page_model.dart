@@ -55,12 +55,13 @@ class SupplierQuotationPageModel {
         tr("Exchange Rate"): data['conversion_rate'].toString(),
       },
       {
-        tr("Price List"): data['buying_price_list']?? tr('none'),
+        tr("Price List"): data['buying_price_list'] ?? tr('none'),
         tr("Price List Currency"): data['price_list_currency'] ?? tr('none'),
       },
       {
         tr("Ignore Pricing Rule"): data['ignore_pricing_rule'].toString(),
-        tr("Price Lis t Conversion Rate"): data['plc_conversion_rate'].toString()
+        tr("Price Lis t Conversion Rate"):
+            data['plc_conversion_rate'].toString()
       },
       // {
       //   tr("Terms & Conditions"): data['tc_name'] ?? tr('none'),
@@ -104,7 +105,7 @@ class SupplierQuotationPageModel {
             data['base_discount_amount'].toString()
       },
       {
-        tr("Additional Discount Percentage") :
+        tr("Additional Discount Percentage"):
             percent(data['additional_discount_percentage']).toString()
       },
       (data['discount_amount'] == data['base_discount_amount'])

@@ -1,9 +1,5 @@
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import 'package:quickalert/quickalert.dart';
-
 
 class MyApp2 extends StatelessWidget {
   const MyApp2({Key? key}) : super(key: key);
@@ -16,7 +12,7 @@ class MyApp2 extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  MyHomePage2(),
+      home: MyHomePage2(),
     );
   }
 }

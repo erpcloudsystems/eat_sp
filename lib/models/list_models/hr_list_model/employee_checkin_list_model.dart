@@ -43,15 +43,14 @@ class EmployeeCheckinItemModel {
 
   factory EmployeeCheckinItemModel.fromJson(Map<String, dynamic> json) {
     return EmployeeCheckinItemModel(
-      id: json['name'] ?? 'none',
-      name: json['employee_name'] ?? 'none',
-      employee: json['employee'] ?? 'none',
-      logType: json['log_type'] ?? 'none',
-      time: DateTime.parse(json['time'] ?? 'none'),
-      shift: json['shift'] ?? 'none',
-      deviceId: json['device_id'] ?? 'none',
-      status: 'Random'
-    );
+        id: json['name'] ?? 'none',
+        name: json['employee_name'] ?? 'none',
+        employee: json['employee'] ?? 'none',
+        logType: json['log_type'] ?? 'none',
+        time: DateTime.parse(json['time'] ?? 'none'),
+        shift: json['shift'] ?? 'none',
+        deviceId: json['device_id'] ?? 'none',
+        status: 'Random');
   }
 
   Map<String, dynamic> toJson() {

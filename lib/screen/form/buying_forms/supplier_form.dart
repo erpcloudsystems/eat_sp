@@ -67,8 +67,6 @@ class _SupplierFormState extends State<SupplierForm> {
       context.read<ModuleProvider>().pushPage(res['message']['name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
-
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => GenericListScreen.module()));
     }
   }
 
@@ -154,23 +152,23 @@ class _SupplierFormState extends State<SupplierForm> {
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => supplierGroupScreen()))),
-                      CustomTextField('tax_id', tr('Tax ID'),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['tax_id'],
-                      disableValidation: true,
+                      CustomTextField(
+                        'tax_id',
+                        tr('Tax ID'),
+                        onSave: (key, value) => data[key] = value,
+                        initialValue: data['tax_id'],
+                        disableValidation: true,
                       ),
                       //if (removeWhenUpdate)
                       CustomTextField('email_id', tr('Email Address'),
                           initialValue: data['email_id'],
                           disableValidation: true,
-
                           keyboardType: TextInputType.emailAddress,
                           validator: mailValidation,
                           onSave: (key, value) => data[key] = value),
                       CustomTextField('mobile_no', tr('Mobile No'),
                           initialValue: data['mobile_no'],
                           disableValidation: true,
-
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
                           onSave: (key, value) => data[key] = value),
@@ -179,7 +177,6 @@ class _SupplierFormState extends State<SupplierForm> {
                         tr('Address'),
                         initialValue: data['supplier_primary_address'],
                         disableValidation: true,
-
                         onSave: (key, value) => data[key] = value,
                       ),
                       CustomTextField(
@@ -216,7 +213,6 @@ class _SupplierFormState extends State<SupplierForm> {
                       CustomTextField('default_currency', 'Currency',
                           initialValue: data['default_currency'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -239,7 +235,6 @@ class _SupplierFormState extends State<SupplierForm> {
                           'payment_terms', 'Payment Terms Template'.tr(),
                           initialValue: data['payment_terms'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onChanged: (value) => data['payment_terms'] = value,
                           onPressed: () => Navigator.of(context).push(

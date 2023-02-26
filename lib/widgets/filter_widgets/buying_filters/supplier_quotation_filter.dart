@@ -17,7 +17,8 @@ class SupplierQuotationFilter extends StatefulWidget {
   ];
 
   @override
-  State<SupplierQuotationFilter> createState() => _SupplierQuotationFilterState();
+  State<SupplierQuotationFilter> createState() =>
+      _SupplierQuotationFilterState();
 }
 
 class _SupplierQuotationFilterState extends State<SupplierQuotationFilter> {
@@ -48,7 +49,8 @@ class _SupplierQuotationFilterState extends State<SupplierQuotationFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectSupplierScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectSupplierScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
@@ -61,7 +63,9 @@ class _SupplierQuotationFilterState extends State<SupplierQuotationFilter> {
             setState(() {
               _values['filter3'] = value;
               // remove date to if it's before from date
-              if (_values['filter4'] != null && DateTime.parse(_values['filter4']).isBefore(DateTime.parse(_values['filter3']))) {
+              if (_values['filter4'] != null &&
+                  DateTime.parse(_values['filter4'])
+                      .isBefore(DateTime.parse(_values['filter3']))) {
                 _values.remove('filter4');
                 _dateTo = '';
               }
@@ -73,7 +77,9 @@ class _SupplierQuotationFilterState extends State<SupplierQuotationFilter> {
         DatePicker(
           'filter4',
           'To Date'.tr(),
-          firstDate: _values['filter3'] != null ? DateTime.parse(_values['filter3']) : null,
+          firstDate: _values['filter3'] != null
+              ? DateTime.parse(_values['filter3'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

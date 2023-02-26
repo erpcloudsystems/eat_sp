@@ -31,22 +31,22 @@ class PurchaseOrderItemModel {
 
   PurchaseOrderItemModel(
       {required this.id,
-        required this.name,
-        required this.transactionDate,//TODO make sure that this exist
-        required this.setWarehouse,
-        required this.currency,
-        required this.grandTotal,
-        required this.status});
+      required this.name,
+      required this.transactionDate, //TODO make sure that this exist
+      required this.setWarehouse,
+      required this.currency,
+      required this.grandTotal,
+      required this.status});
 
   factory PurchaseOrderItemModel.fromJson(Map<String, dynamic> json) {
     return PurchaseOrderItemModel(
-      id: json['name']??'none',
-      name: json['supplier']??'none',
-      transactionDate: DateTime.parse(json['transaction_date']??'none'),
-      setWarehouse: json['set_warehouse']?? 'none',
-      currency: json['currency']?? 'none',
-      grandTotal: json['grand_total']?? 'none',
-      status: json['status']?? 'none',
+      id: json['name'] ?? 'none',
+      name: json['supplier'] ?? 'none',
+      transactionDate: DateTime.parse(json['transaction_date'] ?? 'none'),
+      setWarehouse: json['set_warehouse'] ?? 'none',
+      currency: json['currency'] ?? 'none',
+      grandTotal: json['grand_total'] ?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

@@ -43,6 +43,24 @@ const List<String> LeadStatusList = [
   'Converted',
   'Do Not Contact',
 ];
+
+const List<String> ProjectStatusList = [
+  'Open',
+  'Working',
+  'Pending Review',
+  'Overdue',
+  'Template',
+  'Completed',
+  'Cancelled',
+];
+
+const List<String> ProjectPriorityList = [
+  'Low',
+  'Medium',
+  'High',
+  'Urgent',
+];
+
 const List<String> KQuotationToList = ['Lead', 'Customer'];
 const List<String> KPaymentPartyList = ['Customer', 'Supplier'];
 const List<String> applicantTypeList = ['Employee', 'Customer'];
@@ -259,6 +277,7 @@ class CustomTextField extends StatefulWidget {
   final bool clearButton;
   final bool removeUnderLine;
   final int? maxLines;
+  final int? minLines;
   final String? hintText;
   final TextInputType? keyboardType;
   final Future<String?> Function()? onPressed;
@@ -275,6 +294,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField._(this.id, this.title,
       {Key? key,
       this.maxLines = 1,
+      this.minLines = 1,
       this.keyboardType,
       this.onPressed,
       this.onSave,
@@ -297,6 +317,7 @@ class CustomTextField extends StatefulWidget {
           {Key? key,
           bool? disableError,
           maxLines = 1,
+          minLines = 1,
           bool? disableValidation,
           String? initialValue,
           String? hintText,
@@ -318,6 +339,7 @@ class CustomTextField extends StatefulWidget {
         clearValue: liestenToInitialValue,
         key: key ?? Key(id),
         maxLines: maxLines,
+        minLines: minLines,
         onChanged: onChanged,
         keyboardType: keyboardType,
         onPressed: onPressed,
@@ -371,6 +393,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               },
         controller: controller,
         maxLines: widget.maxLines,
+        minLines: widget.minLines,
         onEditingComplete: widget.onEditingComplete == null
             ? null
             : () => widget.onEditingComplete!(controller.text),
@@ -397,9 +420,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     borderSide: BorderSide(color: Colors.grey.shade300)),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusColor: widget.onPressed != null ? Colors.grey : null,   
+            focusColor: widget.onPressed != null ? Colors.grey : null,
+            contentPadding: const EdgeInsets.all(2),
             errorStyle: widget.disableError ? TextStyle(height: 0) : null,
-            suffix:  !widget.clearButton
+            suffix: !widget.clearButton
                 ? null
                 : SizedBox(
                     height: 24,
@@ -1014,7 +1038,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
         ),
         Spacer(),
         DropdownButton<String>(
-            value: _value, //?? widget.defaultValue,
+            value: _value,
             borderRadius: BorderRadius.circular(5),
             isExpanded: false,
             onTap: widget.onTap,

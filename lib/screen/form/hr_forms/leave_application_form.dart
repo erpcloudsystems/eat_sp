@@ -131,8 +131,6 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
         ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          
-          
           child: Form(
             key: _formKey,
             child: Column(
@@ -248,20 +246,17 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                         ),
                       Row(children: [
                         Flexible(
-                            child: DatePicker(
-                          'from_date',
-                          'From Date'.tr(),
-                          initialValue: data['from_date'],
-                          onChanged: (value) {
-                              setState(() => data['from_date'] = value);
-                              if (data['half_day_date'] != null){
-                                data.remove('half_day_date');
-                              }
-                            if (data['from_date'] == data['to_date']){
+                            child: DatePicker('from_date', 'From Date'.tr(),
+                                initialValue: data['from_date'],
+                                onChanged: (value) {
+                          setState(() => data['from_date'] = value);
+                          if (data['half_day_date'] != null) {
+                            data.remove('half_day_date');
+                          }
+                          if (data['from_date'] == data['to_date']) {
                             data['half_day_date'] = data['from_date'];
-                            }
-    }
-                        )),
+                          }
+                        })),
                         SizedBox(width: 10),
                         Flexible(
                             child: DatePicker(
@@ -270,12 +265,12 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                           initialValue: data['to_date'],
                           onChanged: (value) {
                             setState(() => data['to_date'] = value);
-                            if (data['half_day_date'] != null){
+                            if (data['half_day_date'] != null) {
                               data.remove('half_day_date');
                             }
-                              if (data['from_date'] == data['to_date']){
-                                data['half_day_date'] = data['from_date'];
-                              }
+                            if (data['from_date'] == data['to_date']) {
+                              data['half_day_date'] = data['from_date'];
+                            }
                             data['total_leave_days'] =
                                 ((DateTime.tryParse(data['to_date'])!
                                                 .difference(DateTime.tryParse(
@@ -301,21 +296,20 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                       // ),
                       CheckBoxWidget('half_day', 'Half Day',
                           initialValue: data['half_day'] == 1 ? true : false,
-                          onChanged: (id, value) =>
-                              setState(() {
+                          onChanged: (id, value) => setState(() {
                                 data[id] = value ? 1 : 0;
                               })),
                       if (data['from_date'] != null && data['to_date'] != null)
                         CustomTextField(
                           'total_leave_days',
                           'Total Leave Days',
-                          initialValue:((DateTime.tryParse(data['to_date'])!
-                                                  .difference(DateTime.tryParse(
-                                                      data['from_date'])!)
-                                                  .inDays +
-                                              1) +
-                                          ((data['half_day'] == 0) ? 0 : -0.5))
-                                      .toString(),
+                          initialValue: ((DateTime.tryParse(data['to_date'])!
+                                          .difference(DateTime.tryParse(
+                                              data['from_date'])!)
+                                          .inDays +
+                                      1) +
+                                  ((data['half_day'] == 0) ? 0 : -0.5))
+                              .toString(),
 
                           // data['from_date'].difference(data['to_date']).inHours,
                           enabled: false,

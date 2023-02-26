@@ -47,7 +47,8 @@ class _EmployeeFilterState extends State<EmployeeFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => genderListScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => genderListScreen()));
             if (res != null) _values['filter2'] = res;
             return _values['filter2'];
           },
@@ -60,7 +61,8 @@ class _EmployeeFilterState extends State<EmployeeFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter3'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => departmentListScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => departmentListScreen()));
             if (res != null) _values['filter3'] = res;
             return _values['filter3'];
           },
@@ -73,7 +75,9 @@ class _EmployeeFilterState extends State<EmployeeFilter> {
             setState(() {
               _values['filter4'] = value;
               // remove date to if it's before from date
-              if (_values['filter5'] != null && DateTime.parse(_values['filter5']).isBefore(DateTime.parse(_values['filter4']))) {
+              if (_values['filter5'] != null &&
+                  DateTime.parse(_values['filter5'])
+                      .isBefore(DateTime.parse(_values['filter4']))) {
                 _values.remove('filter5');
                 _dateTo = '';
               }
@@ -87,7 +91,9 @@ class _EmployeeFilterState extends State<EmployeeFilter> {
         DatePicker(
           'filter5',
           'To Date'.tr(),
-          firstDate: _values['filter4'] != null ? DateTime.parse(_values['filter4']) : null,
+          firstDate: _values['filter4'] != null
+              ? DateTime.parse(_values['filter4'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

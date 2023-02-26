@@ -22,7 +22,7 @@ class EmployeeCheckinPageModel {
       },
       {
         tr("Longitude"): data['longitude'].toString(),
-        tr("Latitude"): data['latitude'].toString() ,
+        tr("Latitude"): data['latitude'].toString(),
       },
     ];
   }

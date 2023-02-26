@@ -19,12 +19,10 @@ class EmployeeAdvancePageModel {
         tr("Currency"): data['currency'] ?? tr('none'),
         tr("Exchange Rate"): data['exchange_rate'].toString(),
       },
-
       {
-        tr("Repay Unclaimed Amount from Salary"): data['repay_unclaimed_amount_from_salary'].toString(),
+        tr("Repay Unclaimed Amount from Salary"):
+            data['repay_unclaimed_amount_from_salary'].toString(),
       },
-
-
     ];
   }
 
@@ -39,13 +37,12 @@ class EmployeeAdvancePageModel {
         tr("Paid Amount"): data['paid_amount'].toString(),
       },
       {
-        tr("Pending Amount"): data['pending_amount'].toString() ,
+        tr("Pending Amount"): data['pending_amount'].toString(),
         tr("Claimed Amount"): data['claimed_amount'].toString(),
       },
       {
         tr("Returned Amount"): data['return_amount'].toString(),
       },
-
     ];
   }
 
@@ -57,12 +54,8 @@ class EmployeeAdvancePageModel {
       },
       {
         tr("Company"): data['company'] ?? tr('none'),
-        tr("Mode of Payment"): data['mode_of_payment']?? tr('none'),
+        tr("Mode of Payment"): data['mode_of_payment'] ?? tr('none'),
       },
-
     ];
   }
-
-
-
 }

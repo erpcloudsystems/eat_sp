@@ -50,10 +50,8 @@ class ModuleProvider extends ChangeNotifier {
 
   int? _pageSubmitStatus;
 
-
   /// this to handle filters data from FilterScreen
   Map<String, dynamic> _filter = {};
-
 
   /// Getters ///
 
@@ -63,7 +61,6 @@ class ModuleProvider extends ChangeNotifier {
   int? get pageSubmitStatus => _pageSubmitStatus;
 
   Map<String, dynamic> get filter => _filter;
-
 
   bool get isEditing => _editPage;
 
@@ -116,12 +113,10 @@ class ModuleProvider extends ChangeNotifier {
   /// Setters ///
   set setLoadCount(String count) {
     _loadCount = count;
-    //notifyListeners();
   }
 
   set filter(Map<String, dynamic> value) {
     _filter = value;
-    // listService(page_models: 0);
     notifyListeners();
   }
 
@@ -133,7 +128,6 @@ class ModuleProvider extends ChangeNotifier {
   void editThisPage() => _editPage = true;
 
   void createFromThisPage() => _createFromPage = true;
-
 
   set setModule(String doctype) {
     switch (doctype) {
@@ -225,7 +219,16 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.JOURNAL_ENTRY:
         _currentModule = ModuleType.journalEntry;
         break;
-
+// Project
+      case APIService.TASK:
+        _currentModule = ModuleType.task;
+        break;
+      // // case APIService.PROJECT:
+      // //   _currentModule = ModuleType.project;
+      // //   break;
+      // // case APIService.TIMESHEET:
+      // //   _currentModule = ModuleType.timeSheet;
+      // //   break;
     }
     _filter.clear();
     notifyListeners();
@@ -408,7 +411,6 @@ class ModuleProvider extends ChangeNotifier {
     await loadPage();
   }
 
-
   Future<bool> addComment(BuildContext context, String comment) async {
     showLoadingDialog(context, 'Uploading comment');
     bool? response;
@@ -446,19 +448,15 @@ class ModuleProvider extends ChangeNotifier {
           () async => await server.postFile(
               _currentModule!.genericListService, _pageId, file),
           context);
-      //
-      // print(res);
-
       Navigator.pop(context);
       Navigator.pop(context);
 
       try {
         if (res['message']['name'] != null) {
           loadPage();
-          Future.delayed(Duration(seconds: 1),(){
+          Future.delayed(Duration(seconds: 1), () {
             showSnackBar('File Uploaded Successfully', context);
           });
-
         }
       } catch (e) {}
     }
@@ -566,7 +564,6 @@ class ModuleProvider extends ChangeNotifier {
       }
       Navigator.pop(context);
       if (file is File) OpenFile.open(file.path);
-      // showSnackBar('checkout: downloads/ERPCloud.systems/${_currentModule!.genericListService}', context);
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);

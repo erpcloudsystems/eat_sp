@@ -1,7 +1,6 @@
 import '../list_model.dart';
 
 class PurchaseReceiptListModel extends ListModel<PurchaseReceiptItemModel> {
-
   PurchaseReceiptListModel(List<PurchaseReceiptItemModel>? list) : super(list);
 
   factory PurchaseReceiptListModel.fromJson(Map<String, dynamic> json) {
@@ -30,21 +29,22 @@ class PurchaseReceiptItemModel {
   String status;
 
   PurchaseReceiptItemModel(
-      { required this.id,
-        required  this.supplier,
-        required  this.postingDate,
-        required  this.setWarehouse,
-        required  this.currency,
-        required  this.status});
+      {required this.id,
+      required this.supplier,
+      required this.postingDate,
+      required this.setWarehouse,
+      required this.currency,
+      required this.status});
 
   factory PurchaseReceiptItemModel.fromJson(Map<String, dynamic> json) {
     return PurchaseReceiptItemModel(
-    id : json['name'] ?? 'none',
-    supplier : json['supplier'] ?? 'none',
-    postingDate : DateTime.parse( json['posting_date'] ?? 'none'),
-    setWarehouse : json['set_warehouse'] ?? 'none',
-      currency : json['currency'] ?? 'none',
-    status : json['status'] ?? 'none',);
+      id: json['name'] ?? 'none',
+      supplier: json['supplier'] ?? 'none',
+      postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
+      setWarehouse: json['set_warehouse'] ?? 'none',
+      currency: json['currency'] ?? 'none',
+      status: json['status'] ?? 'none',
+    );
   }
 
   Map<String, dynamic> toJson() {

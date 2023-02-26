@@ -42,12 +42,12 @@ class _ContactFormState extends State<ContactForm> {
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
-    if(data['links']?[0]['link_doctype'] ==null) {
+    if (data['links']?[0]['link_doctype'] == null) {
       showSnackBar('Link Document Type is Mandatory', context);
       return;
     }
-    if(data['links']?[0]['link_name'] ==null){
-      showSnackBar('Link Name is Mandatory',context);
+    if (data['links']?[0]['link_name'] == null) {
+      showSnackBar('Link Name is Mandatory', context);
       return;
     }
     _formKey.currentState!.save();
@@ -56,15 +56,14 @@ class _ContactFormState extends State<ContactForm> {
     final provider = context.read<ModuleProvider>();
 
     // print('111dsjk${InheritedContactForm.of(context).emails}');
-    data['email_ids']=[];
-    data['phone_nos']=[];
+    data['email_ids'] = [];
+    data['phone_nos'] = [];
     InheritedContactForm.of(context).phones.forEach((element) {
       data['phone_nos'].add(element.toJson);
     });
     InheritedContactForm.of(context).emails.forEach((element) {
       data['email_ids'].add(element.toJson);
     });
-
 
     showLoadingDialog(
         context,
@@ -103,15 +102,14 @@ class _ContactFormState extends State<ContactForm> {
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
-       // data['links'] = data['reference'].asMap();
+        // data['links'] = data['reference'].asMap();
 
         data['email_ids'].forEach((element) => InheritedContactForm.of(context)
             .emails
             .add(EmailModel.fromJson(element)));
-data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
+        data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
             .phones
             .add(PhoneModel.fromJson(element)));
-
 
         setState(() {});
       });
@@ -152,7 +150,7 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Group(
@@ -167,10 +165,11 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
                           onChanged: (value) => data['first_name'] = value,
                           onSave: (key, value) => data[key] = value,
                           clearButton: true,
-
-                          onClear: (){setState(() {
-                            data['first_name']='';
-                          });},
+                          onClear: () {
+                            setState(() {
+                              data['first_name'] = '';
+                            });
+                          },
                         ),
                         CustomTextField(
                           'user',
@@ -180,15 +179,16 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
                           onSave: (key, value) => data[key] = value,
                           disableValidation: true,
                           clearButton: true,
-                          onClear: (){setState(() {
-                            data['user']='';
-                          });},
+                          onClear: () {
+                            setState(() {
+                              data['user'] = '';
+                            });
+                          },
                         ),
                       ],
                     ),
                   ),
                   SelectedPhonesList(),
-
                   Group(
                       child: Column(
                     children: [
@@ -196,12 +196,15 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
                           items: linkDocumentTypeList,
                           defaultValue: data['links']?[0]['link_doctype'],
                           onChanged: (value) => setState(() {
-                            data['links']?[0]['link_name'] = '';
-                            data['links']?[0]['link_doctype'] = value;
-
+                                data['links']?[0]['link_name'] = '';
+                                data['links']?[0]['link_doctype'] = value;
                               })),
-                      Divider(color: Colors.grey.shade300, height: 1, thickness: 0.9),
-                      if (data['links']?[0]['link_doctype'] == linkDocumentTypeList[0])
+                      Divider(
+                          color: Colors.grey.shade300,
+                          height: 1,
+                          thickness: 0.9),
+                      if (data['links']?[0]['link_doctype'] ==
+                          linkDocumentTypeList[0])
                         CustomTextField(
                           'link_name',
                           'Link Name'.tr(),
@@ -223,7 +226,8 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
                             return id;
                           },
                         ),
-                      if (data['links']?[0]['link_doctype'] == linkDocumentTypeList[1])
+                      if (data['links']?[0]['link_doctype'] ==
+                          linkDocumentTypeList[1])
                         CustomTextField(
                           'link_name',
                           'Link Name',
@@ -251,7 +255,6 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
                               setState(() => data[id] = value ? 1 : 0)),
                     ],
                   )),
-
                   SizedBox(height: 100),
                 ],
               ),
@@ -262,4 +265,3 @@ data['phone_nos'].forEach((element) => InheritedContactForm.of(context)
     );
   }
 }
-

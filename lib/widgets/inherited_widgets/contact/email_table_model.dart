@@ -1,5 +1,6 @@
-import '../../../models/list_models/list_model.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../models/list_models/list_model.dart';
 
 class EmailTableModel extends ListModel<EmailModel> {
   EmailTableModel(List<EmailModel>? list) : super(list);
@@ -26,22 +27,17 @@ class EmailModel {
   String emailId;
   int isPrimary;
 
-
-
-  EmailModel(
-      {
-        required this.id,
-        required this.emailId,
-        required this.isPrimary,
-
-      });
+  EmailModel({
+    required this.id,
+    required this.emailId,
+    required this.isPrimary,
+  });
 
   factory EmailModel.fromJson(Map<String, dynamic> json) {
     return EmailModel(
       id: json['id'] ?? Uuid().v1().toString(),
       emailId: json['email_id'] ?? '',
       isPrimary: json['is_primary'] ?? 0,
-
     );
   }
 
@@ -59,7 +55,4 @@ class EmailModel {
 
   @override
   int get hashCode => emailId.hashCode;
-
 }
-
-

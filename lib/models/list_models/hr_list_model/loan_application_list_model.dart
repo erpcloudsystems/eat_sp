@@ -30,27 +30,27 @@ class LoanApplicationItemModel {
   final double loanAmount;
   final String status;
 
-  LoanApplicationItemModel(
-      {required this.id,
-        required this.applicantName,
-        required this.applicantType,
-        required this.applicant,
-        required this.postingDate,
-        required this.loanType,
-        required this.loanAmount,
-        required this.status,
-      });
+  LoanApplicationItemModel({
+    required this.id,
+    required this.applicantName,
+    required this.applicantType,
+    required this.applicant,
+    required this.postingDate,
+    required this.loanType,
+    required this.loanAmount,
+    required this.status,
+  });
 
   factory LoanApplicationItemModel.fromJson(Map<String, dynamic> json) {
     return LoanApplicationItemModel(
-      id: json['name']??'none',
-      applicantName: json['applicant_name']??'none',
-      applicantType: json['applicant_type']??'none',
-      applicant: json['applicant']??'none',
+      id: json['name'] ?? 'none',
+      applicantName: json['applicant_name'] ?? 'none',
+      applicantType: json['applicant_type'] ?? 'none',
+      applicant: json['applicant'] ?? 'none',
       postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
-      loanType: json['loan_type']??'none',
-      loanAmount: json['loan_amount']?? 0.0,
-      status: json['status']??'none',
+      loanType: json['loan_type'] ?? 'none',
+      loanAmount: json['loan_amount'] ?? 0.0,
+      status: json['status'] ?? 'none',
     );
   }
 

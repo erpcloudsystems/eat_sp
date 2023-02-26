@@ -43,22 +43,27 @@ class AttendanceRequestItemModel {
   });
 
   factory AttendanceRequestItemModel.fromJson(Map<String, dynamic> json) {
-    String status ='';
-    if(json['docstatus']== 0) {status="Draft";}
-    if(json['docstatus']== 1) {status="Submitted";}
-    if(json['docstatus']== 2) {status="Cancelled";}
+    String status = '';
+    if (json['docstatus'] == 0) {
+      status = "Draft";
+    }
+    if (json['docstatus'] == 1) {
+      status = "Submitted";
+    }
+    if (json['docstatus'] == 2) {
+      status = "Cancelled";
+    }
     print('asfdsw2$status');
-      return AttendanceRequestItemModel(
-        id: json['name'] ?? 'none',
-        name: json['employee_name'] ?? 'none',
-        employee: json['employee'] ?? 'none',
-        department: json['department'] ?? 'none',
-        fromDate: DateTime.parse(json['from_date'] ?? 'none'),
-        toDate: DateTime.parse(json['to_date'] ?? 'none'),
-        reason: json['reason'] ?? 'none',
-        docStatus: status,
-
-      );
+    return AttendanceRequestItemModel(
+      id: json['name'] ?? 'none',
+      name: json['employee_name'] ?? 'none',
+      employee: json['employee'] ?? 'none',
+      department: json['department'] ?? 'none',
+      fromDate: DateTime.parse(json['from_date'] ?? 'none'),
+      toDate: DateTime.parse(json['to_date'] ?? 'none'),
+      reason: json['reason'] ?? 'none',
+      docStatus: status,
+    );
   }
 
   Map<String, dynamic> toJson() {

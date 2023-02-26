@@ -108,12 +108,11 @@ class ExpenseClaimPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: TabBarView(
-                      children: [
-                    data['expenses'] == null ||
-                            data['expenses'].isEmpty
+                  child: TabBarView(children: [
+                    data['expenses'] == null || data['expenses'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['expenses'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -123,18 +122,17 @@ class ExpenseClaimPage extends StatelessWidget {
                                           names: model.expenseListNames,
                                           values:
                                               model.expenseListValues(index),
-                                          title: (data['expenses']
-                                                      [index]['name'] ??
+                                          title: (data['expenses'][index]
+                                                      ['name'] ??
                                                   tr('none'))
                                               .toString())),
-                                  id: data['expenses'][index]['idx']
-                                      .toString(),
+                                  id: data['expenses'][index]['idx'].toString(),
                                   values: model.expenseCardValues(index),
                                 )),
-
                     data['conn'] == null || data['conn'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

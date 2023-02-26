@@ -45,7 +45,6 @@ class CustomerVisitItemModel {
       postingDate: DateTime.parse(json['posting_date'] ?? "2001-01-01"),
       time: json['time'] ?? "11:11:11",
       status: 'Random',
-
     );
   }
 

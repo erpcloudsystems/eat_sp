@@ -31,7 +31,7 @@ class SupplierPageModel {
       },
       {
         tr('Supplier Primary Contact'):
-        data['supplier_primary_contact'] ?? tr('none'),
+            data['supplier_primary_contact'] ?? tr('none'),
       },
       {
         tr('Country'): data['country'] ?? tr('none'),

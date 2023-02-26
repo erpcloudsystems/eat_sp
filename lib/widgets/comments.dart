@@ -34,7 +34,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: MediaQuery.of(widget.scaffoldContext).padding.top ,
+          top: MediaQuery.of(widget.scaffoldContext).padding.top,
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: ClipRRect(
         borderRadius:
@@ -45,7 +45,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
             children: [
               Container(
                 height: 50,
-                color: Colors.grey.shade200,//APPBAR_COLOR,
+                color: Colors.grey.shade200, //APPBAR_COLOR,
                 // padding: const EdgeInsets.only(top: 8),
                 child: Stack(
                   alignment: Alignment.center,
@@ -62,21 +62,21 @@ class _CommentsSheetState extends State<CommentsSheet> {
                                 size: 25,
                               ))),
                     ),
-                    Text("${(context
-                        .read<ModuleProvider>()
-                        .pageData['comments'] as List?)
-                        ?.length} comments",
+                    Text(
+                        "${(context.read<ModuleProvider>().pageData['comments'] as List?)?.length} comments",
                         style: const TextStyle(
-                          color: Colors.black87,
-                            fontWeight: FontWeight.w700, fontSize: 15))
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15))
                   ],
                 ),
               ),
               Expanded(
                 child: ColoredBox(
-                  color: Colors.transparent,//APPBAR_COLOR,
+                  color: Colors.transparent, //APPBAR_COLOR,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 2,vertical: 0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
                     decoration: BoxDecoration(
                         //borderRadius: BorderRadius.circular(KBorderRadius),
                         color: Colors.grey.shade200),
@@ -90,8 +90,10 @@ class _CommentsSheetState extends State<CommentsSheet> {
                           ? const Center(
                               child: Text('No comments',
                                   style: TextStyle(color: Colors.grey)))
-                          : ListView.builder(physics: BouncingScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 0),
+                          : ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 0),
                               itemCount: (context
                                           .read<ModuleProvider>()
                                           .pageData['comments'] as List?)
@@ -173,15 +175,16 @@ class _MessageFieldState extends State<MessageField> {
       child: ColoredBox(
         color: Colors.grey.shade100,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-
               CircleAvatar(
                 radius: 20,
-                child: Text('${context
-                    .read<UserProvider>().username.toString()[0]}',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w400),),
+                child: Text(
+                  '${context.read<UserProvider>().username.toString()[0]}',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
+                ),
               ),
               SizedBox(width: 6),
               Expanded(
@@ -194,8 +197,8 @@ class _MessageFieldState extends State<MessageField> {
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       hintText: "Add Comment...",
-                      contentPadding:
-                          EdgeInsets.only(left: 15, right: 15, bottom: 3, top: 3),
+                      contentPadding: EdgeInsets.only(
+                          left: 15, right: 15, bottom: 3, top: 3),
                       isDense: true,
                       filled: true,
                       fillColor: Colors.grey.shade300,
@@ -218,9 +221,15 @@ class _MessageFieldState extends State<MessageField> {
                 onTap: controller.text.trim().isEmpty ? null : send,
                 child: CircleAvatar(
                   radius: 17,
-                 // foregroundColor: APPBAR_COLOR,
-                  backgroundColor: controller.text.trim().isEmpty ? Colors.black45: APPBAR_COLOR,
-                  child: Icon(Icons.arrow_forward,color: Colors.white,size: 21,),
+                  // foregroundColor: APPBAR_COLOR,
+                  backgroundColor: controller.text.trim().isEmpty
+                      ? Colors.black45
+                      : APPBAR_COLOR,
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                    size: 21,
+                  ),
                 ),
               ),
               SizedBox(width: 6),
@@ -257,8 +266,8 @@ class MessageBubble extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -268,45 +277,57 @@ class MessageBubble extends StatelessWidget {
           ),
         ],
       ),
-
-       
-      
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 24,
-            child: Text(comment['owner']!.toString()[0],style: TextStyle(fontSize: 24,fontWeight: FontWeight.w400),),
+            child: Text(
+              comment['owner']!.toString()[0],
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
+            ),
           ),
           SizedBox(width: 10),
           Flexible(
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3.0,vertical: 0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 3.0, vertical: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         comment['owner']!.toString(),
-                        style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,height: 1.6,),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          height: 1.6,
+                        ),
                       ),
-                      Text(DateFormat("d/M/y  h:mm a")
-                          .format(DateTime.parse(comment['creation']!.toString())),style: const TextStyle(fontSize: 12,height: 1.6,color: Colors.black54)),
-
+                      Text(
+                          DateFormat("d/M/y  h:mm a").format(
+                              DateTime.parse(comment['creation']!.toString())),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              height: 1.6,
+                              color: Colors.black54)),
                     ],
                   ),
                 ),
                 Container(
                   alignment: Alignment.topLeft,
                   width: double.infinity,
-                  padding: const EdgeInsets.only(left: 4,right: 4),
+                  padding: const EdgeInsets.only(left: 4, right: 4),
                   decoration: BoxDecoration(
-                      color: Colors.transparent, borderRadius: BorderRadius.circular(6)),
-                  child: Text(formatDescription(comment['content'].toString()),style: TextStyle(height: 1.5,fontWeight: FontWeight.w300),),
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: Text(
+                    formatDescription(comment['content'].toString()),
+                    style: TextStyle(height: 1.5, fontWeight: FontWeight.w300),
+                  ),
                 ),
                 SizedBox(height: 2),
-
               ],
             ),
           ),

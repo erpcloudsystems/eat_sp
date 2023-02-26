@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import '../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../models/page_models/model_functions.dart';
-import '../snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
@@ -12,9 +9,7 @@ import '../../models/list_models/hr_list_model/expense_table_model.dart';
 import '../../provider/module/module_provider.dart';
 import '../../screen/list/otherLists.dart';
 import '../../service/service.dart';
-import '../expense_card.dart';
 import '../form_widgets.dart';
-import '../item_card.dart';
 import '../list_card.dart';
 import '../ondismiss_tutorial.dart';
 
@@ -58,15 +53,12 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   };
   @override
   void initState() {
-
     if (!context.read<ModuleProvider>().isEditing) // Not Editing
       Future.delayed(Duration.zero).then((value) {
         InheritedExpenseForm.of(context).expense.clear();
         InheritedExpenseForm.of(context).taxData.clear();
         setState(() {});
-
-
-    });
+      });
     super.initState();
   }
 
@@ -132,8 +124,9 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                         children: [
                           Text('Expenses',
                               style: TextStyle(
-                                color: Colors.black87,
-                                  fontSize: 16, fontWeight: FontWeight.w600)),
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600)),
                           SizedBox(
                             width: 40,
                             child: ElevatedButton(
@@ -156,7 +149,9 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
 
                                 //Dismiss Tutorial for user
                                 if (InheritedExpenseForm.of(context)
-                                    .expense.length < 2)
+                                        .expense
+                                        .length <
+                                    2)
                                   Timer(
                                       Duration(milliseconds: 2500),
                                       () => setState(() {
@@ -185,28 +180,31 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
         SizedBox(height: 8),
         (InheritedExpenseForm.of(context).expense.isNotEmpty)
             ? Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(
-                width: 60,
-                height: 30,
-                child: TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () async {
-                    setState(() {
-                      InheritedExpenseForm.of(context).expense.clear();
-                      InheritedExpenseForm.of(context).taxData.clear();
-                    });
-                  },
-                  child: Text('Clear All',style: TextStyle(color: Colors.black87),),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 30,
+                      child: TextButton(
+                        style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        onPressed: () async {
+                          setState(() {
+                            InheritedExpenseForm.of(context).expense.clear();
+                            InheritedExpenseForm.of(context).taxData.clear();
+                          });
+                        },
+                        child: Text(
+                          'Clear All',
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        )
+              )
             : Container(),
         (InheritedExpenseForm.of(context).expense.isNotEmpty)
             ? Group(
@@ -217,7 +215,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                       'rate',
                       'Tax Rate % '.tr(),
                       removeUnderLine: true,
-                      initialValue:InheritedExpenseForm.of(context).taxData['rate'],
+                      initialValue:
+                          InheritedExpenseForm.of(context).taxData['rate'],
                       keyboardType: TextInputType.number,
                       disableError: true,
                       onChanged: (value) {
@@ -227,8 +226,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                         });
                       },
                       onSave: (key, value) {
-                        InheritedExpenseForm.of(context).taxData['key'] =
-                            value;
+                        InheritedExpenseForm.of(context).taxData['key'] = value;
                       },
                       validator: (value) =>
                           numberValidationToast(value, 'Rate'.tr()),
@@ -237,7 +235,6 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                 ),
               )
             : Container(),
-
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[100],
@@ -279,7 +276,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                         stops: [0.0, 0.05, 0.97, 1.0],
                       ).createShader(bounds);
                     },
-                    child: ListView.builder(physics: BouncingScrollPhysics(),
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         controller: _scrollController,
                         //reverse: true,
                         itemCount:
@@ -495,7 +493,6 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                             value;
                                                       },
                                                       disableValidation: true,
-
                                                       onSave: (key, value) =>
                                                           InheritedExpenseForm.of(
                                                                       context)
@@ -597,7 +594,6 @@ class _Totals extends StatelessWidget {
             ListTitle(
                 title: 'Total Sanctioned Amount',
                 value: currency(totalSanctionedAmount)),
-
             ListTitle(title: 'Grand Total', value: currency(grandTotal)),
           ],
         ),
@@ -606,7 +602,6 @@ class _Totals extends StatelessWidget {
             ListTitle(
                 title: 'Total Taxes and Charges',
                 value: currency(totalTaxesAndCharges)),
-
             ListTitle(
                 title: 'Total Claimed Amount',
                 value: currency(totalClaimedAmount)),

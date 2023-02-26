@@ -1,7 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
-
   Future clearData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove("user");
@@ -46,11 +45,10 @@ class SharedPref {
     var url = prefs.getString("url");
     return url;
   }
+
   Future<List<String>?> getShowcaseList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var showcase =  prefs.getStringList("showcase");
+    var showcase = prefs.getStringList("showcase");
     return showcase;
   }
-
-
 }

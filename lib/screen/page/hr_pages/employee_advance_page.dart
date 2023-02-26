@@ -62,13 +62,11 @@ class EmployeeAdvancePage extends StatelessWidget {
             SwapWidget(
                 3,
                 Checkbox(
-                    value:
-                    (data['is_paid'] ?? 0) == 0 ? false : true,
+                    value: (data['is_paid'] ?? 0) == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 1)
           ],
         ),
-
         PageCard(
           color: color,
           items: model.card2Items,
@@ -77,9 +75,7 @@ class EmployeeAdvancePage extends StatelessWidget {
           color: color,
           items: model.card3Items,
         ),
-
         CommentsButton(color: color),
-
         if (data['conn'] != null || data['conn'].isNotEmpty)
           Container(
             decoration: BoxDecoration(
@@ -87,24 +83,28 @@ class EmployeeAdvancePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
               //border: Border.all(color: Colors.blueAccent),
             ),
-            child: Center(child: Text('Connections', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+            child: Center(
+                child: Text('Connections',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold))),
             padding: const EdgeInsets.all(8),
             margin: const EdgeInsets.all(8),
           ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
-              ? ListView.builder(physics: BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              shrinkWrap: true,
-              itemCount: data['conn'].length,
-              itemBuilder: (_, index) {
-                print(data['conn']);
-                return ConnectionCard(
-                    imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-                    docTypeId: data['conn'][index]['name'] ?? tr('none'),
-                    count: data['conn'][index]['count'].toString());
-              })
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  shrinkWrap: true,
+                  itemCount: data['conn'].length,
+                  itemBuilder: (_, index) {
+                    print(data['conn']);
+                    return ConnectionCard(
+                        imageUrl: data['conn'][index]['icon'] ?? tr('none'),
+                        docTypeId: data['conn'][index]['name'] ?? tr('none'),
+                        count: data['conn'][index]['count'].toString());
+                  })
               : NothingHere(),
         ),
         SizedBox(

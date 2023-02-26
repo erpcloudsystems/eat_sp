@@ -29,13 +29,14 @@ class LeadPage extends StatelessWidget {
         PageCard(
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CreateFromPageButton(
                   doctype: 'Lead',
                   data: data,
                   items: fromLead,
-                  disableCreate: data['status'].toString() == "Converted" ? true: false,
+                  disableCreate:
+                      data['status'].toString() == "Converted" ? true : false,
                 ),
               ],
             ),
@@ -109,7 +110,8 @@ class LeadPage extends StatelessWidget {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
-              ? ListView.builder(physics: BouncingScrollPhysics(),
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,

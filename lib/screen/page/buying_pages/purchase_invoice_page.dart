@@ -20,7 +20,6 @@ import '../../../widgets/nothing_here.dart';
 class PurchaseInvoicePage extends StatelessWidget {
   const PurchaseInvoicePage({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
@@ -38,20 +37,20 @@ class PurchaseInvoicePage extends StatelessWidget {
           items: model.card1Items,
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CreateFromPageButton(
                   doctype: 'Purchase Invoice',
                   data: data,
                   items: fromPurchaseInvoice,
-                  disableCreate:false,
+                  disableCreate: false,
                   //disableCreate: data['docstatus'].toString() == "1" ?  false:true,
                 ),
                 if (data['docstatus'] != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child:
-                    context.read<ModuleProvider>().submitDocumentWidget(),
+                        context.read<ModuleProvider>().submitDocumentWidget(),
                   ),
               ],
             ),
@@ -61,7 +60,6 @@ class PurchaseInvoicePage extends StatelessWidget {
                 Text('Purchase Invoice',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-
               ],
             ),
             Padding(
@@ -171,7 +169,8 @@ class PurchaseInvoicePage extends StatelessWidget {
                 ),
                 Expanded(
                   child: TabBarView(children: [
-                    data['purchase_invoice_item'] == null || data['purchase_invoice_item'].isEmpty
+                    data['purchase_invoice_item'] == null ||
+                            data['purchase_invoice_item'].isEmpty
                         ? NothingHere()
                         : ListView.builder(
                             physics: ClampingScrollPhysics(),
@@ -201,22 +200,27 @@ class PurchaseInvoicePage extends StatelessWidget {
                           ),
 
                     //
-                    data['child_purchase_taxes_and_charges'] == null || data['child_purchase_taxes_and_charges'].isEmpty
+                    data['child_purchase_taxes_and_charges'] == null ||
+                            data['child_purchase_taxes_and_charges'].isEmpty
                         ? NothingHere()
                         : ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
-                            itemCount: data['child_purchase_taxes_and_charges'].length,
+                            itemCount:
+                                data['child_purchase_taxes_and_charges'].length,
                             itemBuilder: (_, index) => ItemCard3(
                                   onPressed: () => showDialog(
                                       context: context,
                                       builder: (_) => PageDetailsDialog(
                                           names: model.taxesListNames,
                                           values: model.taxesListValues(index),
-                                          title: (data['child_purchase_taxes_and_charges'][index]
-                                                      ['name'] ??
-                                                  tr('none'))
-                                              .toString())),
-                                  id: data['child_purchase_taxes_and_charges'][index]['idx'].toString(),
+                                          title:
+                                              (data['child_purchase_taxes_and_charges']
+                                                          [index]['name'] ??
+                                                      tr('none'))
+                                                  .toString())),
+                                  id: data['child_purchase_taxes_and_charges']
+                                          [index]['idx']
+                                      .toString(),
                                   values: model.taxesCardValues(index),
                                 )),
 

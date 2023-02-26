@@ -33,21 +33,23 @@ class DeliveryNoteItemModel {
 
   DeliveryNoteItemModel(
       {required this.id,
-       required this.postingDate,
-       required this.customer,
-       required this.setWarehouse,
-       required this.currency,
-       required this.territory,
-       required this.status});
+      required this.postingDate,
+      required this.customer,
+      required this.setWarehouse,
+      required this.currency,
+      required this.territory,
+      required this.status});
 
   factory DeliveryNoteItemModel.fromJson(Map<String, dynamic> json) {
-    return DeliveryNoteItemModel( id : json['name']??'none',
-    postingDate : DateTime.parse(json['posting_date']??'none'),
-    customer : json['customer']??'none',
-    setWarehouse : json['set_warehouse']??'none',
-      currency : json['currency']??'none',
-    territory : json['territory']??'none',
-    status : json['status']??'none',);
+    return DeliveryNoteItemModel(
+      id: json['name'] ?? 'none',
+      postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
+      customer: json['customer'] ?? 'none',
+      setWarehouse: json['set_warehouse'] ?? 'none',
+      currency: json['currency'] ?? 'none',
+      territory: json['territory'] ?? 'none',
+      status: json['status'] ?? 'none',
+    );
   }
 
   Map<String, dynamic> toJson() {

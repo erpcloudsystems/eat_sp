@@ -22,9 +22,8 @@ class EmployeeForm extends StatefulWidget {
 class _EmployeeFormState extends State<EmployeeForm> {
   Map<String, dynamic> data = {
     "doctype": "Employee",
-   //  "date_of_birth": DateTime.now().toIso8601String(),
+    //  "date_of_birth": DateTime.now().toIso8601String(),
     // "date_of_joining": DateTime.now().toIso8601String(),
-
   };
 
   Map<String, dynamic> selectedEmployeeData = {
@@ -73,6 +72,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
   }
+
   Future<void> _getEmployeeData(String employee) async {
     selectedEmployeeData = Map<String, dynamic>.from(
         await APIService().getPage(EMPLOYEE_PAGE, employee))['message'];
@@ -90,12 +90,12 @@ class _EmployeeFormState extends State<EmployeeForm> {
         // _getEmployeeData(data['name']).then((value) {
         //   data['company'] = selectedEmployeeData['defaultCompany'];
         // });
-        data['company_email']= data['emails']['company_email'];
-        data['personal_email']= data['emails']['personal_email'];
-        data['prefered_email']= data['emails']['prefered_email'];
+        data['company_email'] = data['emails']['company_email'];
+        data['personal_email'] = data['emails']['personal_email'];
+        data['prefered_email'] = data['emails']['prefered_email'];
 
-        data['current_address']= data['address']['current_address'];
-        data['permanent_address']= data['address']['permanent_address'];
+        data['current_address'] = data['address']['current_address'];
+        data['permanent_address'] = data['address']['permanent_address'];
 
         setState(() {});
       });
@@ -135,7 +135,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 Group(
@@ -160,7 +160,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['last_name'],
                       ),
-
                       CustomTextField('gender', tr('Gender'),
                           clearButton: true,
                           initialValue: data['gender'],
@@ -173,22 +172,19 @@ class _EmployeeFormState extends State<EmployeeForm> {
                             child: DatePicker(
                           'date_of_birth',
                           'Date of Birth'.tr(),
-                          initialValue: data['date_of_birth'] ,
+                          initialValue: data['date_of_birth'],
                           onChanged: (value) =>
                               setState(() => data['date_of_birth'] = value),
                           firstDate: DateTime(DateTime.now().year - 100),
                         )),
                         SizedBox(width: 10),
                       ]),
-
-
                       CustomDropDown('status', 'Status'.tr(),
                           items: employeeStatus,
                           defaultValue: data['order_type'] ?? employeeStatus[0],
                           onChanged: (value) => data['order_type'] = value),
-                    SizedBox(height: 4),
+                      SizedBox(height: 4),
                     ],
-
                   ),
                 ),
 
@@ -198,7 +194,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 Group(
                   child: Column(
                     children: [
-                    SizedBox(height: 8),
+                      SizedBox(height: 8),
                       CustomTextField('department', tr('Department'),
                           initialValue: data['department'],
                           clearButton: true,
@@ -261,7 +257,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                               MaterialPageRoute(
                                   builder: (_) => leaveApproverScreen()))),
                       SizedBox(height: 8),
-
                     ],
                   ),
                 ),
@@ -340,13 +335,13 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         initialValue: data['attendance_device_id'],
                         keyboardType: TextInputType.number,
                         disableError: true,
-                        onChanged: (value) => data['attendance_device_id'] = value,
+                        onChanged: (value) =>
+                            data['attendance_device_id'] = value,
                         onSave: (key, value) => data[key] = value,
-                        validator: (value) =>
-                            numberValidationToast(value, 'Attendance Device ID (Biometric/RF tag ID)'),
+                        validator: (value) => numberValidationToast(value,
+                            'Attendance Device ID (Biometric/RF tag ID)'),
                       ),
                       SizedBox(height: 8),
-
                     ],
                   ),
                 ),
@@ -372,7 +367,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                             MaterialPageRoute(
                                 builder: (_) => shiftTypeListScreen()))),
                     SizedBox(height: 8),
-
                   ],
                 )),
 

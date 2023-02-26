@@ -315,6 +315,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             if (res != null) {
                               id = res['name'];
                               await _getCustomerData(res['name']);
+
                               setState(() {
                                 data['due_date'] = DateTime.now()
                                     .add(Duration(

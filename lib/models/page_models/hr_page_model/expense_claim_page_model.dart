@@ -7,8 +7,9 @@ class ExpenseClaimPageModel {
   final Map<String, dynamic> data;
   final BuildContext context;
 
-  ExpenseClaimPageModel(this.context, this.data):
-        _expenses = List<Map<String, dynamic>>.from(data['expenses'] ?? [])..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
+  ExpenseClaimPageModel(this.context, this.data)
+      : _expenses = List<Map<String, dynamic>>.from(data['expenses'] ?? [])
+          ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
   final List<Map<String, dynamic>> _expenses;
 
@@ -70,23 +71,22 @@ class ExpenseClaimPageModel {
     ];
   }
 
-
-
   List<MapEntry<String, String>> expenseCardValues(int index) {
     return [
       MapEntry(tr('Expense Date'), expenses[index]['expense_date'] ?? 'none'),
-      MapEntry(tr('Expense Claim Type'), expenses[index]['expense_type'] ?? 'none'),
-      MapEntry(tr('Default Account'), expenses[index]['default_account'] ?? 'none'),
+      MapEntry(
+          tr('Expense Claim Type'), expenses[index]['expense_type'] ?? 'none'),
+      MapEntry(
+          tr('Default Account'), expenses[index]['default_account'] ?? 'none'),
       MapEntry(tr('Amount'), currency(expenses[index]['amount'])),
-      MapEntry(tr('Sanctioned Amount'), currency(expenses[index]['sanctioned_amount'])),
+      MapEntry(tr('Sanctioned Amount'),
+          currency(expenses[index]['sanctioned_amount'])),
       MapEntry(tr('Cost Center'), expenses[index]['cost_center'] ?? 'none'),
       MapEntry(tr('Description'), expenses[index]['description'] ?? 'none'),
-
     ];
   }
 
-  List<String> get expenseListNames =>
-      [
+  List<String> get expenseListNames => [
         tr('Expense Date'),
         tr('Expense Claim Type'),
         tr('Default Account'),
@@ -94,7 +94,6 @@ class ExpenseClaimPageModel {
         tr('Sanctioned Amount'),
         tr('Cost Center'),
         tr('Description'),
-
       ];
 
   List<String> expenseListValues(int index) {
@@ -108,7 +107,4 @@ class ExpenseClaimPageModel {
       _expenses[index]['description'] ?? tr('none'),
     ];
   }
-
-
-
 }

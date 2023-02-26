@@ -22,27 +22,25 @@ class ExpenseTableModel extends ListModel<ExpenseModel> {
 }
 
 class ExpenseModel {
-   String id;
-   String expenseName;
-   String expenseDate;
-   String expenseClaimType;
-   double amount;
-   double sanctionedAmount;
-   String description;
-   String costCenter;
+  String id;
+  String expenseName;
+  String expenseDate;
+  String expenseClaimType;
+  double amount;
+  double sanctionedAmount;
+  String description;
+  String costCenter;
 
-
-   ExpenseModel(
-      {
-        required this.id,
-        required this.expenseName,
-        required this.expenseDate,
-        required this.expenseClaimType,
-        required this.amount,
-        required this.sanctionedAmount,
-        required this.description,
-        required this.costCenter,
-      });
+  ExpenseModel({
+    required this.id,
+    required this.expenseName,
+    required this.expenseDate,
+    required this.expenseClaimType,
+    required this.amount,
+    required this.sanctionedAmount,
+    required this.description,
+    required this.costCenter,
+  });
 
   factory ExpenseModel.fromJson(Map<String, dynamic> json) {
     return ExpenseModel(
@@ -52,7 +50,7 @@ class ExpenseModel {
       expenseClaimType: json['expense_type'] ?? 'none',
       amount: json['amount'] ?? 0.0,
       sanctionedAmount: json['sanctioned_amount'] ?? 0.0,
-        description: json['description'] ?? 'none',
+      description: json['description'] ?? 'none',
       costCenter: json['cost_center'] ?? 'none',
     );
   }
@@ -75,27 +73,24 @@ class ExpenseModel {
 
   @override
   int get hashCode => expenseName.hashCode;
-
 }
 
-
-
 //class ExpenseSelectModel extends ExpenseModel {
-  // num rate;
-  // double netRate;
-  // double vat;
-  // final double taxPercent;
-  // int _qty = 0;
-  //
-  // final bool _enableEdit;
-  //
-  // bool get enableEdit => _enableEdit;
-  //
-  // double get total => _qty * rate.toDouble();
-  //
-  // int get qty => _qty;
-  //
-  // set qty(int value) => _qty = value;
+// num rate;
+// double netRate;
+// double vat;
+// final double taxPercent;
+// int _qty = 0;
+//
+// final bool _enableEdit;
+//
+// bool get enableEdit => _enableEdit;
+//
+// double get total => _qty * rate.toDouble();
+//
+// int get qty => _qty;
+//
+// set qty(int value) => _qty = value;
 //
 //   factory ExpenseSelectModel.fromJson(Map<String, dynamic> json) {
 //     final item = ExpenseSelectModel(

@@ -6,10 +6,9 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  UnderDevelopmentScreen(
-      message:'User Profile still under development',
+    return UnderDevelopmentScreen(
+      message: 'User Profile still under development',
     );
-
   }
 }
 

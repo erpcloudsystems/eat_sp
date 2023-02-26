@@ -407,9 +407,7 @@ class _QuotationFormState extends State<QuotationForm> {
                                         Duration(
                                           days: int.parse(selectedCstData[
                                                   'quotation_validaty_days']
-                                              .toString()),
-                                        ),
-                                      )
+                                              .toString())))
                                       .toIso8601String()
                                   : null),
                         )),

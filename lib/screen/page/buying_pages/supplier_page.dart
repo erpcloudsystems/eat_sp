@@ -88,7 +88,7 @@ class SupplierPage extends StatelessWidget {
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
-                   padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
                   itemBuilder: (_, index) {

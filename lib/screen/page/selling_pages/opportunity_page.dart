@@ -32,23 +32,31 @@ class OpportunityPage extends StatelessWidget {
           items: model.card1Items,
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CreateFromPageButton(
                   doctype: 'Opportunity',
                   data: data,
-                  items: data['opportunity_from']=="Customer" ? fromOpportunity:fromOpportunity2,
+                  items: data['opportunity_from'] == "Customer"
+                      ? fromOpportunity
+                      : fromOpportunity2,
                   disableCreate: false,
-
                 ),
               ],
             ),
-            Text('Opportunity', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('Opportunity',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Padding(
-                padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
+                padding: const EdgeInsets.all(4.0),
+                child: Text(context.read<ModuleProvider>().pageId,
+                    style: const TextStyle(fontWeight: FontWeight.bold))),
             Text('Opportunity From: ' + (data['opportunity_from'] ?? 'none')),
-            Text('${data['opportunity_from']??""} : ' + (data['party_name'] ?? 'none')),
-            Padding(padding: const EdgeInsets.only(bottom: 4), child: Text(data['customer_name'] ?? 'none')),
+            Text('${data['opportunity_from'] ?? ""} : ' +
+                (data['party_name'] ?? 'none')),
+            Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(data['customer_name'] ?? 'none')),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           swapWidgets: [
@@ -59,7 +67,9 @@ class OpportunityPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.circle, color: statusColor(data['status'] ?? 'none'), size: 12),
+                        Icon(Icons.circle,
+                            color: statusColor(data['status'] ?? 'none'),
+                            size: 12),
                         SizedBox(width: 8),
                         FittedBox(
                           child: Text(data['status'] ?? 'none'),
@@ -77,13 +87,19 @@ class OpportunityPage extends StatelessWidget {
           color: color,
           items: model.card2Items,
           swapWidgets: [
-            SwapWidget(5, SizedBox(height: 30, child: Checkbox(value: (data['with_items'] ?? 0) == 0 ? false : true, onChanged: null))),
+            SwapWidget(
+                5,
+                SizedBox(
+                    height: 30,
+                    child: Checkbox(
+                        value: (data['with_items'] ?? 0) == 0 ? false : true,
+                        onChanged: null))),
           ],
         ),
 
-    CommentsButton(color: color),
+        CommentsButton(color: color),
 
-    SizedBox(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: DefaultTabController(
             length: model.tabs.length,
@@ -99,8 +115,12 @@ class OpportunityPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: TabBar(
-                      labelStyle: GoogleFonts.cairo(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.w600),
+                      labelStyle: GoogleFonts.cairo(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                      unselectedLabelStyle: GoogleFonts.cairo(
+                          fontSize: 16, fontWeight: FontWeight.w600),
                       unselectedLabelColor: Colors.grey.shade600,
                       indicatorPadding: EdgeInsets.zero,
                       isScrollable: false,
@@ -115,36 +135,45 @@ class OpportunityPage extends StatelessWidget {
                     data['items'] == null || data['items'].isEmpty
                         ? NothingHere()
                         : ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
-                            itemBuilder: (BuildContext context, int index) => ItemWithImageCard(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return PageDetailsDialog(
-                                          title: model.items[index]['name'] ?? 'none',
-                                          names: model.itemListNames,
-                                          values: model.itemListValues(index),
-                                        );
-                                      });
-                                },
-                                id: model.items[index]['idx'].toString(),
-                                imageUrl: model.items[index]['image'].toString(),
-                                itemName: model.items[index]['item_name'],
-                                names: model.getItemCard(index)),
+                            itemBuilder: (BuildContext context, int index) =>
+                                ItemWithImageCard(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return PageDetailsDialog(
+                                              title: model.items[index]
+                                                      ['name'] ??
+                                                  'none',
+                                              names: model.itemListNames,
+                                              values:
+                                                  model.itemListValues(index),
+                                            );
+                                          });
+                                    },
+                                    id: model.items[index]['idx'].toString(),
+                                    imageUrl:
+                                        model.items[index]['image'].toString(),
+                                    itemName: model.items[index]['item_name'],
+                                    names: model.getItemCard(index)),
                           ),
                     data['conn'] == null || data['conn'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(
-                                imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-                                docTypeId: data['conn'][index]['name'] ?? tr('none'),
-                                count: data['conn'][index]['count'].toString())),
+                                imageUrl:
+                                    data['conn'][index]['icon'] ?? tr('none'),
+                                docTypeId:
+                                    data['conn'][index]['name'] ?? tr('none'),
+                                count:
+                                    data['conn'][index]['count'].toString())),
                   ]),
                 )
               ],

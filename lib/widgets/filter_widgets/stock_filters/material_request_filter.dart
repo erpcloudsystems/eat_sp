@@ -36,7 +36,7 @@ class _MaterialRequestFilterState extends State<MaterialRequestFilter> {
   Widget build(BuildContext context) {
     _values = FilterScreen.of(context).values;
     _dateTo = _values['filter5'];
-print('444444$_values');
+    print('444444$_values');
     return Column(
       children: [
         CustomDropDown(
@@ -45,7 +45,7 @@ print('444444$_values');
           items: MaterialRequestFilter._statusList,
           onChanged: (String value) => _values['filter1'] = value,
           onClear: () => _values.remove('filter1'),
-          defaultValue: _values['filter1'] ,
+          defaultValue: _values['filter1'],
           clear: true,
         ),
         CustomDropDown(
@@ -61,7 +61,6 @@ print('444444$_values');
             onSave: (key, value) => _values[key] = value,
             initialValue: _values['filter3'],
             clearButton: true,
-
             onPressed: () async {
               final res = await Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => warehouseScreen()));

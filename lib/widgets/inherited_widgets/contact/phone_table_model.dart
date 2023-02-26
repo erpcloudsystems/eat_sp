@@ -27,16 +27,12 @@ class PhoneModel {
   int isPrimaryPhone;
   int isPrimaryMobile;
 
-
-
-  PhoneModel(
-      {
-        required this.id,
-        required this.phone,
-        required this.isPrimaryPhone,
-        required this.isPrimaryMobile,
-
-      });
+  PhoneModel({
+    required this.id,
+    required this.phone,
+    required this.isPrimaryPhone,
+    required this.isPrimaryMobile,
+  });
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) {
     return PhoneModel(
@@ -44,7 +40,6 @@ class PhoneModel {
       phone: json['phone'] ?? '',
       isPrimaryPhone: json['is_primary_phone'] ?? 0,
       isPrimaryMobile: json['is_primary_mobile_no'] ?? 0,
-
     );
   }
 
@@ -63,6 +58,4 @@ class PhoneModel {
 
   @override
   int get hashCode => phone.hashCode;
-
 }
-

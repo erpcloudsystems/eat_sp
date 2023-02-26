@@ -10,7 +10,8 @@ class DeliveryNotePageModel {
   final BuildContext context;
 
   DeliveryNotePageModel(this.context, this.data)
-      : items = List<Map<String, dynamic>>.from(data['items'] ?? [])..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
+      : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
+          ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
   final List<Map<String, dynamic>> items;
 
@@ -24,11 +25,26 @@ class DeliveryNotePageModel {
   List<Map<String, String>> get card1Items {
     return [
       {
-        tr("Date"): data['posting_date'] == null ? tr('none') : reverse(data['posting_date'])},
-      {tr("Status"): data['status'] ?? tr('none'), tr("Tax Id"): data['tax_id'] ?? tr('none')},
-      {tr("Customer Group"): data['customer_group'] ?? tr('none'), tr("Territory"): data['territory'] ?? tr('none')},
-      {tr("Customer Address"): data['customer_address'] ?? tr('none'), tr("Address"): formatDescription(data['address_display'] ?? tr('none'))},
-      {tr("Contact"): data['contact_display'] ?? tr('none'), tr("Mobile No"): data['contact_mobile'] ?? tr('none')},
+        tr("Date"): data['posting_date'] == null
+            ? tr('none')
+            : reverse(data['posting_date'])
+      },
+      {
+        tr("Status"): data['status'] ?? tr('none'),
+        tr("Tax Id"): data['tax_id'] ?? tr('none')
+      },
+      {
+        tr("Customer Group"): data['customer_group'] ?? tr('none'),
+        tr("Territory"): data['territory'] ?? tr('none')
+      },
+      {
+        tr("Customer Address"): data['customer_address'] ?? tr('none'),
+        tr("Address"): formatDescription(data['address_display'] ?? tr('none'))
+      },
+      {
+        tr("Contact"): data['contact_display'] ?? tr('none'),
+        tr("Mobile No"): data['contact_mobile'] ?? tr('none')
+      },
       {tr("Contact Email"): data['contact_email'] ?? tr('none')},
     ];
   }
@@ -36,39 +52,96 @@ class DeliveryNotePageModel {
   //sales invoice
   List<Map<String, String>> get card2Items {
     return [
-      {tr("Is Return"): data['is_return'].toString(), tr("Project"): data['project'] ?? tr('none')},
-      {tr("Cost Center"): data['cost_center'] ?? tr('none'), tr("Currency"): data['currency'] ?? tr('none')},
-      {tr("Exchange Rate"): data['conversion_rate'].toString(), tr("Price List"): data['selling_price_list'] ?? tr('none')},
-      {tr("Price List Currency"): data['price_list_currency'] ?? tr('none'), tr("Price List Exchange Rate"): data['plc_conversion_rate'].toString()},
-      {tr("Ignore Pricing Rule"): data['ignore_pricing_rule'].toString(), tr("Update Stock"): data['update_stock'].toString()},
-      {tr("Source Warehouse"): data['set_warehouse'] ?? tr('none'), tr("Target Warehouse"): data['set_target_warehouse'] ?? tr('none')},
       {
-
+        tr("Is Return"): data['is_return'].toString(),
+        tr("Project"): data['project'] ?? tr('none')
+      },
+      {
+        tr("Cost Center"): data['cost_center'] ?? tr('none'),
+        tr("Currency"): data['currency'] ?? tr('none')
+      },
+      {
+        tr("Exchange Rate"): data['conversion_rate'].toString(),
+        tr("Price List"): data['selling_price_list'] ?? tr('none')
+      },
+      {
+        tr("Price List Currency"): data['price_list_currency'] ?? tr('none'),
+        tr("Price List Exchange Rate"): data['plc_conversion_rate'].toString()
+      },
+      {
+        tr("Ignore Pricing Rule"): data['ignore_pricing_rule'].toString(),
+        tr("Update Stock"): data['update_stock'].toString()
+      },
+      {
+        tr("Source Warehouse"): data['set_warehouse'] ?? tr('none'),
+        tr("Target Warehouse"): data['set_target_warehouse'] ?? tr('none')
+      },
+      {
         tr("Terms & Conditions"): data['tc_name'] ?? tr('none'),
       },
-      {tr("Terms & Conditions Details"): data['terms'] != null ? formatDescription(data['terms']) : tr('none')},
+      {
+        tr("Terms & Conditions Details"): data['terms'] != null
+            ? formatDescription(data['terms'])
+            : tr('none')
+      },
       {
         tr("Sales Partner"): data['sales_partner'] ?? tr('none'),
-        tr("Commission Rate"): data['commission_rate'] == null ? tr('none') : data['commission_rate'].toString()
+        tr("Commission Rate"): data['commission_rate'] == null
+            ? tr('none')
+            : data['commission_rate'].toString()
       },
-      {tr("Total Commission"): data['total_commission'] == null ? tr('none') : data['total_commission'].toString()},
+      {
+        tr("Total Commission"): data['total_commission'] == null
+            ? tr('none')
+            : data['total_commission'].toString()
+      },
     ];
   }
 
   List<Map<String, String>> get card3Items {
     return [
-      {tr("Total Quantity"): data['total_qty'].toString(), tr("Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_total'])},
-      {tr("Net Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_net_total'])},
-      {tr("Total"): currency(data['total']), tr("Net Total"): currency(data['net_total'])},
-      {tr("Total Taxes and Charges ") + context.read<UserProvider>().defaultCurrency: currency(data['base_total_taxes_and_charges'])},
-      {tr("Total Taxes and Charges"): currency(data['total_taxes_and_charges']), tr("Apply Additional Discount On"): data['apply_discount_on'] ?? tr('none')},
-      {tr("Additional Discount Amount ") + context.read<UserProvider>().defaultCurrency: currency(data['base_discount_amount'])},
       {
-        tr("Additional Discount Percentage"): percent(data['additional_discount_percentage']),
+        tr("Total Quantity"): data['total_qty'].toString(),
+        tr("Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_total'])
+      },
+      {
+        tr("Net Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_net_total'])
+      },
+      {
+        tr("Total"): currency(data['total']),
+        tr("Net Total"): currency(data['net_total'])
+      },
+      {
+        tr("Total Taxes and Charges ") +
+                context.read<UserProvider>().defaultCurrency:
+            currency(data['base_total_taxes_and_charges'])
+      },
+      {
+        tr("Total Taxes and Charges"):
+            currency(data['total_taxes_and_charges']),
+        tr("Apply Additional Discount On"):
+            data['apply_discount_on'] ?? tr('none')
+      },
+      {
+        tr("Additional Discount Amount ") +
+                context.read<UserProvider>().defaultCurrency:
+            currency(data['base_discount_amount'])
+      },
+      {
+        tr("Additional Discount Percentage"):
+            percent(data['additional_discount_percentage']),
         tr("Additional Discount Amount"): currency(data['discount_amount'])
       },
-      {tr("Grand Total ") + context.read<UserProvider>().defaultCurrency: currency(data['base_grand_total'])},
-      {tr("In Words ") + context.read<UserProvider>().defaultCurrency: data['base_in_words'] ?? tr('none')},
+      {
+        tr("Grand Total ") + context.read<UserProvider>().defaultCurrency:
+            currency(data['base_grand_total'])
+      },
+      {
+        tr("In Words ") + context.read<UserProvider>().defaultCurrency:
+            data['base_in_words'] ?? tr('none')
+      },
       {tr("Grand Total"): currency(data['grand_total'])},
       {tr("In Words"): data['in_words'] ?? tr('none')},
     ];
@@ -88,7 +161,8 @@ class DeliveryNotePageModel {
   List<MapEntry<String, String>> getTaxesCard(int index) {
     return [
       MapEntry(tr("Type"), data['taxes'][index]['charge_type'] ?? tr('none')),
-      MapEntry(tr("Account Head"), data['taxes'][index]['account_head'] ?? tr('none')),
+      MapEntry(tr("Account Head"),
+          data['taxes'][index]['account_head'] ?? tr('none')),
       MapEntry(tr("Rate"), data['taxes'][index]['rate'].toString()),
       MapEntry(tr("Tax Amount"), currency(data['taxes'][index]['tax_amount'])),
       MapEntry(tr("Total"), currency(data['taxes'][index]['total'])),
@@ -97,11 +171,23 @@ class DeliveryNotePageModel {
 
   List<MapEntry<String, String>> getPaymentCard(int index) {
     return [
-      MapEntry(tr('Payment Term'), (data['payment_schedule'][index]['payment_term'] ?? tr('none')).toString()),
-      MapEntry(tr('Description'), (data['payment_schedule'][index]['description'] ?? tr('none')).toString()),
-      MapEntry(tr('Due Date'), data['payment_schedule'][index]['due_date'] != null ? reverse(data['payment_schedule'][index]['due_date']) : tr('none')),
-      MapEntry(tr('Invoice Portion'), percent(data['payment_schedule'][index]['invoice_portion'])),
-      MapEntry(tr('Payment Amount'), currency(data['payment_schedule'][index]['payment_amount'])),
+      MapEntry(
+          tr('Payment Term'),
+          (data['payment_schedule'][index]['payment_term'] ?? tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Description'),
+          (data['payment_schedule'][index]['description'] ?? tr('none'))
+              .toString()),
+      MapEntry(
+          tr('Due Date'),
+          data['payment_schedule'][index]['due_date'] != null
+              ? reverse(data['payment_schedule'][index]['due_date'])
+              : tr('none')),
+      MapEntry(tr('Invoice Portion'),
+          percent(data['payment_schedule'][index]['invoice_portion'])),
+      MapEntry(tr('Payment Amount'),
+          currency(data['payment_schedule'][index]['payment_amount'])),
     ];
   }
 
@@ -155,7 +241,9 @@ class DeliveryNotePageModel {
 
   List<String> itemListValues(int index) {
     return [
-      data['items'][index]['delivery_date'] == null ? tr('none') : reverse(data['items'][index]['delivery_date']),
+      data['items'][index]['delivery_date'] == null
+          ? tr('none')
+          : reverse(data['items'][index]['delivery_date']),
       data['items'][index]['item_code'] ?? tr('none'),
       data['items'][index]['item_name'] ?? tr('none'),
       data['items'][index]['description'] ?? tr('none'),
@@ -215,7 +303,8 @@ class DeliveryNotePageModel {
       tr('Tax Amount After Discount Amount'),
       tr('Tax Amount ') + context.read<UserProvider>().defaultCurrency,
       tr('Total ') + context.read<UserProvider>().defaultCurrency,
-      tr('Tax Amount After Discount Amount ') + context.read<UserProvider>().defaultCurrency,
+      tr('Tax Amount After Discount Amount ') +
+          context.read<UserProvider>().defaultCurrency,
     ];
   }
 

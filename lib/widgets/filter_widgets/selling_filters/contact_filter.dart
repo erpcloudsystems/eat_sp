@@ -42,7 +42,7 @@ class _ContactFilterState extends State<ContactFilter> {
         CustomDropDown(
           'filter2',
           'Link Document Type'.tr(),
-          items: ['Customer','Supplier'],
+          items: ['Customer', 'Supplier'],
           onChanged: (String value) {
             setState(() {
               _values['filter2'] = value;
@@ -52,8 +52,6 @@ class _ContactFilterState extends State<ContactFilter> {
           defaultValue: _values['filter2'],
           clear: true,
         ),
-
-
         CustomTextField(
           'filter3',
           'Link Name'.tr(),
@@ -62,24 +60,23 @@ class _ContactFilterState extends State<ContactFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter3'],
           onPressed: () async {
-            if(_values['filter2']==null)
+            if (_values['filter2'] == null)
               return showSnackBar(
-                  'Please select a Link Type to first',
-                  context);
-            if(_values['filter2']=='Supplier'){
-              final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectSupplierScreen()));
+                  'Please select a Link Type to first', context);
+            if (_values['filter2'] == 'Supplier') {
+              final res = await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => selectSupplierScreen()));
               if (res != null) _values['filter3'] = res['name'];
               return _values['filter3'];
             }
-            if(_values['filter2']=='Customer'){
-              final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectCustomerScreen()));
+            if (_values['filter2'] == 'Customer') {
+              final res = await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => selectCustomerScreen()));
               if (res != null) _values['filter3'] = res['name'];
               return _values['filter3'];
             }
-
           },
         ),
-
       ],
     );
   }

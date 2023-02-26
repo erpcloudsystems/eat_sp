@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 String formatDescription(String? text) {
   if (text == null) return tr('none');
-  if (text.contains('<div class=\"ql-editor read-mode\">')){
+  if (text.contains('<div class=\"ql-editor read-mode\">')) {
     text = text.replaceAll('<div class=\"ql-editor read-mode\">', '');
     text = text.replaceAll('</div>', '');
   }
@@ -27,7 +27,8 @@ String formatDescription(String? text) {
 }
 
 //to reverse the date
-String reverse(String? date) => date == null ? tr('none') : date.split('-').reversed.join('-');
+String reverse(String? date) =>
+    date == null ? tr('none') : date.split('-').reversed.join('-');
 
 String currency(double? value) {
   if (value == null) return tr('none');
@@ -36,7 +37,7 @@ String currency(double? value) {
   return oCcy.format(value);
 }
 
-String percent(double? value){
-  if(value == null) return tr('none');
+String percent(double? value) {
+  if (value == null) return tr('none');
   return '$value%';
 }

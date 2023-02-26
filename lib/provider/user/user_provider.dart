@@ -56,8 +56,6 @@ class UserProvider extends ChangeNotifier {
   void setShowcaseProgress(String showcase) async {
     _showcaseProgress!.add(showcase);
     await pref.setShowcaseList(_showcaseProgress!);
-
-    //notifyListeners();
   }
 
   Future<void> getUserData() async {
@@ -148,7 +146,6 @@ class UserProvider extends ChangeNotifier {
         notifyListeners();
         checkPermission();
       } else {
-        //Fluttertoast.showToast(msg: 'invalid credentials');
         throw ServerException("invalid credentials");
       }
     } else if (checkUrlValidation == false) {

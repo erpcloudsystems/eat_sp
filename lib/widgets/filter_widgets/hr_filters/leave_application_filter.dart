@@ -47,7 +47,8 @@ class _LeaveApplicationFilterState extends State<LeaveApplicationFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => selectEmployeeScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => selectEmployeeScreen()));
             if (res != null) _values['filter2'] = res['name'];
             return _values['filter2'];
           },
@@ -72,7 +73,8 @@ class _LeaveApplicationFilterState extends State<LeaveApplicationFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter4'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => departmentListScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => departmentListScreen()));
             if (res != null) _values['filter4'] = res;
             return _values['filter4'];
           },
@@ -85,7 +87,8 @@ class _LeaveApplicationFilterState extends State<LeaveApplicationFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter5'],
           onPressed: () async {
-            final res = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => leaveTypeListScreen()));
+            final res = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => leaveTypeListScreen()));
             if (res != null) _values['filter5'] = res;
             return _values['filter5'];
           },
@@ -98,7 +101,9 @@ class _LeaveApplicationFilterState extends State<LeaveApplicationFilter> {
             setState(() {
               _values['filter6'] = value;
               //remove date to if it's before from date
-              if (_values['filter7'] != null && DateTime.parse(_values['filter7']).isBefore(DateTime.parse(_values['filter6']))) {
+              if (_values['filter7'] != null &&
+                  DateTime.parse(_values['filter7'])
+                      .isBefore(DateTime.parse(_values['filter6']))) {
                 _values.remove('filter7');
                 _dateTo = '';
               }
@@ -112,16 +117,18 @@ class _LeaveApplicationFilterState extends State<LeaveApplicationFilter> {
         DatePicker(
           'filter7',
           'To Date'.tr(),
-          firstDate: _values['filter6'] != null ? DateTime.parse(_values['filter6']) : null,
+          firstDate: _values['filter6'] != null
+              ? DateTime.parse(_values['filter6'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;
             setState(() => _values['filter7'] = value);
           },
           clear: true,
-          onClear: ()  => setState(() {
-    _values.remove('filter7');
-    }),
+          onClear: () => setState(() {
+            _values.remove('filter7');
+          }),
         ),
       ],
     );

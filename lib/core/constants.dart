@@ -4,12 +4,11 @@ const int PAGINATION_PAGE_LENGTH = 20;
 const double SEARCH_BAR_HEIGHT = 50;
 
 ///*** COLORS ***///
-const APPBAR_COLOR = MAIN_COLOR;
-const MAIN_COLOR = Color(0xff0099ff);
+const APPBAR_COLOR = Color(0xff0099ff);
 const APPBAR_ICONS_COLOR = Colors.white;
 const FORM_SUBMIT_BTN_COLOR = Colors.white;
-const LOADING_PROGRESS_COLOR = MAIN_COLOR;
-const CIRCULAR_PROGRESS_COLOR = MAIN_COLOR;
+const LOADING_PROGRESS_COLOR = Color(0xff0066ff);
+const CIRCULAR_PROGRESS_COLOR = Color(0xff0066ff);
 const CONNECTION_ROUTE = 'CONNECTION_ROUTE';
 
 ///*** BORDER RADIUS ***///

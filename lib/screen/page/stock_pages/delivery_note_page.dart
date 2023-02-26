@@ -32,38 +32,42 @@ class DeliveryNotePage extends StatelessWidget {
           items: model.card1Items,
           header: [
             Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CreateFromPageButton(
                   doctype: 'Delivery Note',
                   data: data,
-                  items:  fromDeliveryNote,
-                  disableCreate: (data['docstatus'].toString() == "1"
-                      &&
-                      data['status'].toString() == "To Bill"
-                  ) ?  false:true,
+                  items: fromDeliveryNote,
+                  disableCreate: (data['docstatus'].toString() == "1" &&
+                          data['status'].toString() == "To Bill")
+                      ? false
+                      : true,
                 ),
                 if (data['docstatus'] != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child:
-                    context.read<ModuleProvider>().submitDocumentWidget(),
+                        context.read<ModuleProvider>().submitDocumentWidget(),
                   ),
               ],
             ),
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Delivery Note', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-               // if (data['docstatus'] != null)
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: Padding(padding: const EdgeInsets.only(right: 12.0), child: context.read<ModuleProvider>().submitDocumentWidget()),
-                  // )
+                Text('Delivery Note',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16)),
+                // if (data['docstatus'] != null)
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: Padding(padding: const EdgeInsets.only(right: 12.0), child: context.read<ModuleProvider>().submitDocumentWidget()),
+                // )
               ],
             ),
             Padding(
-                padding: const EdgeInsets.all(4.0), child: Text(context.read<ModuleProvider>().pageId, style: const TextStyle(fontWeight: FontWeight.bold))),
+                padding: const EdgeInsets.all(4.0),
+                child: Text(context.read<ModuleProvider>().pageId,
+                    style: const TextStyle(fontWeight: FontWeight.bold))),
             Text('Customer: ' + (data['customer'] ?? 'none')),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
@@ -79,7 +83,9 @@ class DeliveryNotePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.circle, color: statusColor(data['status'] ?? 'none'), size: 12),
+                        Icon(Icons.circle,
+                            color: statusColor(data['status'] ?? 'none'),
+                            size: 12),
                         SizedBox(width: 8),
                         FittedBox(
                           child: Text(data['status'] ?? 'none'),
@@ -97,19 +103,39 @@ class DeliveryNotePage extends StatelessWidget {
           color: color,
           items: model.card2Items,
           swapWidgets: [
-            SwapWidget(1, SizedBox(height: 30, child: Checkbox(value: (data['is_return'] ?? 0) == 0 ? false : true, onChanged: null))),
-            SwapWidget(5, SizedBox(height: 30, child: Checkbox(value: (data['ignore_pricing_rule'] ?? 0) == 0 ? false : true, onChanged: null))),
-            SwapWidget(5, SizedBox(height: 30, child: Checkbox(value: (data['update_stock'] ?? 0) == 0 ? false : true, onChanged: null)), widgetNumber: 2),
+            SwapWidget(
+                1,
+                SizedBox(
+                    height: 30,
+                    child: Checkbox(
+                        value: (data['is_return'] ?? 0) == 0 ? false : true,
+                        onChanged: null))),
+            SwapWidget(
+                5,
+                SizedBox(
+                    height: 30,
+                    child: Checkbox(
+                        value: (data['ignore_pricing_rule'] ?? 0) == 0
+                            ? false
+                            : true,
+                        onChanged: null))),
+            SwapWidget(
+                5,
+                SizedBox(
+                    height: 30,
+                    child: Checkbox(
+                        value: (data['update_stock'] ?? 0) == 0 ? false : true,
+                        onChanged: null)),
+                widgetNumber: 2),
           ],
         ),
 
         ///third card
         PageCard(color: color, items: model.card3Items),
 
+        CommentsButton(color: color),
 
-    CommentsButton(color: color),
-
-    SizedBox(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: DefaultTabController(
             length: model.tabs.length,
@@ -125,8 +151,12 @@ class DeliveryNotePage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: TabBar(
-                      labelStyle: GoogleFonts.cairo(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.w600),
+                      labelStyle: GoogleFonts.cairo(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                      unselectedLabelStyle: GoogleFonts.cairo(
+                          fontSize: 16, fontWeight: FontWeight.w600),
                       unselectedLabelColor: Colors.grey.shade600,
                       indicatorPadding: EdgeInsets.zero,
                       isScrollable: false,
@@ -140,29 +170,38 @@ class DeliveryNotePage extends StatelessWidget {
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
-                            itemBuilder: (BuildContext context, int index) => ItemWithImageCard(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return PageDetailsDialog(
-                                            title: model.items[index]['name'] ?? 'none', names: model.itemListNames, values: model.itemListValues(index));
-                                      });
-                                },
-                                id: model.items[index]['idx'].toString(),
-                                imageUrl: model.items[index]['image'].toString(),
-                                itemName: model.items[index]['item_name'],
-                                names: model.getItemCard(index)),
+                            itemBuilder: (BuildContext context, int index) =>
+                                ItemWithImageCard(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return PageDetailsDialog(
+                                                title: model.items[index]
+                                                        ['name'] ??
+                                                    'none',
+                                                names: model.itemListNames,
+                                                values: model
+                                                    .itemListValues(index));
+                                          });
+                                    },
+                                    id: model.items[index]['idx'].toString(),
+                                    imageUrl:
+                                        model.items[index]['image'].toString(),
+                                    itemName: model.items[index]['item_name'],
+                                    names: model.getItemCard(index)),
                           ),
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -171,7 +210,10 @@ class DeliveryNotePage extends StatelessWidget {
                                       builder: (_) => PageDetailsDialog(
                                           names: model.taxesListNames,
                                           values: model.taxesListValues(index),
-                                          title: (data['taxes'][index]['name'] ?? tr('none')).toString())),
+                                          title: (data['taxes'][index]
+                                                      ['name'] ??
+                                                  tr('none'))
+                                              .toString())),
                                   id: data['taxes'][index]['idx'].toString(),
                                   values: model.getTaxesCard(index),
                                 )),
@@ -194,13 +236,17 @@ class DeliveryNotePage extends StatelessWidget {
                     //             )),
                     data['conn'] == null || data['conn'].isEmpty
                         ? NothingHere()
-                        : ListView.builder(physics: BouncingScrollPhysics(),
+                        : ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(
-                                imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-                                docTypeId: data['conn'][index]['name'] ?? tr('none'),
-                                count: data['conn'][index]['count'].toString())),
+                                imageUrl:
+                                    data['conn'][index]['icon'] ?? tr('none'),
+                                docTypeId:
+                                    data['conn'][index]['name'] ?? tr('none'),
+                                count:
+                                    data['conn'][index]['count'].toString())),
                   ]),
                 )
               ],

@@ -39,9 +39,8 @@ class QuotationPage extends StatelessWidget {
                   doctype: 'Quotation',
                   data: data,
                   items: fromQuotation,
-                  disableCreate: (
-                          data['status'].toString() != "Ordered" &&
-                          data['docstatus'].toString() == "1"&&
+                  disableCreate: (data['status'].toString() != "Ordered" &&
+                          data['docstatus'].toString() == "1" &&
                           data['quotation_to'].toString() == "Customer")
                       ? false
                       : true,

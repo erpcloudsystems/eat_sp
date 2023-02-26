@@ -29,25 +29,25 @@ class EmployeeItemModel {
   final String attendanceDeviceId;
   final String status;
 
-  EmployeeItemModel(
-      {required this.id,
-        required this.name,
-        required this.department,
-        required this.designation,
-        required this.branch,
-        required this.attendanceDeviceId,
-        required this.status,
-      });
+  EmployeeItemModel({
+    required this.id,
+    required this.name,
+    required this.department,
+    required this.designation,
+    required this.branch,
+    required this.attendanceDeviceId,
+    required this.status,
+  });
 
   factory EmployeeItemModel.fromJson(Map<String, dynamic> json) {
     return EmployeeItemModel(
-      id: json['name']??'none',
-      name: json['employee_name']??'none',
-      department: json['department']??'none',
-      designation: json['designation']??'none',
-      branch: json['branch']??'none',
-      attendanceDeviceId: json['attendance_device_id']??'none',
-      status: json['status']?? 'none',
+      id: json['name'] ?? 'none',
+      name: json['employee_name'] ?? 'none',
+      department: json['department'] ?? 'none',
+      designation: json['designation'] ?? 'none',
+      branch: json['branch'] ?? 'none',
+      attendanceDeviceId: json['attendance_device_id'] ?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

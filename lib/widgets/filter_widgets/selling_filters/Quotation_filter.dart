@@ -68,8 +68,10 @@ class _QuotationFilterState extends State<QuotationFilter> {
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter3'],
           onPressed: () async {
-            final res = await Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => _values['filter2'] == KQuotationToList[0] ? selectLeadScreen() : selectCustomerScreen()));
+            final res = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => _values['filter2'] == KQuotationToList[0]
+                    ? selectLeadScreen()
+                    : selectCustomerScreen()));
             if (res != null) _values['filter3'] = res['name'];
             return _values['filter3'];
           },
@@ -91,7 +93,9 @@ class _QuotationFilterState extends State<QuotationFilter> {
             setState(() {
               _values['filter5'] = value;
               // remove date to if it's before from date
-              if (_values['filter6'] != null && DateTime.parse(_values['filter6']).isBefore(DateTime.parse(_values['filter5']))) {
+              if (_values['filter6'] != null &&
+                  DateTime.parse(_values['filter6'])
+                      .isBefore(DateTime.parse(_values['filter5']))) {
                 _values.remove('filter6');
                 _dateTo = '';
               }
@@ -103,7 +107,9 @@ class _QuotationFilterState extends State<QuotationFilter> {
         DatePicker(
           'filter6',
           'To Date'.tr(),
-          firstDate: _values['filter5'] != null ? DateTime.parse(_values['filter5']) : null,
+          firstDate: _values['filter5'] != null
+              ? DateTime.parse(_values['filter5'])
+              : null,
           initialValue: _dateTo,
           onChanged: (value) {
             _dateTo = value;

@@ -29,25 +29,25 @@ class ExpenseClaimItemModel {
   final double grandTotal;
   final String status;
 
-  ExpenseClaimItemModel(
-      {required this.id,
-        required this.name,
-        required this.employee,
-        required this.department,
-        required this.postingDate,
-        required this.grandTotal,
-        required this.status,
-      });
+  ExpenseClaimItemModel({
+    required this.id,
+    required this.name,
+    required this.employee,
+    required this.department,
+    required this.postingDate,
+    required this.grandTotal,
+    required this.status,
+  });
 
   factory ExpenseClaimItemModel.fromJson(Map<String, dynamic> json) {
     return ExpenseClaimItemModel(
-      id: json['name']??'none',
-      name: json['employee_name']??'none',
-      employee: json['employee']??'none',
-      department: json['department']??'none',
+      id: json['name'] ?? 'none',
+      name: json['employee_name'] ?? 'none',
+      employee: json['employee'] ?? 'none',
+      department: json['department'] ?? 'none',
       postingDate: DateTime.parse(json['posting_date'] ?? 'none'),
-      grandTotal: json['grand_total']??'none',
-      status: json['status']??'none',
+      grandTotal: json['grand_total'] ?? 'none',
+      status: json['status'] ?? 'none',
     );
   }
 

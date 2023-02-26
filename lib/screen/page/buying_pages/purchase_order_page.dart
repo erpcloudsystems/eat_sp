@@ -172,7 +172,6 @@ class PurchaseOrderPage extends StatelessWidget {
                         ? NothingHere()
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
-
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -194,7 +193,6 @@ class PurchaseOrderPage extends StatelessWidget {
                         ? NothingHere()
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
-
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -217,7 +215,6 @@ class PurchaseOrderPage extends StatelessWidget {
                         ? NothingHere()
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
-
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

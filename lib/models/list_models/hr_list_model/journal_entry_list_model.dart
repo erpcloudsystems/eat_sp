@@ -31,35 +31,30 @@ class JournalEntryItemModel {
   final DateTime chequeDate;
   final String remark;
 
-  JournalEntryItemModel(
-      {required this.id,
-        required this.voucherType,
-        required this.postingDate,
-        required this.totalDebit,
-        required this.totalCredit,
-        required this.modeOfPayment,
-        required this.chequeNo,
-        required this.chequeDate,
-        required this.remark,
-      });
+  JournalEntryItemModel({
+    required this.id,
+    required this.voucherType,
+    required this.postingDate,
+    required this.totalDebit,
+    required this.totalCredit,
+    required this.modeOfPayment,
+    required this.chequeNo,
+    required this.chequeDate,
+    required this.remark,
+  });
 
   factory JournalEntryItemModel.fromJson(Map<String, dynamic> json) {
-
-
-      return JournalEntryItemModel(
-        id: json['name']??'none',
-        voucherType: json['voucher_type']??'none',
-        postingDate: DateTime.parse(json['posting_date'] ?? "2001-01-01"),
-        totalDebit: json['total_debit']??'none',
-        totalCredit: json['total_credit']??'none',
-        modeOfPayment: json['mode_of_payment']??'none',
-        chequeNo: json['cheque_no']??'none',
-        chequeDate: DateTime.parse(json['cheque_date'] ?? "2001-01-01"),
-        remark: json['remark']??'none',
-      );
-
-
-
+    return JournalEntryItemModel(
+      id: json['name'] ?? 'none',
+      voucherType: json['voucher_type'] ?? 'none',
+      postingDate: DateTime.parse(json['posting_date'] ?? "2001-01-01"),
+      totalDebit: json['total_debit'] ?? 'none',
+      totalCredit: json['total_credit'] ?? 'none',
+      modeOfPayment: json['mode_of_payment'] ?? 'none',
+      chequeNo: json['cheque_no'] ?? 'none',
+      chequeDate: DateTime.parse(json['cheque_date'] ?? "2001-01-01"),
+      remark: json['remark'] ?? 'none',
+    );
   }
 
   Map<String, dynamic> toJson() {

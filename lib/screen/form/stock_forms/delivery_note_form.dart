@@ -80,7 +80,8 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false) return;
+    if (provider.isEditing && res == false)
+      return;
     else if (provider.isEditing && res == null) Navigator.pop(context);
     //else if (provider.isEditing) Navigator.pop(context);
 
@@ -149,45 +150,43 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
 
         InheritedForm.of(context).items.clear();
         data['items'].forEach((element) {
-          if(!InheritedForm.of(context).items.contains(element)){
+          if (!InheritedForm.of(context).items.contains(element)) {
             InheritedForm.of(context)
                 .items
                 .add(ItemSelectModel.fromJson(element));
           }
         });
         InheritedForm.of(context).data['selling_price_list'] =
-        data['selling_price_list'];
+            data['selling_price_list'];
 
-
-        data['posting_date']= DateTime.now().toIso8601String();
-        data['order_type']= orderTypeList[0];
-        data['update_stock']= 0;
-        data['conversion_rate']= 1;
-
-
+        data['posting_date'] = DateTime.now().toIso8601String();
+        data['order_type'] = orderTypeList[0];
+        data['update_stock'] = 0;
+        data['conversion_rate'] = 1;
 
         // from Sales Order
-        if(data['doctype']=='Sales Order'){
+        if (data['doctype'] == 'Sales Order') {
           data['customer_name'] = data['customer_name'];
           data['against_sales_order'] = data['name'];
         }
 
         // from Delivery Note
-        if(data['doctype']=='Delivery Note'){
+        if (data['doctype'] == 'Delivery Note') {
           data['delivery_mote'] = data['name'];
-          data['is_return']= 1;
+          data['is_return'] = 1;
         }
 
-
         _getCustomerData(data['customer_name']).then((value) => setState(() {
-          data['currency'] = selectedCstData['default_currency'] ;
-          data['price_list_currency'] = selectedCstData['default_currency'] ;
-         // data['payment_terms_template'] = selectedCstData['payment_terms'] ;
-          data['customer_address'] = selectedCstData["customer_primary_address"];
-          data['contact_person'] = selectedCstData["customer_primary_contact"];
-        }));
+              data['currency'] = selectedCstData['default_currency'];
+              data['price_list_currency'] = selectedCstData['default_currency'];
+              // data['payment_terms_template'] = selectedCstData['payment_terms'] ;
+              data['customer_address'] =
+                  selectedCstData["customer_primary_address"];
+              data['contact_person'] =
+                  selectedCstData["customer_primary_contact"];
+            }));
 
-        data['doctype']= "Delivery Note";
+        data['doctype'] = "Delivery Note";
 
         data.remove('print_formats');
         data.remove('conn');
@@ -335,7 +334,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                       CustomTextField('customer_group', 'Customer Group'.tr(),
                           initialValue: data['customer_group'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -343,7 +341,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                       CustomTextField('territory', 'Territory'.tr(),
                           onSave: (key, value) => data[key] = value,
                           disableValidation: true,
-
                           initialValue: data['territory'],
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -486,7 +483,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                         'Exchange Rate'.tr(),
                         initialValue: '${data['conversion_rate'] ?? ''}',
                         disableValidation: true,
-
                         hintText: '1',
                         clearButton: true,
                         validator: (value) =>
@@ -542,7 +538,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                           'Price List Exchange Rate'.tr(),
                           initialValue: '${data['plc_conversion_rate'] ?? ''}',
                           disableValidation: true,
-
                           hintText: '1',
                           clearButton: true,
                           validator: (value) =>
@@ -554,7 +549,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                       CustomTextField('set_warehouse', 'Source Warehouse'.tr(),
                           initialValue: data['set_warehouse'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -562,7 +556,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                       CustomTextField('tc_name', 'Terms & Conditions'.tr(),
                           initialValue: data['tc_name'],
                           disableValidation: true,
-
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -590,7 +583,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                         'sales_partner',
                         'Sales Partner'.tr(),
                         initialValue: data['sales_partner'],
-
                         disableValidation: true,
                         onSave: (key, value) => data[key] = value,
                         onPressed: () => Navigator.of(context).push(
