@@ -263,8 +263,6 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                               : null,
                         ),
 
-
-
                         Row(children: [
                           Flexible(
                               child: DatePicker(

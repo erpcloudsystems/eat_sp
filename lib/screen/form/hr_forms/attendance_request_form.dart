@@ -1,23 +1,17 @@
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/constants.dart';
-
-
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../service/gps_services.dart';
+import '../../../service/service.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 
 class AttendanceRequestForm extends StatefulWidget {
@@ -32,6 +26,12 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
     "doctype": "Attendance Request",
     "reason": "Work From Home",
     'half_day': 0,
+    "from_date": DateTime.now().toIso8601String().split("T")[0],
+    "to_date": DateTime.now().toIso8601String().split("T")[0],
+    "to_time": DateTime.now().toString(),
+    "from_time": DateTime.now().toString(),
+    "latitude": 0.0,
+    "longitude": 0.0,
   };
 
   Map<String, dynamic> selectedEmployeeData = {
@@ -39,12 +39,26 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
   };
   final _formKey = GlobalKey<FormState>();
 
+  LatLng location = LatLng(0.0, 0.0);
+  GPSService gpsService = GPSService();
+
   Future<void> submit() async {
     final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
+
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar(KEnableGpsSnackBar, context);
+      Future.delayed(Duration(seconds: 1), () async {
+        location = await gpsService.getCurrentLocation(context);
+      });
+      return;
+    }
+
+    data['latitude'] = location.latitude;
+    data['longitude'] = location.longitude;
 
     _formKey.currentState!.save();
 
@@ -88,8 +102,13 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(seconds: 1),
+        () async => location = await gpsService.getCurrentLocation(context));
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
+        data['latitude'] = location.latitude;
+        data['longitude'] = location.longitude;
+        data['location'] = gpsService.placemarks[0].subAdministrativeArea;
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
@@ -132,8 +151,6 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
         ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          
-          
           child: Form(
             key: _formKey,
             child: Column(
@@ -187,22 +204,19 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                           initialValue: data['company'],
                           clearButton: true,
                           onSave: (key, value) => data[key] = value,
-                          onPressed: () async{
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => companyListScreen()));
-                        return res['name'];
-                          }
-
-                      ),
-
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => companyListScreen()));
+                            return res['name'];
+                          }),
                       Row(children: [
                         Flexible(
                             child: DatePicker('from_date', 'From Date'.tr(),
                                 initialValue: data['from_date'],
-                                onChanged: (value) {
+                                enable: false, onChanged: (value) {
                           setState(() => data['from_date'] = value);
-                          if (data['half_day_date'] != null){
+                          if (data['half_day_date'] != null) {
                             data.remove('half_day_date');
                           }
                           if (data['from_date'] == data['to_date']) {
@@ -215,9 +229,10 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                           'to_date',
                           'To Date'.tr(),
                           initialValue: data['to_date'],
+                          enable: false,
                           onChanged: (value) {
                             setState(() => data['to_date'] = value);
-                            if (data['half_day_date'] != null){
+                            if (data['half_day_date'] != null) {
                               data.remove('half_day_date');
                             }
                             if (data['from_date'] == data['to_date']) {
@@ -236,7 +251,27 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                         SizedBox(width: 10),
                       ]),
                       SizedBox(height: 8),
-
+                      Row(children: [
+                        Flexible(
+                          child: TimePicker(
+                            'from_time',
+                            'From Time',
+                            initialValue: data['from_time'],
+                            enable: false,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: TimePicker(
+                            'to_time',
+                            'To Time',
+                            initialValue: data['to_time'],
+                            enable: false,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                      ]),
+                      SizedBox(height: 8),
                       CheckBoxWidget('half_day', 'Half Day',
                           initialValue: data['half_day'] == 1 ? true : false,
                           onChanged: (id, value) => setState(() {
@@ -244,6 +279,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                               })),
                       if (data['half_day'] == 1)
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Flexible(
                                 child: DatePicker(
@@ -263,17 +299,13 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                             )),
                           ],
                         ),
-
-
-
                       CustomDropDown('reason', 'Reason'.tr(),
                           items: attendanceRequestReason,
                           defaultValue:
-                          data['reason'] ?? attendanceRequestReason[0],
+                              data['reason'] ?? attendanceRequestReason[0],
                           onChanged: (value) => setState(() {
-                            data['reason'] = value;
-                          })),
-
+                                data['reason'] = value;
+                              })),
                       CustomTextField(
                         'explanation',
                         'Explanation',
@@ -281,8 +313,23 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                         disableValidation: true,
                         onSave: (key, value) => data[key] = value,
                       ),
-
                       SizedBox(height: 8),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 6),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.amber, size: 22),
+                          ),
+                          Flexible(
+                              child: Text(
+                            KLocationNotifySnackBar,
+                            textAlign: TextAlign.start,
+                          )),
+                        ],
+                      ),
                     ],
                   ),
                 ),

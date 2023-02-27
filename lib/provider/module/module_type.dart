@@ -1133,7 +1133,6 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
 
-      // return InheritedForm(child: QuotationForm(), items: items);
     },
     filter: AttendanceRequestFilter(),
   );

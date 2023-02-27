@@ -193,5 +193,6 @@
   "Requested Qty": "الكمية التي تم طلبها",
   "Mobile": "الهاتف",
   "Supplier": "المورد",
-  "Vehicle": "السيارة"
+  "From Date": "من تاريخ",
+  "To Date": "الى تاريخ"
   }

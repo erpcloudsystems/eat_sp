@@ -16,7 +16,7 @@ const List<String> requestTypeList = [
   'Suggestions',
   'Other'
 ];
-const List<String>  addressTypeList = [
+const List<String> addressTypeList = [
   'Billing',
   'Shipping',
   'Office',
@@ -30,7 +30,7 @@ const List<String>  addressTypeList = [
   'Permanent',
   'Other',
 ];
-const List<String>  linkDocumentTypeList = ['Customer', 'Supplier'];
+const List<String> linkDocumentTypeList = ['Customer', 'Supplier'];
 
 const List<String> LeadStatusList = [
   'Lead',
@@ -57,7 +57,7 @@ const List<String> leaveApplicationStatus = [
 ];
 const List<String> attendanceRequestReason = [
   'Work From Home',
- ' On Duty',
+  ' On Duty',
 ];
 const List<String> employeeStatus = [
   'Active',
@@ -65,11 +65,7 @@ const List<String> employeeStatus = [
   'Suspended',
   'Left',
 ];
-const List<String> loanApplicationStatus = [
-  'Open',
-  'Approved',
-  'Rejected'
-];
+const List<String> loanApplicationStatus = ['Open', 'Approved', 'Rejected'];
 
 const List<String> journalEntryTypeStatus = [
   'Journal Entry',
@@ -90,7 +86,7 @@ const List<String> journalEntryTypeStatus = [
 ];
 
 const List<String> journalEntryTypePartyType1 = ['Customer'];
-const List<String> journalEntryTypePartyType2 = ['Supplier','Employee'];
+const List<String> journalEntryTypePartyType2 = ['Supplier', 'Employee'];
 
 bool isEmail(String em) {
   String p =
@@ -133,7 +129,6 @@ String? validateMobile(String? value) {
   }
   return null;
 }
-
 
 String? numberValidationToast(String? value, String field,
     {bool isInt = false}) {
@@ -222,19 +217,23 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-        Expanded(child: Text(widget.title,style: TextStyle(fontSize: widget.fontSize),)),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Expanded(
+            child: Text(
+          widget.title,
+          style: TextStyle(fontSize: widget.fontSize),
+        )),
         Checkbox(
             value: _value,
-            onChanged: widget.enable ? (value) {
-              if (value != null) {
-                setState(() => _value = value);
-                if (widget.onChanged != null)
-                  widget.onChanged!(widget.id, value);
-              }
-            }:null),
+            onChanged: widget.enable
+                ? (value) {
+                    if (value != null) {
+                      setState(() => _value = value);
+                      if (widget.onChanged != null)
+                        widget.onChanged!(widget.id, value);
+                    }
+                  }
+                : null),
         if (widget.clear)
           Material(
             color: Colors.transparent,
@@ -392,9 +391,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
             border: widget.removeUnderLine ? InputBorder.none : null,
             disabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-            enabledBorder: widget.removeUnderLine ? null: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusedBorder:  UnderlineInputBorder(
+            enabledBorder: widget.removeUnderLine
+                ? null
+                : UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
+            focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             focusColor: widget.onPressed != null ? Colors.grey : null,   
             errorStyle: widget.disableError ? TextStyle(height: 0) : null,
@@ -498,7 +499,7 @@ class NumberTextField extends StatefulWidget {
       this.initialValue,
       this.onEditingComplete,
       required this.disableError,
-        this.removeUnderLine = false,
+      this.removeUnderLine = false,
       this.clearValue,
       this.onChanged})
       : super(key: key);
@@ -590,12 +591,14 @@ class _NumberTextFieldState extends State<NumberTextField> {
           border: widget.removeUnderLine ? InputBorder.none : null,
           disabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey.shade300)),
-          enabledBorder: widget.removeUnderLine ? null: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300)),
-
+          enabledBorder: widget.removeUnderLine
+              ? null
+              : UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade300)),
           focusColor: widget.onPressed != null ? Colors.grey : null,
           focusedBorder: widget.onPressed != null
-              ? UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade300))
+              ? UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade300))
               : null,
           errorStyle: widget.disableError ? TextStyle(height: 0) : null,
         ),
@@ -631,7 +634,7 @@ class DatePicker extends StatefulWidget {
       this.clear = false,
       this.enable = true,
       required this.disableValidation,
-        this.removeUnderLine = false,
+      this.removeUnderLine = false,
       this.onClear})
       : super(key: key);
 
@@ -676,12 +679,12 @@ class _DatePickerState extends State<DatePicker> {
     if (widget.initialValue != null) {
       if (widget.initialValue.toString().contains("T")) {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
-      } else if(widget.initialValue.toString().contains(" ")){
+      } else if (widget.initialValue.toString().contains(" ")) {
         var date = widget.initialValue.toString().split(" ")[0] +
             "T" +
             widget.initialValue.toString().split(" ")[1];
         controller.text = formatDate(DateTime.parse(date));
-      }else{
+      } else {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
       }
     }
@@ -701,12 +704,12 @@ class _DatePickerState extends State<DatePicker> {
             controller.text = widget.initialValue!.isEmpty
                 ? ''
                 : formatDate(DateTime.parse(widget.initialValue!));
-          } else if(widget.initialValue.toString().contains(" ")){
+          } else if (widget.initialValue.toString().contains(" ")) {
             var date = widget.initialValue.toString().split(" ")[0] +
                 "T" +
                 widget.initialValue.toString().split(" ")[1];
             controller.text = formatDate(DateTime.parse(date));
-          }else{
+          } else {
             controller.text = formatDate(DateTime.parse(widget.initialValue!));
           }
         });
@@ -729,9 +732,8 @@ class _DatePickerState extends State<DatePicker> {
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusedBorder:  UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-
             suffixIcon: widget.clear && controller.text.isNotEmpty
                 ? Material(
                     color: Colors.transparent,
@@ -747,26 +749,30 @@ class _DatePickerState extends State<DatePicker> {
                   )
                 : Icon(Icons.date_range),
             labelText: widget.title),
-        onTap: !widget.enable ? null : () async {
-          FocusScope.of(context).requestFocus(FocusNode());
-          final selectedDate = await showDatePicker(
-            context: context,
-            initialDate: controller.text.isNotEmpty
-                ? DateTime(
-                    int.parse(controller.text.split('/')[2]),
-                    int.parse(controller.text.split('/')[1]),
-                    int.parse(controller.text.split('/')[0]))
-                : widget.firstDate ?? DateTime.now(),
-            firstDate: widget.firstDate ?? DateTime(DateTime.now().year - 1),
-            lastDate: widget.lastDate ?? DateTime(DateTime.now().year + 5),
-          );
+        onTap: !widget.enable
+            ? null
+            : () async {
+                FocusScope.of(context).requestFocus(FocusNode());
+                final selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: controller.text.isNotEmpty
+                      ? DateTime(
+                          int.parse(controller.text.split('/')[2]),
+                          int.parse(controller.text.split('/')[1]),
+                          int.parse(controller.text.split('/')[0]))
+                      : widget.firstDate ?? DateTime.now(),
+                  firstDate:
+                      widget.firstDate ?? DateTime(DateTime.now().year - 1),
+                  lastDate:
+                      widget.lastDate ?? DateTime(DateTime.now().year + 5),
+                );
 
-          if (selectedDate != null) {
-            setState(() => controller.text = formatDate(selectedDate));
-            if (widget.onChanged != null)
-              widget.onChanged!(selectedDate.toIso8601String());
-          }
-        },
+                if (selectedDate != null) {
+                  setState(() => controller.text = formatDate(selectedDate));
+                  if (widget.onChanged != null)
+                    widget.onChanged!(selectedDate.toIso8601String());
+                }
+              },
         validator: widget.disableValidation
             ? null
             : (value) {
@@ -850,7 +856,6 @@ class _TimePickerState extends State<TimePicker> {
             widget.initialValue!.split(" ")[1].split(":")[1] +
             ":" +
             "00";
-        //widget.initialValue!.split(" ")[1].split(":")[2];
       }
     }
     super.initState();
@@ -866,24 +871,20 @@ class _TimePickerState extends State<TimePicker> {
           } else if (widget.initialValue != null &&
               widget.initialValue.toString().contains("T")) {
             controller.text = widget.initialValue!.isEmpty
-                    ? ''
-                    : widget.initialValue!.split("T")[1].split(":")[0] +
-                        ":" +
-                        widget.initialValue!.split("T")[1].split(":")[1] +
-                        ":" +
-                        "00"
-                //widget.initialValue!.split(" ")[1].split(":")[2]
-                ;
+                ? ''
+                : widget.initialValue!.split("T")[1].split(":")[0] +
+                    ":" +
+                    widget.initialValue!.split("T")[1].split(":")[1] +
+                    ":" +
+                    "00";
           } else {
             controller.text = widget.initialValue!.isEmpty
-                    ? ''
-                    : widget.initialValue!.split(" ")[1].split(":")[0] +
-                        ":" +
-                        widget.initialValue!.split(" ")[1].split(":")[1] +
-                        ":" +
-                        "00"
-                //widget.initialValue!.split(" ")[1].split(":")[2]
-                ;
+                ? ''
+                : widget.initialValue!.split(" ")[1].split(":")[0] +
+                    ":" +
+                    widget.initialValue!.split(" ")[1].split(":")[1] +
+                    ":" +
+                    "00";
           }
         });
       });
@@ -905,7 +906,7 @@ class _TimePickerState extends State<TimePicker> {
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusedBorder:  UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             suffixIcon: widget.clear && controller.text.isNotEmpty
                 ? Material(
@@ -922,23 +923,25 @@ class _TimePickerState extends State<TimePicker> {
                   )
                 : Icon(Icons.schedule),
             labelText: widget.title),
-        onTap: !widget.enable ? null:() async {
-          FocusScope.of(context).requestFocus(FocusNode());
+        onTap: !widget.enable
+            ? null
+            : () async {
+                FocusScope.of(context).requestFocus(FocusNode());
 
-          final selectedTime = await showTimePicker(
-            context: context,
-            initialTime: controller.text.isNotEmpty
-                ? TimeOfDay(
-                    hour: int.parse(controller.text.split(':')[0]),
-                    minute: int.parse(controller.text.split(':')[1]))
-                : TimeOfDay.now(),
-          );
-          if (selectedTime != null) {
-            setState(() => controller.text = formatTime(selectedTime));
-            if (widget.onChanged != null)
-              widget.onChanged!(formatTime(selectedTime));
-          }
-        },
+                final selectedTime = await showTimePicker(
+                  context: context,
+                  initialTime: controller.text.isNotEmpty
+                      ? TimeOfDay(
+                          hour: int.parse(controller.text.split(':')[0]),
+                          minute: int.parse(controller.text.split(':')[1]))
+                      : TimeOfDay.now(),
+                );
+                if (selectedTime != null) {
+                  setState(() => controller.text = formatTime(selectedTime));
+                  if (widget.onChanged != null)
+                    widget.onChanged!(formatTime(selectedTime));
+                }
+              },
         validator: widget.disableValidation
             ? null
             : (value) {
@@ -965,7 +968,6 @@ class CustomDropDown extends StatefulWidget {
   final DropdownMenuItem<String> Function(String)? itemBuilder;
   final void Function(String value)? onChanged;
   final void Function()? onTap;
-
 
   const CustomDropDown(this.id, this.title,
       {required this.items,
@@ -997,37 +999,42 @@ class _CustomDropDownState extends State<CustomDropDown> {
   void didUpdateWidget(covariant CustomDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     _value = widget.defaultValue;
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-      child: Row(
-          children: [
-            Text(
-              tr(widget.title),
-              style: TextStyle(fontSize: widget.fontSize,),
-            ),
+      child: Row(children: [
+        Text(
+          tr(widget.title),
+          style: TextStyle(
+            fontSize: widget.fontSize,
+          ),
+        ),
         Spacer(),
         DropdownButton<String>(
             value: _value, //?? widget.defaultValue,
             borderRadius: BorderRadius.circular(5),
             isExpanded: false,
-            onTap:widget.onTap,
+            onTap: widget.onTap,
             underline: null,
             menuMaxHeight: 300,
             hint: Text('none'.tr()),
-            onChanged: (widget.enable)?(value) {
-              if (value == null) return;
-              setState(() => _value = value);
-              if (widget.onChanged != null) widget.onChanged!(value);
-            }:null,
+            onChanged: (widget.enable)
+                ? (value) {
+                    if (value == null) return;
+                    setState(() => _value = value);
+                    if (widget.onChanged != null) widget.onChanged!(value);
+                  }
+                : null,
             items: widget.items
                 .map((e) => widget.itemBuilder != null
                     ? widget.itemBuilder!(e)
-                    : DropdownMenuItem(value: e, child: FittedBox(child: Text(e,overflow: TextOverflow.ellipsis))))
+                    : DropdownMenuItem(
+                        value: e,
+                        child: FittedBox(
+                            child: Text(e, overflow: TextOverflow.ellipsis))))
                 .toList()),
         if (widget.clear && _value != null)
           Material(
@@ -1135,13 +1142,13 @@ class Group extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8,vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color ?? Colors.transparent),
-        boxShadow:[
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color ?? Colors.transparent),
+        boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 4,

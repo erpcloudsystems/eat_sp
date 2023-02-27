@@ -1,26 +1,18 @@
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
-import '../../../core/constants.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
+import '../../../core/constants.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../service/gps_services.dart';
+import '../../../service/service.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 
 const List<String> logType = [
@@ -50,7 +42,6 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
   LatLng location = LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
-
   Map<String, dynamic> selectedEmployeeData = {
     'name': 'noName',
   };
@@ -63,17 +54,10 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
       return;
     }
 
-
-    if(location == LatLng(0.0, 0.0)
-
-    ) {
-      showSnackBar(
-          KEnableGpsSnackBar,
-          context)  ;
-      Future.delayed(Duration(seconds: 1), () async{
-
+    if (location == LatLng(0.0, 0.0)) {
+      showSnackBar(KEnableGpsSnackBar, context);
+      Future.delayed(Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
-
       });
       return;
     }
@@ -88,7 +72,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
 
     final server = APIService();
 
-    if (!context.read<ModuleProvider>().isEditing){
+    if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
       data['location'] = gpsService.placemarks[0].subAdministrativeArea;
@@ -145,9 +129,9 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
   }
 
   @override
-  void didChangeDependencies()  {
+  void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.delayed(Duration.zero, () async{
+    Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
   }
@@ -188,8 +172,6 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            
-            
             child: Form(
               key: _formKey,
               child: Column(
@@ -226,8 +208,8 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                               child: DatePicker(
                             'date_only',
                             'Date',
+                            enable: false,
                             onChanged: (value) {
-                              //value shap: (2022-09-25T00:00:00.000)
                               setState(() {
                                 data['date_only'] = value.split("T")[0];
                               });
@@ -239,23 +221,15 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                               child: TimePicker(
                             'time',
                             'Time'.tr(),
+                            enable: false,
                             initialValue: data['time'],
                             onChanged: (value) {
-                              //value on that shap: (10:01:00)
                               setState(() {
                                 data['time_only'] = value;
                               });
                             },
                           )),
                         ]),
-                        // if (data['employee_name'] != null)
-                        //   CustomTextField(
-                        //     'employee_name',
-                        //     'Employee Name',
-                        //     initialValue: data['employee_name'],
-                        //     enabled: false,
-                        //   ),
-                        //
                         CustomDropDown('log_type', 'Log Type'.tr(),
                             items: logType,
                             defaultValue: data['status'] ?? logType[0],
@@ -271,14 +245,13 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                             disableValidation: true,
                             onSave: (key, value) => data[key] = value,
                           ),
-
                         CheckBoxWidget(
                             'skip_auto_attendance', 'Skip Auto Attendance',
-                            initialValue:
-                                data['skip_auto_attendance'] == 1 ? true : false,
+                            initialValue: data['skip_auto_attendance'] == 1
+                                ? true
+                                : false,
                             onChanged: (id, value) =>
                                 setState(() => data[id] = value ? 1 : 0)),
-
                         SizedBox(height: 8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -286,13 +259,16 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,color: Colors.amber,size: 22),
+                              child: Icon(Icons.warning_amber,
+                                  color: Colors.amber, size: 22),
                             ),
                             Flexible(
-                                child: Text(KLocationNotifySnackBar,textAlign: TextAlign.start,)),
+                                child: Text(
+                              KLocationNotifySnackBar,
+                              textAlign: TextAlign.start,
+                            )),
                           ],
                         ),
-
                         SizedBox(height: 8),
                       ],
                     ),
