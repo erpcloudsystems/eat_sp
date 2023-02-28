@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import '../../provider/module/module_provider.dart';
 import 'page_screen.dart';
 import '../../widgets/nothing_here.dart';
@@ -66,7 +66,7 @@ class GenericPage extends StatelessWidget {
             child: IconButton(
                 onPressed: () => showAttachments(context),
                 splashRadius: 20,
-                icon: Badge(
+                icon: badge.Badge(
                     badgeContent: Text(
                       '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
                       style: TextStyle(
