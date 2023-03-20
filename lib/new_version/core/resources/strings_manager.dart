@@ -22,4 +22,7 @@ class AppStrings {
   static const String stock = 'Stock';
   static const String okay = 'Okay';
   static const String hr = 'Hr';
+  static const String wareHouseReport = 'Warehouse Balance';
+  static const String stockLedger = 'Stock Ledger';
+  static const String priceList = 'Item Price';
 }

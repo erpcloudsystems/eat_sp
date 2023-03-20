@@ -3,7 +3,6 @@ import '../bloc/generalreports_bloc.dart';
 import '../../../../../../../screen/list/otherLists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../../../widgets/custom_loading.dart';
 import '../../../../../../core/resources/app_values.dart';
 import '../../../../../../core/resources/routes.dart';
@@ -22,7 +21,9 @@ class ReportsPage extends StatelessWidget {
         .add(GetAllReportsEvent(moduleName: moduleName));
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.selectReport),
+        title: Text(
+          AppStrings.selectReport,
+        ),
       ),
       body: BlocConsumer<GeneralReportsBloc, GeneralReportsState>(
         listenWhen: (previous, current) =>
@@ -43,25 +44,34 @@ class ReportsPage extends StatelessWidget {
           }
           if (state.getReportsState == RequestState.success) {
             return ListView.builder(
-                itemCount: state.getReportData.length,
-                itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(DoublesManager.d_8),
-                      child: SingleValueTile(
-                        state.getReportData[index].reportName,
-                        onTap: (context) async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => warehouseScreen()));
-                          if (res != null) {
-                            Navigator.of(context).pushNamed(
-                                Routes.warehouseReportsScreen,
-                                arguments: res);
-                          }
-                        },
-                      ),
-                    ));
+              itemCount: state.getReportData.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(DoublesManager.d_8),
+                child: SingleValueTile(
+                  state.getReportData[index].reportName,
+                  onTap: (context) {
+                    if(state.getReportData[index].reportName == 'General Ledger')
+                     {
+                       Navigator.of(context).pushNamed(
+                         Routes.accountReportFilterScreen,
+                         arguments: state.getReportData[index].reportName,
+                       );
+                     }else{
+                      Navigator.of(context).pushNamed(
+                        Routes.reportFilterScreen,
+                        arguments: state.getReportData[index].reportName,
+                      );
+                    }
+                  },
+                ),
+              ),
+            );
           }
-          return Center(child: Text('No Data'));
+          return Center(
+            child: Text(
+              'No Data',
+            ),
+          );
         },
       ),
     );

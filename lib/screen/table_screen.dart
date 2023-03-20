@@ -127,9 +127,13 @@ class _TableScreenState extends State<TableScreen> {
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
       child: RichText(
-          text: TextSpan(
-              text: table[index].values.first.toString(),
-              style: GoogleFonts.cairo(color: Colors.black))),
+        text: TextSpan(
+          text: table[index].values.first.toString(),
+          style: GoogleFonts.cairo(
+            color: Colors.black,
+          ),
+        ),
+      ),
       width: KLeftColumnWidth,
       constraints: BoxConstraints(
           minHeight: KRowHeight,
@@ -165,8 +169,10 @@ class _TableScreenState extends State<TableScreen> {
     for (int i = 1; i < widget.columnsName.length; i++)
       children.add(
         Container(
-          child: Text(table[index].values.toList()[i].toString(),
-              textAlign: TextAlign.center),
+          child: Text(
+            table[index].values.toList()[i].toString(),
+            textAlign: TextAlign.center,
+          ),
           width: KColumnWidth,
           padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
           alignment: Alignment.center,

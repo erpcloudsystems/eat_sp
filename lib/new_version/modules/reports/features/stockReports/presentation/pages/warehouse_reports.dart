@@ -1,6 +1,7 @@
 import 'package:NextApp/new_version/core/resources/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../widgets/custom_loading.dart';
 import '../../../../../../core/utils/error_dialog.dart';
@@ -8,7 +9,8 @@ import '../../../../../../core/utils/request_state.dart';
 import '../../data/models/warehouse_filters.dart';
 import '../bloc/stockreports_bloc.dart';
 import '../widgets/item_filter_button.dart';
-import '../widgets/report_table.dart';
+import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
+import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
 
 class WarehouseReports extends StatelessWidget {
   const WarehouseReports({super.key});
@@ -18,9 +20,11 @@ class WarehouseReports extends StatelessWidget {
     final bloc = BlocProvider.of<StockReportsBloc>(context);
     bloc.add(ResetWarehouseEvent());
 
-    final warehouseName = ModalRoute.of(context)!.settings.arguments as String;
-    final warehouseFilters = WarehouseFilters(warehouseFilter: warehouseName);
-    bloc.add(GetWarehouseEvent(warehouseFilters: warehouseFilters));
+    final wareHouseFilter =
+        ModalRoute.of(context)!.settings.arguments as WarehouseFilters;
+    bloc.add(GetWarehouseEvent(
+      warehouseFilters: wareHouseFilter,
+    ));
 
     return Scaffold(
       body: BlocConsumer<StockReportsBloc, StockReportsState>(
@@ -31,9 +35,11 @@ class WarehouseReports extends StatelessWidget {
           if (state.getWarehouseReportsState == RequestState.error) {
             Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
             showDialog(
-                context: context,
-                builder: (context) =>
-                    ErrorDialog(errorMessage: state.getWarehouseReportMessage));
+              context: context,
+              builder: (context) => ErrorDialog(
+                errorMessage: state.getWarehouseReportMessage,
+              ),
+            );
           }
         },
         buildWhen: (previous, current) =>
@@ -43,19 +49,48 @@ class WarehouseReports extends StatelessWidget {
             return CustomLoadingWithImage();
           }
           if (state.getWarehouseReportsState == RequestState.success) {
+            /// Waiting..............
+            Widget _generateRightHandSideColumnRow(
+                BuildContext context, int index) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  RightHandDetailWidgets(
+                      text: state.getWarehouseReportData[index].itemName),
+                  RightHandDetailWidgets(
+                      text: state.getWarehouseReportData[index].actualQty
+                          .toString()),
+                  RightHandDetailWidgets(
+                      text: state.getWarehouseReportData[index].stockUom),
+                  RightHandDetailWidgets(
+                      text: state.getWarehouseReportData[index].itemGroup),
+                ],
+              );
+            }
+
             return Scaffold(
-                floatingActionButton: ItemFilterButton(
-                  warehouseCode: warehouseFilters.warehouseFilter,
-                ),
-                body: ReportTable(
-                  table: state.getWarehouseReportData,
-                  refreshFun: () =>
-                      BlocProvider.of<StockReportsBloc>(context).add(
-                    GetWarehouseEvent(
-                      warehouseFilters: warehouseFilters,
-                    ),
+              body: ReportTable(
+                tableWidth: 400.w,
+                appBarName: 'Warehouse Stock balance',
+                mainRowList: [
+                  'Item Code',
+                  'Item Name',
+                  'Actual Quantity',
+                  'Stock UOM',
+                  'Item Group',
+                ],
+                leftColumnData: (index) =>
+                    state.getWarehouseReportData[index].itemCode,
+                table: state.getWarehouseReportData,
+                refreshFun: () =>
+                    BlocProvider.of<StockReportsBloc>(context).add(
+                  GetWarehouseEvent(
+                    warehouseFilters: wareHouseFilter,
                   ),
-                ));
+                ),
+                tableWidget: _generateRightHandSideColumnRow,
+              ),
+            );
           }
           return SizedBox();
         },

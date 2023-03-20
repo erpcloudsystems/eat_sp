@@ -399,9 +399,12 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                                     'Please select a customer to first',
                                     context);
                               final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => customerAddressScreen(
-                                          data['customer'])));
+                                MaterialPageRoute(
+                                  builder: (_) => customerAddressScreen(
+                                    data['customer'],
+                                  ),
+                                ),
+                              );
                               setState(() {
                                 data['customer_address'] = res['name'];
                                 selectedCstData['address_line1'] =

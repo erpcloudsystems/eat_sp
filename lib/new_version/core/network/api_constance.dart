@@ -15,4 +15,10 @@ class ApiConstance {
       'method/ecs_mobile.reports.stock.warehouse_balance';
 
   static String getReports = 'method/ecs_mobile.general.get_reports';
+
+  static String getStockLedgerReport = 'method/ecs_mobile.reports.stock.stock_ledger';
+
+  static String getItemPriceReport = 'method/ecs_mobile.reports.stock.item_price';
+
+  static String getGeneralLedgerReport = 'method/ecs_mobile.reports.accounts.general_ledger';
 }

@@ -373,6 +373,7 @@ Widget customerAddressScreen(String customerId) =>
         return ListModel<Map<String, String?>>(_list);
       },
     );
+
 Widget supplierAddressScreen(String supplierId) =>
     GenericListScreen<Map<String, String?>>(
       title: 'Select Supplier Address',
@@ -763,6 +764,7 @@ Widget uomListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+
 Widget filteredUOMListScreen(String itemCode) =>
     GenericListScreen<Map<String, dynamic>>(
       title: 'Select UoM',
@@ -777,6 +779,7 @@ Widget filteredUOMListScreen(String itemCode) =>
         return ListModel<Map<String, dynamic>>(_list);
       },
     );
+
 Widget brandListScreen() => GenericListScreen<String>(
       title: 'Select Brand',
       service: 'Brand',
@@ -860,6 +863,7 @@ Widget employmentTypeListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+
 Widget genderListScreen() => GenericListScreen<String>(
       title: 'Select Gender',
       service: APIService.GENDER,
@@ -912,6 +916,7 @@ Widget holidayListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+
 Widget shiftTypeListScreen() => GenericListScreen<String>(
       title: 'Select Shift Type',
       service: APIService.DEFAULT_SHIFT,
@@ -1035,6 +1040,62 @@ Widget journalEntryPartyTypeListScreen(
         },
       );
     });
+
+///Party type list
+Widget partyTypeListScreen() => GenericListScreen<String>(
+      title: 'Select Party Type',
+      service: 'Party Type',
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
+
+/// Party List
+Widget partyListScreen(
+    { String? partyType}) =>
+    Builder(builder: (context) {
+      return GenericListScreen<Map<String, String?>>(
+        title: 'Select Party Type',
+        service: partyType!,
+        listItem: (value) => ListCard(
+            onPressed: (_) => Navigator.of(context).pop(value),
+            id: value['name'] ?? tr('none'),
+            title: value['customer_name'] ?? tr('none'),
+            names: [
+              'Customer Group'.tr(),
+              'Territory'.tr(),
+              'Customer Type'.tr(),
+            ],
+            values: [
+              value['customer_group'] ?? tr('none'),
+              value['territory'] ?? tr('none'),
+              value['customer_type'] ?? tr('none'),
+            ]),
+        serviceParser: (data) {
+          List<Map<String, String?>> _list = [];
+          List.from(data['message']).forEach(
+                  (element) => _list.add(Map<String, String?>.from(element)));
+          return ListModel<Map<String, String?>>(_list);
+        },
+      );
+    });
+// Widget partyListScreen({String? partyType}) => GenericListScreen<String>(
+//   title: 'Select Party',
+//   service: partyType!,
+//   listItem: (value) => SingleValueTile(value,
+//       onTap: (context) => Navigator.of(context).pop(value)),
+//   serviceParser: (data) {
+//     List<String> _list = [];
+//     List.from(data['message'])
+//         .forEach((element) => _list.add(element['name'] ?? tr('none')));
+//     return ListModel<String>(_list);
+//   },
+// );
 
 Widget getNotificationListScreen() => Builder(builder: (context) {
       return GenericListScreen<Map<String, dynamic>>(
