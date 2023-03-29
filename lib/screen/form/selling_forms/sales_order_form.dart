@@ -282,7 +282,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             setState(() {
                               data['customer'] = res['name'];
                               data['customer_name'] = res['customer_name'];
-                              data['driver'] = res['driver'];
                               data['territory'] = res['territory'];
                               data['customer_group'] = res['customer_group'];
                               data['customer_address'] =
@@ -488,34 +487,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               ]
                             : null,
                       ),
-                      //__________________________________________________________________________________________
-                      CustomTextField('driver', 'driver',
-                          initialValue: data['driver'],
-                          onSave: (key, value) => data[key] = value,
-                          disableValidation: false,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => driverList(),
-                              ),
-                            );
-                            data['driver'] = res;
-                            return res;
-                          }),
-                      CustomTextField('vehicle', 'vehicle',
-                          initialValue: data['vehicle'],
-                          onSave: (key, value) => data[key] = value,
-                          disableValidation: false,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => vehiclesList(),
-                              ),
-                            );
-                            data['vehicle'] = res;
-                            return res;
-                          }),
-                      //__________________________________________________________________________________________
+                    
                       SizedBox(height: 8),
                     ],
                   ),

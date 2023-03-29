@@ -34,8 +34,6 @@ class APIService {
   static const SALES_INVOICE = 'Sales Invoice';
   static const PAYMENT_ENTRY = 'Payment Entry';
   static const CUSTOMER_VISIT = 'Customer Visit';
-  static const DRIVER = 'Driver';
-  static const VEHICLE = 'Vehicle';
 
   //Stock model
   static const ITEM = 'Item';

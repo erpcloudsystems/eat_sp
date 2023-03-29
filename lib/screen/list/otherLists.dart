@@ -243,32 +243,6 @@ Widget customerGroupScreen() => GenericListScreen<String>(
       },
     );
 
-Widget driverList() => GenericListScreen<Map<String, String?>>(
-      title: 'Select driver',
-      service: APIService.DRIVER,
-      listItem: (value) => SingleValueTile(value['full_name']!,
-          onTap: (context) => Navigator.of(context).pop(value)),
-      serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
-      },
-    );
-
-Widget vehiclesList() => GenericListScreen<String>(
-      title: 'Select vehicle',
-      service: APIService.VEHICLE,
-      listItem: (value) => SingleValueTile(value,
-          onTap: (context) => Navigator.of(context).pop(value)),
-      serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
-      },
-    );
-
 Widget supplierGroupScreen() => GenericListScreen<String>(
       title: 'Select Supplier Group',
       service: APIService.SUPPLIER_GROUP,

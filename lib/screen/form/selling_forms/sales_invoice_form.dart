@@ -547,21 +547,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                 ]
                               : null,
                         ),
-                        CustomTextField('driver', 'driver',
-                            initialValue: data['driver'],
-                            onSave: (key, value) => data[key] = value,
-                            disableValidation: false,
-                            onPressed: () async {
-                              final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => driverList(),
-                                ),
-                              );
-                              data['driver'] = res['name'];
-                              log(data['driver']);
-                              return res['name'];
-                            }),
-                        SizedBox(height: 8),
+                     
                       ],
                     ),
                   ),

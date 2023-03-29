@@ -38,7 +38,7 @@ class SalesInvoicePageModel {
         tr("Country"): data['country'] ?? tr('none')
       },
       {tr("Contact"): data['contact_display'] ?? tr('none'), tr("Mobile No"): data['contact_mobile'] ?? tr('none')},
-      {tr("Contact Email"): data['contact_email'] ?? tr('none'),  'driver': data['driver_name'] ?? tr('none')}
+      {tr("Contact Email"): data['contact_email'] ?? tr('none')}
     ];
   }
 
