@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         Padding(padding: const EdgeInsets.all(8.0), child: Text("Welcome")),
-                        Text("To ClassA"),
+                        Text("To NextApp"),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: TextField(

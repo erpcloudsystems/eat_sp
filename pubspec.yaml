@@ -1,9 +1,9 @@
-name: ClassA
-description: ClassA mobile application by ERPCloud.systems.
+name: NextApp
+description: NextApp is a mobile application produced by ERPCloud.systems Egyptian company.
 
 publish_to: 'none' 
 
-version: 1.0.6+6
+version: 1.2.0+13
 
 environment:
   sdk: ">=2.15.0-110.0.dev <3.0.0"

@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ClassA',
+      title: 'NextApp',
       scaffoldMessengerKey: scaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
@@ -122,8 +122,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
         primaryColor: MAIN_COLOR,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: MAIN_COLOR)
-            .copyWith(secondary: MAIN_COLOR),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+            .copyWith(secondary: Colors.blue),
         scaffoldBackgroundColor: Colors.grey.shade200,
         appBarTheme: AppBarTheme(
             titleSpacing: 0.0,

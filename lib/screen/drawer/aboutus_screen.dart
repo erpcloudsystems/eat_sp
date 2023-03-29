@@ -43,7 +43,7 @@ class _AboutUsState extends State<AboutUs> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('ClassA app',
+                  Text('NextApp',
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.w600)),
                   Container(
@@ -62,12 +62,12 @@ class _AboutUsState extends State<AboutUs> {
                   Text('Last Update',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('February 2023',
+                  Text('March 2023',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),
                   Text(
-                      'ClassA App is cloud ERP System on mobile to make your work easier .',
+                      'NextApp App is cloud ERP System on mobile to make your work easier .',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),

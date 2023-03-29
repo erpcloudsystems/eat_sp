@@ -49,7 +49,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "mobi.nextapp.classA"
+        applicationId "mobi.nextapp.next_app"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
