@@ -1,49 +1,30 @@
-import '../../../core/constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../form/selling_forms/customer_form.dart';
+import 'package:NextApp/models/page_models/project_page_model/task_page_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../models/page_models/selling_page_model/lead_page_model.dart';
-import '../../../widgets/comments_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/create_from_page/create_from_page_button.dart';
-import '../../../widgets/create_from_page/create_from_page_consts.dart';
-import '/widgets/nothing_here.dart';
-import '/widgets/page_group.dart';
+import '../../../core/constants.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/comments_button.dart';
+import '../../../widgets/nothing_here.dart';
+import '../../../widgets/page_group.dart';
 
-class LeadPage extends StatelessWidget {
-  const LeadPage({Key? key}) : super(key: key);
+class TaskPage extends StatelessWidget {
+  const TaskPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
     final Color? color = context.read<ModuleProvider>().color;
-
-    final model = LeadPageModel(data);
-    print(context.read<ModuleProvider>().isCreateFromPage);
-    print(context.read<ModuleProvider>().isCreateFromPage);
-    print(context.read<ModuleProvider>().isCreateFromPage);
+    final model = TaskPageModel(data);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
+        /// Task details
         PageCard(
           header: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CreateFromPageButton(
-                  doctype: 'Lead',
-                  data: data,
-                  items: fromLead,
-                  disableCreate:
-                      data['status'].toString() == "Converted" ? true : false,
-                ),
-              ],
-            ),
             Text(
-              'Lead',
+              'Task',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -95,14 +76,13 @@ class LeadPage extends StatelessWidget {
           ],
         ),
 
-        ///
-        /// card 2
-        ///
+        /// Task description
         PageCard(items: model.card2Items),
 
+        /// Comment button
         CommentsButton(color: color),
 
-        //    if(data['conn'] != null || data['conn'].isNotEmpty)
+        /// Connections
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -121,7 +101,6 @@ class LeadPage extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
         ),
-
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)

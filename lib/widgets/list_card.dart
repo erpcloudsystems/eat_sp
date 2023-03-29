@@ -28,7 +28,13 @@ class ListCard extends StatelessWidget {
     for (int i = 3; i < names.length; i++) {
       secondRow.add(ListTitle(title: names[i], value: values[i]));
       if (i < names.length - 1)
-        secondRow.add(Container(width: 1, color: Colors.white, height: 42));
+        secondRow.add(
+          Container(
+            width: 1,
+            color: Colors.white,
+            height: 42,
+          ),
+        );
     }
 
     return Container(
@@ -81,12 +87,15 @@ class ListCard extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: Center(
-                                            child: Text(title,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500))),
+                                          child: Text(
+                                            title,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   Expanded(
@@ -215,6 +224,7 @@ class ListTitle extends StatelessWidget {
 
 ///simple function takes a date and returns a formatted String: day-month-year
 String formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';
+
 String formatDateAndTime(DateTime date) =>
     '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}:${date.second}';
 
@@ -233,7 +243,12 @@ class StatusWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text('Status', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            'Status',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           statusColor(status) != Colors.transparent
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

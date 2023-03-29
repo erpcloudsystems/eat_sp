@@ -100,14 +100,14 @@ class _PaginationListState<T> extends State<PaginationList> {
     super.initState();
 //__________________________________________________________________________________________________________________
     // this function starts the new version architecture.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (context.read<ModuleProvider>().currentModule.genericListService ==
-          ConstantStrings.newVersion) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: ((context) =>
-                context.read<ModuleProvider>().currentModule.pageWidget)));
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (context.read<ModuleProvider>().currentModule.genericListService ==
+    //       ConstantStrings.newVersion) {
+    //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+    //         builder: ((context) =>
+    //             context.read<ModuleProvider>().currentModule.pageWidget)));
+    //   }
+    // });
 //__________________________________________________________________________________________________________________
     widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);

@@ -35,16 +35,19 @@ class GenericPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: context.read<ModuleProvider>().pageSubmitStatus == 0 &&
-                      context.read<ModuleProvider>().currentModule.createForm !=
-                          null
-                  ? () => editPage(context)
-                  : null,
-              splashRadius: 20,
-              icon: Icon(Icons.edit,
-                  color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
-                      ? Colors.white
-                      : Colors.white54)),
+            onPressed: context.read<ModuleProvider>().pageSubmitStatus == 0 &&
+                    context.read<ModuleProvider>().currentModule.createForm !=
+                        null
+                ? () => editPage(context)
+                : null,
+            splashRadius: 20,
+            icon: Icon(
+              Icons.edit,
+              color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
+                  ? Colors.white
+                  : Colors.white54,
+            ),
+          ),
           IconButton(
             onPressed: context.select<ModuleProvider, bool>(
                     (value) => value.availablePdfFormat)
@@ -59,7 +62,10 @@ class GenericPage extends StatelessWidget {
                 ? () => context.read<ModuleProvider>().printPdf(context)
                 : null,
             splashRadius: 20,
-            icon: Icon(Icons.print_sharp, color: Colors.white),
+            icon: Icon(
+              Icons.print_sharp,
+              color: Colors.white,
+            ),
           ),
           Container(
             margin: EdgeInsets.only(right: 5),

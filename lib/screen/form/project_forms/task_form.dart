@@ -78,7 +78,6 @@ class _TaskFormState extends State<TaskForm> {
   @override
   void initState() {
     super.initState();
-
     //Editing Mode
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
@@ -249,43 +248,47 @@ class _TaskFormState extends State<TaskForm> {
                                           () => data['exp_end_date'] = value)),
                                   initialValue: data['exp_end_date'] ?? null)),
                         ]),
-                        Row(children: [
-                          //____________________________________Expected Time______________________________________________
-                          Flexible(
-                            child: CustomTextField(
-                              'expected_time',
-                              'Expected Time',
-                              initialValue: data['expected_time'],
-                              disableValidation: false,
-                              clearButton: true,
-                              validator: (value) =>
-                                  numberValidation(value, allowNull: false),
-                              keyboardType: TextInputType.number,
-                              onSave: (key, value) =>
-                                  data[key] = double.tryParse(value),
-                              onChanged: (value) => data['expected_time'] =
-                                  double.tryParse(value),
+                        Row(
+                          children: [
+                            //____________________________________Expected Time______________________________________________
+                            Flexible(
+                              child: CustomTextField(
+                                'expected_time',
+                                'Expected Time',
+                                initialValue: data['expected_time'],
+                                disableValidation: false,
+                                clearButton: true,
+                                validator: (value) =>
+                                    numberValidation(value, allowNull: false),
+                                keyboardType: TextInputType.number,
+                                onSave: (key, value) =>
+                                    data[key] = double.tryParse(value),
+                                onChanged: (value) => data['expected_time'] =
+                                    double.tryParse(value),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          //____________________________________Progress______________________________________________
-                          Flexible(
-                            child: CustomTextField(
-                              'progress',
-                              'Progress',
-                              initialValue: data['progress'],
-                              disableValidation: false,
-                              clearButton: true,
-                              validator: (value) =>
-                                  numberValidation(value, allowNull: false),
-                              keyboardType: TextInputType.number,
-                              onSave: (key, value) =>
-                                  data[key] = double.tryParse(value),
-                              onChanged: (value) =>
-                                  data['progress'] = double.tryParse(value),
+                            const SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ]),
+                            //____________________________________Progress______________________________________________
+                            Flexible(
+                              child: CustomTextField(
+                                'progress',
+                                'Progress',
+                                initialValue: data['progress'].toString(),
+                                disableValidation: false,
+                                clearButton: true,
+                                validator: (value) =>
+                                    numberValidation(value, allowNull: false),
+                                keyboardType: TextInputType.number,
+                                onSave: (key, value) =>
+                                    data[key] = double.tryParse(value),
+                                onChanged: (value) =>
+                                    data['progress'] = double.tryParse(value),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

@@ -1,8 +1,12 @@
+import '../../models/list_models/project_list_models/task_list_model.dart';
 import '../../new_version/core/resources/strings_manager.dart';
+import '../../screen/form/project_forms/task_form.dart';
 import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
+import '../../screen/page/project_pages/task_page.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
 import '../../screen/page/selling_pages/opportunity_page.dart';
+import '../../widgets/filter_widgets/project_filters/task_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/Quotation_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/address_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/cusotmer_filter.dart';
@@ -172,7 +176,8 @@ class ModuleType {
     required ListModel Function(Map<String, dynamic>) serviceParser,
     required pageService,
     required pageWidget,
-  })  : this._genericListService = genericListService,
+  })
+      : this._genericListService = genericListService,
         this._title = title,
         this._listItem = listItem,
         this._createForm = createForm,
@@ -184,7 +189,10 @@ class ModuleType {
 
   /// check if it's first time to push a page_models or not
   static bool isFirstRoute(BuildContext context) {
-    final routeName = ModalRoute.of(context)?.settings.name;
+    final routeName = ModalRoute
+        .of(context)
+        ?.settings
+        .name;
 
     return routeName == null;
   }
@@ -192,7 +200,7 @@ class ModuleType {
   /// calculate total vat on the item
   static double _calculateVat(String taxTemplate, double price) {
     final tax =
-        double.tryParse(taxTemplate.substring(0, taxTemplate.length - 1));
+    double.tryParse(taxTemplate.substring(0, taxTemplate.length - 1));
     if (tax == null) return 0;
     return price * (tax / 100 * price);
   }
@@ -207,7 +215,7 @@ class ModuleType {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => GenericPage(),
       settings:
-          isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
+      isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
     ));
   }
 
@@ -272,7 +280,8 @@ class ModuleType {
           ],
           values: [
             item.opportunityFrom,
-            '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+            '${item.transactionDate.day}/${item.transactionDate.month}/${item
+                .transactionDate.year}',
             item.opportunityType,
             item.salesStage
           ],
@@ -428,7 +437,8 @@ class ModuleType {
         ],
         values: [
           item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           currency(item.grandTotal).toString()
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -510,7 +520,8 @@ class ModuleType {
         ],
         values: [
           item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.time,
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -876,7 +887,8 @@ class ModuleType {
           'Total'.tr() + ' (${item.currency})',
         ],
         values: [
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           currency(item.grandTotal).toString()
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -891,7 +903,7 @@ class ModuleType {
       pageData["doctype"] = ["Purchase Invoice"];
       var items;
       items =
-          List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
+      List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
       //items = List<Map<String, dynamic>>.from(pageData['items']);
       items = items.map((e) {
         //TODO check Later
@@ -922,7 +934,8 @@ class ModuleType {
           'Total'.tr() + ' (${item.currency})'
         ],
         values: [
-          '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+          '${item.transactionDate.day}/${item.transactionDate.month}/${item
+              .transactionDate.year}',
           item.setWarehouse,
           currency(item.grandTotal).toString()
         ],
@@ -1122,7 +1135,6 @@ class ModuleType {
         e['tax_percent'] = _taxPercent(e['item_tax_template']);
         return ItemSelectModel.fromJson(e);
       }).toList();
-
     },
     filter: AttendanceRequestFilter(),
   );
@@ -1144,7 +1156,8 @@ class ModuleType {
         ],
         values: [
           item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.purpose,
           item.department,
         ],
@@ -1185,7 +1198,8 @@ class ModuleType {
         ],
         values: [
           item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.grandTotal.toString(),
           item.department,
         ],
@@ -1227,7 +1241,8 @@ class ModuleType {
         ],
         values: [
           item.applicantType,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.applicant,
           item.loanType,
           item.loanAmount.toString(),
@@ -1263,10 +1278,12 @@ class ModuleType {
         ],
         values: [
           item.totalDebit.toString(),
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.modeOfPayment,
           item.chequeNo,
-          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',
+          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate
+              .year}',
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
@@ -1283,16 +1300,37 @@ class ModuleType {
 
   ///__________________________________________New version modules____________________________________
 
-  //__________________________________________Project module____________________________________
+  ///__________________________________________Project module____________________________________
   static final task = ModuleType._(
-    genericListService: ConstantStrings.newVersion,
+    genericListService: 'Task',
     title: DocTypesName.task,
-    listItem: (item) => SizedBox(),
-    serviceParser: (data) => ListModel([]),
-    pageService: null,
-    pageWidget: SizedBox(),
-    editPage: (pageData) {},
+    listItem: (item) {
+      item as TaskItemModel;
+      return ListCard(
+        id: item.name!,
+        status: item.status!,
+        names: [
+          'Subject',
+          'Priority',
+          'Project',
+          'Expected End Date',
+        ],
+        values: [
+          item.subject!,
+          item.priority!,
+          item.project!,
+          item.expectedEndDate.toString(),
+        ],
+        onPressed: (context) => _onListCardPressed(context, item.name!,),
+      );
+    },
+    serviceParser: (data) => TaskListModel.fromJson(data),
+    createForm: TaskForm(),
+    pageService: TASK_PAGE,
+    pageWidget: TaskPage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Task"];
+    },
+    filter: TaskFilterScreen(),
   );
-
-  
 }

@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '../list_model.dart';
 
 class TaskListModel extends ListModel<TaskItemModel> {
@@ -22,8 +20,8 @@ class TaskListModel extends ListModel<TaskItemModel> {
   }
 }
 
-class TaskItemModel extends Equatable {
-  final String name,
+class TaskItemModel{
+  final String? name,
       subject,
       project,
       priority,
@@ -34,7 +32,7 @@ class TaskItemModel extends Equatable {
       department,
       company;
   final double progress, expectedTime;
-  final List<String> dependsOn;
+   final List<dynamic>? dependsOn;
   final DateTime expectedStartDate, expectedEndDate;
 
   TaskItemModel({
@@ -69,7 +67,7 @@ class TaskItemModel extends Equatable {
       department: json['department'] ?? 'none',
       description: json['description'] ?? 'none',
       company: json['company'] ?? 'none',
-      dependsOn: json['depends_on'] ?? 'none',
+      dependsOn: json['depends_on'] ?? [],
       project: json['project'] ?? 'none',
       progress: json['progress'] ?? 'none',
     );
@@ -94,23 +92,4 @@ class TaskItemModel extends Equatable {
     data['progress'] = this.progress;
     return data;
   }
-
-  @override
-  List<Object?> get props => [
-        name,
-        subject,
-        project,
-        priority,
-        status,
-        type,
-        color,
-        expectedStartDate,
-        expectedEndDate,
-        description,
-        department,
-        company,
-        progress,
-        expectedTime,
-        dependsOn,
-      ];
 }

@@ -153,6 +153,13 @@ Color statusColor(String status) {
       return Colors.grey;
     case 'Claimed':
       return Colors.blue;
+    // Project
+    case 'Working':
+      return Colors.green;
+    case 'Template':
+      return Colors.blue;
+    case 'Pending Review':
+      return Colors.orange;
 
     default:
       return Colors.transparent;

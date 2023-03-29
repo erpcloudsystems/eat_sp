@@ -48,15 +48,23 @@ class ItemPage extends StatelessWidget {
                             loadingBuilder: (context, child, progress) {
                               return progress != null
                                   ? SizedBox(
-                                      child: Icon(Icons.image,
-                                          color: Colors.grey, size: 40))
+                                      child: Icon(
+                                        Icons.image,
+                                        color: Colors.grey,
+                                        size: 40,
+                                      ),
+                                    )
                                   : child;
                             },
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace? stackTrace) {
                               return SizedBox(
-                                  child: Icon(Icons.image,
-                                      color: Colors.grey, size: 40));
+                                child: Icon(
+                                  Icons.image,
+                                  color: Colors.grey,
+                                  size: 40,
+                                ),
+                              );
                             },
                           ),
                         )),
@@ -70,27 +78,32 @@ class ItemPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          // mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(data['item_name'] ?? tr('none'),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center),
-                            Text(
-                                'Item Code: ' +
-                                    (data['item_code'] ?? tr('none')),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600)),
-                          ]),
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        // mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(data['item_name'] ?? tr('none'),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center),
+                          Text(
+                            'Item Code: ' + (data['item_code'] ?? tr('none')),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
             ),
             SizedBox(height: 4),
-            Divider(color: Colors.grey.shade400, thickness: 1),
+            Divider(
+              color: Colors.grey.shade400,
+              thickness: 1,
+            ),
           ],
           items: model.mainTable,
           swapWidgets: [

@@ -22,8 +22,6 @@ class CustomerPage extends StatelessWidget {
     final Color? color = context.read<ModuleProvider>().color;
 
     final model = CustomerPageModel(data);
-    print('data');
-    print(data);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -31,14 +29,21 @@ class CustomerPage extends StatelessWidget {
         PageCard(
           header: [
             Text(
-                tr('Customer Name') +
-                    ': ${data['customer_name'] ?? tr('none')}',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              tr('Customer Name') + ': ${data['customer_name'] ?? tr('none')}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
             Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(context.read<ModuleProvider>().pageId,
-                    style: const TextStyle(fontWeight: FontWeight.bold))),
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                context.read<ModuleProvider>().pageId,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],

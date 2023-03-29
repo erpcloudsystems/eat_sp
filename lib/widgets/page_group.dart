@@ -119,7 +119,12 @@ class PageCard extends StatelessWidget {
                       .key,
                   child: element.widget));
 
-    return PageGroup(color: color, child: Column(children: _columnChildren));
+    return PageGroup(
+      color: color,
+      child: Column(
+        children: _columnChildren,
+      ),
+    );
   }
 }
 
