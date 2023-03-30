@@ -1,15 +1,14 @@
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/presentation/widget/right_hand_data_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+
 import '../../../../../../../core/constants.dart';
 import '../../../../../../core/resources/app_values.dart';
 import '../../../../../../core/utils/request_state.dart';
-import '../../../../features/stockReports/presentation/bloc/stockreports_bloc.dart';
-import 'report_charts.dart';
+import '../../../../features/stockReports/presentation/bloc/stock_warehouse_report/stockreports_bloc.dart';
 
 final double mainTableBlockWidth = DoublesManager.d_100.w;
 final double mainTableBlockHeight = DoublesManager.d_52.h;

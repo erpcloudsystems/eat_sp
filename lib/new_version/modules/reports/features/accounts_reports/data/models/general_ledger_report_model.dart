@@ -41,7 +41,7 @@ class GeneralLedgerModel extends GeneralLedgerReportEntity {
         remarks: json['remarks']?? 'none',
         accountCurrency: json['account_currency']?? 'none',
         company: json['company']?? 'none',
-        balance: json['balance'].toString() ?? 'none',
+        balance: json['balance'].toString(),
       );
 
   @override

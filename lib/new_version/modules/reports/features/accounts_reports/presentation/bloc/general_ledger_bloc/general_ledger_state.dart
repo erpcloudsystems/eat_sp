@@ -36,7 +36,6 @@ class GeneralLedgerState extends Equatable {
       );
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         getGeneralLedgerReportsState,
         getGeneralLedgerReportMessage,

@@ -35,7 +35,7 @@ class StockLedgerBloc extends Bloc<StockLedgerEvent, StockLedgerState> {
           (stockLedgerReport) => emit(state.copyWith(
                 getStockLedgerReportsState: RequestState.success,
                 getStockLedgerReportData: stockLedgerReport,
-                hasReachedMax: false,
+                hasReachedMax: stockLedgerReport.length < ApiConstance.pageLength,
               )));
     } else {
       final result = await _getStockLedgerUseCase(StockLedgerFilters(

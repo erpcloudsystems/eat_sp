@@ -1,10 +1,10 @@
-import 'package:NextApp/new_version/core/network/api_constance.dart';
-import 'package:NextApp/new_version/core/network/dio_helper.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/item_price_filters.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/item_price_report_model.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_report_model.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/warehouse_report_model.dart';
+import '../../../../../../core/network/api_constance.dart';
+import '../../../../../../core/network/dio_helper.dart';
+import '../models/item_price_filters.dart';
+import '../models/item_price_report_model.dart';
+import '../models/stock_ledger_filter.dart';
+import '../models/stock_ledger_report_model.dart';
+import '../models/warehouse_report_model.dart';
 import 'package:dio/dio.dart';
 
 import '../models/warehouse_filters.dart';
@@ -30,7 +30,7 @@ class StockReportDataSourceByDio implements BaseStockReportDataSource {
       WarehouseFilters filters) async {
     final response =
         await _dio.get(endPoint: ApiConstance.getWarehouseReports, query: {
-      'page_length': 10,
+      'page_length': ApiConstance.pageLength,
       'start': filters.startKey,
       'warehouse_filter': filters.warehouseFilter,
       if (filters.itemFilter != null) 'item_filter': filters.itemFilter,
@@ -49,6 +49,8 @@ class StockReportDataSourceByDio implements BaseStockReportDataSource {
     final response = await _dio.get(
       endPoint: ApiConstance.getStockLedgerReport,
       query: {
+        'page_length': ApiConstance.pageLength,
+        'start': filters.startKey,
         'warehouse': filters.warehouseFilter,
         'from_date': filters.fromDate,
         'to_date': filters.toDate,
@@ -65,15 +67,15 @@ class StockReportDataSourceByDio implements BaseStockReportDataSource {
 
   @override
   Future<List<ItemPriceReportModel>> getItemPriceReports(
-      ItemPriceFilters filters) async{
-    final response = await _dio.get(
-      endPoint: ApiConstance.getItemPriceReport,
-      query: {
-        if(filters.itemCode != null)'item_code': filters.itemCode,
-        if(filters.itemGroup != null)'item_group': filters.itemGroup,
-        if(filters.priceList != null)'price_list': filters.priceList,
-      }
-    ) as Response;
+      ItemPriceFilters filters) async {
+    final response =
+        await _dio.get(endPoint: ApiConstance.getItemPriceReport, query: {
+      'page_length': ApiConstance.pageLength,
+      'start': filters.startKey,
+      if (filters.itemCode != null) 'item_code': filters.itemCode,
+      if (filters.itemGroup != null) 'item_group': filters.itemGroup,
+      if (filters.priceList != null) 'price_list': filters.priceList,
+    }) as Response;
 
     final _itemPriceReports = List.from(response.data['message'])
         .map((e) => ItemPriceReportModel.fromJson(e))

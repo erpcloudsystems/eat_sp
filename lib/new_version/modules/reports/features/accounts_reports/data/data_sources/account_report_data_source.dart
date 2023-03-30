@@ -21,7 +21,7 @@ class AccountReportDataSourceByDio implements BaseAccountReportDataSource {
     final response = await _dio.get(
       endPoint: ApiConstance.getGeneralLedgerReport,
       query: {
-        'page_length': 10,
+        'page_length': ApiConstance.pageLength,
         'start': filters.startKey,
         'account': filters.account,
         if (filters.fromDate != null) 'from_date': filters.fromDate,
@@ -31,7 +31,7 @@ class AccountReportDataSourceByDio implements BaseAccountReportDataSource {
       },
     ) as Response;
 
-    final _generalLedgerReport = List.from(response.data['message'])
+    final _generalLedgerReport = List.from(response.data['message']['data'])
         .map((e) => GeneralLedgerModel.fromJson(e))
         .toList();
 

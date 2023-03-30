@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../bloc/stockreports_bloc.dart';
+import '../bloc/stock_warehouse_report/stockreports_bloc.dart';
 import '../../data/models/warehouse_filters.dart';
 import '../../../../../../../screen/list/otherLists.dart';
 import '../../../../../../../models/list_models/stock_list_model/item_table_model.dart';

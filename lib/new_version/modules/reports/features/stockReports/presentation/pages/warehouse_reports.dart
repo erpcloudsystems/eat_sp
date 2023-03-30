@@ -1,16 +1,15 @@
-import 'package:NextApp/new_version/core/resources/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../widgets/custom_loading.dart';
+import '../../../../../../core/resources/routes.dart';
 import '../../../../../../core/utils/error_dialog.dart';
 import '../../../../../../core/utils/request_state.dart';
-import '../../data/models/warehouse_filters.dart';
-import '../bloc/stockreports_bloc.dart';
-import '../widgets/item_filter_button.dart';
 import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
 import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
+import '../../data/models/warehouse_filters.dart';
+import '../bloc/stock_warehouse_report/stockreports_bloc.dart';
 
 class WarehouseReports extends StatelessWidget {
   const WarehouseReports({super.key});
@@ -31,6 +30,7 @@ class WarehouseReports extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.getWarehouseReportsState !=
             current.getWarehouseReportsState,
+
         listener: (context, state) {
           if (state.getWarehouseReportsState == RequestState.error) {
             Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
@@ -49,7 +49,6 @@ class WarehouseReports extends StatelessWidget {
             return CustomLoadingWithImage();
           }
           if (state.getWarehouseReportsState == RequestState.success) {
-            /// Waiting..............
             Widget _generateRightHandSideColumnRow(
                 BuildContext context, int index) {
               return Row(

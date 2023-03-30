@@ -25,8 +25,10 @@ class GeneralLedgerBloc extends Bloc<GeneralLedgerEvent, GeneralLedgerState> {
   FutureOr<void> _getGeneralLedgerReport(
       GetGeneralLedgerEvent event, Emitter<GeneralLedgerState> emit) async {
     if (state.hasReachedMax) return;
+
     if (state.getGeneralLedgerReportsState == RequestState.loading) {
       final result = await _getGeneralLedgerUseCase(event.generalLedgerFilters);
+
       result.fold(
         (failure) => emit(state.copyWith(
           getGeneralLedgerReportsState: RequestState.error,
@@ -36,7 +38,7 @@ class GeneralLedgerBloc extends Bloc<GeneralLedgerEvent, GeneralLedgerState> {
           state.copyWith(
             getGeneralLedgerReportsState: RequestState.success,
             getGeneralLedgerReportData: generalLedgerReport,
-            hasReachedMax: false,
+            hasReachedMax: generalLedgerReport.length < ApiConstance.pageLength,
           ),
         ),
       );

@@ -1,16 +1,16 @@
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/presentation/bloc/generalreports_bloc.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_bloc.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../../../../widgets/custom_loading.dart';
 import '../../../../../../core/resources/routes.dart';
 import '../../../../../../core/utils/error_dialog.dart';
 import '../../../../../../core/utils/request_state.dart';
 import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
 import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
+import '../../data/models/general_ledger_filter.dart';
+import '../bloc/general_ledger_bloc/general_ledger_bloc.dart';
+import '../bloc/general_ledger_bloc/general_ledger_state.dart';
 
 class GeneralLedgerReportScreen extends StatelessWidget {
   const GeneralLedgerReportScreen({Key? key}) : super(key: key);
@@ -22,6 +22,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
 
     final generalLedgerFilters =
         ModalRoute.of(context)!.settings.arguments as GeneralLedgerFilters;
+        
     bloc.add(GetGeneralLedgerEvent(
       generalLedgerFilters: generalLedgerFilters,
     ));
@@ -52,7 +53,6 @@ class GeneralLedgerReportScreen extends StatelessWidget {
             return CustomLoadingWithImage();
           }
           if (state.getGeneralLedgerReportsState == RequestState.success) {
-            /// Waiting..............
             Widget _generateRightHandSideColumnRow(
                 BuildContext context, int index) {
               return Row(

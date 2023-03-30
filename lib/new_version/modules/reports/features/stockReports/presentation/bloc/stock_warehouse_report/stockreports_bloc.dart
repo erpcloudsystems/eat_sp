@@ -4,14 +4,13 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/network/api_constance.dart';
-import '../../../../../../core/utils/request_state.dart';
-import '../../data/models/warehouse_filters.dart';
-import '../../domain/entities/warehouse_report_entity.dart';
-import '../../domain/usecases/get_warehouse_reports_use_case.dart';
+import '../../../../../../../core/network/api_constance.dart';
+import '../../../../../../../core/utils/request_state.dart';
+import '../../../data/models/warehouse_filters.dart';
+import '../../../domain/entities/warehouse_report_entity.dart';
+import '../../../domain/usecases/get_warehouse_reports_use_case.dart';
 
 part 'stockreports_event.dart';
-
 part 'stockreports_state.dart';
 
 class StockReportsBloc extends Bloc<StockReportsEvent, StockReportsState> {
@@ -37,7 +36,7 @@ class StockReportsBloc extends Bloc<StockReportsEvent, StockReportsState> {
           (warehouseReports) => emit(state.copyWith(
                 getWarehouseReportsState: RequestState.success,
                 getWarehouseReportData: warehouseReports,
-                hasReachedMax: false,
+                hasReachedMax: warehouseReports.length < ApiConstance.pageLength,
               )));
     } else {
       final result = await _warehouseReportsUseCase(WarehouseFilters(

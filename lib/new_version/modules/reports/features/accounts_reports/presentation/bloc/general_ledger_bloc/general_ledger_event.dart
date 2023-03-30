@@ -16,7 +16,7 @@ class GetGeneralLedgerEvent extends GeneralLedgerEvent {
 
   @override
   List<Object> get props => [
-    generalLedgerFilters,
+    generalLedgerFilters
   ];
 }
 

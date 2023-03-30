@@ -16,7 +16,7 @@ class ItemPriceReportModel extends ItemPriceEntity {
         currency: json['currency'] ?? 'none',
         itemName: json['item_name'] ?? 'none',
         itemGroup: json['item_group'] ?? 'none',
-        priceListRate: json['price_list_rate'].toString() ?? 'none',
+        priceListRate: json['price_list_rate'].toString(),
       );
 
   @override

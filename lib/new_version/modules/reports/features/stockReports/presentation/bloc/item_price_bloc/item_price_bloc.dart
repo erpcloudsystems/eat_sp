@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+
 import '../../../../../../../core/network/api_constance.dart';
 import '../../../../../../../core/utils/request_state.dart';
 import '../../../data/models/item_price_filters.dart';
@@ -29,10 +31,10 @@ class ItemPriceBloc extends Bloc<ItemPriceEvent, ItemPriceState> {
             getItemPriceReportsState: RequestState.error,
             getItemPriceReportMessage: failure.errorMessage,
           )),
-              (stockLedgerReport) => emit(state.copyWith(
+              (itemPriceReport) => emit(state.copyWith(
             getItemPriceReportsState: RequestState.success,
-            getItemPriceReportData: stockLedgerReport,
-            hasReachedMax: false,
+            getItemPriceReportData: itemPriceReport,
+            hasReachedMax: itemPriceReport.length < ApiConstance.pageLength,
           )));
     }else{
       final result = await _getItemPriceUseCase(ItemPriceFilters(
