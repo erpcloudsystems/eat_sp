@@ -1,15 +1,13 @@
-import 'package:upgrader/upgrader.dart';
-
-import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
-import 'Drawer/drawer_screen.dart';
-import '../service/local_notification_service.dart';
-import '../widgets/dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
+import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import '../provider/user/user_provider.dart';
+import '../service/local_notification_service.dart';
 import '../widgets/botton_navigation_bar.dart';
+import '../widgets/dialog/loading_dialog.dart';
+import 'Drawer/drawer_screen.dart';
 import 'other/notification_screen.dart';
 import 'other/user_profile.dart';
 import 'sub_category_screen.dart';
