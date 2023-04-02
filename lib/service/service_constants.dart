@@ -100,3 +100,6 @@ const PURCHASE_INVOICE_DEFAULT_TAX =
 // Project
 const TASK_POST = 'method/ecs_mobile.add.task';
 const TASK_PAGE = 'method/ecs_mobile.pages.task';
+
+const TIMESHEET_POST = 'method/ecs_mobile.add.timesheet';
+const TIMESHEET_PAGE = 'method/ecs_mobile.pages.timesheet';

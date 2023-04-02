@@ -60,6 +60,11 @@ const List<String> ProjectPriorityList = [
   'High',
   'Urgent',
 ];
+const List<String> TimeSheetList = [
+  'Draft',
+  'Cancelled',
+  'Submitted',
+];
 
 const List<String> KQuotationToList = ['Lead', 'Customer'];
 const List<String> KPaymentPartyList = ['Customer', 'Supplier'];

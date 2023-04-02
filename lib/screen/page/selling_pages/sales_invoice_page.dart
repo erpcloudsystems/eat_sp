@@ -58,9 +58,13 @@ class SalesInvoicePage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Sales Invoice',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(
+                  'Sales Invoice',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
                 // if (data['docstatus'] != null)
                 //   Align(
                 //     alignment: Alignment.centerRight,

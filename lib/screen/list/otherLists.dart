@@ -648,6 +648,27 @@ Widget projectScreen() => Builder(builder: (context) {
       );
     });
 
+Widget activityListScreen() => Builder(builder: (context) {
+      return GenericListScreen<Map<String, dynamic>>(
+        title: 'Select Activity',
+        service: APIService.ACTIVITY,
+        listItem: (value) => ListCard(
+          onPressed: (context) => Navigator.of(context).pop(
+            value['activity_type'],
+          ),
+          id: value['name'] ?? tr('none'),
+          title: value['activity_type'] ?? tr('none'),
+          names: [],
+          values: [],
+        ),
+        serviceParser: (data) {
+          List<Map<String, dynamic>> _list = [];
+          List.from(data['message']).forEach((element) => _list.add(element));
+          return ListModel<Map<String, dynamic>>(_list);
+        },
+      );
+    });
+
 Widget modeOfPaymentScreen([String? previous]) => GenericListScreen<String>(
     title: 'Select Mode of Payment',
     service: APIService.MODE_OF_PAYMENT,
@@ -1056,9 +1077,7 @@ Widget partyTypeListScreen() => GenericListScreen<String>(
     );
 
 /// Party List
-Widget partyListScreen(
-    { String? partyType}) =>
-    Builder(builder: (context) {
+Widget partyListScreen({String? partyType}) => Builder(builder: (context) {
       return GenericListScreen<Map<String, String?>>(
         title: 'Select Party Type',
         service: partyType!,
@@ -1079,7 +1098,7 @@ Widget partyListScreen(
         serviceParser: (data) {
           List<Map<String, String?>> _list = [];
           List.from(data['message']).forEach(
-                  (element) => _list.add(Map<String, String?>.from(element)));
+              (element) => _list.add(Map<String, String?>.from(element)));
           return ListModel<Map<String, String?>>(_list);
         },
       );

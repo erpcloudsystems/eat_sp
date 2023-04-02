@@ -108,6 +108,7 @@ class APIService {
   static const ISSUE = 'Issue';
   static const TASK_TYPE = 'Task Type';
   static const STATUS = 'Status';
+  static const ACTIVITY = 'Activity Type';
 
   // Reports
   static const REPORTS = 'Mobile Report';

@@ -56,6 +56,7 @@ class ModuleProvider extends ChangeNotifier {
   /// Getters ///
 
   String get totalListCount => _totalListCount;
+
   String get loadCount => _loadCount;
 
   int? get pageSubmitStatus => _pageSubmitStatus;
@@ -80,6 +81,7 @@ class ModuleProvider extends ChangeNotifier {
 
   // pass by value not by reference
   Map<String, dynamic> get pageData => {..._pageData};
+
   Map<String, dynamic> get createFromPageData => {..._createFromPageData};
 
   Map<String, dynamic> get updateData {
@@ -114,6 +116,19 @@ class ModuleProvider extends ChangeNotifier {
   set setLoadCount(String count) {
     _loadCount = count;
   }
+
+  List<Map<String, dynamic>> _timeSheetData = [];
+
+  set setTimeSheet(Map<String, dynamic> data) {
+    _timeSheetData.add(data);
+    notifyListeners();
+  }
+
+  set clearTimeSheet(List<Map<String, dynamic>> data) {
+    _timeSheetData = data ;
+    notifyListeners();
+  }
+  List<Map<String, dynamic>> get getTimeSheetData => _timeSheetData;
 
   set filter(Map<String, dynamic> value) {
     _filter = value;
@@ -223,11 +238,11 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.TASK:
         _currentModule = ModuleType.task;
         break;
+      case APIService.TIMESHEET:
+        _currentModule = ModuleType.timesheet;
+        break;
       // // case APIService.PROJECT:
       // //   _currentModule = ModuleType.project;
-      // //   break;
-      // // case APIService.TIMESHEET:
-      // //   _currentModule = ModuleType.timeSheet;
       // //   break;
     }
     _filter.clear();
