@@ -6,6 +6,9 @@ class DoublesManager {
   static const double d_52 = 52;
   static const double d_56 = 56;
   static const double d_100 = 100;
-
 }
 
+class IntManager {
+  static const int i_15 = 15;
+  static const int i_30 = 30;
+}

@@ -22,7 +22,7 @@ class ReportsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppStrings.selectReport,
+          StringsManager.selectReport,
         ),
       ),
       body: BlocConsumer<GeneralReportsBloc, GeneralReportsState>(
@@ -50,13 +50,13 @@ class ReportsPage extends StatelessWidget {
                 child: SingleValueTile(
                   state.getReportData[index].reportName,
                   onTap: (context) {
-                    if(state.getReportData[index].reportName == 'General Ledger')
-                     {
-                       Navigator.of(context).pushNamed(
-                         Routes.accountReportFilterScreen,
-                         arguments: state.getReportData[index].reportName,
-                       );
-                     }else{
+                    if (state.getReportData[index].reportName ==
+                        'General Ledger') {
+                      Navigator.of(context).pushNamed(
+                        Routes.accountReportFilterScreen,
+                        arguments: state.getReportData[index].reportName,
+                      );
+                    } else {
                       Navigator.of(context).pushNamed(
                         Routes.reportFilterScreen,
                         arguments: state.getReportData[index].reportName,

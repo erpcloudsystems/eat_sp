@@ -31,7 +31,7 @@ class AccountReportsRepo implements AccountReportBaseRepo {
     } else {
       return const Left(
         OfflineFailure(
-          errorMessage: AppStrings.offlineFailureMessage,
+          errorMessage: StringsManager.offlineFailureMessage,
         ),
       );
     }

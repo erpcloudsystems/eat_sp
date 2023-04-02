@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:NextApp/new_version/core/network/api_constance.dart';
+
 import '../models/new_version_models/check_url_validation_model.dart';
 import '../new_version/core/global/global_variables.dart';
+import '../new_version/core/resources/strings_manager.dart';
 import '../provider/module/module_type.dart';
 import 'server_exception.dart';
 import 'service_constants.dart';
@@ -110,8 +113,8 @@ class APIService {
   static const REPORTS = 'Mobile Report';
 
   final BaseOptions options = new BaseOptions(
-    connectTimeout: 15000,
-    receiveTimeout: 13000,
+    connectTimeout: ApiConstance.connectionTimeOut,
+    receiveTimeout: ApiConstance.connectionTimeOut,
     followRedirects: false,
     validateStatus: (status) => true,
   );
@@ -162,8 +165,8 @@ class APIService {
         return false;
       }
     } on DioError catch (error) {
-      log(error.message, name: 'check url error');
-      throw ServerException(error.message);
+      log(error.message ?? StringsManager.unknownError, name: 'check url error');
+      throw ServerException(error.message ?? StringsManager.unknownError);
     }
     return false;
   }
@@ -196,9 +199,9 @@ class APIService {
       throw e;
     } on DioError catch (ex) {
       print(ex.type);
-      if (ex.type == DioErrorType.connectTimeout) {
+      if (ex.type == DioErrorType.connectionTimeout) {
         throw ServerException("Connection Timeout");
-      } else if (ex.type == DioErrorType.other)
+      } else if (ex.type == DioErrorType.unknown)
         throw ServerException("Connection Timeout");
 
       print(ex.message);
@@ -566,7 +569,7 @@ class APIService {
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: 30000, // 30 seconds
+          receiveTimeout: ApiConstance.receiveTimeOut, // 30 seconds
           validateStatus: (status) {
             if (status == null) return false;
             return status < 500;
@@ -584,7 +587,7 @@ class APIService {
       print(e);
       if (e is DioError &&
           (e.type == DioErrorType.receiveTimeout ||
-              e.type == DioErrorType.connectTimeout ||
+              e.type == DioErrorType.connectionTimeout ||
               e.type == DioErrorType.sendTimeout))
         Fluttertoast.showToast(msg: 'connection time out');
       else
@@ -622,7 +625,7 @@ class APIService {
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: 30000, // 30 seconds
+          receiveTimeout: ApiConstance.receiveTimeOut, // 30 seconds
           validateStatus: (status) {
             if (status == null) return false;
             return status < 500;
@@ -639,7 +642,7 @@ class APIService {
       return file;
     } on DioError catch (e) {
       print(e);
-      if (e.type == DioErrorType.connectTimeout) {
+      if (e.type == DioErrorType.connectionTimeout) {
         throw ServerException('connection time out');
       } else
         throw ServerException('something went wrong :(');
@@ -785,7 +788,7 @@ class APIService {
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: 30000, // 30 seconds
+          receiveTimeout: ApiConstance.receiveTimeOut, // 30 seconds
           validateStatus: (status) {
             if (status == null) return false;
             return status < 500;
@@ -799,8 +802,6 @@ class APIService {
       if (response.statusCode == 200) {
         print("request" + response.realUri.path.toString());
         print("response" + response.toString());
-
-        // print(response.data);
 
         return response.data;
       } else {

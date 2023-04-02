@@ -38,7 +38,7 @@ class FilterScreen extends StatelessWidget {
           child: Column(
             children: [
               /// Warehouse list
-              if (reportType != AppStrings.priceList)
+              if (reportType != StringsManager.priceList)
                 Flexible(
                   child: CustomTextField(
                     'warehouse_name',
@@ -61,7 +61,7 @@ class FilterScreen extends StatelessWidget {
                 ),
 
               /// From date and to date in stock ledger Report
-              if (reportType == AppStrings.stockLedger)
+              if (reportType == StringsManager.stockLedger)
                 Flexible(
                   child: Row(
                     children: [
@@ -97,7 +97,7 @@ class FilterScreen extends StatelessWidget {
                 ),
 
               ///Price List
-              if (reportType == AppStrings.priceList)
+              if (reportType == StringsManager.priceList)
                 Flexible(
                   child: CustomTextField(
                     'price_list',
@@ -144,7 +144,7 @@ class FilterScreen extends StatelessWidget {
               ),
 
               /// Item group list
-              if (reportType != AppStrings.wareHouseReport)
+              if (reportType != StringsManager.wareHouseReport)
                 Flexible(
                   child: CustomTextField(
                     'item_group',
@@ -175,7 +175,7 @@ class FilterScreen extends StatelessWidget {
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
-                    if (reportType == AppStrings.wareHouseReport) {
+                    if (reportType == StringsManager.wareHouseReport) {
                       final filters = WarehouseFilters(
                         warehouseFilter: wareHouseName!,
                         itemFilter: itemCode != null ? itemCode : null,
@@ -184,7 +184,7 @@ class FilterScreen extends StatelessWidget {
                         Routes.warehouseReportsScreen,
                         arguments: filters,
                       );
-                    } else if (reportType == AppStrings.stockLedger) {
+                    } else if (reportType == StringsManager.stockLedger) {
                       final filters = StockLedgerFilters(
                         warehouseFilter: wareHouseName!,
                         itemCode: itemCode != null ? itemCode : null,
@@ -196,7 +196,7 @@ class FilterScreen extends StatelessWidget {
                         Routes.stockLedgerReportScreen,
                         arguments: filters,
                       );
-                    } else if (reportType == AppStrings.priceList) {
+                    } else if (reportType == StringsManager.priceList) {
                       final filters = ItemPriceFilters(
                         priceList: priceList!,
                         itemCode: itemCode != null ? itemCode : null,

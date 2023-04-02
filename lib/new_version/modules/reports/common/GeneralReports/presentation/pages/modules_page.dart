@@ -11,21 +11,22 @@ class ModulesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<ModuleModel> modules = [
       ModuleModel(
-          name: AppStrings.selling,
+          name: StringsManager.selling,
           image: 'https://erpcloud.systems/files/selling.png'),
       ModuleModel(
-          name: AppStrings.stock,
+          name: StringsManager.stock,
           image: 'https://erpcloud.systems/files/stock.png'),
       ModuleModel(
-          name: AppStrings.buying,
+          name: StringsManager.buying,
           image: 'https://erpcloud.systems/files/buying.png'),
       ModuleModel(
-          name: AppStrings.accounts,
+          name: StringsManager.accounts,
           image: 'https://erpcloud.systems/files/accounts.png'),
       ModuleModel(
-          name: AppStrings.hr, image: 'https://erpcloud.systems/files/hr.png'),
+          name: StringsManager.hr,
+          image: 'https://erpcloud.systems/files/hr.png'),
       ModuleModel(
-          name: AppStrings.projects,
+          name: StringsManager.projects,
           image: 'https://erpcloud.systems/files/accounts.png'),
     ];
     return Scaffold(

@@ -31,7 +31,7 @@ class StockReportsRepo implements StockReportsBaseRepo {
       }
     } else {
       return const Left(
-          OfflineFailure(errorMessage: AppStrings.offlineFailureMessage));
+          OfflineFailure(errorMessage: StringsManager.offlineFailureMessage));
     }
   }
 
@@ -48,13 +48,13 @@ class StockReportsRepo implements StockReportsBaseRepo {
       }
     } else {
       return const Left(
-          OfflineFailure(errorMessage: AppStrings.offlineFailureMessage));
+          OfflineFailure(errorMessage: StringsManager.offlineFailureMessage));
     }
   }
 
   @override
   Future<Either<Failure, List<ItemPriceEntity>>> getItemPriceReports(
-      ItemPriceFilters filters) async{
+      ItemPriceFilters filters) async {
     if (await _networkInfo.isConnected) {
       try {
         final result =
@@ -65,7 +65,7 @@ class StockReportsRepo implements StockReportsBaseRepo {
       }
     } else {
       return const Left(
-          OfflineFailure(errorMessage: AppStrings.offlineFailureMessage));
+          OfflineFailure(errorMessage: StringsManager.offlineFailureMessage));
     }
   }
 }

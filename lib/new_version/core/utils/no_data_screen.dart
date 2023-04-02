@@ -6,12 +6,14 @@ class NoDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(AppStrings.noData),
+        title: Text(StringsManager.noData),
       ),
-      body: Center(child: Text(AppStrings.noData),),
+      body: Center(
+        child: Text(StringsManager.noData),
+      ),
     );
   }
 }

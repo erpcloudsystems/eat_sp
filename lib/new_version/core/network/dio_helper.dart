@@ -16,7 +16,7 @@ abstract class BaseDioHelper {
     String? token,
     dynamic data,
     dynamic query,
-    int? timeOut,
+    Duration? timeOut,
   });
 
   Future<dynamic> get({
@@ -27,7 +27,7 @@ abstract class BaseDioHelper {
     String? token,
     dynamic data,
     dynamic query,
-    int? timeOut,
+    Duration? timeOut,
   });
 }
 
@@ -36,7 +36,7 @@ class DioHelper implements BaseDioHelper {
     BaseOptions(
       baseUrl: ApiConstance.baseUrl,
       receiveDataWhenStatusError: true,
-      connectTimeout: 13000,
+      connectTimeout: ApiConstance.connectionTimeOut,
     ),
   );
 
@@ -47,7 +47,7 @@ class DioHelper implements BaseDioHelper {
     bool isMultiPart = false,
     String? base,
     data,
-    int? timeOut,
+    Duration? timeOut,
     String? token,
     query,
   }) async {
@@ -88,7 +88,7 @@ class DioHelper implements BaseDioHelper {
     String? token,
     data,
     query,
-    int? timeOut,
+    Duration? timeOut,
   }) async {
     if (timeOut != null) {
       dio.options.connectTimeout = timeOut;
@@ -138,7 +138,7 @@ extension on BaseDioHelper {
 
       throw PrimaryServerException(
         code: e.response?.statusCode ?? 100,
-        error: e.error,
+        error: e.error.toString(),
         message: e.response!.data['exception'] ??
             e.response!.data['exc_type'] ??
             e.message, // Here we change it with different APIs
