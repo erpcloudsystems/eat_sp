@@ -53,10 +53,20 @@ Future<void> getDeviceTokenToSendNotification() async {
 
   try {
     final token = await _fcm.getToken();
-    deviceTokenToSendPushNotification = token.toString();
+
+    if (token != null) {
+      deviceTokenToSendPushNotification = token;
+      isTokenRefreshed = true;
+    } else {
+      await _fcm.requestPermission();
+      final newToken = await _fcm.getToken();
+      deviceTokenToSendPushNotification = newToken!;
+      isTokenRefreshed = false;
+    }
   } catch (e) {
     print('❌❌ Can\'t get a Notification Token ERROR IS:$e');
   }
+
   FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
     // Note: This callback is fired at each app startup and whenever a new token is generated.
     deviceTokenToSendPushNotification = fcmToken.toString();
@@ -113,8 +123,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (context, child) => 
-       MaterialApp(
+      builder: (context, child) => MaterialApp(
         title: 'NextApp',
         scaffoldMessengerKey: scaffoldMessengerKey,
         debugShowCheckedModeBanner: false,
@@ -162,9 +171,9 @@ class MyApp extends StatelessWidget {
                     child: FutureBuilder(
                         future: userProvider.getUserData(),
                         builder: (_, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting)
-                            return SplashScreen();
-    
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) return SplashScreen();
+
                           return LoginScreen();
                         }),
                   )

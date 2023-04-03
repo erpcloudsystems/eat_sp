@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../service/service.dart';
 import '../../core/shared_pref.dart';
+import '../../service/service_constants.dart';
 
 class UserProvider extends ChangeNotifier {
   final APIService service = APIService();
@@ -69,11 +70,28 @@ class UserProvider extends ChangeNotifier {
 
     if (user != null && pass != null && _url != null) {
       await login(user!, pass!, _url!, true);
-      await APIService().sendNotificationToken(
-          deviceTokenToSendPushNotification, _userId.toString(), _platform);
+
+      // flag variable to indicate whether to send the token to server
+      bool sendTokenToServer = false;
+
+      // check if the device token is stored in the database
+      final res = await APIService().genericGet(
+          PUSH_NOTIFICATION_FILTER_USER_DEVICES,
+          {'user_id': _userId.toString()});
+
+      if (res["message"] == "لا يوجد !") {
+        // set the flag to true if the device token is not stored in the database
+        sendTokenToServer = true;
+      }
+
       if (isTokenRefreshed) {
-        await APIService().updateNotificationToken(
-            deviceTokenToSendPushNotification, _userId.toString(), _platform);
+        if (sendTokenToServer) {
+          await APIService().sendNotificationToken(
+              deviceTokenToSendPushNotification, _userId.toString(), _platform);
+        } else {
+          await APIService().updateNotificationToken(
+              deviceTokenToSendPushNotification, _userId.toString(), _platform);
+        }
       }
     } else {
       _user = null;

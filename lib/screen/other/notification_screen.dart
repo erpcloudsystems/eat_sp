@@ -47,7 +47,6 @@ class NotificationCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
-        //color: Colors.white,
         borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
         border: Border.all(color: Colors.transparent),
         boxShadow: [
@@ -71,7 +70,6 @@ class NotificationCard extends StatelessWidget {
             child: Ink(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-                // border: Border.all(color: statusColor(status) == Colors.transparent ? Colors.grey.shade400 : statusColor(status), width: 1.2),
               ),
               child: IntrinsicHeight(
                 child: Column(

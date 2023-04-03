@@ -165,7 +165,8 @@ class APIService {
         return false;
       }
     } on DioError catch (error) {
-      log(error.message ?? StringsManager.unknownError, name: 'check url error');
+      log(error.message ?? StringsManager.unknownError,
+          name: 'check url error');
       throw ServerException(error.message ?? StringsManager.unknownError);
     }
     return false;

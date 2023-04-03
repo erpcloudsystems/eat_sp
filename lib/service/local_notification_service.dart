@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/module/module_provider.dart';
+import '../screen/page/generic_page.dart';
 import '../screen/sub_category_screen.dart';
 
 void notificationConfig(BuildContext context) async {
@@ -13,12 +19,10 @@ void notificationConfig(BuildContext context) async {
 // TERMINATED: When the device is locked or the application is not running
   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
-      final routeFromMessage = message.data["route"];
-
-      Navigator.of(context).push(PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) =>
-            SubCategoryScreen(routeFromMessage, 1),
-      ));
+      navigateFromNotification(
+          context: context,
+          docType: message.data['doctype'],
+          docName: message.data['document_name']);
     }
   });
 
@@ -30,7 +34,6 @@ void notificationConfig(BuildContext context) async {
       print(message.notification!.title);
       print(message.data);
     }
-
     LocalNotificationService.display(message);
   });
 
@@ -39,13 +42,12 @@ void notificationConfig(BuildContext context) async {
 // BACKGROUND: When the application is Running, but (minimized)
 // OR application open in a different tab in (web)
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    final routeFromMessage = message.data["route"];
+    final routeFromMessage = message.data["doctype"];
     print('Navigate to :$routeFromMessage');
-
-    Navigator.of(context).push(PageRouteBuilder(
-      pageBuilder: (context, animation1, animation2) =>
-          SubCategoryScreen(routeFromMessage, 1),
-    ));
+    navigateFromNotification(
+        context: context,
+        docType: message.data['doctype'],
+        docName: message.data['document_name']);
   });
 
   ///****** 3- End Push Notifications ******///
@@ -65,12 +67,15 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: (String? route) async {
-        if (route != null) {
-          Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                SubCategoryScreen(route, 1),
-          ));
+      onSelectNotification: (String? payload) async {
+        if (payload != null) {
+          final List payloadDetails = json.decode(payload);
+
+          navigateFromNotification(
+            context: context,
+            docType: payloadDetails[0],
+            docName: payloadDetails[1],
+          );
         }
       },
     );
@@ -90,16 +95,37 @@ class LocalNotificationService {
         ),
       );
 
+      // Here we convert the notification details to String as Payload doesn't accept 
+      // any other data types in this version.
+      final List<String> messagePayLoad = [
+        message.data['doctype'],
+        message.data['document_name']
+      ];
+      final String payloadToRetrieve = json.encode(messagePayLoad);
+
       /// this create the channel
       await _notificationsPlugin.show(
         id,
         message.notification!.title,
         message.notification!.body,
         notificationDetails,
-        payload: message.data["route"],
+        payload: payloadToRetrieve,
       );
     } on Exception catch (e) {
       print(e);
     }
   }
+}
+
+///****** Helping functions ******///
+void navigateFromNotification({
+  required BuildContext context,
+  required String docType,
+  required String docName,
+}) {
+  context.read<ModuleProvider>().setModule = docType;
+  context.read<ModuleProvider>().pushPage(docName);
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => GenericPage(),
+  ));
 }
