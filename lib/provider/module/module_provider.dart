@@ -241,9 +241,12 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.TIMESHEET:
         _currentModule = ModuleType.timesheet;
         break;
-      // // case APIService.PROJECT:
-      // //   _currentModule = ModuleType.project;
-      // //   break;
+      case APIService.PROJECT:
+        _currentModule = ModuleType.project;
+        break;
+      case APIService.ISSUE:
+        _currentModule = ModuleType.issue;
+        break;
     }
     _filter.clear();
     notifyListeners();

@@ -202,8 +202,8 @@ class _TaskFormState extends State<TaskForm> {
                         CustomDropDown(
                           'status',
                           'Status'.tr(),
-                          items: ProjectStatusList,
-                          defaultValue: data['status'] ?? ProjectStatusList[0],
+                          items: TaskStatusList,
+                          defaultValue: data['status'] ?? TaskStatusList[0],
                           onChanged: (value) => setState(() {
                             data['status'] = value;
                           }),

@@ -104,8 +104,10 @@ class APIService {
   // Project module
   static const TASK = 'Task';
   static const PROJECT = 'Project';
+  static const PROJECT_TYPE = 'Project Type';
   static const TIMESHEET = 'Timesheet';
   static const ISSUE = 'Issue';
+  static const ISSUE_TYPE = 'Issue Type';
   static const TASK_TYPE = 'Task Type';
   static const STATUS = 'Status';
   static const ACTIVITY = 'Activity Type';

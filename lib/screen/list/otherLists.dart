@@ -845,7 +845,18 @@ Widget departmentListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
-
+Widget projectTypeListScreen() => GenericListScreen<String>(
+  title: 'Select Project Type',
+  service: APIService.PROJECT_TYPE,
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
 Widget designationListScreen() => GenericListScreen<String>(
       title: 'Select Designation',
       service: APIService.DESIGNATION,
@@ -1166,6 +1177,20 @@ Widget issueListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+
+
+Widget issueTypeListScreen() => GenericListScreen<String>(
+  title: 'Select Issue Type',
+  service: APIService.ISSUE_TYPE,
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
 
 Widget typeListScreen() => GenericListScreen<String>(
       title: 'Select Type',

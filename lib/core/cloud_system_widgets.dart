@@ -160,6 +160,12 @@ Color statusColor(String status) {
       return Colors.blue;
     case 'Pending Review':
       return Colors.orange;
+    case 'Replied':
+      return Colors.blue;
+    case 'On Hold':
+      return Colors.red;
+    case 'Resolved':
+      return Colors.green;
 
     default:
       return Colors.transparent;

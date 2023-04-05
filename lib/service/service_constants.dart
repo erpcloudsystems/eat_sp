@@ -103,3 +103,9 @@ const TASK_PAGE = 'method/ecs_mobile.pages.task';
 
 const TIMESHEET_POST = 'method/ecs_mobile.add.timesheet';
 const TIMESHEET_PAGE = 'method/ecs_mobile.pages.timesheet';
+
+const PROJECT_POST = 'method/ecs_mobile.add.project';
+const PROJECT_PAGE = 'method/ecs_mobile.pages.project';
+
+const ISSUE_POST = 'method/ecs_mobile.add.issue';
+const ISSUE_PAGE = 'method/ecs_mobile.pages.issue';

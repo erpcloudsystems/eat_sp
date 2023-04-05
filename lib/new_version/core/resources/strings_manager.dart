@@ -4,7 +4,9 @@ class ConstantStrings {
 
 class DocTypesName {
   static const String task = 'Task';
+  static const String project = 'Project';
   static const String timesheet = 'Timesheet';
+  static const String issue = 'Issue';
   static const String reports = 'Mobile Report';
 }
 

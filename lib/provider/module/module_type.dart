@@ -1,15 +1,25 @@
+import 'package:NextApp/models/list_models/project_list_models/project_list_model.dart';
+
+import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
 import '../../models/list_models/project_list_models/timesheet_list_model.dart';
 import '../../new_version/core/resources/strings_manager.dart';
+import '../../screen/form/project_forms/issue_form.dart';
+import '../../screen/form/project_forms/project_form.dart';
 import '../../screen/form/project_forms/task_form.dart';
 import '../../screen/form/project_forms/timesheet_form.dart';
 import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
+import '../../screen/page/project_pages/issue_page.dart';
+import '../../screen/page/project_pages/project_page.dart';
 import '../../screen/page/project_pages/task_page.dart';
 import '../../screen/page/project_pages/timesheet_page.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
 import '../../screen/page/selling_pages/opportunity_page.dart';
+import '../../widgets/filter_widgets/project_filters/issue_filter.dart';
+import '../../widgets/filter_widgets/project_filters/project_filter.dart';
 import '../../widgets/filter_widgets/project_filters/task_filter.dart';
+import '../../widgets/filter_widgets/project_filters/timesheet_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/Quotation_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/address_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/cusotmer_filter.dart';
@@ -180,7 +190,8 @@ class ModuleType {
     required ListModel Function(Map<String, dynamic>) serviceParser,
     required pageService,
     required pageWidget,
-  })  : this._genericListService = genericListService,
+  })
+      : this._genericListService = genericListService,
         this._title = title,
         this._listItem = listItem,
         this._createForm = createForm,
@@ -192,7 +203,10 @@ class ModuleType {
 
   /// check if it's first time to push a page_models or not
   static bool isFirstRoute(BuildContext context) {
-    final routeName = ModalRoute.of(context)?.settings.name;
+    final routeName = ModalRoute
+        .of(context)
+        ?.settings
+        .name;
 
     return routeName == null;
   }
@@ -200,7 +214,7 @@ class ModuleType {
   /// calculate total vat on the item
   static double _calculateVat(String taxTemplate, double price) {
     final tax =
-        double.tryParse(taxTemplate.substring(0, taxTemplate.length - 1));
+    double.tryParse(taxTemplate.substring(0, taxTemplate.length - 1));
     if (tax == null) return 0;
     return price * (tax / 100 * price);
   }
@@ -215,7 +229,7 @@ class ModuleType {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => GenericPage(),
       settings:
-          isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
+      isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
     ));
   }
 
@@ -280,7 +294,8 @@ class ModuleType {
           ],
           values: [
             item.opportunityFrom,
-            '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+            '${item.transactionDate.day}/${item.transactionDate.month}/${item
+                .transactionDate.year}',
             item.opportunityType,
             item.salesStage
           ],
@@ -436,7 +451,8 @@ class ModuleType {
         ],
         values: [
           item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           currency(item.grandTotal).toString()
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -518,7 +534,8 @@ class ModuleType {
         ],
         values: [
           item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.time,
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -884,7 +901,8 @@ class ModuleType {
           'Total'.tr() + ' (${item.currency})',
         ],
         values: [
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           currency(item.grandTotal).toString()
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
@@ -899,7 +917,7 @@ class ModuleType {
       pageData["doctype"] = ["Purchase Invoice"];
       var items;
       items =
-          List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
+      List<Map<String, dynamic>>.from(pageData['purchase_invoice_item']);
       //items = List<Map<String, dynamic>>.from(pageData['items']);
       items = items.map((e) {
         //TODO check Later
@@ -930,7 +948,8 @@ class ModuleType {
           'Total'.tr() + ' (${item.currency})'
         ],
         values: [
-          '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+          '${item.transactionDate.day}/${item.transactionDate.month}/${item
+              .transactionDate.year}',
           item.setWarehouse,
           currency(item.grandTotal).toString()
         ],
@@ -1151,7 +1170,8 @@ class ModuleType {
         ],
         values: [
           item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.purpose,
           item.department,
         ],
@@ -1192,7 +1212,8 @@ class ModuleType {
         ],
         values: [
           item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.grandTotal.toString(),
           item.department,
         ],
@@ -1234,7 +1255,8 @@ class ModuleType {
         ],
         values: [
           item.applicantType,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.applicant,
           item.loanType,
           item.loanAmount.toString(),
@@ -1270,10 +1292,12 @@ class ModuleType {
         ],
         values: [
           item.totalDebit.toString(),
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate
+              .year}',
           item.modeOfPayment,
           item.chequeNo,
-          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',
+          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate
+              .year}',
         ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
@@ -1309,12 +1333,13 @@ class ModuleType {
           item.subject!,
           item.priority!,
           item.project!,
-          item.expectedEndDate.formatDate() ??'',
+          item.expectedEndDate.formatDate() ?? '',
         ],
-        onPressed: (context) => _onListCardPressed(
-          context,
-          item.name!,
-        ),
+        onPressed: (context) =>
+            _onListCardPressed(
+              context,
+              item.name!,
+            ),
       );
     },
     serviceParser: (data) => TaskListModel.fromJson(data),
@@ -1327,7 +1352,7 @@ class ModuleType {
     filter: TaskFilterScreen(),
   );
 
-  ///
+  /// Timesheet
   static final timesheet = ModuleType._(
     genericListService: 'Timesheet',
     title: DocTypesName.timesheet,
@@ -1350,10 +1375,11 @@ class ModuleType {
           item.startDate!.formatDate() ?? '',
           item.endDate!.formatDate() ?? '',
         ],
-        onPressed: (context) => _onListCardPressed(
-          context,
-          item.name!,
-        ),
+        onPressed: (context) =>
+            _onListCardPressed(
+              context,
+              item.name!,
+            ),
       );
     },
     serviceParser: (data) => TimesheetListModel.fromJson(data),
@@ -1363,6 +1389,82 @@ class ModuleType {
     editPage: (pageData) {
       pageData["doctype"] = ["Timesheet"];
     },
-    filter: null,
+    filter: TimesheetFilterScreen(),
+  );
+
+  /// Project
+  static final project = ModuleType._(
+    genericListService: 'Project',
+    title: DocTypesName.project,
+    listItem: (item) {
+      item as ProjectItemModel;
+      return ListCard(
+        id: item.name!,
+        status: item.status!,
+        names: [
+          'Project',
+          'Priority',
+          'Percent Complete',
+          'Start Date',
+          'End Date',
+        ],
+        values: [
+          item.projectName!,
+          item.priority!,
+          item.percentComplete.toString(),
+          item.expectedStartDate!.formatDate(),
+          item.expectedEndDate!.formatDate(),
+        ],
+        onPressed: (context) =>
+            _onListCardPressed(
+              context,
+              item.name!,
+            ),
+      );
+    },
+    serviceParser: (data) => ProjectListModel.fromJson(data),
+    createForm: ProjectForm(),
+    pageService: PROJECT_PAGE,
+    pageWidget: ProjectPage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Project"];
+    },
+    filter: ProjectFilterScreen(),
+  );
+
+  /// Issue
+  static final issue = ModuleType._(
+    genericListService: 'Issue',
+    title: DocTypesName.issue,
+    listItem: (item) {
+      item as IssueItemModel;
+      return ListCard(
+        id: item.name!,
+        status: item.status!,
+        names: [
+          'Subject',
+          'Priority',
+          'Opening Date',
+        ],
+        values: [
+          item.subject ?? 'none',
+          item.priority ?? 'none',
+          item.openingDate ?? 'none',
+        ],
+        onPressed: (context) =>
+            _onListCardPressed(
+              context,
+              item.name!,
+            ),
+      );
+    },
+    serviceParser: (data) => IssueListModel.fromJson(data),
+    createForm: IssueForm(),
+    pageService: ISSUE_PAGE,
+    pageWidget: IssuePage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Issue"];
+    },
+    filter: IssueFilterScreen(),
   );
 }

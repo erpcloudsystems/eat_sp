@@ -44,7 +44,7 @@ const List<String> LeadStatusList = [
   'Do Not Contact',
 ];
 
-const List<String> ProjectStatusList = [
+const List<String> TaskStatusList = [
   'Open',
   'Working',
   'Pending Review',
@@ -53,7 +53,24 @@ const List<String> ProjectStatusList = [
   'Completed',
   'Cancelled',
 ];
+const List<String> ProjectStatusList = [
+  'Open',
+  'Completed',
+  'Cancelled',
+];
 
+const List<String> IssueStatusList = [
+  'Open',
+  'Replied',
+  'On Hold',
+  'Resolved',
+  'Closed',
+];
+const List<String> IssuePriorityList = [
+  'Low',
+  'Medium',
+  'High',
+];
 const List<String> ProjectPriorityList = [
   'Low',
   'Medium',
