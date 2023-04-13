@@ -79,6 +79,9 @@ class ModuleProvider extends ChangeNotifier {
   /// used for push create from page
   bool get isSecondCreateFromPage => _createFromPageData.isNotEmpty;
 
+    set setCurrentModule(ModuleType module) => _currentModule = module;
+
+
   // pass by value not by reference
   Map<String, dynamic> get pageData => {..._pageData};
 
@@ -125,9 +128,10 @@ class ModuleProvider extends ChangeNotifier {
   }
 
   set clearTimeSheet(List<Map<String, dynamic>> data) {
-    _timeSheetData = data ;
+    _timeSheetData = data;
     notifyListeners();
   }
+
   List<Map<String, dynamic>> get getTimeSheetData => _timeSheetData;
 
   set filter(Map<String, dynamic> value) {

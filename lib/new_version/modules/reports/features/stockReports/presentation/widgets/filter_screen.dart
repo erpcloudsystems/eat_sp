@@ -1,27 +1,31 @@
-import 'package:NextApp/new_version/core/resources/routes.dart';
-import 'package:NextApp/new_version/core/resources/strings_manager.dart';
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/presentation/widget/report_charts.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/item_price_filters.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/warehouse_filters.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../../../../../screen/list/otherLists.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/models/warehouse_filters.dart';
+import '../../data/models/item_price_filters.dart';
+import '../../data/models/stock_ledger_filter.dart';
+import '../../../../../../core/resources/routes.dart';
 import '../../../../../../../widgets/form_widgets.dart';
+import '../../../../../../../screen/list/otherLists.dart';
 import '../../../../../../core/resources/app_radius.dart';
+import '../../../../../../../provider/module/module_type.dart';
+import '../../../../../../core/resources/strings_manager.dart';
+import '../../../../../../../provider/module/module_provider.dart';
+import '../../../../../../../models/list_models/stock_list_model/item_table_model.dart';
 
 class FilterScreen extends StatelessWidget {
   const FilterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ModuleProvider>(context).setCurrentModule = ModuleType.item;
+    final reportType = ModalRoute.of(context)!.settings.arguments;
     String? wareHouseName;
     String? itemCode;
     String? itemGroup;
     String? priceList;
-    final reportType = ModalRoute.of(context)!.settings.arguments;
     var formKey = GlobalKey<FormState>();
     String? fromDate;
     String? toDate;

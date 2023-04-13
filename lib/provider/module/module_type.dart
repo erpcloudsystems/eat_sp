@@ -1373,7 +1373,7 @@ class ModuleType {
           item.exchangeRate.toString(),
           item.parentProject!,
           item.startDate!.formatDate(),
-          item.endDate!.formatDate() ,
+          item.endDate!.formatDate(),
         ],
         onPressed: (context) =>
             _onListCardPressed(
