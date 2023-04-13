@@ -1,0 +1,63 @@
+{
+  "_buildCommand2" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "buildCommand" : "build",
+  "configuredTargets" : [
+    {
+      "guid" : "18c1723432283e0cc55f10a6dcfd9e0288a783a885d8b0b3beb2e9f90bde3f49"
+    }
+  ],
+  "containerPath" : "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Runner.xcworkspace",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "x86_64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator16.2",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "x86_64"
+      ],
+      "targetArchitecture" : "x86_64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/mohamedmohamedy/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/mohamedmohamedy/Library/Developer/Xcode/DerivedData/Runner-bvrejzkigatuyycutoehrfxclice/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/mohamedmohamedy/Library/Developer/Xcode/DerivedData/Runner-bvrejzkigatuyycutoehrfxclice/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone10,4",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "16.2",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone10,4",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "TARGET_DEVICE_IDENTIFIER" : "FE12F332-985F-4F18-BD8A-577817CBC6CD",
+          "TARGET_DEVICE_MODEL" : "iPhone10,4",
+          "TARGET_DEVICE_OS_VERSION" : "16.2",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "schemeCommand2" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

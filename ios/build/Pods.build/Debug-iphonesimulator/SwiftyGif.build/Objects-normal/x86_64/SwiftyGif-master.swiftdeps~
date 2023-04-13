@@ -1,0 +1,11 @@
+version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
+options: "eedfbb18529c3644fe5a1a2d2e6b757f633205750595231d35d0abcb559301ae"
+build_start_time: [1681384627, 510279178]
+build_end_time: [1681384627, 623049974]
+inputs:
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/NSImage+SwiftyGif.swift": !private [1681380062, 365753412]
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/NSImageView+SwiftyGif.swift": !private [1681380062, 394469499]
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/ObjcAssociatedWeakObject.swift": !private [1681380062, 374618768]
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/SwiftyGifManager.swift": !private [1681380062, 391767740]
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/UIImage+SwiftyGif.swift": !private [1681380062, 378225326]
+  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/SwiftyGif/SwiftyGif/UIImageView+SwiftyGif.swift": !private [1681380062, 360235214]

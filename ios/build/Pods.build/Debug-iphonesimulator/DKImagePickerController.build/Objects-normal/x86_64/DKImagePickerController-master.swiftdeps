@@ -1,0 +1,51 @@
+version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
+options: "33ca9cd5081b4cd3a3c7bb29da24f51ee4adc32adc95f1a83fb392e84d617f0f"
+build_start_time: [1681384698, 469647884]
+build_end_time: [1681384750, 835687160]
+inputs:
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageBaseManager.swift"
+  : [1681380050, 438468456]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageDataManager.swift"
+  : [1681380050, 431032657]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageGroupDataManager.swift"
+  : [1681380050, 433283805]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Export.swift"
+  : [1681380050, 441840648]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Fetch.swift"
+  : [1681380050, 445528745]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset.swift"
+  : [1681380050, 446595191]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAssetGroup.swift"
+  : [1681380050, 443189620]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImageAssetExporter.swift"
+  : [1681380050, 453446626]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImageExtensionController.swift"
+  : [1681380050, 449312448]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerController.swift"
+  : [1681380050, 462553262]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerControllerBaseUIDelegate.swift"
+  : [1681380050, 464027881]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKPopoverViewController.swift"
+  : [1681380050, 466284275]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerControllerResource.swift"
+  : [1681380050, 812632799]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupCellItemProtocol.swift"
+  : [1681380050, 475210189]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailBaseCell.swift"
+  : [1681380050, 476651906]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailCameraCell.swift"
+  : [1681380050, 472730875]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailImageCell.swift"
+  : [1681380050, 477526426]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailVideoCell.swift"
+  : [1681380050, 474053621]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKAssetGroupDetailVC.swift"
+  : [1681380050, 470537662]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKAssetGroupGridLayout.swift"
+  : [1681380050, 469312191]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKAssetGroupListVC.swift"
+  : [1681380050, 479810714]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKPermissionView.swift"
+  : [1681380050, 468216896]
+  ? "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/Extensions/DKImageExtensionGallery.swift"
+  : [1681380050, 424792766]

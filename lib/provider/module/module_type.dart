@@ -1333,7 +1333,7 @@ class ModuleType {
           item.subject!,
           item.priority!,
           item.project!,
-          item.expectedEndDate.formatDate() ?? '',
+          item.expectedEndDate.formatDate(),
         ],
         onPressed: (context) =>
             _onListCardPressed(
@@ -1372,8 +1372,8 @@ class ModuleType {
           item.customer!,
           item.exchangeRate.toString(),
           item.parentProject!,
-          item.startDate!.formatDate() ?? '',
-          item.endDate!.formatDate() ?? '',
+          item.startDate!.formatDate(),
+          item.endDate!.formatDate() ,
         ],
         onPressed: (context) =>
             _onListCardPressed(

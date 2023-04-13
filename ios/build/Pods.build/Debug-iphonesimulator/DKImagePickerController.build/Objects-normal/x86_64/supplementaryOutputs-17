@@ -1,0 +1,30 @@
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAssetGroup.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroup.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroup.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroup.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroup.swiftdeps"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset.swift":
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset.o"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset.d"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupCellItemProtocol.swift":
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupCellItemProtocol.o"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupCellItemProtocol.d"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupCellItemProtocol.swiftdeps"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupCellItemProtocol.dia"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailBaseCell.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupDetailBaseCell.d"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupDetailBaseCell.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupDetailBaseCell.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAssetGroupDetailBaseCell.o"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Export.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Export.swiftdeps"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Export.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Export.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Export.dia"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Fetch.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Fetch.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Fetch.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Fetch.dia"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/x86_64/DKAsset+Fetch.d"

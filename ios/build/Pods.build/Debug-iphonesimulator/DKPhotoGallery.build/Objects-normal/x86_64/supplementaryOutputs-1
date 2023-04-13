@@ -1,0 +1,35 @@
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PDFPreview/DKPDFView.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPDFView.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPDFView.o"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPDFView.swiftdeps"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPDFView.dia"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoBasePreviewVC.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBasePreviewVC.swiftdeps"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBasePreviewVC.dia"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBasePreviewVC.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBasePreviewVC.o"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGallery.swift":
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGallery.dia"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGallery.o"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGallery.d"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGallery.swiftdeps"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoBaseImagePreviewVC.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBaseImagePreviewVC.swiftdeps"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBaseImagePreviewVC.d"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBaseImagePreviewVC.dia"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoBaseImagePreviewVC.o"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoContentAnimationView.swift":
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoContentAnimationView.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoContentAnimationView.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoContentAnimationView.o"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoContentAnimationView.d"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/Transition/DKPhotoGalleryInteractiveTransition.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryInteractiveTransition.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryInteractiveTransition.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryInteractiveTransition.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryInteractiveTransition.swiftdeps"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGalleryContentVC.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryContentVC.d"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryContentVC.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryContentVC.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoGalleryContentVC.o"

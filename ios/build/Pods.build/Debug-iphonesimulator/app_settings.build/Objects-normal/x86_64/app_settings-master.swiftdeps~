@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
+options: "d9cf3d568cbfc2e5b12061c62988ed9d0cefb09698362a52fbf39d52a0ccb6f1"
+build_start_time: [1681384627, 333642959]
+build_end_time: [1681384627, 428302049]
+inputs:
+  "/Users/mohamedmohamedy/.pub-cache/hosted/pub.dev/app_settings-4.1.8/ios/Classes/SwiftAppSettingsPlugin.swift": !private [1681300837, 140360355]

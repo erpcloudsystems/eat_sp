@@ -1,0 +1,30 @@
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImageAssetExporter.swift":
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageAssetExporter.o"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageAssetExporter.swiftdeps"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageAssetExporter.d"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageAssetExporter.dia"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageGroupDataManager.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageGroupDataManager.swiftdeps"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageGroupDataManager.dia"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageGroupDataManager.o"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageGroupDataManager.d"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageDataManager.swift":
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageDataManager.swiftdeps"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageDataManager.d"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageDataManager.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageDataManager.dia"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImageExtensionController.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionController.d"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionController.dia"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionController.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionController.o"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/Extensions/DKImageExtensionGallery.swift":
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionGallery.dia"
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionGallery.d"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionGallery.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageExtensionGallery.o"
+"/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageBaseManager.swift":
+  dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageBaseManager.d"
+  swift-dependencies: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageBaseManager.swiftdeps"
+  object: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageBaseManager.o"
+  diagnostics: "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImageBaseManager.dia"

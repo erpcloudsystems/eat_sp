@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>554398885603-768g28pj1e9b4j24046a44jh9jal6sq9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.554398885603-768g28pj1e9b4j24046a44jh9jal6sq9</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>554398885603-daou0enrvftqb9scaplmja12eqt4ince.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCk7byA1N7UOvbf1zya4NLumsRVtKlp2qI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>554398885603</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>mobi.nextapp.nextapp</string>
+	<key>PROJECT_ID</key>
+	<string>nextapp-9fd93</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nextapp-9fd93.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:554398885603:ios:32ca50e36266ea0ccc07d6</string>
+</dict>
+</plist>

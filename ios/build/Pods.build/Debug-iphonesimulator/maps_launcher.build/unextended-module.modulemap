@@ -1,0 +1,10 @@
+framework module maps_launcher {
+  umbrella header "maps_launcher-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module maps_launcher.__Swift {
+  exclude header "maps_launcher-Swift.h"
+}

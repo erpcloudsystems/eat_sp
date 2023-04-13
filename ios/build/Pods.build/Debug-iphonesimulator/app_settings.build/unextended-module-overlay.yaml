@@ -1,0 +1,14 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Debug-iphonesimulator/app_settings/app_settings.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/build/Pods.build/Debug-iphonesimulator/app_settings.build/unextended-module.modulemap",
+    }]
+  }]
+}
