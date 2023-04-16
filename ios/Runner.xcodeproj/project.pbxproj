@@ -7,17 +7,81 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		115D906629E6E7B200ADA8A9 /* Runner in Resources */ = {isa = PBXBuildFile; fileRef = 115D906529E6E7B100ADA8A9 /* Runner */; };
-		115D906829E6E83600ADA8A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 115D906729E6E83600ADA8A9 /* GoogleService-Info.plist */; };
 		115D906B29E6EB2300ADA8A9 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 115D906A29E6EB2300ADA8A9 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		115D906D29E6EB2300ADA8A9 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 115D906C29E6EB2300ADA8A9 /* FirebaseMessaging */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		4CA6A58E31E3D311F2F8A030 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E971F26C5C9A85B68403BF5 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
-		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
-		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		11DCF52729EC00A500479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = wrapper.xcdatamodel;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# momc\n";
+		};
+		11DCF52829EC00A800479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = file.skybox;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# rctool\n";
+		};
+		11DCF52929EC00AA00479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = file.skybox;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# rctool\n";
+		};
+		11DCF52A29EC00AA00479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = file.skybox;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# rctool\n";
+		};
+		11DCF52B29EC00AA00479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = file.skybox;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# rctool\n";
+		};
+		11DCF52C29EC00AA00479144 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = file.skybox;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# rctool\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -151,6 +215,12 @@
 				40E9ADB3A1087AC27BD57D54 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
+				11DCF52C29EC00AA00479144 /* PBXBuildRule */,
+				11DCF52B29EC00AA00479144 /* PBXBuildRule */,
+				11DCF52A29EC00AA00479144 /* PBXBuildRule */,
+				11DCF52929EC00AA00479144 /* PBXBuildRule */,
+				11DCF52829EC00A800479144 /* PBXBuildRule */,
+				11DCF52729EC00A500479144 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -204,11 +274,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				115D906629E6E7B200ADA8A9 /* Runner in Resources */,
-				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
-				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
-				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				115D906829E6E83600ADA8A9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +332,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		40E9ADB3A1087AC27BD57D54 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
