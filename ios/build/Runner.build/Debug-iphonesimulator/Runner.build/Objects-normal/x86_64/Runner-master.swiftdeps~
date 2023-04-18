@@ -1,6 +1,0 @@
-version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
-options: "228e0a1dd59acd863e5a7cbca5ccea1ff22815b8f1b31c80c1113c82a72e971c"
-build_start_time: [1681384750, 787942886]
-build_end_time: [1681384751, 180520057]
-inputs:
-  "/Users/mohamedmohamedy/Development/projects/test_for_next/ios/Runner/AppDelegate.swift": !private [1681307490, 783938169]
