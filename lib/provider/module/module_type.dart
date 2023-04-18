@@ -547,7 +547,7 @@ class ModuleType {
     pageWidget: CustomerVisitPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Customer Visit"];
-    },
+          },
     filter: CustomerVisitFilter(),
   );
 

@@ -1,16 +1,17 @@
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class PaymentForm extends StatefulWidget {
   const PaymentForm({Key? key}) : super(key: key);
@@ -161,12 +162,40 @@ class _PaymentFormState extends State<PaymentForm> {
           data['payment_type'] = paymentType[1];
           data['party_type'] = KPaymentPartyList[1];
         }
-
-        //  _getCustomerData(data['customer_name']).then((value) => setState(() {
-        //   data['party'] = selectedCstData['name'];
-        //   print('sdfsdfsd2${selectedCstData}');
-        //
-        // }));
+        // from Purchase Order
+        if (data['doctype'] == 'Purchase Order') {
+          data['purchase_order'] = data['name'];
+          data['party_name'] = data['supplier_name'];
+          data['party'] = data['supplier'];
+          data['source_exchange_rate'] = data['conversion_rate'];
+          data['target_exchange_rate'] = data['conversion_rate'];
+          data['paid_amount'] = data['grand_total'];
+          data['references'] = [
+            {
+              "reference_doctype": "Purchase Order",
+              "reference_name": data["purchase_order"],
+              "total_amount": data["grand_total"],
+              "outstanding_amount": data["grand_total"],
+              "allocated_amount": data["grand_total"],
+            }
+          ];
+          data['payment_type'] = paymentType[1];
+          data['party_type'] = KPaymentPartyList[1];
+        }
+        // From Customer Visit
+        if (data['doctype'] == DocTypesName.customerVisit) {
+          data['customer_visit'] = data['name'];
+          data['party_name'] = data['customer'];
+          data['party'] = data['customer'];
+          data['source_exchange_rate'] = data['conversion_rate'];
+          data['target_exchange_rate'] = data['conversion_rate'];
+          data['references'] = [
+            {
+              "reference_doctype": DocTypesName.customerVisit,
+              "reference_name": data["customer_visit"],
+            }
+          ];
+        }
 
         data['doctype'] = "Payment Entry";
 

@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../screen/form/buying_forms/purchase_invoce_form.dart';
-import '../../screen/form/buying_forms/purchase_order_form.dart';
-import '../../screen/form/buying_forms/supplier_quotation_form.dart';
+import '../inherited_widgets/select_items_list.dart';
 import '../../screen/form/selling_forms/customer_form.dart';
-import '../../screen/form/selling_forms/opportunity_form.dart';
-import '../../screen/form/selling_forms/payment_entry_form.dart';
 import '../../screen/form/selling_forms/quotation_form.dart';
-import '../../screen/form/selling_forms/sales_invoice_form.dart';
+import '../../screen/form/selling_forms/opportunity_form.dart';
 import '../../screen/form/selling_forms/sales_order_form.dart';
 import '../../screen/form/stock_forms/delivery_note_form.dart';
-import '../../screen/form/stock_forms/material_request_form.dart';
+import '../../new_version/core/resources/strings_manager.dart';
+import '../../screen/form/selling_forms/payment_entry_form.dart';
+import '../../screen/form/buying_forms/purchase_order_form.dart';
+import '../../screen/form/selling_forms/sales_invoice_form.dart';
 import '../../screen/form/stock_forms/purchase_receipt_form.dart';
-import '../inherited_widgets/select_items_list.dart';
+import '../../screen/form/stock_forms/material_request_form.dart';
+import '../../screen/form/buying_forms/purchase_invoce_form.dart';
+import '../../screen/form/buying_forms/supplier_quotation_form.dart';
 
 //Selling
 //Lead
@@ -40,6 +41,7 @@ Map<String, Widget> fromSalesOrder = {
   'Purchase Order': InheritedForm(child: PurchaseOrderForm()),
   'Payment Entry': PaymentForm(),
 };
+
 //Quotation
 Map<String, Widget> fromQuotation = {
   'Sales Order': InheritedForm(child: SalesOrderForm()),
@@ -54,15 +56,31 @@ Map<String, Widget> fromSalesInvoice2 = {
   'Credit Note': InheritedForm(child: SalesInvoiceForm()),
 };
 
-//Purchase Invoice
-Map<String, Widget> fromPurchaseInvoice = {
-  'Purchase Receipt': InheritedForm(child: PurchaseReceiptForm()),
-  'Payment Entry': PaymentForm(),
-  'Debit Note': InheritedForm(child: PurchaseInvoiceForm()),
-};
-
 //Delivery Note
 Map<String, Widget> fromDeliveryNote = {
   'Sales Return': InheritedForm(child: DeliveryNoteForm()),
   'Sales Invoice': InheritedForm(child: SalesInvoiceForm()),
+};
+
+// Customer Visit:
+Map<String, Widget> fromCustomerVisit = {
+  DocTypesName.salesInvoice: InheritedForm(child:SalesInvoiceForm()),
+  DocTypesName.salesOrder: InheritedForm(child: SalesOrderForm()),
+  DocTypesName.paymentEntry: PaymentForm(),
+};
+
+// Buying Modules:
+
+// Purchase Order:
+Map<String, Widget> fromPurchaseOrder = {
+  DocTypesName.purchaseReceipt: InheritedForm(child: PurchaseReceiptForm()),
+  DocTypesName.purchaseInvoice: InheritedForm(child: PurchaseInvoiceForm()),
+  DocTypesName.paymentEntry: InheritedForm(child: PaymentForm()),
+};
+
+// Purchase Invoice:
+Map<String, Widget> fromPurchaseInvoice = {
+  'Purchase Receipt': InheritedForm(child: PurchaseReceiptForm()),
+  'Debit Note': InheritedForm(child: PurchaseInvoiceForm()),
+  'Payment Entry': PaymentForm(),
 };

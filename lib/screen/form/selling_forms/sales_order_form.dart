@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import '../../../models/page_models/selling_page_model/sales_order_model.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../service/service.dart';
 import '../../../service/service_constants.dart';
 import '../../../provider/module/module_provider.dart';
@@ -154,12 +155,17 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        InheritedForm.of(context).items.clear();
-        data['items'].forEach((element) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
-        });
+
+        // Because "Customer Visit" doesn't have Items.
+        if (data['doctype'] != DocTypesName.customerVisit) {
+          InheritedForm.of(context).items.clear();
+          data['items'].forEach((element) {
+            InheritedForm.of(context)
+                .items
+                .add(ItemSelectModel.fromJson(element));
+          });
+        }
+
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
 
@@ -175,6 +181,16 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
           data['prevdoc_docname'] = data['name'];
           data['customer'] = data['party_name'];
           data['customer_name'] = data['party_name'];
+        }
+
+        // From Customer Visit:
+        if (data['doctype'] == DocTypesName.customerVisit) {
+          data['prevdoc_docname'] = data['name'];
+          data['customer_name'] = data['customer'];
+          data['customer'] = data['customer'];
+          data["transaction_date"] = DateTime.now().toIso8601String();
+          data['order_type'] = orderTypeList[0];
+          data["update_stock"] = 0;
         }
 
         _getCustomerData(data['customer_name']).then((value) => setState(() {
@@ -194,10 +210,10 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
               }
               data['currency'] = selectedCstData['default_currency'];
               data['price_list_currency'] = selectedCstData['default_currency'];
-              data['customer_address'] =
-                  selectedCstData["customer_primary_address"];
               data['contact_person'] =
                   selectedCstData["customer_primary_contact"];
+              data['territory'] = selectedCstData['territory'];
+              data['customer_group'] = selectedCstData['customer_group'];
             }));
 
         data['doctype'] = "Sales Order";
@@ -486,7 +502,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                               ]
                             : null,
                       ),
-                    
                       SizedBox(height: 8),
                     ],
                   ),
@@ -551,6 +566,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       if (data['price_list_currency'] != null)
                         Align(

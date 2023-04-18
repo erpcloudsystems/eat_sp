@@ -36,27 +36,16 @@ class SelectedItemsList extends StatefulWidget {
 
 class _SelectedItemsListState extends State<SelectedItemsList> {
   @override
-  void dispose() {
-    // _items?.clear();
-    super.dispose();
-  }
-
-  @override
   void deactivate() {
     InheritedForm.of(context)
         .items
         .clear(); // this to clear items before go new form
-
     super.deactivate();
   }
-
-  // List? _items;
-
+  
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      // _items = InheritedForm.of(context).items;
-
       // Adding Mode only
       if ((!context.read<ModuleProvider>().isEditing) &&
           (!context.read<ModuleProvider>().isCreateFromPage)) {
@@ -68,10 +57,6 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    // print('123E3${InheritedForm.of(context).items}');
-    // if (InheritedForm.of(context).items.isNotEmpty)
-    //   print('123E3${InheritedForm.of(context).items[0].netRate}');
-
     return Column(
       children: [
         Card(
@@ -276,7 +261,9 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                                     .items[index]
                                                     .enableEdit
                                                 ? null
-                                                : () async {},
+                                                : () async {
+                                                    return null;
+                                                  },
                                             validator: (value) =>
                                                 numberValidationToast(
                                                     value, 'Rate'),
@@ -313,26 +300,16 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                           )),
                                           SizedBox(width: 6),
                                           Expanded(
-                                              child: Column(
-                                            children: [
-                                              Text('Total',
-                                                  style: const TextStyle(
-                                                      fontSize: 16)),
-                                              SingleChildScrollView(
-                                                  physics:
-                                                      BouncingScrollPhysics(),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Text(
-                                                      currency(InheritedForm.of(
-                                                              context)
-                                                          .items[index]
-                                                          .total),
-                                                      style: const TextStyle(
-                                                          fontSize: 16),
-                                                      maxLines: 1)),
-                                            ],
-                                          )),
+                                            child: CustomTextField(
+                                              'total',
+                                              'Total',
+                                              enabled: false,
+                                              initialValue: currency(
+                                                  InheritedForm.of(context)
+                                                      .items[index]
+                                                      .total),
+                                            ),
+                                          ),
                                           SizedBox(width: 6),
                                           Expanded(
                                               child: CustomTextField(

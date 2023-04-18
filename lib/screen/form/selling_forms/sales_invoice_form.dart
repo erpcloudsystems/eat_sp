@@ -1,26 +1,25 @@
-import 'dart:developer';
-
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../service/gps_services.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../service/gps_services.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -153,7 +152,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   formatDescription(data['address_line1']);
               selectedCstData['city'] = data['city'];
               selectedCstData['country'] = data['country'];
-
               selectedCstData['contact_display'] = data['contact_display'];
               selectedCstData['phone'] = data['phone'];
               selectedCstData['mobile_no'] = data['mobile_no'];
@@ -180,14 +178,18 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
 
-        InheritedForm.of(context).items.clear();
-        data['items'].forEach((element) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
-        });
-        InheritedForm.of(context).data['selling_price_list'] =
-            data['selling_price_list'];
+        // // Because "Customer Visit" doesn't have Items.
+        if (data['doctype'] != DocTypesName.customerVisit) {
+          InheritedForm.of(context).items.clear();
+          data['items'].forEach((element) {
+            InheritedForm.of(context)
+                .items
+                .add(ItemSelectModel.fromJson(element));
+          });
+
+        }
+          InheritedForm.of(context).data['selling_price_list'] =
+              data['selling_price_list'];
 
         data['posting_date'] = DateTime.now().toIso8601String();
         data['is_return'] = 0;
@@ -208,7 +210,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
           data['is_return'] = 1;
         }
 
-        _getCustomerData(data['customer_name']).then((value) => setState(() {
+        // From Customer Visit:
+        if (data['doctype'] == DocTypesName.customerVisit) {
+          data['customer_name'] = data['customer'];
+          data['customer_visit'] = data['name'];
+        }
+
+        _getCustomerData(data['customer_name']).then((_) => setState(() {
               data['due_date'] = DateTime.now()
                   .add(Duration(
                       days: int.parse(
@@ -225,6 +233,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
               }
               data['currency'] = selectedCstData['default_currency'];
               data['price_list_currency'] = selectedCstData['default_currency'];
+              data['territory'] = selectedCstData['territory'];
+              data['customer_group'] = selectedCstData['customer_group'];
             }));
 
         data['doctype'] = "Sales Invoice";
@@ -240,7 +250,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-        print('sdfsdfsd${data['items']}');
+        print('${data['items']}');
         setState(() {});
       });
     }
@@ -548,7 +558,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                 ]
                               : null,
                         ),
-                     
                       ],
                     ),
                   ),
@@ -618,6 +627,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             });
                             return res['name'];
                           }
+                          return null;
                         }),
                         if (data['price_list_currency'] != null)
                           Align(

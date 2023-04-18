@@ -1,22 +1,21 @@
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
 
+import '../../list/otherLists.dart';
+import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../page/generic_page.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -266,9 +265,6 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
                             id = res['name'];
                             await _getSupplierData(res['name']);
 
-                            // selectedSupplierData = Map<String, dynamic>.from(
-                            //     await APIService().getPage(
-                            //         SUPPLIER_PAGE, res['name']))['message'];
                             setState(() {
                               data['name'] = res['name'];
                               data['supplier'] = res['name'];
@@ -595,36 +591,6 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
                       Divider(color: Colors.grey, height: 1, thickness: 0.7),
                   ],
                 )),
-
-                ///
-                /// group 3
-                ///
-                // Group(
-                //   child: Column(
-                //     children: [
-                //       CustomDropDown('apply_discount_on', 'Apply Additional Discount On',
-                //           items: grandTotalList, defaultValue: grandTotalList[0], onChanged: (value) => data['apply_discount_on'] = value),
-                //       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                //       CustomTextField(
-                //         'additional_discount_percentage',
-                //         'Additional Discount Percentage',
-                //         hintText: '0',
-                //         disableValidation: true,
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //       CustomTextField(
-                //         'discount_amount',
-                //         'Additional Discount Amount (Company Currency)',
-                //         hintText: '0',
-                //         disableValidation: true,
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
                 SizedBox(height: 8),
                 SelectedItemsList(),
               ],

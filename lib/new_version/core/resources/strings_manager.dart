@@ -3,10 +3,20 @@ class ConstantStrings {
 }
 
 class DocTypesName {
-  static const String task = 'Task';
-  static const String project = 'Project';
+  static const String purchaseReceipt = 'Purchase Receipt';
+  static const String purchaseInvoice = 'Purchase Invoice';
+  static const String purchaseOrder = 'Purchase Order';
+
+  static const String customerVisit = 'Customer Visit';
+  static const String paymentEntry = 'Payment Entry';
+  static const String salesInvoice = 'Sales Invoice';
+  static const String salesOrder = 'Sales Order';
+  
   static const String timesheet = 'Timesheet';
+  static const String project = 'Project';
   static const String issue = 'Issue';
+  static const String task = 'Task';
+  
   static const String reports = 'Mobile Report';
 }
 

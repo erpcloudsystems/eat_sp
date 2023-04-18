@@ -1,26 +1,22 @@
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../main.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
-import '../../../core/constants.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../list/otherLists.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -169,6 +165,20 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
         data['longitude'] = 0.0;
         data['conversion_rate'] = 1;
 
+        // From Purchase Order:
+        if (data['doctype'] == DocTypesName.purchaseOrder) {
+          data['purchase_order_items'].forEach((element) =>
+              InheritedForm.of(context)
+                  .items
+                  .add(ItemSelectModel.fromJson(element)));
+
+          InheritedForm.of(context).data['buying_price_list'] =
+              data['buying_price_list'];
+
+          data['purchase_receipt'] = data['name'];
+          data['project'] = data['project'];
+        }
+
         // from Purchase Invoice
         if (data['doctype'] == 'Purchase Invoice') {
           data['purchase_invoice_item'].forEach((element) {
@@ -192,9 +202,9 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                 InheritedForm.of(context).data['buying_price_list'] =
                     selectedSupplierData['default_price_list'];
               }
-              data['currency'] = selectedSupplierData['default_currency'];
-              data['price_list_currency'] =
-                  selectedSupplierData['default_currency'];
+              // data['currency'] = selectedSupplierData['default_currency'];
+              // data['price_list_currency'] =
+              //     selectedSupplierData['default_currency'];
               // data['payment_terms_template'] = selectedSupplierData['payment_terms'];
               // data['supplier_address'] =
               //     selectedSupplierData["customer_primary_address"];
@@ -513,6 +523,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       CustomTextField(
                           'price_list_currency', 'Price List Currency',

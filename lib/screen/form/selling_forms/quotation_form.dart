@@ -1,21 +1,21 @@
-import '../../../models/page_models/selling_page_model/quotation_page_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../page/generic_page.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../list/otherLists.dart';
+import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/selling_page_model/quotation_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -45,7 +45,7 @@ class _QuotationFormState extends State<QuotationForm> {
     'quotation_validaty_days': '0',
   };
 
-  //used to        clear all fields when change Quotation type(customer or lead)
+  //used to clear all fields when change Quotation type(customer or lead)
   void changeType(String newType) {
     data['valid_till'] = null;
     data['quotation_to'] = newType;
@@ -172,7 +172,7 @@ class _QuotationFormState extends State<QuotationForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
-        print('asdfsf1${data}');
+        print(data.toString());
 
         data['transaction_date'] = DateTime.now().toIso8601String();
         data['apply_discount_on'] = grandTotalList[0];

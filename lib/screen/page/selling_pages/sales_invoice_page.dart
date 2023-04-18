@@ -1,19 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/cloud_system_widgets.dart';
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import '../../../provider/module/module_provider.dart';
+import '../../../widgets/map_view.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/map_view.dart';
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/page_group.dart';
+import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 
 class SalesInvoicePage extends StatelessWidget {
   const SalesInvoicePage({Key? key}) : super(key: key);
@@ -65,16 +65,7 @@ class SalesInvoicePage extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                // if (data['docstatus'] != null)
-                //   Align(
-                //     alignment: Alignment.centerRight,
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(right: 12.0),
-                //       child:
-                //           context.read<ModuleProvider>().submitDocumentWidget(),
-                //     ),
-                //   )
-              ],
+                             ],
             ),
             Padding(
                 padding: const EdgeInsets.all(4.0),
