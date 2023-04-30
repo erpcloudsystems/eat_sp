@@ -1270,7 +1270,7 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.voucherType,
-        //status: item,
+        status: item.docStatus.convertStatusToString(),
         names: [
           'Total'.tr(),
           'Posting Date'.tr(),

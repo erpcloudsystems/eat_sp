@@ -30,6 +30,7 @@ class JournalEntryItemModel {
   final String chequeNo;
   final DateTime chequeDate;
   final String remark;
+  final int docStatus;
 
   JournalEntryItemModel({
     required this.id,
@@ -41,6 +42,7 @@ class JournalEntryItemModel {
     required this.chequeNo,
     required this.chequeDate,
     required this.remark,
+    required this.docStatus,
   });
 
   factory JournalEntryItemModel.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,7 @@ class JournalEntryItemModel {
       chequeNo: json['cheque_no'] ?? 'none',
       chequeDate: DateTime.parse(json['cheque_date'] ?? "2001-01-01"),
       remark: json['remark'] ?? 'none',
+      docStatus: json['docstatus'] ?? 0,
     );
   }
 
@@ -68,6 +71,7 @@ class JournalEntryItemModel {
     data['cheque_no'] = this.chequeNo;
     data['cheque_date'] = this.chequeDate;
     data['remark'] = this.remark;
+    data['docstatus'] = this.docStatus;
     return data;
   }
 }
