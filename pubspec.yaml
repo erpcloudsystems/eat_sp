@@ -3,7 +3,7 @@ description: NextApp is a mobile application produced by ERPCloud.systems Egypti
 
 publish_to: 'none' 
 
-version: 1.3.3+17
+version: 1.4.0+18
 
 environment:
   sdk: ">=2.17.0-110.0.dev <3.0.0"
@@ -80,6 +80,7 @@ dev_dependencies:
     sdk: flutter
   change_app_package_name: ^1.1.0  
   flutter_launcher_icons: "^0.11.0"
+  flutter_lints: ^2.0.1
  
 flutter_icons:
   android: "launcher_icon"

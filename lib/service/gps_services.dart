@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trust_location/trust_location.dart';
@@ -53,16 +55,18 @@ class GPSService {
       print('longitude: $longitude');
       print('isMocked:$isMocked');
 
-      if (isMocked == true) {
-        showSnackBar('Please use real location', context);
-        latitude = 0.0;
-        longitude = 0.0;
-        latLang = LatLng(0.0, 0.0);
-      }
+      if (Platform.isAndroid) {
+        if (isMocked == true) {
+          showSnackBar('Please use real location', context);
+          latitude = 0.0;
+          longitude = 0.0;
+          latLang = LatLng(0.0, 0.0);
+        }
 
-      List<String?> positionCheck = await TrustLocation.getLatLong;
-      bool isMockLocation = await TrustLocation.isMockLocation;
-      print('isMockLocation Trust Package:$isMockLocation');
+        List<String?> positionCheck = await TrustLocation.getLatLong;
+        bool isMockLocation = await TrustLocation.isMockLocation;
+        print('isMockLocation Trust Package:$isMockLocation');
+      }
     } catch (e) {
       print("Getting location Error: $e");
     }
