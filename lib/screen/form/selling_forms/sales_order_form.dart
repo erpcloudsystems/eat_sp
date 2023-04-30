@@ -185,7 +185,6 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
         // From Customer Visit:
         if (data['doctype'] == DocTypesName.customerVisit) {
-          data['prevdoc_docname'] = data['name'];
           data['customer_name'] = data['customer'];
           data['customer'] = data['customer'];
           data["transaction_date"] = DateTime.now().toIso8601String();
