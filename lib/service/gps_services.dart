@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../core/constants.dart';
-import '../widgets/snack_bar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trust_location/trust_location.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:flutter/material.dart';
 
+import '../core/constants.dart';
+import '../widgets/snack_bar.dart';
 import '../widgets/dialog/loading_dialog.dart';
 
 class GPSService {
@@ -19,14 +19,11 @@ class GPSService {
   List<Placemark> placemarks = [];
 
   Future<LatLng> getCurrentLocation(BuildContext context) async {
-    //Geolocator.requestPermission();
-
     if (!(await Permission.location.request().isGranted)) {
       Geolocator.requestPermission();
     }
 
     if ((await Permission.location.request().isPermanentlyDenied)) {
-      //AppSettings.openLocationSettings();
       Future.delayed(Duration(seconds: 1), () async {
         final res = await checkDialog(
             context, KPermanentlyDeniedSnackBar, 'Allow Location');

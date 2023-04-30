@@ -167,6 +167,13 @@ Color statusColor(String status) {
     case 'Resolved':
       return Colors.green;
 
+    case '0':
+      return Colors.red;
+    case '1':
+      return Colors.green;
+    case '2':
+      return Colors.green;
+
     default:
       return Colors.transparent;
   }

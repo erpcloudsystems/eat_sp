@@ -26,7 +26,7 @@ class CustomerVisitItemModel {
   final String customerAddress;
   final DateTime postingDate;
   final String time;
-  final String status;
+  final dynamic status;
 
   CustomerVisitItemModel({
     required this.id,
@@ -44,7 +44,7 @@ class CustomerVisitItemModel {
       customerAddress: json['customer_address'] ?? 'none',
       postingDate: DateTime.parse(json['posting_date'] ?? "2001-01-01"),
       time: json['time'] ?? "11:11:11",
-      status: json['status'] ?? 'Random',
+      status: json['docstatus'] ?? 'Random',
     );
   }
 
@@ -55,7 +55,7 @@ class CustomerVisitItemModel {
     data['customer_address'] = this.customerAddress;
     data['posting_date'] = this.postingDate;
     data['time'] = this.time;
-    data['status'] = this.status;
+    data['docstatus'] = this.status;
     return data;
   }
 }

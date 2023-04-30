@@ -519,7 +519,7 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.customer,
-        status: item.status,
+        status: item.status.toString(),
         names: [
           'Customer Address'.tr(),
           'Posting Date'.tr(),
