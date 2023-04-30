@@ -1345,18 +1345,17 @@ class ModuleType {
       item as TimesheetModel;
       return ListCard(
         id: item.name!,
+        title: item.parentProject!,
         status: item.status!,
         names: [
           'Customer',
           'Exchange Rate',
-          'Parent Project',
           'Start Date',
           'End Date',
         ],
         values: [
           item.customer!,
           item.exchangeRate.toString(),
-          item.parentProject!,
           item.startDate!.formatDate(),
           item.endDate!.formatDate(),
         ],
@@ -1389,14 +1388,14 @@ class ModuleType {
           'Project',
           'Priority',
           'Percent Complete',
-          'Start Date',
+          'Customer',
           'End Date',
         ],
         values: [
           item.projectName!,
           item.priority!,
           item.percentComplete.toString(),
-          item.expectedStartDate!.formatDate(),
+          item.customer ?? 'none'.tr(),
           item.expectedEndDate!.formatDate(),
         ],
         onPressed: (context) => _onListCardPressed(
@@ -1427,11 +1426,13 @@ class ModuleType {
         names: [
           'Subject',
           'Priority',
+          'Project',
           'Opening Date',
         ],
         values: [
           item.subject ?? 'none',
           item.priority ?? 'none',
+          item.project ?? 'none',
           item.openingDate ?? 'none',
         ],
         onPressed: (context) => _onListCardPressed(

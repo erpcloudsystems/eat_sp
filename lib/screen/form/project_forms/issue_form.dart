@@ -169,6 +169,24 @@ class _IssueFormState extends State<IssueForm> {
                             ),
                           ),
                         ),
+                        //___________________________________Project_____________________________________________________
+                        CustomTextField(
+                          'project',
+                          'Project',
+                          clearButton: true,
+                          initialValue: data['project'],
+                          onSave: (key, value) {
+                            data[key] = value;
+                          },
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => projectScreen(),
+                              ),
+                            );
+                            return res['name'];
+                          },
+                        ),
                         //_______________________________________Department_____________________________________________________
                         CustomTextField(
                           'department',

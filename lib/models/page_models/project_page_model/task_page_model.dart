@@ -14,7 +14,7 @@ class TaskPageModel {
       },
       {
         tr('Is Group'): data['is_group'].toString(),
-        tr('Is Template'): data['is_template'].toString(),
+        tr('Parent Task'): data['parent_task'].toString(),
       },
       {
         tr('Project'): data['project'] ?? tr('none'),

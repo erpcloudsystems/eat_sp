@@ -169,6 +169,23 @@ class _ProjectFormState extends State<ProjectForm> {
                             ),
                           ),
                         ),
+                        //_______________________________________Customer_____________________________________________________
+                        CustomTextField(
+                          'customer',
+                          'Customer',
+                          initialValue: data['customer'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => selectCustomerScreen(),
+                              ),
+                            );
+                            return res['name'];
+                          },
+                        ),
                         //_______________________________________Department_____________________________________________________
                         CustomTextField(
                           'department',
@@ -180,6 +197,20 @@ class _ProjectFormState extends State<ProjectForm> {
                           onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => departmentListScreen(),
+                            ),
+                          ),
+                        ),
+                        //_______________________________________From Template_____________________________________________________
+                        CustomTextField(
+                          'form_template',
+                          'Task Template'.tr(),
+                          initialValue: data['department'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => projectTemplateListScreen(),
                             ),
                           ),
                         ),
@@ -204,13 +235,30 @@ class _ProjectFormState extends State<ProjectForm> {
                             data['status'] = value;
                           }),
                         ),
+                        //_______________________________________Task Completion_____________________________________________________
+                        CustomDropDown(
+                          'percent_complete_method',
+                          'Task Completion'.tr(),
+                          items: TaskCompletionList,
+                          defaultValue: data['percent_complete_method'] ?? TaskCompletionList[0],
+                          onChanged: (value) => setState(() {
+                            data['percent_complete_method'] = value;
+                          }),
+                        ),
                         //_______________________________________Is Group_____________________________________________________
                         CheckBoxWidget(
                           'is_active',
                           'Is Active',
-                          initialValue: data['is_active'] == 1 ? true : false,
+                          initialValue:
+                              data['is_active'] == 'Yes' ? true : false,
                           onChanged: (id, value) => setState(
-                            () => data[id] = value ? 1 : 0,
+                            () {
+                              if (value == true) {
+                                data['is_active'] = 'Yes';
+                              } else {
+                                data['is_active'] = 'No';
+                              }
+                            },
                           ),
                         ),
                       ],
@@ -227,8 +275,8 @@ class _ProjectFormState extends State<ProjectForm> {
                           'expected_start_date',
                           'Expected Start Date',
                           initialValue: data['expected_start_date'] ?? null,
-                          onChanged: (value) =>
-                              setState(() => data['expected_start_date'] = value),
+                          onChanged: (value) => setState(
+                              () => data['expected_start_date'] = value),
                         )),
                         SizedBox(width: 10),
                         //____________________________________Expected End Date______________________________________________
@@ -237,9 +285,10 @@ class _ProjectFormState extends State<ProjectForm> {
                                 'expected_end_date', 'Expected End Date',
                                 onChanged: (value) => Future.delayed(
                                     Duration.zero,
-                                    () => setState(
-                                        () => data['expected_end_date'] = value)),
-                                initialValue: data['expected_end_date'] ?? null)),
+                                    () => setState(() =>
+                                        data['expected_end_date'] = value)),
+                                initialValue:
+                                    data['expected_end_date'] ?? null)),
                       ],
                     ),
                   ),

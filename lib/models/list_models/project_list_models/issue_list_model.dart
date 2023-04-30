@@ -41,6 +41,7 @@ class IssueItemModel {
   String? company;
   int? viaCustomerPortal;
   String? sSeen;
+  String? project;
 
   IssueItemModel({
     this.name,
@@ -64,6 +65,7 @@ class IssueItemModel {
     this.company,
     this.viaCustomerPortal,
     this.sSeen,
+    this.project,
   });
 
   IssueItemModel.fromJson(Map<String, dynamic> json) {
@@ -88,6 +90,7 @@ class IssueItemModel {
     company = json['company'];
     viaCustomerPortal = json['via_customer_portal'];
     sSeen = json['_seen'];
+    project = json['project'];
   }
 
   Map<String, dynamic> toJson() {
@@ -113,6 +116,7 @@ class IssueItemModel {
     data['company'] = this.company;
     data['via_customer_portal'] = this.viaCustomerPortal;
     data['_seen'] = this.sSeen;
+    data['project'] = this.project;
     return data;
   }
 }

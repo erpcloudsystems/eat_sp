@@ -90,6 +90,7 @@ class APIService {
   static const USER_TYPE = 'User';
   static const SALES_PARTNER = 'Sales Partner';
   static const DEPARTMENT = 'Department';
+  static const PROJECT_TEMPLATE = 'Project Template';
   static const DESIGNATION = 'Designation';
   static const BRANCH = 'Branch';
   static const LEAVE_TYPE = 'Leave Type';

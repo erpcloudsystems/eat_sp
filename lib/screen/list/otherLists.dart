@@ -634,11 +634,16 @@ Widget projectScreen() => Builder(builder: (context) {
         title: 'Select Project',
         service: APIService.PROJECT,
         listItem: (value) => ListCard(
-            onPressed: (context) => Navigator.of(context).pop(value['name']),
+            onPressed: (context) => Navigator.of(context).pop(value),
             id: value['name'] ?? tr('none'),
-            title: value['project_name'] ?? tr('none'),
-            names: [],
-            values: [],
+            names: [
+              'Project',
+              'Customer',
+            ],
+            values: [
+              value['project_name'] ?? tr('none'),
+              value['customer'] ?? tr('none'),
+            ],
             status: value['status'] ?? tr('none')),
         serviceParser: (data) {
           List<Map<String, dynamic>> _list = [];
@@ -647,6 +652,30 @@ Widget projectScreen() => Builder(builder: (context) {
         },
       );
     });
+
+Widget parentTaskScreen() => Builder(builder: (context) {
+  return GenericListScreen<Map<String, dynamic>>(
+    title: 'Select Task',
+    service: APIService.TASK,
+    listItem: (value) => ListCard(
+        onPressed: (context) => Navigator.of(context).pop(value['name']),
+        id: value['name'] ?? tr('none'),
+        names: [
+          'Project',
+          'Subject',
+        ],
+        values: [
+          value['project'] ?? 'none'.tr(),
+          value['subject'] ?? tr('none'),
+        ],
+        status: value['status'] ?? tr('none')),
+    serviceParser: (data) {
+      List<Map<String, dynamic>> _list = [];
+      List.from(data['message']).forEach((element) => _list.add(element));
+      return ListModel<Map<String, dynamic>>(_list);
+    },
+  );
+});
 
 Widget activityListScreen() => Builder(builder: (context) {
       return GenericListScreen<Map<String, dynamic>>(
@@ -845,6 +874,19 @@ Widget departmentListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+/// Project Template
+Widget projectTemplateListScreen() => GenericListScreen<String>(
+  title: 'Select Project Template',
+  service: APIService.PROJECT_TEMPLATE,
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
 Widget projectTypeListScreen() => GenericListScreen<String>(
   title: 'Select Project Type',
   service: APIService.PROJECT_TYPE,

@@ -7,7 +7,9 @@ import '../../list/otherLists.dart';
 class AddTimeSheetDialog extends StatefulWidget {
   const AddTimeSheetDialog({
     Key? key,
+    this.projectName,
   }) : super(key: key);
+  final String? projectName;
 
   @override
   State<AddTimeSheetDialog> createState() => _AddTimeSheetDialogState();
@@ -30,7 +32,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
               children: [
                 Center(
                   child: Text(
-                    'Add Time Sheet',
+                    'Add Time Log',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 22,
@@ -61,18 +63,12 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                       ),
                       CustomTextField(
                         'project',
-                        'Select Project',
+                        'Project',
                         disableValidation: true,
                         clearButton: true,
+                        enabled: false,
+                        initialValue: widget.projectName ??'',
                         onSave: (key, value) => timeSheet['project'] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => projectScreen(),
-                            ),
-                          );
-                          return res;
-                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -90,14 +86,11 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                         onChanged: (value) =>
                             timeSheet['hours'] = double.tryParse(value),
                       ),
-                      DatePicker(
-                        'from_time',
-                        'From Time',
-                        initialValue: timeSheet['from_time'] ?? null,
-                        onChanged: (value) {
-                          timeSheet['from_time'] = value;
-                        }
-                      ),
+                      DatePicker('from_time', 'From Time',
+                          initialValue: timeSheet['from_time'] ?? null,
+                          onChanged: (value) {
+                        timeSheet['from_time'] = value;
+                      }),
                     ],
                   ),
                 ),
@@ -109,13 +102,14 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
-                            Provider.of<ModuleProvider>(context,listen: false).setTimeSheet =
-                                timeSheet;
+                          Provider.of<ModuleProvider>(context, listen: false)
+                              .setTimeSheet = timeSheet;
                           Navigator.of(context).pop();
                         }
-                        print(Provider.of<ModuleProvider>(context,listen: false)
-                            .getTimeSheetData
-                            .toString());
+                        print(
+                            Provider.of<ModuleProvider>(context, listen: false)
+                                .getTimeSheetData
+                                .toString());
                       },
                       style: ButtonStyle(
                         shape: MaterialStateProperty.all(

@@ -59,6 +59,14 @@ const List<String> ProjectStatusList = [
   'Cancelled',
 ];
 
+const List<String> TaskCompletionList = [
+  'Manual',
+  'Task Completion',
+  'Task Progress',
+  'Task Wight',
+];
+
+
 const List<String> IssueStatusList = [
   'Open',
   'Replied',

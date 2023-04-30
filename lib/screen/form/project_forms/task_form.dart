@@ -152,41 +152,75 @@ class _TaskFormState extends State<TaskForm> {
                           onSave: (key, value) => data[key] = value,
                         ),
                         //_______________________________________Project_____________________________________________________
-                        CustomTextField('project', 'Project'.tr(),
-                            initialValue: data['project'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => projectScreen()))),
+                        CustomTextField(
+                          'project',
+                          'Project'.tr(),
+                          initialValue: data['project'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => projectScreen(),
+                            ),
+                          ),
+                        ),
+                        //_______________________________________Parent Task_____________________________________________________
+                        CustomTextField(
+                          'parent_task',
+                          'Parent Task'.tr(),
+                          initialValue: data['parent_task'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => parentTaskScreen(),
+                            ),
+                          ),
+                        ),
                         //_______________________________________Issue_____________________________________________________
-                        CustomTextField('issue', 'Issue',
-                            initialValue: data['issue'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => issueListScreen()))),
+                        CustomTextField(
+                          'issue',
+                          'Issue',
+                          initialValue: data['issue'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => issueListScreen(),
+                            ),
+                          ),
+                        ),
                         //_______________________________________Type_____________________________________________________
-                        CustomTextField('type', 'Type',
-                            initialValue: data['type'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => typeListScreen()))),
+                        CustomTextField(
+                          'type',
+                          'Type',
+                          initialValue: data['type'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => typeListScreen(),
+                            ),
+                          ),
+                        ),
                         //_______________________________________Department_____________________________________________________
-                        CustomTextField('department', 'Department',
-                            initialValue: data['department'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => departmentListScreen()))),
+                        CustomTextField(
+                          'department',
+                          'Department',
+                          initialValue: data['department'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => departmentListScreen(),
+                            ),
+                          ),
+                        ),
                         //_______________________________________Priority___________________________________________________
                         CustomDropDown(
                           'priority',
@@ -227,27 +261,30 @@ class _TaskFormState extends State<TaskForm> {
                   Group(
                     child: Column(
                       children: [
-                        Row(children: [
-                          //____________________________________Expected Start Date______________________________________________
-                          Flexible(
-                              child: DatePicker(
-                            'exp_start_date',
-                            'Expected Start Date',
-                            initialValue: data['exp_start_date'] ?? null,
-                            onChanged: (value) =>
-                                setState(() => data['exp_start_date'] = value),
-                          )),
-                          SizedBox(width: 10),
-                          //____________________________________Expected End Date______________________________________________
-                          Flexible(
-                              child: DatePicker(
-                                  'exp_end_date', 'Expected End Date',
-                                  onChanged: (value) => Future.delayed(
-                                      Duration.zero,
-                                      () => setState(
-                                          () => data['exp_end_date'] = value)),
-                                  initialValue: data['exp_end_date'] ?? null)),
-                        ]),
+                        Row(
+                          children: [
+                            //____________________________________Expected Start Date______________________________________________
+                            Flexible(
+                                child: DatePicker(
+                              'exp_start_date',
+                              'Expected Start Date',
+                              initialValue: data['exp_start_date'] ?? null,
+                              onChanged: (value) => setState(
+                                  () => data['exp_start_date'] = value),
+                            )),
+                            SizedBox(width: 10),
+                            //____________________________________Expected End Date______________________________________________
+                            Flexible(
+                                child: DatePicker(
+                                    'exp_end_date', 'Expected End Date',
+                                    onChanged: (value) => Future.delayed(
+                                        Duration.zero,
+                                        () => setState(() =>
+                                            data['exp_end_date'] = value)),
+                                    initialValue:
+                                        data['exp_end_date'] ?? null)),
+                          ],
+                        ),
                         Row(
                           children: [
                             //____________________________________Expected Time______________________________________________
@@ -275,7 +312,7 @@ class _TaskFormState extends State<TaskForm> {
                               child: CustomTextField(
                                 'progress',
                                 'Progress',
-                                initialValue: data['progress'].toString(),
+                                initialValue: data['progress'] ?? "0.0",
                                 disableValidation: false,
                                 clearButton: true,
                                 validator: (value) =>

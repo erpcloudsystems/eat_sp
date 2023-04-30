@@ -27,6 +27,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
     "doctype": "Timesheet",
   };
 
+  String? customerName;
+  String? projectName;
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
@@ -86,6 +88,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
     if (context.read<ModuleProvider>().isEditing)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
+        customerName = data['customer'];
+        projectName = data['parent_project'];
         setState(() {});
       });
     Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
@@ -113,7 +117,6 @@ class _TimesheetFormState extends State<TimesheetForm> {
     List timeSheetData = Provider.of<ModuleProvider>(context).getTimeSheetData;
     data['time_logs'] = timeSheetData;
     if (context.read<ModuleProvider>().isEditing) {
-      print('editing gggggggg$timeLogs');
       timeLogs!.map((e) {
         Provider.of<ModuleProvider>(context).setTimeSheet = e;
       }).toList();
@@ -176,25 +179,22 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                 builder: (_) => projectScreen(),
                               ),
                             );
-                            return res;
+                            setState(() {
+                              customerName = res['customer'];
+                              projectName = res['name'];
+                            });
+                            return res['name'];
                           },
                         ),
                         //_______________________________________Customer_____________________________________________________
                         CustomTextField(
                           'customer',
                           'Customer',
-                          initialValue: data['customer'],
+                          initialValue: customerName ?? '',
                           disableValidation: true,
                           clearButton: true,
+                          enabled: false,
                           onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => selectCustomerScreen(),
-                              ),
-                            );
-                            return res['name'];
-                          },
                         ),
                         //_______________________________________Employee___________________________________________________
                         CustomTextField(
@@ -267,7 +267,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
                               ElevatedButton(
                                 onPressed: () {
                                   bottomSheetBuilder(
-                                    bottomSheetView: AddTimeSheetDialog(),
+                                    bottomSheetView: AddTimeSheetDialog(
+                                      projectName: projectName ?? '',
+                                    ),
                                     context: context,
                                   );
                                 },
@@ -293,13 +295,35 @@ class _TimesheetFormState extends State<TimesheetForm> {
                             child: ListView.builder(
                               itemCount: timeSheetData.length,
                               itemBuilder: (context, index) {
-                                return PageCard(
-                                  items: [
-                                    {
-                                      "Activity": timeSheetData[index]['activity_type'] ?? 'none',
-                                      "Project": timeSheetData[index]['project_name'] ?? 'none',
-                                      "Hours": timeSheetData[index]['hours'].toString(),
-                                    }
+                                return Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: PageCard(
+                                        items: [
+                                          {
+                                            "Activity": timeSheetData[index]
+                                                    ['activity_type'] ??
+                                                'none',
+                                            "Project": projectName.toString(),
+                                            "Hours": timeSheetData[index]
+                                                    ['hours']
+                                                .toString(),
+                                          }
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          timeSheetData.removeAt(index);
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
                                   ],
                                 );
                               },
@@ -310,18 +334,19 @@ class _TimesheetFormState extends State<TimesheetForm> {
                   ),
                   //________________________________________Task Description_____________________________________________________
                   Group(
-                      child: CustomTextField(
-                    'note',
-                    'Note',
-                    minLines: 1,
-                    maxLines: null,
-                    removeUnderLine: true,
-                    initialValue: data['note'],
-                    disableValidation: false,
-                    clearButton: true,
-                    onSave: (key, value) => data[key] = value,
-                    onChanged: (value) => data['note'] = value,
-                  )),
+                    child: CustomTextField(
+                      'note',
+                      'Note',
+                      minLines: 1,
+                      maxLines: null,
+                      removeUnderLine: true,
+                      initialValue: data['note'],
+                      disableValidation: false,
+                      clearButton: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => data['note'] = value,
+                    ),
+                  ),
                 ],
               ),
             ),
