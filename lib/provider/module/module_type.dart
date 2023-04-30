@@ -1,4 +1,5 @@
 import 'package:NextApp/models/list_models/project_list_models/project_list_model.dart';
+import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
@@ -519,7 +520,7 @@ class ModuleType {
       return ListCard(
         id: item.id,
         title: item.customer,
-        status: item.status.toString(),
+        status: item.status.convertStatusToString(),
         names: [
           'Customer Address'.tr(),
           'Posting Date'.tr(),

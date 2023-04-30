@@ -142,7 +142,6 @@ Color statusColor(String status) {
       return Colors.red;
     case 'Rejected':
       return Colors.red;
-
     case 'Active':
       return Colors.green;
     case 'Inactive':
@@ -153,6 +152,7 @@ Color statusColor(String status) {
       return Colors.grey;
     case 'Claimed':
       return Colors.blue;
+    
     // Project
     case 'Working':
       return Colors.green;
@@ -166,14 +166,6 @@ Color statusColor(String status) {
       return Colors.red;
     case 'Resolved':
       return Colors.green;
-
-    case '0':
-      return Colors.red;
-    case '1':
-      return Colors.green;
-    case '2':
-      return Colors.green;
-
     default:
       return Colors.transparent;
   }
