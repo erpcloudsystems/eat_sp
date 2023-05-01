@@ -55,7 +55,12 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
+
+    data['docstatus'] = 0;
 
     data['items'] = [];
     data['taxes'] =
@@ -124,9 +129,10 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
 
@@ -233,6 +239,14 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

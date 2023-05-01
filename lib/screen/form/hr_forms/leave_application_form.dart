@@ -1,23 +1,16 @@
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class LeaveApplicationForm extends StatefulWidget {
   const LeaveApplicationForm({Key? key}) : super(key: key);
@@ -45,6 +38,9 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
 
     _formKey.currentState!.save();
 
@@ -87,13 +83,30 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
   @override
   void initState() {
     super.initState();
-    if (context.read<ModuleProvider>().isEditing)
+
+    final provider = context.read<ModuleProvider>();
+
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+          // data.remove('docstatus');
+        }
+
         setState(() {});
       });
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

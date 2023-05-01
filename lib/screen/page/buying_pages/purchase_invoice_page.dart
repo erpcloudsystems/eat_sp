@@ -46,7 +46,7 @@ class PurchaseInvoicePage extends StatelessWidget {
                   disableCreate: false,
                   //disableCreate: data['docstatus'].toString() == "1" ?  false:true,
                 ),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null )
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child:

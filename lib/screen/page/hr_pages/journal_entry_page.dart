@@ -1,15 +1,14 @@
-import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
-
-import '../../../models/page_models/hr_page_model/journal_entry_page_model.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../models/page_models/hr_page_model/journal_entry_page_model.dart';
 
 class JournalEntryPage extends StatelessWidget {
   const JournalEntryPage({Key? key}) : super(key: key);
@@ -35,7 +34,7 @@ class JournalEntryPage extends StatelessWidget {
                 Text('Journal Entry',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

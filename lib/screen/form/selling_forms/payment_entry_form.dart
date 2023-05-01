@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../new_version/core/resources/strings_manager.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -12,6 +11,7 @@ import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
 
 class PaymentForm extends StatefulWidget {
   const PaymentForm({Key? key}) : super(key: key);
@@ -27,6 +27,8 @@ class _PaymentFormState extends State<PaymentForm> {
     'party_type': KPaymentPartyList[0],
     "posting_date": DateTime.now().toIso8601String(),
     "reference_date": "posting_date",
+    "source_exchange_rate": 1,
+    "target_exchange_rate": 1,
   };
 
   Map<String, dynamic> selectedCstData = {
@@ -41,7 +43,13 @@ class _PaymentFormState extends State<PaymentForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
+
+    data['docstatus'] = 0;
 
     showLoadingDialog(
         context,
@@ -82,18 +90,40 @@ class _PaymentFormState extends State<PaymentForm> {
     }
   }
 
-  Future<void> _getCustomerData(String customer) async {
-    selectedCstData = Map<String, dynamic>.from(
-        await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
-  }
+  // Future<void> _getCustomerData(String customer) async {
+  //   selectedCstData = Map<String, dynamic>.from(
+  //       await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
+  // }
 
   @override
   void initState() {
     super.initState();
-    //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+
+    final provider = context.read<ModuleProvider>();
+
+    //Editing Mode & Amending Mode
+    if (provider.isEditing || provider.isAmendingMode)
       data = context.read<ModuleProvider>().updateData;
+    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+
+    if (provider.isAmendingMode) {
+      data['source_exchange_rate'] = 1;
+      data['target_exchange_rate'] = 1;
+
+      data.remove('paid_from_account_balance');
+      data.remove('paid_from_account_currency');
+      data.remove('paid_to_account_balance');
+      data.remove('mode_of_payment_2');
+      data.remove('set_posting_time');
+      data.remove('reference_no');
+      data.remove('amended_to');
+      data.remove('paid_from');
+      data.remove('paid_to');
+      data.remove('docstatus');
+      data.remove('status');
+    }
     setState(() {});
+
     //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
@@ -215,6 +245,14 @@ class _PaymentFormState extends State<PaymentForm> {
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

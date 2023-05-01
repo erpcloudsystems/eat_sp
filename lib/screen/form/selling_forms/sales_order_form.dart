@@ -53,8 +53,12 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
     InheritedForm.of(context)
@@ -112,6 +116,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
 
     //Adding Mode
@@ -121,7 +126,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
       setState(() {});
     }
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         print('123E4${InheritedForm.of(context).items}');
         if (InheritedForm.of(context).items.isNotEmpty)
@@ -232,6 +237,14 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

@@ -35,7 +35,7 @@ class SupplierQuotationPage extends StatelessWidget {
                 Text('Supplier Quotation',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

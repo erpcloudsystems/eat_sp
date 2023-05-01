@@ -1,18 +1,18 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../core/constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../service/gps_services.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../list/otherLists.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../service/gps_services.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
 
 class AttendanceRequestForm extends StatefulWidget {
   const AttendanceRequestForm({Key? key}) : super(key: key);
@@ -60,6 +60,9 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
     data['latitude'] = location.latitude;
     data['longitude'] = location.longitude;
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
     showLoadingDialog(
@@ -102,18 +105,33 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
   @override
   void initState() {
     super.initState();
+
+    final provider = context.read<ModuleProvider>();
     Future.delayed(Duration(seconds: 1),
         () async => location = await gpsService.getCurrentLocation(context));
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data['latitude'] = location.latitude;
         data['longitude'] = location.longitude;
-        data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+        if (provider.isEditing)
+          data['location'] = gpsService.placemarks[0].subAdministrativeArea;
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
         setState(() {});
       });
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

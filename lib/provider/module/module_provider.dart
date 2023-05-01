@@ -1,23 +1,22 @@
 import 'dart:io';
 
 import '../../models/list_models/list_model.dart';
-import 'module_type.dart';
-import '../../service/server_exception.dart';
-import '../../service/service.dart';
-import '../../service/service_constants.dart';
-import '../../screen/page/page_screen.dart';
-import '../../core/cloud_system_widgets.dart';
-import '../../widgets/dialog/loading_dialog.dart';
-import '../../widgets/snack_bar.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:file_picker/file_picker.dart';
+import '../../core/cloud_system_widgets.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
+import 'module_type.dart';
+import '../../service/service.dart';
 import '../user/user_provider.dart';
+import '../../widgets/snack_bar.dart';
+import '../../screen/page/page_screen.dart';
+import '../../service/server_exception.dart';
+import '../../service/service_constants.dart';
+import '../../widgets/dialog/loading_dialog.dart';
 
 class ModuleProvider extends ChangeNotifier {
   ModuleType? _currentModule;
@@ -39,8 +38,14 @@ class ModuleProvider extends ChangeNotifier {
 
   bool _availablePdfFormat = false;
 
+  bool _amendDoc = false;
+
+  bool _isAmended = false;
+
+
   /// id of the pushing page_models
   String _pageId = '';
+  String _previousPageId = '';
   String _totalListCount = '';
   String _loadCount = '';
 
@@ -69,9 +74,15 @@ class ModuleProvider extends ChangeNotifier {
 
   String get pageId => _pageId;
 
+  String get previousPageId => _previousPageId;
+
   bool get availablePdfFormat => _availablePdfFormat;
 
   bool get isLoading => _isLoading;
+
+  bool get isAmendingMode => _amendDoc;
+
+  bool get isAmended => _isAmended;
 
   /// used for connection card, to know if it is the first connection route to push or not
   bool get isSecondModule => _oldData.isNotEmpty;
@@ -79,8 +90,7 @@ class ModuleProvider extends ChangeNotifier {
   /// used for push create from page
   bool get isSecondCreateFromPage => _createFromPageData.isNotEmpty;
 
-    set setCurrentModule(ModuleType module) => _currentModule = module;
-
+  set setCurrentModule(ModuleType module) => _currentModule = module;
 
   // pass by value not by reference
   Map<String, dynamic> get pageData => {..._pageData};
@@ -147,6 +157,10 @@ class ModuleProvider extends ChangeNotifier {
   void editThisPage() => _editPage = true;
 
   void createFromThisPage() => _createFromPage = true;
+
+  set amendDoc(bool initialize) => _amendDoc = initialize;
+
+  set NotifyAmended(bool amended) => _isAmended = amended;
 
   set setModule(String doctype) {
     switch (doctype) {
@@ -497,19 +511,16 @@ class ModuleProvider extends ChangeNotifier {
           () async => await server.postFile(
               _currentModule!.genericListService, _pageId, file),
           context);
-      //print('$res');
 
       Navigator.pop(context);
 
       try {
         if (res['message']['name'] != null) {
-          //print('Image URL: ${res['message']['file_url']}');
           showSnackBar('File Uploaded Successfully', context);
           return {
             "imageUrl": res['message']['file_url'],
             "imageFile": file,
           };
-          //return res['message']['name'].toString();
         }
       } catch (e) {
         print('No Image URL Found: ${res['message']['name']}');
@@ -598,6 +609,17 @@ class ModuleProvider extends ChangeNotifier {
       print(e);
       Navigator.pop(context);
       showSnackBar('something went wrong!', context, color: Colors.red);
+    }
+  }
+
+  void initializeAmendingFunction(
+      BuildContext context, Map<String, dynamic> data) {
+    if (isAmendingMode) {
+      data['doctype'] = currentModule.title;
+      data['amended_from'] = data['name'];
+      _previousPageId = data['name'];
+      data.remove('name');
+      NotifyAmended = true;
     }
   }
 }

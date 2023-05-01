@@ -6,14 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
-import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
 import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
 import '../../../widgets/comments_button.dart';
 import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/form_widgets.dart';
 import '../../../widgets/nothing_here.dart';
 
 class PurchaseReceiptPage extends StatelessWidget {
@@ -37,10 +32,14 @@ class PurchaseReceiptPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Purchase Receipt',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                Text(
+                  'Purchase Receipt',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

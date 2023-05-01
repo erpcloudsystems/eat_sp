@@ -2,15 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/list_models/accounts_list_models/account_table_model.dart';
-import '../../../widgets/inherited_widgets/add_account_list.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../service/service_constants.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../service/service.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/inherited_widgets/add_account_list.dart';
+import '../../../models/list_models/accounts_list_models/account_table_model.dart';
 
 class JournalEntryForm extends StatefulWidget {
   const JournalEntryForm({Key? key}) : super(key: key);
@@ -27,17 +28,16 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
     "cheque_date": DateTime.now().toIso8601String(),
   };
 
-  // Map<String, dynamic> selectedEmployeeData = {
-  //   'name': 'noName',
-  // };
-  //
   final _formKey = GlobalKey<FormState>();
 
-  // any widgets below this condition will not be shown
-  //bool removeWhenUpdate = true;
-
   Future<void> submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      showSnackBar(KFillRequiredSnackBar, context);
+      return;
+    }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
 
     _formKey.currentState!.save();
 
@@ -49,7 +49,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
       data['accounts'].add(element.toJson);
     });
 
-    data['accounts'][0].remove('bank_account');
+    // data['accounts'][0].remove('bank_account');
 
     showLoadingDialog(
         context,
@@ -94,9 +94,10 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
@@ -105,6 +106,10 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
             .account
             .add(AccountModel.fromJson(element)));
 
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
         setState(() {});
       });
   }
@@ -113,6 +118,14 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('7788888787 ${InheritedAccountForm.of(context).data}');
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

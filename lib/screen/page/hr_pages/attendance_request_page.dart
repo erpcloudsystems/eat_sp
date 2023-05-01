@@ -32,6 +32,15 @@ class AttendanceRequestPage extends StatelessWidget {
                 Text('Attendance Request',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
+                if (data['docstatus'] != null && data['amended_to'] == null)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child:
+                          context.read<ModuleProvider>().submitDocumentWidget(),
+                    ),
+                  )
               ],
             ),
             Padding(
@@ -63,8 +72,8 @@ class AttendanceRequestPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: CustomMapView(
-            latitude: double.parse(data['latitude']),
-            longitude: double.parse(data['longitude']),
+            latitude: double.parse(data['latitude'] ?? '0.0'),
+            longitude: double.parse(data['longitude'] ?? '0.0'),
           ),
         ),
         Padding(

@@ -32,7 +32,7 @@ class StockEntryPage extends StatelessWidget {
                 Text('Stock Entry',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

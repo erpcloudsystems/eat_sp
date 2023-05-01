@@ -1,15 +1,15 @@
-import '../../../provider/module/module_provider.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/page_models/stock_page_model/material_request_page_model.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../models/page_models/stock_page_model/material_request_page_model.dart';
 
 class MaterialRequestPage extends StatelessWidget {
   const MaterialRequestPage({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class MaterialRequestPage extends StatelessWidget {
                 Text('Material Request   ',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

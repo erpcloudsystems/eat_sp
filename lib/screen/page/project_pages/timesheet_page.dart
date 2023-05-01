@@ -24,7 +24,7 @@ class TimesheetPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-            if (data['docstatus'] != null)
+            if (data['docstatus'] != null && data['amended_to'] == null)
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(

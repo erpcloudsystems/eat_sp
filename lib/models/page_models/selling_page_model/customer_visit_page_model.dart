@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../model_functions.dart';
+import '../../../new_version/core/extensions/status_converter.dart';
 
 class CustomerVisitPageModel {
   final Map<String, dynamic> data;
@@ -21,11 +22,12 @@ class CustomerVisitPageModel {
     return [
       {
         tr("Posting Date"): reverse(data['posting_date']),
-        //tr("Date"): data['time'].split(" ")[0],
         tr("Time"): data['time'] ?? 'none',
       },
       {
         tr("Description"): data['description'] ?? tr('none'),
+        tr("Status"):
+            int.parse(data['docstatus'].toString()).convertStatusToString(),
       },
     ];
   }
@@ -35,9 +37,6 @@ class CustomerVisitPageModel {
       {
         tr("Longitude"): data['longitude'].toString(),
         tr("Latitude"): data['latitude'].toString(),
-      },
-      {
-        tr("Location"): data['location'] ?? tr('none'),
       },
     ];
   }

@@ -18,6 +18,7 @@ class DocTypesName {
   static const String task = 'Task';
   
   static const String reports = 'Mobile Report';
+  static const String materialRequest = 'Material Request';
 }
 
 class StringsManager {

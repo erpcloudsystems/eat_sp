@@ -1,17 +1,17 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
 
-import '../../models/page_models/model_functions.dart';
-import '../../models/list_models/accounts_list_models/account_table_model.dart';
-import '../../provider/module/module_provider.dart';
-import '../../screen/list/otherLists.dart';
+import '../list_card.dart';
+import '../form_widgets.dart';
 import '../../service/service.dart';
 import '../ondismiss_tutorial.dart';
-import '../form_widgets.dart';
-import '../list_card.dart';
+import '../../screen/list/otherLists.dart';
+import '../../provider/module/module_provider.dart';
+import '../../models/page_models/model_functions.dart';
+import '../../models/list_models/accounts_list_models/account_table_model.dart';
 
 class InheritedAccountForm extends InheritedWidget {
   InheritedAccountForm(
@@ -52,11 +52,19 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
     "debit_in_account_currency": 0.0,
     "credit_in_account_currency": 0.0,
   };
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    InheritedAccountForm.of(context).account.clear();
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
       setState(() {
-        if (!context.read<ModuleProvider>().isEditing) {
+        if (!context.read<ModuleProvider>().isEditing &&
+            !context.read<ModuleProvider>().isAmendingMode) {
           InheritedAccountForm.of(context).account.clear();
         }
       });
@@ -66,7 +74,6 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
 
   @override
   void dispose() {
-    print('dispose called');
     super.dispose();
   }
 
@@ -622,7 +629,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                                       index]
                                                                   .debitInAccountCurrency ==
                                                               0.0)
-                                                          ? ""
+                                                          ? '0'
                                                           : InheritedAccountForm
                                                                   .of(context)
                                                               .account[index]
@@ -667,7 +674,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                                       index]
                                                                   .creditInAccountCurrency ==
                                                               0.0)
-                                                          ? ""
+                                                          ? '0'
                                                           : InheritedAccountForm
                                                                   .of(context)
                                                               .account[index]
@@ -706,13 +713,6 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                       ),
                                     ),
                                   ),
-                                  // Divider(
-                                  //   color: Colors.black54,
-                                  //   height: 2,
-                                  //   thickness: 1,
-                                  //   indent: 15,
-                                  //   endIndent: 15,
-                                  // ),
                                 ],
                               ),
                             )),

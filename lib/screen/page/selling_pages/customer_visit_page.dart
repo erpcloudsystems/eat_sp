@@ -14,6 +14,8 @@ import '../../../models/page_models/selling_page_model/customer_visit_page_model
 class CustomerVisitPage extends StatelessWidget {
   const CustomerVisitPage({Key? key}) : super(key: key);
 
+
+  
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
@@ -38,7 +40,7 @@ class CustomerVisitPage extends StatelessWidget {
                   disableCreate:
                       (data['docstatus'].toString() == "1") ? false : true,
                 ),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

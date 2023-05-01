@@ -57,8 +57,13 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] =
         (provider.isEditing) ? [] : context.read<UserProvider>().defaultTax;
@@ -111,8 +116,8 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
             builder: (_) => GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['quotation_name'] != null) {
-      context.read<ModuleProvider>().pushPage(res['message']['quotation_name']);
+    } else if (res != null && res['message']['supplier_quotation_name'] != null) {
+      context.read<ModuleProvider>().pushPage(res['message']['supplier_quotation_name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
@@ -125,10 +130,11 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
 
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing) {
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
@@ -203,6 +209,14 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

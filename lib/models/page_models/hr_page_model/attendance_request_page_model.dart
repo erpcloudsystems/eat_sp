@@ -35,8 +35,8 @@ class AttendanceRequestPageModel {
         tr("Explanation"): data['explanation'] ?? tr('none'),
       },
       {
-        tr("Longitude"): data['longitude'].toString(),
-        tr("Latitude"): data['latitude'].toString(),
+        tr("Longitude"): (data['longitude'] ?? tr('none')).toString(),
+        tr("Latitude"): (data['latitude'] ?? tr('none')).toString(),
       },
     ];
   }

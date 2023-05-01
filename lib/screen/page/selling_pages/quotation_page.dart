@@ -1,18 +1,17 @@
-import '../../../provider/module/module_provider.dart';
-import '../../form/selling_forms/sales_order_form.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/create_from_page/create_from_page_button.dart';
-import '../../../widgets/create_from_page/create_from_page_consts.dart';
-import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/page_models/selling_page_model/quotation_page_model.dart';
-import '../../../widgets/comments_button.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
+import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
+import '../../../models/page_models/selling_page_model/quotation_page_model.dart';
 
 class QuotationPage extends StatelessWidget {
   const QuotationPage({Key? key}) : super(key: key);
@@ -53,7 +52,7 @@ class QuotationPage extends StatelessWidget {
                 Text('Quotation',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

@@ -42,13 +42,14 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
         .clear(); // this to clear items before go new form
     super.deactivate();
   }
-  
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
       // Adding Mode only
-      if ((!context.read<ModuleProvider>().isEditing) &&
-          (!context.read<ModuleProvider>().isCreateFromPage)) {
+      if (!context.read<ModuleProvider>().isEditing &&
+          !context.read<ModuleProvider>().isCreateFromPage &&
+          !context.read<ModuleProvider>().isAmendingMode) {
         InheritedForm.of(context).items.clear();
       }
     });

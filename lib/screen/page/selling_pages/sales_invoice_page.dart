@@ -47,7 +47,7 @@ class SalesInvoicePage extends StatelessWidget {
                       ? false
                       : true,
                 ),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null)
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child:
@@ -65,7 +65,7 @@ class SalesInvoicePage extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                             ],
+              ],
             ),
             Padding(
                 padding: const EdgeInsets.all(4.0),

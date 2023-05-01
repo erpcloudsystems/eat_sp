@@ -56,8 +56,13 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
     }
 
     final provider = context.read<ModuleProvider>();
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] =
         (provider.isEditing) ? [] : context.read<UserProvider>().defaultTax;
@@ -124,9 +129,10 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
   @override
   void initState() {
+    var provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         InheritedForm.of(context).data['buying_price_list'] =
@@ -226,11 +232,23 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
         data.remove('status');
         data.remove('organization_lead');
         print('sdfsdfsd${data['items']}');
+
+        if(provider.isAmendingMode){
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
         setState(() {});
       });
     }
   }
 
+  @override
+  void deactivate() {
+    var provider = Provider.of<ModuleProvider>(context);
+    if(provider.isAmendingMode)
+      provider.amendDoc = false;
+    super.deactivate();
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

@@ -2,10 +2,10 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/constants.dart';
-import '../../provider/module/module_provider.dart';
-import '../../widgets/nothing_here.dart';
 import 'page_screen.dart';
+import '../../core/constants.dart';
+import '../../widgets/nothing_here.dart';
+import '../../provider/module/module_provider.dart';
 
 class GenericPage extends StatelessWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -25,6 +25,19 @@ class GenericPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              final provider = context.read<ModuleProvider>();
+              // We use this method to navigate back to "List Screen", and only in "Amended Mode".
+              if (provider.isAmended) {
+                provider.pushPage(provider.previousPageId);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => GenericPage()));
+                provider.NotifyAmended = false;
+              }
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back_ios_new)),
         title: Padding(
           padding: const EdgeInsets.only(top: 3),
           child: Text(

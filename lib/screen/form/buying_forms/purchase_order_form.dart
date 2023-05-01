@@ -53,8 +53,13 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['purchase_order_items'] = null;
     data['child_purchase_taxes_and_charges'] = null;
 
@@ -119,9 +124,10 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
@@ -205,6 +211,14 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

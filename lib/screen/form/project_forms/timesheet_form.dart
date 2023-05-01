@@ -38,8 +38,11 @@ class _TimesheetFormState extends State<TimesheetForm> {
       return;
     }
 
-    _formKey.currentState!.save();
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
 
+    _formKey.currentState!.save();
+    data['docstatus'] = 0;
     showLoadingDialog(
         context,
         provider.isEditing
@@ -83,9 +86,10 @@ class _TimesheetFormState extends State<TimesheetForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         customerName = data['customer'];
@@ -99,16 +103,23 @@ class _TimesheetFormState extends State<TimesheetForm> {
         data = context.read<ModuleProvider>().createFromPageData;
         data['doctype'] = "Timesheet";
         print('${data['items']}');
+
+        if(provider.isAmendingMode){
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
         setState(() {});
       });
     }
   }
 
+  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
-  void dispose() {
-    // TODO: implement dispose
-    Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
-    super.dispose();
+  void deactivate() async{
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+     provider.clearTimeSheet = await [];
+    super.deactivate();
   }
 
   @override
@@ -116,10 +127,11 @@ class _TimesheetFormState extends State<TimesheetForm> {
     List? timeLogs = data['time_logs'];
     List timeSheetData = Provider.of<ModuleProvider>(context).getTimeSheetData;
     data['time_logs'] = timeSheetData;
-    if (context.read<ModuleProvider>().isEditing) {
-      timeLogs!.map((e) {
+    if (context.read<ModuleProvider>().isEditing ||
+        context.read<ModuleProvider>().isAmendingMode ) {
+      timeLogs?.map((e) {
         Provider.of<ModuleProvider>(context).setTimeSheet = e;
-      }).toList();
+      }).toList() ?? [];
     }
     return WillPopScope(
       onWillPop: () async {
@@ -289,9 +301,10 @@ class _TimesheetFormState extends State<TimesheetForm> {
                             ],
                           ),
                         ),
+                        /// Time Logs list
                         if (timeSheetData.isNotEmpty)
                           SizedBox(
-                            height: 200,
+                            height: 190,
                             child: ListView.builder(
                               itemCount: timeSheetData.length,
                               itemBuilder: (context, index) {

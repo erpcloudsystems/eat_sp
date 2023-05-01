@@ -53,6 +53,9 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
       return;
     }
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
     final server = APIService();
@@ -104,11 +107,13 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    // 2 check amend mode
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
@@ -120,7 +125,6 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
               selectedCstData['city'] = data['city'];
               selectedCstData['country'] = data['country'];
             }));
-
         setState(() {});
       });
   }
@@ -131,6 +135,14 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override
@@ -155,13 +167,14 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                 : Text("Create Customer Visit".tr()),
             actions: [
               Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                  ))
+                color: Colors.transparent,
+                shape: CircleBorder(),
+                clipBehavior: Clip.hardEdge,
+                child: IconButton(
+                  onPressed: submit,
+                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
+                ),
+              )
             ],
           ),
           body: Form(

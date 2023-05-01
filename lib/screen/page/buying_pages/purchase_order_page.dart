@@ -42,7 +42,7 @@ class PurchaseOrderPage extends StatelessWidget {
                   disableCreate:
                       (data['docstatus'].toString() == "1") ? false : true,
                 ),
-                if (data['docstatus'] != null)
+                if (data['docstatus'] != null && data['amended_to'] == null )
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(

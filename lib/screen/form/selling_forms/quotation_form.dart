@@ -83,8 +83,14 @@ class _QuotationFormState extends State<QuotationForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    // 1 Call Amend function
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
     InheritedForm.of(context)
@@ -114,7 +120,6 @@ class _QuotationFormState extends State<QuotationForm> {
 
     if (provider.isEditing && res == false)
       return;
-    //else if (provider.isEditing && res == null) Navigator.pop(context);\
     else if (provider.isEditing) Navigator.pop(context);
 
     if (context.read<ModuleProvider>().isCreateFromPage) {
@@ -140,16 +145,19 @@ class _QuotationFormState extends State<QuotationForm> {
   @override
   void initState() {
     super.initState();
+
+    final provider = context.read<ModuleProvider>();
+    
     //Adding Mode
-    if (!context.read<ModuleProvider>().isEditing) {
+    if (!provider.isEditing) {
       data['tc_name'] =
           context.read<UserProvider>().companyDefaults['default_selling_terms'];
       setState(() {});
     }
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
               selectedCstData['address_line1'] =
                   formatDescription(data['address_line1']);
@@ -169,9 +177,9 @@ class _QuotationFormState extends State<QuotationForm> {
       });
 
     //DocFromPage Mode
-    if (context.read<ModuleProvider>().isCreateFromPage) {
+    if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().createFromPageData;
+        data = provider.createFromPageData;
         print(data.toString());
 
         data['transaction_date'] = DateTime.now().toIso8601String();
@@ -229,11 +237,19 @@ class _QuotationFormState extends State<QuotationForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-        print('asdfsf1${data['customer_name']}');
+        print('${data['customer_name']}');
 
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override
@@ -403,8 +419,7 @@ class _QuotationFormState extends State<QuotationForm> {
                               ((selectedCstData['quotation_validaty_days'] !=
                                       '0')
                                   ? DateTime.now()
-                                      .add(
-                                        Duration(
+                                      .add(Duration(
                                           days: int.parse(selectedCstData[
                                                   'quotation_validaty_days']
                                               .toString())))
@@ -599,6 +614,7 @@ class _QuotationFormState extends State<QuotationForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       if (data['price_list_currency'] != null)
                         Align(

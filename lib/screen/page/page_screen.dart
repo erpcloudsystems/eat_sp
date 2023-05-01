@@ -1,19 +1,19 @@
 import 'dart:io';
 
-import '../../core/constants.dart';
-import '../../service/server_exception.dart';
-import '../../service/service.dart';
-import '../../service/service_constants.dart';
-import '../../provider/module/module_provider.dart';
-import '../../provider/user/user_provider.dart';
-import '../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants.dart';
+import '../../service/service.dart';
+import '../../widgets/snack_bar.dart';
+import '../../service/server_exception.dart';
+import '../../service/service_constants.dart';
+import '../../provider/user/user_provider.dart';
 import '../../widgets/dialog/loading_dialog.dart';
+import '../../provider/module/module_provider.dart';
 
 void showAttachments(BuildContext context) {
   showModalBottomSheet(
@@ -85,11 +85,12 @@ void showAttachments(BuildContext context) {
   );
 }
 
-Widget submitDocument(
-    {required int docStatus,
-    required void Function() onSubmitted,
-    required String id,
-    required String docType}) {
+Widget submitDocument({
+  required int docStatus,
+  required void Function() onSubmitted,
+  required String id,
+  required String docType,
+}) {
   switch (docStatus) {
     case (0):
       return SubmitButton();
@@ -110,7 +111,7 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: SUBMIT_BUTTON_COLOR,
+            backgroundColor: SUBMIT_BUTTON_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () => context.read<ModuleProvider>().submitDocument(context),
@@ -126,7 +127,7 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: CANCEL_BUTTON_COLOR,
+            backgroundColor: CANCEL_BUTTON_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () =>
@@ -143,17 +144,19 @@ class AmendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: AMEND_BUTTON_COLOR,
+            backgroundColor: AMEND_BUTTON_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
-        onPressed: () => null,
-        //context.read<ModuleProvider>().cancelledDocument(context),
+        onPressed: () {
+          Provider.of<ModuleProvider>(context, listen: false).amendDoc = true;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) =>
+                  context.read<ModuleProvider>().currentModule.createForm!));
+        },
         child: Text('Amend',
             style: const TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
-
-// Future<String?> selectPrintFormat(List<String> formats, String title) async {}
 
 class SelectFormatDialog extends StatelessWidget {
   final List<String> formats;
@@ -282,14 +285,14 @@ class PageAppBar extends StatefulWidget {
   final VoidCallback? onAttachmentAdded;
   final ValueNotifier<List<String>> pdfFormats;
 
-  const PageAppBar(
-      {Key? key,
-      required this.docType,
-      required this.id,
-      required this.pdfFormats,
-      required this.attachments,
-      this.onAttachmentAdded})
-      : super(key: key);
+  const PageAppBar({
+    Key? key,
+    required this.docType,
+    required this.id,
+    required this.pdfFormats,
+    required this.attachments,
+    this.onAttachmentAdded,
+  }) : super(key: key);
 
   @override
   State<PageAppBar> createState() => _PageAppBarState();

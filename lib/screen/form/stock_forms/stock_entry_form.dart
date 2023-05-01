@@ -49,6 +49,10 @@ class _StockEntryFormState extends State<StockEntryForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
     data['items'] = [];
@@ -97,9 +101,10 @@ class _StockEntryFormState extends State<StockEntryForm> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
 
@@ -110,8 +115,21 @@ class _StockEntryFormState extends State<StockEntryForm> {
           _items.add(ItemQuantity(item, qty: item.qty));
         });
 
+        if(provider.isAmendingMode){
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
+
         setState(() {});
       });
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

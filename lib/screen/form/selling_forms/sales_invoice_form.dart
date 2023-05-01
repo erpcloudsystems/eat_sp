@@ -72,8 +72,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
@@ -143,8 +148,10 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
   void initState() {
     super.initState();
 
-    //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    final provider = context.read<ModuleProvider>();
+    
+    //Editing Mode and Amending Mode
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
@@ -186,10 +193,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                 .items
                 .add(ItemSelectModel.fromJson(element));
           });
-
         }
-          InheritedForm.of(context).data['selling_price_list'] =
-              data['selling_price_list'];
+        InheritedForm.of(context).data['selling_price_list'] =
+            data['selling_price_list'];
 
         data['posting_date'] = DateTime.now().toIso8601String();
         data['is_return'] = 0;
@@ -262,6 +268,14 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
+  } 
+
+   // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override

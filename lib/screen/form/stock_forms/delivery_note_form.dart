@@ -1,21 +1,21 @@
-import '../../../models/page_models/stock_page_model/delivery_note_page_model.dart';
-import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../provider/user/user_provider.dart';
 import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/stock_page_model/delivery_note_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -47,6 +47,10 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
     _formKey.currentState!.save();
 
     data['items'] = [];
@@ -83,7 +87,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     if (provider.isEditing && res == false)
       return;
     else if (provider.isEditing && res == null) Navigator.pop(context);
-    //else if (provider.isEditing) Navigator.pop(context);
 
     if (context.read<ModuleProvider>().isCreateFromPage) {
       if (res != null && res['message']['delivery_note'] != null)
@@ -110,16 +113,18 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
   @override
   void initState() {
     super.initState();
+
+    final provider = context.read<ModuleProvider>();
     //Adding Mode
-    if (!context.read<ModuleProvider>().isEditing) {
+    if (!provider.isEditing && !provider.isAmendingMode ) {
       data['tc_name'] =
           context.read<UserProvider>().companyDefaults['default_selling_terms'];
       setState(() {});
     }
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
               selectedCstData['address_line1'] =
                   formatDescription(data['address_display']);
@@ -140,13 +145,18 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
 
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
+
         setState(() {});
       });
 
     //DocFromPage Mode
-    if (context.read<ModuleProvider>().isCreateFromPage) {
+    if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().createFromPageData;
+        data = provider.createFromPageData;
 
         InheritedForm.of(context).items.clear();
         data['items'].forEach((element) {
@@ -179,7 +189,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
         _getCustomerData(data['customer_name']).then((value) => setState(() {
               data['currency'] = selectedCstData['default_currency'];
               data['price_list_currency'] = selectedCstData['default_currency'];
-              // data['payment_terms_template'] = selectedCstData['payment_terms'] ;
               data['customer_address'] =
                   selectedCstData["customer_primary_address"];
               data['contact_person'] =
@@ -205,6 +214,14 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     }
   }
 
+   // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

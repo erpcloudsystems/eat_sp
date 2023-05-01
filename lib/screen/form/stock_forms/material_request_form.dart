@@ -2,21 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../models/page_models/stock_page_model/material_request_page_model.dart';
-import '../../../provider/module/module_provider.dart';
+import '../../page/generic_page.dart';
 import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/item_card.dart';
+import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/item_card.dart';
-import '../../../widgets/list_card.dart';
-import '../../../widgets/snack_bar.dart';
-import '../../list/otherLists.dart';
-import '../../page/generic_page.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/stock_page_model/material_request_page_model.dart';
 
 const List<String> purposeType = [
   'Purchase',
@@ -55,23 +53,19 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
+    if (_items.isEmpty) {
+      showSnackBar('Please add an item at least', context);
+      return;
+    }
 
-    // if (InheritedForm.of(context).items.isEmpty) {
-    //   showSnackBar('Please add an item at least', context);
-    //   return;
-    // }
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeAmendingFunction(context, data);
+
     _formKey.currentState!.save();
 
     data['items'] = [];
-    InheritedForm.of(context).items.forEach((element) {
-      if (data['is_return'] == 1) element.qty = element.qty * -1;
-      data['items'].add(element.toJson);
-    });
 
-    //DocFromPage Mode from Sales Order
-    data['items'].forEach((element) {
-      element['sales_order'] = data['sales_order'];
-    });
+    _items.forEach((element) => data['items'].add(element.toJson));
 
     final server = APIService();
 
@@ -123,10 +117,12 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
   void initState() {
     super.initState();
 
+    final provider = context.read<ModuleProvider>();
+
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.isAmendingMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
 
         final items = MaterialRequestPageModel(context, data).items;
 
@@ -135,12 +131,18 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
           _items.add(ItemQuantity(item, qty: item.qty));
         });
 
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
+
         setState(() {});
       });
+
     //DocFromPage Mode
-    if (context.read<ModuleProvider>().isCreateFromPage) {
+    if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().createFromPageData;
+        data = provider.createFromPageData;
         InheritedForm.of(context).items.clear();
 
         data['items'].forEach((element) {
@@ -171,10 +173,18 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-        print('sdfsdfsd${data['items']}');
+        print('${data['items']}');
         setState(() {});
       });
     }
+  }
+
+  // Here we stop the "Amending mode" to clear the data for the next creation.
+  @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (provider.isAmendingMode) provider.amendDoc = false;
+    super.deactivate();
   }
 
   @override
@@ -246,20 +256,8 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
                                         selectCustomerScreen()));
                             if (res != null) {
                               id = res['name'];
-                              //await _getCustomerData(res['name']);
                               setState(() {
                                 data['customer'] = res['name'];
-                                // data['customer_name'] = res['customer_name'];
-                                // data['territory'] = res['territory'];
-                                // data['customer_group'] = res['customer_group'];
-                                // data['customer_address'] =
-                                //     res["customer_primary_address"];
-                                // data['contact_person'] =
-                                //     res["customer_primary_contact"];
-                                // data['currency'] = res['default_currency'];
-                                // data['price_list_currency'] =
-                                //     res['default_currency'];
-                                //
                               });
                             }
 
@@ -367,15 +365,6 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
                                 ),
                               ),
                               Divider(),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTitle(
-                                      title: 'Total',
-                                      value: currency(totalAmount)),
-                                ],
-                              ),
                             ],
                           ),
                         ),
@@ -420,6 +409,8 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
                                             padding: const EdgeInsets.only(
                                                 left: 16, right: 16),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Expanded(
                                                     child: CustomTextField(
@@ -456,42 +447,23 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
                                                 SizedBox(width: 12),
                                                 Expanded(
                                                     child: CustomTextField(
-                                                  'rate',
-                                                  'Rate',
-                                                  initialValue:
-                                                      _items[index].rate == 0.0
-                                                          ? null
-                                                          : _items[index]
-                                                              .rate
-                                                              .toString(),
-                                                  keyboardType:
-                                                      TextInputType.number,
+                                                  'uom',
+                                                  'UOM',
                                                   disableError: true,
-                                                  onSave: (_, value) =>
-                                                      _items[index].rate =
-                                                          double.parse(value),
-                                                  onChanged: (value) {
-                                                    _items[index].rate =
-                                                        double.parse(value);
-                                                    _items[index].total =
-                                                        _items[index].qty *
-                                                            _items[index].rate;
-                                                    Future.delayed(
-                                                        Duration(seconds: 1),
-                                                        () => setState(() {}));
-                                                  },
-                                                )),
-                                                SizedBox(width: 12),
-                                                Expanded(
-                                                    child: CustomTextField(
-                                                  'amount',
-                                                  'Amount',
-                                                  initialValue: (_items[index]
-                                                              .qty *
-                                                          _items[index].rate)
+                                                  initialValue: _items[index]
+                                                      .stockUom
                                                       .toString(),
-                                                  enabled: false,
-                                                  disableError: true,
+                                                  onPressed: () async {
+                                                    final res = await Navigator
+                                                            .of(context)
+                                                        .push(MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                filteredUOMListScreen(
+                                                                    _items[index]
+                                                                        .itemCode
+                                                                        .toString())));
+                                                    return res['uom'];
+                                                  },
                                                 )),
                                                 SizedBox(width: 12),
                                               ],
