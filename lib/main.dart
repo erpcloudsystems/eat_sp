@@ -1,23 +1,25 @@
 import 'dart:io';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'new_version/core/global/dependency_container.dart' as di;
+
 import 'core/constants.dart';
-import 'new_version/core/global/bloc_observer.dart';
-import 'new_version/core/global/state_managment.dart';
-import 'new_version/core/resources/routes.dart';
-import 'provider/user/user_provider.dart';
 import 'screen/home_screen.dart';
 import 'screen/other/login_screen.dart';
 import 'screen/other/splash_screen.dart';
+import 'provider/user/user_provider.dart';
+import 'new_version/core/resources/routes.dart';
+import 'new_version/core/global/bloc_observer.dart';
+import 'new_version/core/global/state_managment.dart';
+import 'new_version/core/global/dependency_container.dart' as di;
 
 class MyHttpOverrides extends HttpOverrides {
   @override

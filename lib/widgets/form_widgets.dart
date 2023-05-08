@@ -85,6 +85,12 @@ const List<String> ProjectPriorityList = [
   'High',
   'Urgent',
 ];
+
+const List<String> AssignToPriorityList = [
+  'Low',
+  'Medium',
+  'High',
+];
 const List<String> TimeSheetList = [
   'Draft',
   'Cancelled',

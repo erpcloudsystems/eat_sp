@@ -81,6 +81,7 @@ const EXPENSE_CLAIM_POST = 'method/ecs_mobile.add.expense_claim';
 const EXPENSE_CLAIM_UPDATE = '';
 const PAYABLE_ACCOUNT =
     'method/ecs_mobile.general.general_service?doctype=Account';
+const ASSIGN_TO = 'method/ecs_mobile.doctype_assign.assign';
 
 const CAMPAIGN = 'resource/Campaign';
 const SOURCE = 'resource/Lead Source';

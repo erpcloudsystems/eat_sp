@@ -2,6 +2,8 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../new_version/core/utils/animated_dialog.dart';
+import '../../widgets/assign_widget/assgin_dialog.dart';
 import 'page_screen.dart';
 import '../../core/constants.dart';
 import '../../widgets/nothing_here.dart';
@@ -114,6 +116,25 @@ class GenericPage extends StatelessWidget {
                           Icons.attach_file,
                           color: Colors.white,
                         )))),
+          ),
+          IconButton(
+            onPressed: () {
+              AnimatedDialog.showAnimatedDialog(
+                context,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 35,
+                  ),
+                  child: AssignToDialog(),
+                ),
+              );
+            },
+            splashRadius: 20,
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

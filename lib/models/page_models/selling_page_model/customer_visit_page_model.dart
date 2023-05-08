@@ -25,9 +25,9 @@ class CustomerVisitPageModel {
         tr("Time"): data['time'] ?? 'none',
       },
       {
-        tr("Description"): data['description'] ?? tr('none'),
         tr("Status"):
             int.parse(data['docstatus'].toString()).convertStatusToString(),
+        tr("Description"): data['description'] ?? tr('none'),
       },
     ];
   }

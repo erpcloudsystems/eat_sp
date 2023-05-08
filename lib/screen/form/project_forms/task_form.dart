@@ -312,7 +312,8 @@ class _TaskFormState extends State<TaskForm> {
                               child: CustomTextField(
                                 'progress',
                                 'Progress',
-                                initialValue: data['progress'] ?? "0.0",
+                                initialValue:
+                                    (data['progress'] ?? 0).toString(),
                                 disableValidation: false,
                                 clearButton: true,
                                 validator: (value) =>

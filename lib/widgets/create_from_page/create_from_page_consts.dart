@@ -19,7 +19,7 @@ import '../../screen/form/buying_forms/supplier_quotation_form.dart';
 //Lead
 Map<String, Widget> fromLead = {
   'Customer': CustomerForm(),
-  'Opportunity': OpportunityForm(),
+  'Opportunity': InheritedForm(child: OpportunityForm()),
   'Quotation': InheritedForm(child: QuotationForm()),
 };
 //Opportunity
@@ -64,7 +64,7 @@ Map<String, Widget> fromDeliveryNote = {
 
 // Customer Visit:
 Map<String, Widget> fromCustomerVisit = {
-  DocTypesName.salesInvoice: InheritedForm(child:SalesInvoiceForm()),
+  DocTypesName.salesInvoice: InheritedForm(child: SalesInvoiceForm()),
   DocTypesName.salesOrder: InheritedForm(child: SalesOrderForm()),
   DocTypesName.paymentEntry: PaymentForm(),
 };

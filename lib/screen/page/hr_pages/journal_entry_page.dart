@@ -1,8 +1,10 @@
+import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/cloud_system_widgets.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
@@ -53,6 +55,33 @@ class JournalEntryPage extends StatelessWidget {
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
+          swapWidgets: [
+            SwapWidget(
+              2,
+              statusColor(int.parse(data['docstatus'].toString())
+                          .convertStatusToString()) !=
+                      Colors.transparent
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.circle,
+                            color: statusColor(
+                                int.parse(data['docstatus'].toString())
+                                    .convertStatusToString()),
+                            size: 12),
+                        SizedBox(width: 8),
+                        FittedBox(
+                          child: Text(int.parse(data['docstatus'].toString())
+                              .convertStatusToString()),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ],
+                    )
+                  : Text(int.parse(data['docstatus'].toString())
+                      .convertStatusToString()),
+            )
+          ],
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,

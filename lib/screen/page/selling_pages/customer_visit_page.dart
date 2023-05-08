@@ -1,7 +1,9 @@
+import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/cloud_system_widgets.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/comments_button.dart';
@@ -14,8 +16,6 @@ import '../../../models/page_models/selling_page_model/customer_visit_page_model
 class CustomerVisitPage extends StatelessWidget {
   const CustomerVisitPage({Key? key}) : super(key: key);
 
-
-  
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
@@ -71,6 +71,33 @@ class CustomerVisitPage extends StatelessWidget {
         PageCard(
           color: color,
           items: model.card2Items,
+          swapWidgets: [
+            SwapWidget(
+              2,
+              statusColor(int.parse(data['docstatus'].toString())
+                          .convertStatusToString()) !=
+                      Colors.transparent
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.circle,
+                            color: statusColor(
+                                int.parse(data['docstatus'].toString())
+                                    .convertStatusToString()),
+                            size: 12),
+                        SizedBox(width: 8),
+                        FittedBox(
+                          child: Text(int.parse(data['docstatus'].toString())
+                              .convertStatusToString()),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ],
+                    )
+                  : Text(int.parse(data['docstatus'].toString())
+                      .convertStatusToString()),
+            )
+          ],
         ),
         PageCard(
           color: color,
