@@ -11,12 +11,14 @@ class DocTypesName {
   static const String paymentEntry = 'Payment Entry';
   static const String salesInvoice = 'Sales Invoice';
   static const String salesOrder = 'Sales Order';
-  
+
   static const String timesheet = 'Timesheet';
   static const String project = 'Project';
   static const String issue = 'Issue';
   static const String task = 'Task';
-  
+
+  static const String workflow = 'Workflow';
+
   static const String reports = 'Mobile Report';
   static const String materialRequest = 'Material Request';
 }

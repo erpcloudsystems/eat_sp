@@ -113,6 +113,11 @@ class APIService {
   static const STATUS = 'Status';
   static const ACTIVITY = 'Activity Type';
 
+  //Workflow
+  static const WORKFLOW = 'Workflow';
+
+  static const DOC_TYPE = 'DocType';
+
   // Reports
   static const REPORTS = 'Mobile Report';
 

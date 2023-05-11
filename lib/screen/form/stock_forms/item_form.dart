@@ -1,19 +1,20 @@
 import 'dart:io';
-import '../../../core/constants.dart';
 
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../list/otherLists.dart';
+import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../widgets/inherited_widgets/item/add_uom_list.dart';
 import '../../../widgets/inherited_widgets/item/uom_table_model.dart';
-import '../../page/generic_page.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -49,6 +50,9 @@ class _ItemFormState extends State<ItemForm> {
       return;
     }
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     showLoadingDialog(
@@ -60,8 +64,6 @@ class _ItemFormState extends State<ItemForm> {
     final server = APIService();
 
     for (var k in data.keys) print("➡️ \"$k\": \"${data[k]}\"");
-
-    //dev.log("➡️ 00001 $data ");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -85,9 +87,11 @@ class _ItemFormState extends State<ItemForm> {
   @override
   void initState() {
     super.initState();
-    if (context.read<ModuleProvider>().isEditing)
+
+    final provider = context.read<ModuleProvider>();
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         for (var k in data.keys) print("➡️ \"$k\": \"${data[k]}\"");
 
         data['uoms'].forEach((element) =>
@@ -95,6 +99,12 @@ class _ItemFormState extends State<ItemForm> {
 
         setState(() {});
       });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

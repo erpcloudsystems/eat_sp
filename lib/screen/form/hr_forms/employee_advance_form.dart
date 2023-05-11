@@ -1,16 +1,18 @@
-import '../../../models/page_models/model_functions.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
 
 import '../../list/otherLists.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
 
 class EmployeeAdvanceForm extends StatefulWidget {
   const EmployeeAdvanceForm({Key? key}) : super(key: key);
@@ -38,6 +40,9 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     final server = APIService();
@@ -49,7 +54,7 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Employee Advance');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -88,14 +93,19 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
   @override
   void initState() {
     super.initState();
-
-    if (context.read<ModuleProvider>().isEditing)
+    final provider = context.read<ModuleProvider>();
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
-
+        data = provider.updateData;
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
         setState(() {});
       });
+  }
+
+@override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

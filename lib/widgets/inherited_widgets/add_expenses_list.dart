@@ -1,17 +1,18 @@
 import 'dart:async';
 
-import '../../models/page_models/model_functions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants.dart';
-import '../../models/list_models/hr_list_model/expense_table_model.dart';
-import '../../provider/module/module_provider.dart';
-import '../../screen/list/otherLists.dart';
-import '../../service/service.dart';
-import '../form_widgets.dart';
+
 import '../list_card.dart';
+import '../form_widgets.dart';
+import '../../core/constants.dart';
+import '../../service/service.dart';
 import '../ondismiss_tutorial.dart';
+import '../../screen/list/otherLists.dart';
+import '../../provider/module/module_provider.dart';
+import '../../models/page_models/model_functions.dart';
+import '../../models/list_models/hr_list_model/expense_table_model.dart';
 
 class InheritedExpenseForm extends InheritedWidget {
   InheritedExpenseForm(
@@ -53,7 +54,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   };
   @override
   void initState() {
-    if (!context.read<ModuleProvider>().isEditing) // Not Editing
+    final provider = context.read<ModuleProvider>();
+    if (!provider.isEditing && !provider.duplicateMode) // Not Editing
       Future.delayed(Duration.zero).then((value) {
         InheritedExpenseForm.of(context).expense.clear();
         InheritedExpenseForm.of(context).taxData.clear();
@@ -75,12 +77,6 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
             'method/ecs_mobile.general.general_service?doctype=' +
                 APIService.COMPANY))['message'][0]['round_off_cost_center'];
     print('asdas${InheritedExpenseForm.of(context).taxData['cost_center']}');
-  }
-
-  @override
-  void dispose() {
-    print('dispose called');
-    super.dispose();
   }
 
   @override

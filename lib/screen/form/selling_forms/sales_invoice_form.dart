@@ -76,6 +76,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['docstatus'] = 0;
@@ -149,9 +152,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     super.initState();
 
     final provider = context.read<ModuleProvider>();
-    
+
     //Editing Mode and Amending Mode
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
@@ -268,14 +271,12 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
-  } 
+  }
 
-   // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

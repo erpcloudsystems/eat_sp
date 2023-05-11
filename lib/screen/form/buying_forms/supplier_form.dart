@@ -1,18 +1,17 @@
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../../widgets/snack_bar.dart';
-import '../../list/generic_list_screen.dart';
 import '../../list/otherLists.dart';
+import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class SupplierForm extends StatefulWidget {
   const SupplierForm({Key? key}) : super(key: key);
@@ -38,6 +37,10 @@ class _SupplierFormState extends State<SupplierForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     final server = APIService();
@@ -74,7 +77,8 @@ class _SupplierFormState extends State<SupplierForm> {
   void initState() {
     super.initState();
 
-    if (!context.read<ModuleProvider>().isEditing) {
+    final provider = context.read<ModuleProvider>();
+    if (!provider.isEditing) {
       data['country'] = context.read<UserProvider>().companyDefaults['country'];
       data['default_currency'] = context
           .read<UserProvider>()
@@ -84,12 +88,18 @@ class _SupplierFormState extends State<SupplierForm> {
       setState(() {});
     }
 
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         removeWhenUpdate = data.isEmpty;
         setState(() {});
       });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
@@ -230,6 +240,7 @@ class _SupplierFormState extends State<SupplierForm> {
 
                               return res['name'];
                             }
+                            return null;
                           }),
                       CustomTextField(
                           'payment_terms', 'Payment Terms Template'.tr(),

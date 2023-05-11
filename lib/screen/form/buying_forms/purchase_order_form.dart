@@ -57,6 +57,9 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['docstatus'] = 0;
@@ -127,7 +130,7 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
     final provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
@@ -213,12 +216,10 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
@@ -539,6 +540,7 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       CustomTextField(
                           'price_list_currency', 'Price List Currency',

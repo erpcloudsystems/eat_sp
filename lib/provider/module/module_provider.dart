@@ -42,6 +42,7 @@ class ModuleProvider extends ChangeNotifier {
 
   bool _isAmended = false;
 
+  bool _duplicateMode = false;
 
   /// id of the pushing page_models
   String _pageId = '';
@@ -64,6 +65,21 @@ class ModuleProvider extends ChangeNotifier {
 
   String get loadCount => _loadCount;
 
+  //Workflow list
+  List<dynamic> workflowStates = [];
+  List<dynamic> workflowTransitions = [];
+
+  void setWorkflowStateList(Map<String,dynamic> data){
+    workflowStates.add(data);
+    notifyListeners();
+  }
+
+  void setWorkflowTransitionsList(Map<String,dynamic> data){
+    workflowTransitions.add(data);
+    notifyListeners();
+  }
+
+
   int? get pageSubmitStatus => _pageSubmitStatus;
 
   Map<String, dynamic> get filter => _filter;
@@ -83,6 +99,8 @@ class ModuleProvider extends ChangeNotifier {
   bool get isAmendingMode => _amendDoc;
 
   bool get isAmended => _isAmended;
+
+  bool get duplicateMode => _duplicateMode;
 
   /// used for connection card, to know if it is the first connection route to push or not
   bool get isSecondModule => _oldData.isNotEmpty;
@@ -161,6 +179,10 @@ class ModuleProvider extends ChangeNotifier {
   set amendDoc(bool initialize) => _amendDoc = initialize;
 
   set NotifyAmended(bool amended) => _isAmended = amended;
+
+  set setDuplicateMode(bool setMode) => _duplicateMode = setMode;
+
+  set setEditingMode(bool setEdit) => _editPage = setEdit;
 
   set setModule(String doctype) {
     switch (doctype) {
@@ -264,6 +286,10 @@ class ModuleProvider extends ChangeNotifier {
         break;
       case APIService.ISSUE:
         _currentModule = ModuleType.issue;
+        break;
+
+      case APIService.WORKFLOW:
+        _currentModule = ModuleType.workflow;
         break;
     }
     _filter.clear();
@@ -621,5 +647,20 @@ class ModuleProvider extends ChangeNotifier {
       data.remove('name');
       NotifyAmended = true;
     }
+  }
+
+  void initializeDuplicationMode(Map<String, dynamic> data) {
+    if (duplicateMode) {
+      data['doctype'] = currentModule.title;
+      data.remove('name');
+      if (data['amended_from'] != null) data.remove('amended_from');
+    }
+  }
+
+  /// This function reset the creation form to clear all the data after leaving it
+  void resetCreationForm() {
+    _editPage = false;
+    _amendDoc = false;
+    _duplicateMode = false;
   }
 }

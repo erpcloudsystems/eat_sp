@@ -1,3 +1,4 @@
+import 'package:NextApp/screen/sorting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -142,6 +143,24 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
                       icon: Icon(Icons.add, color: APPBAR_ICONS_COLOR),
                     ),
                   ),
+                CustomShowCase(
+                  globalKey: sortingGK,
+                  title: 'Sorting',
+                  description: 'Click here to sorting',
+                  child: IconButton(
+                    splashRadius: 20,
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SortingScreen(),
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.sort,
+                      color: APPBAR_ICONS_COLOR,
+                    ),
+                  ),
+                ),
                 if (moduleProvider.currentModule.filterWidget != null)
                   CustomShowCase(
                     globalKey: filterGK,

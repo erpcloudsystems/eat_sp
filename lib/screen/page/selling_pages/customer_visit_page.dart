@@ -1,13 +1,13 @@
-import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/cloud_system_widgets.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/extensions/status_converter.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
@@ -48,7 +48,7 @@ class CustomerVisitPage extends StatelessWidget {
                       child:
                           context.read<ModuleProvider>().submitDocumentWidget(),
                     ),
-                  )
+                  ),
               ],
             ),
             Stack(

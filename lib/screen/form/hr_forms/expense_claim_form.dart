@@ -1,22 +1,21 @@
-import '../../../core/constants.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/list_models/hr_list_model/expense_table_model.dart';
-import '../../../models/page_models/hr_page_model/expense_claim_page_model.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../../widgets/inherited_widgets/add_expenses_list.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/inherited_widgets/add_expenses_list.dart';
+import '../../../models/list_models/hr_list_model/expense_table_model.dart';
+import '../../../models/page_models/hr_page_model/expense_claim_page_model.dart';
 
 class ExpenseClaimForm extends StatefulWidget {
   const ExpenseClaimForm({Key? key}) : super(key: key);
@@ -40,6 +39,9 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     final server = APIService();
@@ -50,8 +52,7 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
       data['expenses'].add(element.toJson);
     });
 
-    print(
-        'rejewkhel${InheritedExpenseForm.of(context).taxData['cost_center']}');
+    log('${InheritedExpenseForm.of(context).taxData['cost_center']}');
     data['taxes'][0].remove('charge_type');
     data['taxes'][0]['rate'] = double.tryParse(
         (InheritedExpenseForm.of(context).taxData['rate'] ?? 0.0).toString());
@@ -66,9 +67,11 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
         context,
         provider.isEditing
             ? 'Updating ${provider.pageId}'
-            : 'Adding new Expense Claim');
+            : provider.duplicateMode
+                ? 'Duplicating Expense Claim ${provider.pageId}'
+                : 'Adding new Expense Claim');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -104,12 +107,14 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
   void initState() {
     super.initState();
 
+    final provider = context.read<ModuleProvider>();
+
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    if (context.read<ModuleProvider>().isEditing)
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        data = provider.updateData;
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
         final expenses = ExpenseClaimPageModel(context, data).expenses;
         expenses.forEach((element) => InheritedExpenseForm.of(context)
@@ -120,6 +125,12 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
 
         setState(() {});
       });
+  }
+
+@override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

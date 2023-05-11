@@ -1,20 +1,19 @@
-import '../../../provider/user/user_provider.dart';
-import '../../other/user_profile.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../service/gps_services.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../service/gps_services.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class CustomerForm extends StatefulWidget {
   const CustomerForm({Key? key}) : super(key: key);
@@ -50,6 +49,8 @@ class _CustomerFormState extends State<CustomerForm> {
       });
       return;
     }
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -98,9 +99,9 @@ class _CustomerFormState extends State<CustomerForm> {
   @override
   void initState() {
     super.initState();
-
+    final provider = context.read<ModuleProvider>();
     //Adding Mode
-    if (!context.read<ModuleProvider>().isEditing) {
+    if (!provider.isEditing) {
       data['default_currency'] = context
           .read<UserProvider>()
           .defaultCurrency
@@ -110,7 +111,7 @@ class _CustomerFormState extends State<CustomerForm> {
       setState(() {});
     }
 //Editing Mode
-    if (context.read<ModuleProvider>().isEditing) {
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         removeWhenUpdate = data.isEmpty;
@@ -171,6 +172,12 @@ class _CustomerFormState extends State<CustomerForm> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     location = await gpsService.getCurrentLocation(context);
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

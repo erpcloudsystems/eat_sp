@@ -1,22 +1,13 @@
 import 'dart:async';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../contact/email_table_model.dart';
-import '../contact/phone_table_model.dart';
-import 'uom_table_model.dart';
-import '../../snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import '../../../models/list_models/hr_list_model/expense_table_model.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../screen/list/otherLists.dart';
-import '../../../service/service.dart';
+
+import 'uom_table_model.dart';
 import '../../form_widgets.dart';
-import '../../item_card.dart';
-import '../../list_card.dart';
+import '../../../screen/list/otherLists.dart';
+import '../../../provider/module/module_provider.dart';
 
 class InheritedUOMForm extends InheritedWidget {
   InheritedUOMForm({
@@ -54,9 +45,10 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     Future.delayed(Duration.zero).then((value) {
       setState(() {
-        if (!context.read<ModuleProvider>().isEditing) {
+        if (!provider.isEditing && !provider.duplicateMode) {
           InheritedUOMForm.of(context).uoms.clear();
         }
       });

@@ -1,18 +1,20 @@
-import 'package:NextApp/screen/form/project_forms/add_time_sheet_dialog.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/page_group.dart';
+
+import 'add_time_sheet_dialog.dart';
 import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class TimesheetForm extends StatefulWidget {
   const TimesheetForm({Key? key}) : super(key: key);
@@ -41,6 +43,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
     data['docstatus'] = 0;
     showLoadingDialog(
@@ -49,8 +54,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
             ? 'Updating ${provider.pageId}'
             : 'Creating Your Timesheet');
 
-    for (var k in data.keys)
-      print("➡️ $k: ${data[k]}"); // To print the body we send to backend
+    // To print the body we send to backend
+    for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -88,23 +93,26 @@ class _TimesheetFormState extends State<TimesheetForm> {
   void initState() {
     final provider = context.read<ModuleProvider>();
     super.initState();
-    //Editing Mode
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+
+    //Editing Mode & Duplicate &  Amending
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
         customerName = data['customer'];
         projectName = data['parent_project'];
         setState(() {});
       });
     Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
-    //DocFromPage Mode
-    if (context.read<ModuleProvider>().isCreateFromPage) {
-      Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().createFromPageData;
-        data['doctype'] = "Timesheet";
-        print('${data['items']}');
 
-        if(provider.isAmendingMode){
+    //DocFromPage Mode
+    if (provider.isCreateFromPage) {
+      Future.delayed(Duration.zero, () {
+        data = provider.createFromPageData;
+        data['doctype'] = "Timesheet";
+        log('${data['items']}');
+
+        if (provider.isAmendingMode) {
           data.remove('amended_to');
           data['docstatus'] = 0;
         }
@@ -113,25 +121,25 @@ class _TimesheetFormState extends State<TimesheetForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
-  void deactivate() async{
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
-     provider.clearTimeSheet = await [];
+  void deactivate() {
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<ModuleProvider>();
     List? timeLogs = data['time_logs'];
     List timeSheetData = Provider.of<ModuleProvider>(context).getTimeSheetData;
     data['time_logs'] = timeSheetData;
-    if (context.read<ModuleProvider>().isEditing ||
-        context.read<ModuleProvider>().isAmendingMode ) {
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       timeLogs?.map((e) {
-        Provider.of<ModuleProvider>(context).setTimeSheet = e;
-      }).toList() ?? [];
+            provider.setTimeSheet = e;
+          }).toList() ??
+          [];
     }
     return WillPopScope(
       onWillPop: () async {
@@ -192,8 +200,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
                               ),
                             );
                             setState(() {
-                              customerName = res['customer'];
-                              projectName = res['name'];
+                              customerName = res['customer'].toString();
+                              projectName = res['name'].toString();
                             });
                             return res['name'];
                           },
@@ -270,7 +278,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Add Time Logs",
+                                "Add State",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,
@@ -301,6 +309,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                             ],
                           ),
                         ),
+
                         /// Time Logs list
                         if (timeSheetData.isNotEmpty)
                           SizedBox(
@@ -366,24 +375,6 @@ class _TimesheetFormState extends State<TimesheetForm> {
           ),
         ),
       ),
-    );
-  }
-
-  void bottomSheetBuilder({
-    required Widget bottomSheetView,
-    required BuildContext context,
-  }) {
-    showModalBottomSheet(
-      useSafeArea: true,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      context: context,
-      builder: ((context) {
-        return bottomSheetView;
-      }),
     );
   }
 }

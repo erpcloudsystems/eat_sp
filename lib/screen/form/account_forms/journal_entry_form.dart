@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,9 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -97,7 +102,9 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
     final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+    if (context.read<ModuleProvider>().isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
@@ -117,15 +124,13 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print('7788888787 ${InheritedAccountForm.of(context).data}');
+    log('${InheritedAccountForm.of(context).data}');
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

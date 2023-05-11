@@ -62,7 +62,7 @@ class _AboutUsState extends State<AboutUs> {
                   Text('Last Update',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('March 2023',
+                  Text('May 2023',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   SizedBox(height: 30),

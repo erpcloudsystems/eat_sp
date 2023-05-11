@@ -1,16 +1,17 @@
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import 'package:cool_alert/cool_alert.dart';
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class EmployeeForm extends StatefulWidget {
   const EmployeeForm({Key? key}) : super(key: key);
@@ -36,6 +37,9 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -82,11 +86,11 @@ class _EmployeeFormState extends State<EmployeeForm> {
   void initState() {
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    final provider = context.read<ModuleProvider>();
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-        //for (var k in data.keys) print("➡️ $k: ${data[k]}");
-        //// 885896
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
         // _getEmployeeData(data['name']).then((value) {
         //   data['company'] = selectedEmployeeData['defaultCompany'];
         // });
@@ -99,6 +103,12 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
         setState(() {});
       });
+  }
+
+ @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

@@ -1,19 +1,19 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../core/constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../service/gps_services.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../service/gps_services.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 const List<String> logType = [
   'IN',
@@ -61,6 +61,9 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
       });
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -115,9 +118,12 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
   @override
   void initState() {
     super.initState();
-    if (context.read<ModuleProvider>().isEditing)
+
+    final provider = context.read<ModuleProvider>();
+
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
 
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
@@ -134,6 +140,12 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

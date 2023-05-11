@@ -48,9 +48,12 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
       return;
     }
 
-
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['items'] = [];
@@ -116,13 +119,15 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
 
     final provider = context.read<ModuleProvider>();
     //Adding Mode
-    if (!provider.isEditing && !provider.isAmendingMode ) {
+    if (!provider.isEditing &&
+        !provider.isAmendingMode &&
+        !provider.duplicateMode) {
       data['tc_name'] =
           context.read<UserProvider>().companyDefaults['default_selling_terms'];
       setState(() {});
     }
     //Editing Mode
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
@@ -214,14 +219,12 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     }
   }
 
-   // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -527,6 +530,7 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       if (data['price_list_currency'] != null)
                         Align(

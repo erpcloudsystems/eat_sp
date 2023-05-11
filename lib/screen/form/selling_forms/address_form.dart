@@ -1,19 +1,19 @@
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../service/gps_services.dart';
-import '../../../widgets/snack_bar.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/gps_services.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class AddressForm extends StatefulWidget {
   const AddressForm({Key? key}) : super(key: key);
@@ -28,7 +28,12 @@ class _AddressFormState extends State<AddressForm> {
     "posting_date": DateTime.now().toIso8601String(),
     "is_primary_address": 0,
     "address_type": 'Billing',
-    "links": [{}],
+    "links": [
+      {
+        'link_name': '',
+        'link_doctype': '',
+      }
+    ],
     "latitude": 0.0,
     "longitude": 0.0,
   };
@@ -62,6 +67,9 @@ class _AddressFormState extends State<AddressForm> {
       data['longitude'] = location.longitude;
       data['location'] = gpsService.placemarks[0].subAdministrativeArea;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -103,9 +111,11 @@ class _AddressFormState extends State<AddressForm> {
   void initState() {
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing)
+    final provider = context.read<ModuleProvider>();
+
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
         data['latitude'] = 0.0;
@@ -127,6 +137,12 @@ class _AddressFormState extends State<AddressForm> {
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
     });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
@@ -216,7 +232,7 @@ class _AddressFormState extends State<AddressForm> {
                       SizedBox(height: 8),
                       CustomDropDown(
                         'link_doctype',
-                        'Link Document Type'.tr(),
+                        'Link Document Type',
                         items: linkDocumentTypeList,
                         defaultValue: data['links']?[0]['link_doctype'],
                         onChanged: (value) => setState(() {

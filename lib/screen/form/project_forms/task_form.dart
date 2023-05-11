@@ -1,17 +1,19 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
 import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
 
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
@@ -37,6 +39,9 @@ class _TaskFormState extends State<TaskForm> {
       return;
     }
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     showLoadingDialog(
@@ -45,8 +50,8 @@ class _TaskFormState extends State<TaskForm> {
             ? 'Updating ${provider.pageId}'
             : 'Creating Your Task');
 
-    for (var k in data.keys)
-      print("➡️ $k: ${data[k]}"); // To print the body we send to backend
+    // To print the body we send to backend
+    for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -78,22 +83,30 @@ class _TaskFormState extends State<TaskForm> {
   @override
   void initState() {
     super.initState();
-    //Editing Mode
-    if (context.read<ModuleProvider>().isEditing)
+
+    final provider = context.read<ModuleProvider>();
+
+    if (provider.isEditing || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         setState(() {});
       });
 
     //DocFromPage Mode
-    if (context.read<ModuleProvider>().isCreateFromPage) {
+    if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().createFromPageData;
+        data = provider.createFromPageData;
         data['doctype'] = "Task";
-        print('${data['items']}');
+        log('${data['items']}');
         setState(() {});
       });
     }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

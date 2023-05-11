@@ -47,6 +47,9 @@ class _PaymentFormState extends State<PaymentForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['docstatus'] = 0;
@@ -98,11 +101,10 @@ class _PaymentFormState extends State<PaymentForm> {
   @override
   void initState() {
     super.initState();
-
     final provider = context.read<ModuleProvider>();
 
-    //Editing Mode & Amending Mode
-    if (provider.isEditing || provider.isAmendingMode)
+    //Editing Mode & Amending Mode & Duplicate Mode
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       data = context.read<ModuleProvider>().updateData;
     for (var k in data.keys) print("➡️ $k: ${data[k]}");
 
@@ -247,12 +249,10 @@ class _PaymentFormState extends State<PaymentForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

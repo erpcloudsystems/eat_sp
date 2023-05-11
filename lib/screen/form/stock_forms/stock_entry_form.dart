@@ -1,20 +1,21 @@
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../models/page_models/stock_page_model/stock_entry_page_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../list/otherLists.dart';
-import '../../page/generic_page.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/item_card.dart';
-import '../../../widgets/list_card.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
+import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/list_card.dart';
+import '../../../widgets/item_card.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/stock_page_model/stock_entry_page_model.dart';
 
 const List<String> stockEntryType = [
   'Material Issue',
@@ -53,8 +54,12 @@ class _StockEntryFormState extends State<StockEntryForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     data['items'] = [];
     _items.forEach((element) => data['items'].add(element.toJson));
 
@@ -104,9 +109,9 @@ class _StockEntryFormState extends State<StockEntryForm> {
     final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
 
         final items = StockEntryPageModel(data).items;
 
@@ -115,7 +120,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
           _items.add(ItemQuantity(item, qty: item.qty));
         });
 
-        if(provider.isAmendingMode){
+        if (provider.isAmendingMode) {
           data.remove('amended_to');
           data['docstatus'] = 0;
         }
@@ -124,12 +129,10 @@ class _StockEntryFormState extends State<StockEntryForm> {
       });
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
@@ -427,6 +430,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
 
                                                         setState(() {});
                                                       }
+                                                      return null;
                                                     },
                                                     onSave: (_, value) =>
                                                         _items[index].stockUom =

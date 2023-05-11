@@ -160,7 +160,10 @@ class MyApp extends StatelessWidget {
               ).titleLarge),
           tabBarTheme: TabBarTheme(
             indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(color: APPBAR_COLOR)),
+              borderSide: BorderSide(
+                color: APPBAR_COLOR,
+              ),
+            ),
           ),
         ),
         home: Consumer<UserProvider>(
@@ -172,7 +175,6 @@ class MyApp extends StatelessWidget {
                         builder: (_, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) return SplashScreen();
-
                           return LoginScreen();
                         }),
                   )

@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/cloud_system_widgets.dart';
+import 'package:flutter/material.dart';
+
 import '../../../core/constants.dart';
-import '../../../models/page_models/project_page_model/issue_model_page.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
-import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
+import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/project_page_model/issue_model_page.dart';
 
 class IssuePage extends StatelessWidget {
   const IssuePage({Key? key}) : super(key: key);
@@ -15,6 +18,9 @@ class IssuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
+    for (var k in data.keys) {
+      log('$k: ${data[k]}');
+    }
     final Color? color = context.read<ModuleProvider>().color;
     final model = IssuePageModel(data);
     return ListView(

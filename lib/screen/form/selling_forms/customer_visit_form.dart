@@ -56,6 +56,9 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     final server = APIService();
@@ -110,8 +113,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     final provider = context.read<ModuleProvider>();
     super.initState();
 
-    // 2 check amend mode
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
         for (var k in data.keys) print("➡️ $k: ${data[k]}");
@@ -137,12 +139,10 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     });
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

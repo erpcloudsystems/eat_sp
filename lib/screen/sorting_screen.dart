@@ -9,17 +9,17 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../core/constants.dart';
 
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+class SortingScreen extends StatefulWidget {
+  const SortingScreen({Key? key}) : super(key: key);
 
-  static _FilterScreenState of(BuildContext context) =>
-      context.findAncestorStateOfType<_FilterScreenState>()!;
+  static _SortingScreenState of(BuildContext context) =>
+      context.findAncestorStateOfType<_SortingScreenState>()!;
 
   @override
-  State<FilterScreen> createState() => _FilterScreenState();
+  State<SortingScreen> createState() => _SortingScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _SortingScreenState extends State<SortingScreen> {
   final Map<String, dynamic> values = {};
   late BuildContext showCaseContext;
   late Widget _filter;
@@ -51,7 +51,7 @@ class _FilterScreenState extends State<FilterScreen> {
         showCaseContext = context;
         return Scaffold(
           appBar: AppBar(
-            title: Text('Filter'.tr()),
+            title: Text('Sort'.tr()),
             actions: [
               (!context
                       .read<UserProvider>()
@@ -59,8 +59,8 @@ class _FilterScreenState extends State<FilterScreen> {
                       .contains('filter_tut'))
                   ? CustomShowCase(
                       globalKey: clearFiltersGK,
-                      title: 'Clear Filter',
-                      description: 'Click here to clear all filters',
+                      title: 'Clear Sort',
+                      description: 'Click here to clear all sorting',
                       child: IconButton(
                         splashRadius: 20,
                         icon: Icon(Icons.clear, color: Colors.black),
@@ -94,26 +94,39 @@ class _FilterScreenState extends State<FilterScreen> {
           ),
           body: Column(
             children: [
+              ///-------------------Sorting------------------------
               Expanded(
-                flex: 3,
                 child: Group(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: (!context
-                            .read<UserProvider>()
-                            .showcaseProgress!
-                            .contains('filter_tut'))
-                        ? CustomShowCase(
-                            globalKey: chooseFiltersGK,
-                            title: 'Filter by',
-                            description: 'Click here to choose your filter',
-                            overlayPadding: EdgeInsets.symmetric(
-                                horizontal: 22, vertical: 10),
-                            child: _filter)
-                        : _filter,
+                  child: Column(
+                    children: [
+                      CustomDropDown(
+                        'sort_field',
+                        'Sorting Field'.tr(),
+                        items: SortingFieldList,
+                        onChanged: (String value) {
+                          values['sort_field'] = value;
+                        },
+                        onClear: () {
+                          values.remove('sort_field');
+                        },
+                        defaultValue: values['sort_field'],
+                        clear: true,
+                      ),
+                      CustomDropDown(
+                        'sort_type',
+                        'Sort Type'.tr(),
+                        items: SortingType,
+                        onChanged: (String value) =>
+                            values['sort_type'] = value,
+                        onClear: () => values.remove('sort_type'),
+                        defaultValue: values['sort_type'],
+                        clear: true,
+                      ),
+                    ],
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                 child: ElevatedButton(
@@ -144,9 +157,11 @@ class _FilterScreenState extends State<FilterScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Apply Filter',
+                                'Apply Sorting',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 14.5),
+                                  color: Colors.white,
+                                  fontSize: 16.5,
+                                ),
                               ),
                             ],
                           ),
@@ -155,9 +170,12 @@ class _FilterScreenState extends State<FilterScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Apply Filter',
+                              'Apply Sorting',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 14.5),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.5,
+                              ),
                             ),
                           ],
                         ),

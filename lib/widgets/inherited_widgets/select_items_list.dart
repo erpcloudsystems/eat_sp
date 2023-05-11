@@ -45,11 +45,13 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     Future.delayed(Duration.zero, () {
       // Adding Mode only
-      if (!context.read<ModuleProvider>().isEditing &&
-          !context.read<ModuleProvider>().isCreateFromPage &&
-          !context.read<ModuleProvider>().isAmendingMode) {
+      if (!provider.isEditing &&
+          !provider.isCreateFromPage &&
+          !provider.isAmendingMode &&
+          !provider.duplicateMode) {
         InheritedForm.of(context).items.clear();
       }
     });

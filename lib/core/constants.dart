@@ -41,3 +41,21 @@ String mapStatus(int status) {
       return '';
   }
 }
+
+void bottomSheetBuilder({
+  required Widget bottomSheetView,
+  required BuildContext context,
+}) {
+  showModalBottomSheet(
+    useSafeArea: true,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    clipBehavior: Clip.antiAlias,
+    context: context,
+    builder: ((context) {
+      return bottomSheetView;
+    }),
+  );
+}

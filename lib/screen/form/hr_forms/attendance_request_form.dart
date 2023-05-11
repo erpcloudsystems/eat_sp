@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +65,9 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     showLoadingDialog(
@@ -73,7 +78,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
 
     final server = APIService();
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -109,14 +114,14 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
     final provider = context.read<ModuleProvider>();
     Future.delayed(Duration(seconds: 1),
         () async => location = await gpsService.getCurrentLocation(context));
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data['latitude'] = location.latitude;
         data['longitude'] = location.longitude;
         if (provider.isEditing)
           data['location'] = gpsService.placemarks[0].subAdministrativeArea;
         data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -126,12 +131,10 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
       });
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
-  @override
+@override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

@@ -1,9 +1,11 @@
 import 'package:NextApp/models/list_models/project_list_models/project_list_model.dart';
 import 'package:NextApp/new_version/core/extensions/status_converter.dart';
+import 'package:NextApp/screen/form/workflow_forms/workflow_form.dart';
 
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
 import '../../models/list_models/project_list_models/timesheet_list_model.dart';
+import '../../models/list_models/workflow_list_model/workflow_model.dart';
 import '../../new_version/core/resources/strings_manager.dart';
 import '../../screen/form/project_forms/issue_form.dart';
 import '../../screen/form/project_forms/project_form.dart';
@@ -17,6 +19,7 @@ import '../../screen/page/project_pages/task_page.dart';
 import '../../screen/page/project_pages/timesheet_page.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
 import '../../screen/page/selling_pages/opportunity_page.dart';
+import '../../screen/page/workflow_pages/workflow_page.dart';
 import '../../widgets/filter_widgets/project_filters/issue_filter.dart';
 import '../../widgets/filter_widgets/project_filters/project_filter.dart';
 import '../../widgets/filter_widgets/project_filters/task_filter.dart';
@@ -32,6 +35,7 @@ import '../../widgets/filter_widgets/selling_filters/payment_entry_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/sales_invoice_filter.dart';
 import '../../widgets/filter_widgets/selling_filters/sales_order_filter.dart';
 import '../../widgets/filter_widgets/stock_filters/stock_entry_filter.dart';
+import '../../widgets/filter_widgets/workflow_filter/workflow_filter.dart';
 import '../../widgets/inherited_widgets/contact/add_phone.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -146,6 +150,7 @@ import '../../new_version/core/extensions/date_tine_extension.dart';
 
 class ModuleType {
   final String _genericListService, _title, _pageService;
+
   //int _listCount = PAGINATION_PAGE_LENGTH;
 
   final Widget Function(dynamic) _listItem;
@@ -1449,5 +1454,37 @@ class ModuleType {
       pageData["doctype"] = ["Issue"];
     },
     filter: IssueFilterScreen(),
+  );
+
+  ///Workflow
+  static final workflow = ModuleType._(
+    genericListService: 'Workflow',
+    title: DocTypesName.workflow,
+    listItem: (item) {
+      item as WorkflowItemModel;
+      return ListCard(
+        id: item.name!,
+        names: [
+          'Is Active',
+          'Document Type',
+        ],
+        values: [
+          item.isActive! == 1 ? 'Yes' : 'No',
+          item.documentType ?? 'none'.tr(),
+        ],
+        onPressed: (context) => _onListCardPressed(
+          context,
+          item.name!,
+        ),
+      );
+    },
+    serviceParser: (data) => WorkflowListModel.fromJson(data),
+    createForm: WorkflowForm(),
+    pageService: WORKFLOW_PAGE,
+    pageWidget: WorkflowPage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Workflow"];
+    },
+    filter: WorkflowFilterScreen(),
   );
 }

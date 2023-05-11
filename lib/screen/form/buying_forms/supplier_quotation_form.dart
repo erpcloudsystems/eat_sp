@@ -1,23 +1,21 @@
-import '../../../models/page_models/selling_page_model/quotation_page_model.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../page/generic_page.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
 
+import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
+import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/buying_page_model/supplier_quotation_page_model.dart';
-import '../../../models/page_models/model_functions.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -60,6 +58,9 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
 
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -116,8 +117,11 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
             builder: (_) => GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['supplier_quotation_name'] != null) {
-      context.read<ModuleProvider>().pushPage(res['message']['supplier_quotation_name']);
+    } else if (res != null &&
+        res['message']['supplier_quotation_name'] != null) {
+      context
+          .read<ModuleProvider>()
+          .pushPage(res['message']['supplier_quotation_name']);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
     }
@@ -134,9 +138,11 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
     super.initState();
 
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode) {
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
+        data = provider.updateData;
         _getSupplierData(data['supplier']).then((value) => setState(() {
               selectedSupplierData['address_line1'] =
                   formatDescription(data['address_line1']);
@@ -211,12 +217,10 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
-  @override
+@override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
@@ -529,6 +533,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                           });
                           return res['name'];
                         }
+                        return null;
                       }),
                       CustomTextField(
                           'price_list_currency', 'Price List Currency',

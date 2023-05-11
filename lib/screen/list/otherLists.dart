@@ -634,7 +634,7 @@ Widget projectScreen() => Builder(builder: (context) {
         title: 'Select Project',
         service: APIService.PROJECT,
         listItem: (value) => ListCard(
-            onPressed: (context) => Navigator.of(context).pop(value['name']),
+            onPressed: (context) => Navigator.of(context).pop(value),
             id: value['name'] ?? tr('none'),
             names: [
               'Project',
@@ -815,6 +815,45 @@ Widget uomListScreen() => GenericListScreen<String>(
       },
     );
 
+Widget statesListScreen() => GenericListScreen<String>(
+  title: 'Select State',
+  service: 'Workflow State',
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
+
+Widget workflowActionListScreen() => GenericListScreen<String>(
+  title: 'Select Action',
+  service: 'Workflow Action Master',
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
+
+Widget roleListScreen() => GenericListScreen<String>(
+  title: 'Select Role',
+  service: 'Role',
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
+
 Widget filteredUOMListScreen(String itemCode) =>
     GenericListScreen<Map<String, dynamic>>(
       title: 'Select UoM',
@@ -900,6 +939,19 @@ Widget projectTypeListScreen() => GenericListScreen<String>(
         return ListModel<String>(_list);
       },
     );
+
+Widget documentTypeListScreen() => GenericListScreen<String>(
+  title: 'Select Document Type',
+  service: APIService.DOC_TYPE,
+  listItem: (value) => SingleValueTile(value,
+      onTap: (context) => Navigator.of(context).pop(value)),
+  serviceParser: (data) {
+    List<String> _list = [];
+    List.from(data['message'])
+        .forEach((element) => _list.add(element['name'] ?? tr('none')));
+    return ListModel<String>(_list);
+  },
+);
 Widget designationListScreen() => GenericListScreen<String>(
       title: 'Select Designation',
       service: APIService.DESIGNATION,

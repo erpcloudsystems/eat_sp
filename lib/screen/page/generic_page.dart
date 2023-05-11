@@ -1,27 +1,15 @@
-import 'package:badges/badges.dart' as badges;
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../new_version/core/utils/animated_dialog.dart';
-import '../../widgets/assign_widget/assgin_dialog.dart';
-import 'page_screen.dart';
 import '../../core/constants.dart';
 import '../../widgets/nothing_here.dart';
 import '../../provider/module/module_provider.dart';
+import '../../widgets/generic_page_buttons.dart';
 
 class GenericPage extends StatelessWidget {
   const GenericPage({Key? key}) : super(key: key);
 
   //TODO: try use bool variable here for is available pdf for
-
-  void editPage(BuildContext context) {
-    // notifying the provider to enable edit mood for the next form
-    context.read<ModuleProvider>().editThisPage();
-
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) =>
-            context.read<ModuleProvider>().currentModule.createForm!));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,102 +29,13 @@ class GenericPage extends StatelessWidget {
             },
             icon: Icon(Icons.arrow_back_ios_new)),
         title: Padding(
-          padding: const EdgeInsets.only(top: 3),
+          padding: const EdgeInsets.only(top: 3, left: 50),
           child: Text(
             context.watch<ModuleProvider>().currentModule.title,
             style: TextStyle(overflow: TextOverflow.visible, height: 1),
-            softWrap: true,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: context.read<ModuleProvider>().pageSubmitStatus == 0 &&
-                    context.read<ModuleProvider>().currentModule.createForm !=
-                        null
-                ? () => editPage(context)
-                : null,
-            splashRadius: 20,
-            icon: Icon(
-              Icons.edit,
-              color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
-                  ? Colors.white
-                  : Colors.white54,
-            ),
-          ),
-          IconButton(
-            onPressed: context.select<ModuleProvider, bool>(
-                    (value) => value.availablePdfFormat)
-                ? () => context.read<ModuleProvider>().downloadPdf(context)
-                : null,
-            splashRadius: 20,
-            icon: Icon(Icons.download, color: Colors.white),
-          ),
-          IconButton(
-            onPressed: context.select<ModuleProvider, bool>(
-                    (value) => value.availablePdfFormat)
-                ? () => context.read<ModuleProvider>().printPdf(context)
-                : null,
-            splashRadius: 20,
-            icon: Icon(
-              Icons.print_sharp,
-              color: Colors.white,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 5),
-            child: IconButton(
-                onPressed: () => showAttachments(context),
-                splashRadius: 20,
-                icon: badges.Badge(
-                    badgeContent: Text(
-                      '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
-                      style: TextStyle(
-                          fontSize: 13, color: Colors.white, height: 1.5),
-                    ),
-                    stackFit: StackFit.passthrough,
-                    badgeColor: Colors.redAccent,
-                    elevation: 0,
-                    showBadge: ((context
-                                    .read<ModuleProvider>()
-                                    .pageData['attachments'] as List?)
-                                ?.length) ==
-                            null
-                        ? false
-                        : ((context
-                                        .read<ModuleProvider>()
-                                        .pageData['attachments'] as List?)
-                                    ?.length) ==
-                                0
-                            ? false
-                            : true,
-                    child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-                        child: Icon(
-                          Icons.attach_file,
-                          color: Colors.white,
-                        )))),
-          ),
-          IconButton(
-            onPressed: () {
-              AnimatedDialog.showAnimatedDialog(
-                context,
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 35,
-                  ),
-                  child: AssignToDialog(),
-                ),
-              );
-            },
-            splashRadius: 20,
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ],
+        actions: [GenericPageButtons()],
       ),
       body: _GenericPageBody(),
     );

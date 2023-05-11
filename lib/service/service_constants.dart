@@ -110,3 +110,7 @@ const PROJECT_PAGE = 'method/ecs_mobile.pages.project';
 
 const ISSUE_POST = 'method/ecs_mobile.add.issue';
 const ISSUE_PAGE = 'method/ecs_mobile.pages.issue';
+
+//Workflow
+const WORKFLOW_POST = 'method/ecs_mobile.add.workflow';
+const WORKFLOW_PAGE = 'method/ecs_mobile.pages.workflow';

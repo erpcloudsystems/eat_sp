@@ -61,10 +61,12 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
 
   @override
   void initState() {
+    final provider = context.read<ModuleProvider>();
     Future.delayed(Duration.zero).then((value) {
       setState(() {
-        if (!context.read<ModuleProvider>().isEditing &&
-            !context.read<ModuleProvider>().isAmendingMode) {
+        if (!provider.isEditing &&
+            !provider.isAmendingMode &&
+            !provider.duplicateMode) {
           InheritedAccountForm.of(context).account.clear();
         }
       });

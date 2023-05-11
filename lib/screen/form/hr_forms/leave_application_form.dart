@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +44,12 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
+    data['docstatus'] = 0;
     showLoadingDialog(
         context,
         provider.isEditing
@@ -86,10 +92,10 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
-        data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        data = provider.updateData;
+        for (var k in data.keys) log("➡️ $k: ${data[k]}");
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -101,12 +107,10 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
       });
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
-  @override
+ @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

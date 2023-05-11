@@ -16,6 +16,16 @@ const List<String> requestTypeList = [
   'Suggestions',
   'Other'
 ];
+/// Sorting List
+const List<String> SortingFieldList = [
+  'creation', 'modified', 'name',
+];
+
+const List<String> SortingType = [
+  'desc',
+  'asc',
+];
+
 const List<String> addressTypeList = [
   'Billing',
   'Shipping',
@@ -59,13 +69,18 @@ const List<String> ProjectStatusList = [
   'Cancelled',
 ];
 
+const List<String> DocStatus = [
+  '0',
+  '1',
+  '2',
+];
+
 const List<String> TaskCompletionList = [
   'Manual',
   'Task Completion',
   'Task Progress',
   'Task Wight',
 ];
-
 
 const List<String> IssueStatusList = [
   'Open',

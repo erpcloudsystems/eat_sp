@@ -1,17 +1,16 @@
-import 'package:NextApp/models/new_version_models/assign_to_model.dart';
-import 'package:NextApp/provider/module/module_provider.dart';
-import 'package:NextApp/provider/user/user_provider.dart';
-import 'package:NextApp/service/service_constants.dart';
-import 'package:NextApp/widgets/custom-button.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
-import '../../core/constants.dart';
-import '../../screen/list/otherLists.dart';
-import '../../service/service.dart';
 import '../form_widgets.dart';
+import '../custom-button.dart';
+import '../../core/constants.dart';
+import '../../service/service.dart';
+import '../../screen/list/otherLists.dart';
+import '../../service/service_constants.dart';
+import '../../provider/user/user_provider.dart';
+import '../../provider/module/module_provider.dart';
 
 class AssignToDialog extends StatefulWidget {
   const AssignToDialog({Key? key}) : super(key: key);

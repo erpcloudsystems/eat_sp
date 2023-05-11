@@ -61,6 +61,9 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
 
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['items'] = [];
@@ -120,7 +123,7 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode
-    if (provider.isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
@@ -179,12 +182,10 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

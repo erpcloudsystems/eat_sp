@@ -1,24 +1,23 @@
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
-import '../../../models/page_models/selling_page_model/opportunity_page_model.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/item_card.dart';
-import '../../../widgets/list_card.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'quotation_form.dart';
+import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
-import 'quotation_form.dart';
+import '../../../service/service.dart';
+import '../../../widgets/list_card.dart';
+import '../../../widgets/item_card.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/selling_page_model/opportunity_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -48,6 +47,10 @@ class _OpportunityFormState extends State<OpportunityForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
+
     _formKey.currentState!.save();
 
     data['items'] = [];
@@ -121,11 +124,11 @@ class _OpportunityFormState extends State<OpportunityForm> {
   void initState() {
     super.initState();
 
+    final provider = context.read<ModuleProvider>();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing) {
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-
         final items = OpportunityPageModel(context, data).items;
 
         items.forEach((element) {
@@ -181,6 +184,12 @@ class _OpportunityFormState extends State<OpportunityForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     InheritedForm.of(context).data['selling_price_list'] = '';
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override

@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../new_version/core/resources/strings_manager.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
@@ -14,6 +15,7 @@ import '../../../provider/user/user_provider.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
@@ -59,6 +61,9 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -132,7 +137,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
     var provider = context.read<ModuleProvider>();
     super.initState();
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         InheritedForm.of(context).data['buying_price_list'] =
@@ -231,9 +236,9 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-        print('sdfsdfsd${data['items']}');
+        log('${data['items']}');
 
-        if(provider.isAmendingMode){
+        if (provider.isAmendingMode) {
           data.remove('amended_to');
           data['docstatus'] = 0;
         }
@@ -244,11 +249,10 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
   @override
   void deactivate() {
-    var provider = Provider.of<ModuleProvider>(context);
-    if(provider.isAmendingMode)
-      provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

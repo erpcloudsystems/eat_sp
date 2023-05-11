@@ -1,24 +1,24 @@
 import 'dart:developer';
 
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../new_version/core/resources/strings_manager.dart';
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../widgets/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants.dart';
 
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
-import '../../../models/page_models/model_functions.dart';
+import '../../../core/constants.dart';
+import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/model_functions.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../models/page_models/selling_page_model/sales_order_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
@@ -53,8 +53,12 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
       showSnackBar('Please add an item at least', context);
       return;
     }
+
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
+
+    Provider.of<ModuleProvider>(context, listen: false)
+        .initializeDuplicationMode(data);
 
     _formKey.currentState!.save();
 
@@ -116,17 +120,17 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
   @override
   void initState() {
-    final provider = context.read<ModuleProvider>();
     super.initState();
+    final provider = context.read<ModuleProvider>();
 
     //Adding Mode
-    if (!context.read<ModuleProvider>().isEditing) {
+    if (!provider.isEditing) {
       data['tc_name'] =
           context.read<UserProvider>().companyDefaults['default_selling_terms'];
       setState(() {});
     }
     //Editing Mode
-    if (context.read<ModuleProvider>().isEditing || provider.isAmendingMode)
+    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
       Future.delayed(Duration.zero, () {
         print('123E4${InheritedForm.of(context).items}');
         if (InheritedForm.of(context).items.isNotEmpty)
@@ -239,12 +243,10 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
     }
   }
 
-  // Here we stop the "Amending mode" to clear the data for the next creation.
   @override
   void deactivate() {
-    final provider = context.read<ModuleProvider>();
-    if (provider.isAmendingMode) provider.amendDoc = false;
     super.deactivate();
+    context.read<ModuleProvider>().resetCreationForm();
   }
 
   @override
