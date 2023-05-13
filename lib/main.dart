@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +48,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up :  ${message.messageId}');
   print('message data: ${message.data.toString()}');
   print('title: ${message.notification!.title}');
+  
 }
 
 //Get the device token
@@ -97,6 +99,8 @@ void main() async {
   // Handle background message When messages are received
   // And your application is not running.
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  
 
   //Getting Notification Token and send it to DB
   getDeviceTokenToSendNotification();

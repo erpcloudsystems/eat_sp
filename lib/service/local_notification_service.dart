@@ -1,13 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/module/module_provider.dart';
 import '../screen/page/generic_page.dart';
-import '../screen/sub_category_screen.dart';
+import '../provider/module/module_provider.dart';
 
 void notificationConfig(BuildContext context) async {
   ///****** 3- For Push Notifications ******///
@@ -28,7 +27,15 @@ void notificationConfig(BuildContext context) async {
 
 // This Triggers when app in Foreground work
 // FOREGROUND: When the application is open, in view and in use.
-  FirebaseMessaging.onMessage.listen((message) {
+    //for IOS Foreground Notification
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+  FirebaseMessaging.onMessage.listen((message) async {
     if (message.notification != null) {
       print(message.notification!.body);
       print(message.notification!.title);
@@ -60,11 +67,13 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   static void initialize(BuildContext context) {
+    final messaging = FirebaseMessaging.instance;
+
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+      iOS: IOSInitializationSettings(),
     );
-
     _notificationsPlugin.initialize(
       initializationSettings,
       onSelectNotification: (String? payload) async {
@@ -76,6 +85,21 @@ class LocalNotificationService {
             docType: payloadDetails[0],
             docName: payloadDetails[1],
           );
+
+          // /// IOS
+          // Future iosPermission() async {
+          //   if (Platform.isIOS) {
+          //     NotificationSettings settings = await messaging.requestPermission(
+          //       alert: true,
+          //       announcement: false,
+          //       badge: true,
+          //       carPlay: false,
+          //       criticalAlert: false,
+          //       provisional: false,
+          //       sound: true,
+          //     );
+          //   }
+          // }
         }
       },
     );
@@ -86,16 +110,16 @@ class LocalNotificationService {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
       final NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-          "nextapp-notification-channel",
-          "nextapp-notification-channel channel",
-          channelDescription: "this is NextApp Notification channel",
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-      );
+          android: AndroidNotificationDetails(
+            "nextapp-notification-channel",
+            "nextapp-notification-channel channel",
+            channelDescription: "this is NextApp Notification channel",
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+          iOS: IOSNotificationDetails());
 
-      // Here we convert the notification details to String as Payload doesn't accept 
+      // Here we convert the notification details to String as Payload doesn't accept
       // any other data types in this version.
       final List<String> messagePayLoad = [
         message.data['doctype'],
