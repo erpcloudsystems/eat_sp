@@ -21,7 +21,7 @@ dependencies:
   dio: ^5.1.1 
   file_picker: ^4.3.0
   fluttertoast: ^8.0.9
-  easy_localization: ^3.0.0
+  easy_localization: ^3.0.2
   shared_preferences: ^2.0.0
   dio_cookie_manager: ^2.0.0
 

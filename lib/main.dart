@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'core/app_local.dart';
 import 'core/constants.dart';
 import 'screen/home_screen.dart';
 import 'screen/other/login_screen.dart';
@@ -47,7 +48,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up :  ${message.messageId}');
   print('message data: ${message.data.toString()}');
   print('title: ${message.notification!.title}');
-  
 }
 
 //Get the device token
@@ -99,8 +99,6 @@ void main() async {
   // And your application is not running.
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  
-
   //Getting Notification Token and send it to DB
   getDeviceTokenToSendNotification();
 
@@ -110,12 +108,8 @@ void main() async {
       .then((_) {
     runApp(
       EasyLocalization(
-          supportedLocales: [
-            Locale('en'),
-            //Locale('ar'),
-          ],
-          path: 'assets/locale', // <-- change the path of the translation files
-          fallbackLocale: Locale('en'),
+         supportedLocales: AppLocal.supportLocals,
+          path: AppLocal.path, // <-- change the path of the translation fileses
           child: MultiProvider(
             providers: StateManagement.stateManagement,
             child: MyApp(),
@@ -149,21 +143,21 @@ class MyApp extends StatelessWidget {
               iconTheme: IconThemeData(color: Colors.white),
               toolbarTextStyle: TextTheme(
                 // center text style
-                headline6: GoogleFonts.cairo(
+                titleLarge: GoogleFonts.cairo(
                     fontStyle: FontStyle.normal,
                     color: Colors.white,
                     fontSize: 18),
-              ).bodyText2,
+              ).bodyMedium,
               // Side text style
               titleTextStyle: TextTheme(
                 // appBar text style
-                headline6: GoogleFonts.cairo(
+                titleLarge: GoogleFonts.cairo(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
                 // Side text style
-              ).headline6),
+              ).titleLarge),
           tabBarTheme: TabBarTheme(
             indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(color: APPBAR_COLOR)),
