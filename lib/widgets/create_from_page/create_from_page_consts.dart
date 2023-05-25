@@ -50,10 +50,10 @@ Map<String, Widget> fromQuotation = {
 //Sales Invoice
 Map<String, Widget> fromSalesInvoice = {
   'Payment Entry': PaymentForm(),
-  'Credit Note': InheritedForm(child: SalesInvoiceForm()),
+  'Return / Credit Note': InheritedForm(child: SalesInvoiceForm()),
 };
 Map<String, Widget> fromSalesInvoice2 = {
-  'Credit Note': InheritedForm(child: SalesInvoiceForm()),
+  'Return / Credit Note': InheritedForm(child: SalesInvoiceForm()),
 };
 
 //Delivery Note

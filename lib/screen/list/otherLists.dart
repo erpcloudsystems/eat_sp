@@ -596,6 +596,29 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
         },
       );
     });
+    
+// selected item
+Widget newItemsScreen() => Builder(builder: (context) {
+      return CustomListScreen<ItemSelectModel>(
+        title: 'Select Items',
+        service: GET_ITEM_LIST,
+        listItem: (item) => ItemCard(
+          values: [item.itemName, item.itemCode, item.group, item.stockUom],
+          imageUrl: item.imageUrl,
+          onPressed: (_) => Navigator.pop(context, item),
+        ),
+        serviceParser: (data) {
+          List<ItemSelectModel> _list = [];
+          // print(data['message']);
+          //
+          // print(data);
+          List.from(data['message']).forEach((element) => _list.add(
+              ItemSelectModel.fromJson(Map<String, dynamic>.from(element))));
+
+          return ListModel<ItemSelectModel>(_list);
+        },
+      );
+    });
 
 Widget warehouseScreen([String? selectedWarehouse]) =>
     Builder(builder: (context) {

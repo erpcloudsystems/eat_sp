@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../screen/filter_screen.dart';
 import '../../../screen/list/otherLists.dart';
 import '../../form_widgets.dart';
@@ -52,16 +53,37 @@ class _SalesInvoiceFilterState extends State<SalesInvoiceFilter> {
           'filter2',
           'Customer'.tr(),
           clearButton: true,
-          onClear: () => _values.remove('filter2'),
+          onClear: () => setState(() {
+            _values.remove('filter2');
+          }),
           onSave: (key, value) => _values[key] = value,
           initialValue: _values['filter2'],
           onPressed: () async {
             final res = await Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => selectCustomerScreen()));
             if (res != null) _values['filter2'] = res['name'];
+            setState(() {});
             return _values['filter2'];
           },
         ),
+        if (_values.containsKey('filter2'))
+          CustomTextField(
+            'filter6',
+            'Item'.tr(),
+            clearButton: true,
+            onClear: () => _values.remove('filter6'),
+            onSave: (key, value) => _values[key] = value,
+            initialValue: _values['filter6'],
+            onPressed: () async {
+              final ItemSelectModel res = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => newItemsScreen(),
+                ),
+              );
+              _values['filter6'] = res.itemCode;
+              return _values['filter6'];
+            },
+          ),
         DatePicker(
           'filter3',
           'From Date'.tr(),
