@@ -68,15 +68,27 @@ class SalesInvoicePage extends StatelessWidget {
               ],
             ),
             Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(context.read<ModuleProvider>().pageId,
-                    style: const TextStyle(fontWeight: FontWeight.bold))),
-            Text('Customer: ' + (data['customer'] ?? 'none')),
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                context.read<ModuleProvider>().pageId,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Text(
+              'Customer: ' + (data['customer'] ?? 'none'),
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: Text(data['customer_name'] ?? 'none'),
+              child: Text(
+                data['customer_name'] ?? 'none',
+              ),
             ),
-            Divider(color: Colors.grey.shade400, thickness: 1),
+            Divider(
+              color: Colors.grey.shade400,
+              thickness: 1,
+            ),
           ],
           swapWidgets: [
             SwapWidget(
@@ -96,7 +108,9 @@ class SalesInvoicePage extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Text(data['status'] ?? 'none'),
+                  : Text(
+                      data['status'] ?? 'none',
+                    ),
             )
           ],
         ),
@@ -114,22 +128,26 @@ class SalesInvoicePage extends StatelessWidget {
                         value: (data['is_return'] ?? 0) == 0 ? false : true,
                         onChanged: null))),
             SwapWidget(
-                5,
-                SizedBox(
-                    height: 30,
-                    child: Checkbox(
-                        value: (data['ignore_pricing_rule'] ?? 0) == 0
-                            ? false
-                            : true,
-                        onChanged: null))),
+              5,
+              SizedBox(
+                height: 30,
+                child: Checkbox(
+                  value: (data['ignore_pricing_rule'] ?? 0) == 0 ? false : true,
+                  onChanged: null,
+                ),
+              ),
+            ),
             SwapWidget(
-                5,
-                SizedBox(
-                    height: 30,
-                    child: Checkbox(
-                        value: (data['update_stock'] ?? 0) == 0 ? false : true,
-                        onChanged: null)),
-                widgetNumber: 2),
+              5,
+              SizedBox(
+                height: 30,
+                child: Checkbox(
+                  value: (data['update_stock'] ?? 0) == 0 ? false : true,
+                  onChanged: null,
+                ),
+              ),
+              widgetNumber: 2,
+            ),
           ],
         ),
 

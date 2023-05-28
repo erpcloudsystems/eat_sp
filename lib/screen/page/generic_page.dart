@@ -14,28 +14,41 @@ class GenericPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              final provider = context.read<ModuleProvider>();
-              // We use this method to navigate back to "List Screen", and only in "Amended Mode".
-              if (provider.isAmended) {
-                provider.pushPage(provider.previousPageId);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => GenericPage()));
-                provider.NotifyAmended = false;
-              }
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back_ios_new)),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 3, left: 50),
-          child: Text(
-            context.watch<ModuleProvider>().currentModule.title,
-            style: TextStyle(overflow: TextOverflow.visible, height: 1),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(AppBar().preferredSize.height),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  final provider = context.read<ModuleProvider>();
+                  // We use this method to navigate back to "List Screen", and only in "Amended Mode".
+                  if (provider.isAmended) {
+                    provider.pushPage(provider.previousPageId);
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => GenericPage()));
+                    provider.NotifyAmended = false;
+                  }
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back_ios_new)),
+            title: Padding(
+              padding: const EdgeInsets.only(
+                top: 3,
+              ),
+              child: Text(
+                context.watch<ModuleProvider>().currentModule.title,
+                style: TextStyle(
+                  overflow: TextOverflow.visible,
+                  height: 1,
+                ),
+              ),
+            ),
+            actions: [
+              GenericPageButtons(),
+            ],
           ),
         ),
-        actions: [GenericPageButtons()],
       ),
       body: _GenericPageBody(),
     );

@@ -132,8 +132,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
           primaryColor: Color(0xffF9F9F9),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-              .copyWith(secondary: Colors.blue),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.blue,
+          ).copyWith(secondary: Colors.blue),
           scaffoldBackgroundColor: Colors.grey.shade200,
           appBarTheme: AppBarTheme(
               titleSpacing: 0.0,
