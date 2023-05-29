@@ -27,11 +27,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open and in the background.</string>
+	<string>Location permission is required to know your current location as we need it to create several DOCTYPEs like Sales Invoice.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>Location permission is required to know your current location as we need it to create several DOCTYPEs like Sales Invoice.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location permission is required to access your current location.</string>
+	<string>Location permission is required to know your current location as we need it to create several DOCTYPEs like Sales Invoice.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
