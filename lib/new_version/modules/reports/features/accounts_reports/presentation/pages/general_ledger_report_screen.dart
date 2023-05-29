@@ -22,7 +22,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
 
     final generalLedgerFilters =
         ModalRoute.of(context)!.settings.arguments as GeneralLedgerFilters;
-        
+
     bloc.add(GetGeneralLedgerEvent(
       generalLedgerFilters: generalLedgerFilters,
     ));
@@ -32,7 +32,6 @@ class GeneralLedgerReportScreen extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.getGeneralLedgerReportsState !=
             current.getGeneralLedgerReportsState,
-
         listener: (context, state) {
           if (state.getGeneralLedgerReportsState == RequestState.error) {
             Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
@@ -44,10 +43,9 @@ class GeneralLedgerReportScreen extends StatelessWidget {
             );
           }
         },
-
         buildWhen: (previous, current) =>
-        previous.getGeneralLedgerReportData != current.getGeneralLedgerReportData,
-
+            previous.getGeneralLedgerReportData !=
+            current.getGeneralLedgerReportData,
         builder: (context, state) {
           if (state.getGeneralLedgerReportsState == RequestState.loading) {
             return CustomLoadingWithImage();
@@ -67,25 +65,32 @@ class GeneralLedgerReportScreen extends StatelessWidget {
                       text: state.getGeneralLedgerReportData[index].party
                           .toString()),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].costCenter!),
+                      text:
+                          state.getGeneralLedgerReportData[index].costCenter!),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].debit.toString()),
+                      text: state.getGeneralLedgerReportData[index].debit
+                          .toString()),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].credit.toString()),
+                      text: state.getGeneralLedgerReportData[index].credit
+                          .toString()),
                   RightHandDetailWidgets(
                       text: state.getGeneralLedgerReportData[index].against!),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].againstVoucherType!),
+                      text: state.getGeneralLedgerReportData[index]
+                          .againstVoucherType!),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].againstVoucher!),
+                      text: state
+                          .getGeneralLedgerReportData[index].againstVoucher!),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].voucherNo.toString()),
+                      text: state.getGeneralLedgerReportData[index].voucherNo
+                          .toString()),
                   RightHandDetailWidgets(
                       text: state.getGeneralLedgerReportData[index].project!),
                   RightHandDetailWidgets(
                       text: state.getGeneralLedgerReportData[index].remarks!),
                   RightHandDetailWidgets(
-                      text: state.getGeneralLedgerReportData[index].accountCurrency!),
+                      text: state
+                          .getGeneralLedgerReportData[index].accountCurrency!),
                   RightHandDetailWidgets(
                       text: state.getGeneralLedgerReportData[index].company!),
                   RightHandDetailWidgets(
@@ -117,14 +122,14 @@ class GeneralLedgerReportScreen extends StatelessWidget {
                   'Balance',
                 ],
                 leftColumnData: (index) =>
-                state.getGeneralLedgerReportData[index].postingDate!,
+                    state.getGeneralLedgerReportData[index].postingDate!,
                 table: state.getGeneralLedgerReportData,
                 refreshFun: () =>
                     BlocProvider.of<GeneralLedgerBloc>(context).add(
-                      GetGeneralLedgerEvent(
-                        generalLedgerFilters: generalLedgerFilters,
-                      ),
-                    ),
+                  GetGeneralLedgerEvent(
+                    generalLedgerFilters: generalLedgerFilters,
+                  ),
+                ),
                 tableWidget: _generateRightHandSideColumnRow,
               ),
             );

@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../main.dart';
-import '../../service/server_exception.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../main.dart';
 import '../../service/service.dart';
 import '../../core/shared_pref.dart';
+import '../../service/server_exception.dart';
 import '../../service/service_constants.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -164,7 +164,7 @@ class UserProvider extends ChangeNotifier {
         notifyListeners();
         checkPermission();
       } else {
-        throw ServerException("invalid credentials");
+        throw const ServerException("invalid credentials");
       }
     } else if (checkUrlValidation == false) {
       Fluttertoast.showToast(msg: 'Domain is inactive');

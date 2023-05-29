@@ -25,7 +25,8 @@ class ReportsRepo implements BaseReportsRepo {
       } on PrimaryServerException catch (error) {
         return Left(ServerFailure(errorMessage: error.message));
       } on DioError catch (e) {
-        return Left(ServerFailure(errorMessage: e.message ?? StringsManager.unknownError));
+        return Left(ServerFailure(
+            errorMessage: e.message ?? StringsManager.unknownError));
       }
     } else {
       return const Left(

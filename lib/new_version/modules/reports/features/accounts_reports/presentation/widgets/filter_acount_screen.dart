@@ -97,7 +97,7 @@ class FilterAccountScreen extends StatelessWidget {
                   'party_type',
                   'Party Type',
                   clearButton: true,
-                  onClear: (){
+                  onClear: () {
                     BlocProvider.of<GeneralLedgerBloc>(context)
                         .add(ChangePartyTypeEvent(false));
                     partyType = null;
@@ -129,8 +129,8 @@ class FilterAccountScreen extends StatelessWidget {
                         'Party',
                         clearButton: true,
                         disableValidation: true,
-                        onClear: (){
-                          party =null;
+                        onClear: () {
+                          party = null;
                         },
                         onPressed: () async {
                           final res = await Navigator.of(context).push(

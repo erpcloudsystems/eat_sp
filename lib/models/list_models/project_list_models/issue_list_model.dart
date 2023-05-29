@@ -19,6 +19,7 @@ class IssueListModel extends ListModel<IssueItemModel> {
     return data;
   }
 }
+
 class IssueItemModel {
   String? name;
   String? creation;

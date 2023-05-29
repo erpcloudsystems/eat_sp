@@ -1,5 +1,6 @@
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/item_price_entity.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../domain/entities/item_price_entity.dart';
 import '../../../../../../../core/utils/request_state.dart';
 
 class ItemPriceState extends Equatable {
@@ -32,7 +33,6 @@ class ItemPriceState extends Equatable {
       );
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         getItemPriceReportsState,
         getItemPriceReportMessage,

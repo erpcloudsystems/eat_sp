@@ -4,10 +4,12 @@ import '../resources/strings_manager.dart';
 
 class ErrorDialog extends StatelessWidget {
   final String errorMessage;
+  final VoidCallback? onPressed;
 
   const ErrorDialog({
     super.key,
     required this.errorMessage,
+    this.onPressed,
   });
 
   @override
@@ -16,7 +18,7 @@ class ErrorDialog extends StatelessWidget {
       content: Text(errorMessage, softWrap: true),
       actions: [
         TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: onPressed ?? () =>  Navigator.of(context).pop(),
             child: const Text(StringsManager.okay)),
       ],
     );

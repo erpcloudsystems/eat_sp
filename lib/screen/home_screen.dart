@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
-import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
-import '../provider/user/user_provider.dart';
-import '../service/local_notification_service.dart';
-import '../widgets/botton_navigation_bar.dart';
-import '../widgets/dialog/loading_dialog.dart';
+import 'sub_category_screen.dart';
 import 'Drawer/drawer_screen.dart';
 import 'other/notification_screen.dart';
-import 'other/user_profile.dart';
-import 'sub_category_screen.dart';
+import '../provider/user/user_provider.dart';
+import '../widgets/botton_navigation_bar.dart';
+import '../widgets/dialog/loading_dialog.dart';
+import '../service/local_notification_service.dart';
+import '../new_version/modules/user_profile/presentation/pages/user_profile_screen.dart';
+import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -21,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _page = 2;
   int indexNow = 2;
 
-  GlobalKey _bottomNavigationKey = GlobalKey();
+  final GlobalKey _bottomNavigationKey = GlobalKey();
   final _one = GlobalKey();
   final _two = GlobalKey();
 
@@ -38,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      ModulesPage(),
-      UserProfile(),
+      const ModulesPage(),
+      const UserProfileScreen(),
       GridView.count(
         padding: const EdgeInsets.only(top: 20, right: 6, left: 6, bottom: 50),
         // Create a grid with 2 columns. If you change the scrollDirection to
@@ -97,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
         extendBody: true,
         body: Container(
-            padding: EdgeInsets.only(bottom: 50), child: pages[_page]),
+            padding: const EdgeInsets.only(bottom: 50), child: pages[_page]),
       ),
     );
   }

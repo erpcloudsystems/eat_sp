@@ -23,6 +23,7 @@ class _AddStateDialogState extends State<AddStateDialog> {
     state['doc_status'] = DocStatus[0];
     state['is_optional_state'] = DocStatus[0];
   }
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ModuleProvider>(context);
@@ -51,8 +52,7 @@ class _AddStateDialogState extends State<AddStateDialog> {
                       'State',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      state['state'] = value,
+                      onSave: (key, value) => state['state'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -70,8 +70,7 @@ class _AddStateDialogState extends State<AddStateDialog> {
                       'Allow Edit',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      state['allow_edit'] = value,
+                      onSave: (key, value) => state['allow_edit'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -111,7 +110,7 @@ class _AddStateDialogState extends State<AddStateDialog> {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            if(formKey.currentState!.validate()){
+                            if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
                               provider.setWorkflowStateList(state);
                               Navigator.pop(context);

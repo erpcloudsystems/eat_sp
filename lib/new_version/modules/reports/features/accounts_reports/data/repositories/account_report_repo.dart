@@ -1,12 +1,13 @@
-import 'package:NextApp/new_version/core/network/failure.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/data_sources/account_report_data_source.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/entities/general_ledger_report_entity.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/repositories/account_report_base_repo.dart';
 import 'package:dartz/dartz.dart';
+
+import '../models/general_ledger_filter.dart';
+import '../../../../../../core/network/failure.dart';
 import '../../../../../../core/network/exceptions.dart';
+import '../data_sources/account_report_data_source.dart';
 import '../../../../../../core/network/network_info.dart';
 import '../../../../../../core/resources/strings_manager.dart';
+import '../../domain/repositories/account_report_base_repo.dart';
+import '../../domain/entities/general_ledger_report_entity.dart';
 
 class AccountReportsRepo implements AccountReportBaseRepo {
   final BaseNetworkInfo _networkInfo;

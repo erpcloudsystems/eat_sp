@@ -6,7 +6,6 @@ class IssuePageModel {
 
   IssuePageModel(this.data);
 
-
   List<Map<String, String>> get card1Items {
     return [
       {

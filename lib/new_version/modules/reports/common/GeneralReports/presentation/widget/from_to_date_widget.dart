@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import '../../../../../../../widgets/form_widgets.dart';
 
 class FromDataToDateWidget extends StatelessWidget {
-   FromDataToDateWidget({
+  FromDataToDateWidget({
     Key? key,
-     this.fromData,
-     this.toDate,
+    this.fromData,
+    this.toDate,
   }) : super(key: key);
-   String? fromData;
-   String? toDate;
+  String? fromData;
+  String? toDate;
 
   @override
   Widget build(BuildContext context) {

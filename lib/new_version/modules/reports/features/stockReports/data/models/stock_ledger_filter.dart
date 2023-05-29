@@ -19,11 +19,11 @@ class StockLedgerFilters extends Equatable {
 
   @override
   List<Object?> get props => [
-    warehouseFilter,
-    fromDate,
-    toDate,
-    itemCode,
-    itemGroup,
-    startKey,
-  ];
+        warehouseFilter,
+        fromDate,
+        toDate,
+        itemCode,
+        itemGroup,
+        startKey,
+      ];
 }

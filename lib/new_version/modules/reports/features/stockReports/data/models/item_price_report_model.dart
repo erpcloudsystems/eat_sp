@@ -1,7 +1,7 @@
 import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/item_price_entity.dart';
 
 class ItemPriceReportModel extends ItemPriceEntity {
-  ItemPriceReportModel({
+  const ItemPriceReportModel({
     required super.priceList,
     required super.itemName,
     required super.itemGroup,
@@ -21,11 +21,11 @@ class ItemPriceReportModel extends ItemPriceEntity {
 
   @override
   List<Object?> get props => [
-    priceList,
-    currency,
-    priceListRate,
-    itemCode,
-    itemName,
-    itemGroup,
-  ];
+        priceList,
+        currency,
+        priceListRate,
+        itemCode,
+        itemName,
+        itemGroup,
+      ];
 }

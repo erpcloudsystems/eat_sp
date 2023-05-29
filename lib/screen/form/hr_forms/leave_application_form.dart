@@ -107,7 +107,7 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
       });
   }
 
- @override
+  @override
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();

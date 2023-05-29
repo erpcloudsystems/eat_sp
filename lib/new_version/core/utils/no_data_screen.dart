@@ -9,9 +9,9 @@ class NoDataScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(StringsManager.noData),
+        title: const Text(StringsManager.noData),
       ),
-      body: Center(
+      body: const Center(
         child: Text(StringsManager.noData),
       ),
     );

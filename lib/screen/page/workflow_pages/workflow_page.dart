@@ -72,6 +72,7 @@ class WorkflowPage extends StatelessWidget {
 
         /// Comment button
         CommentsButton(color: color),
+
         /// States and Transactions
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
@@ -120,9 +121,14 @@ class WorkflowPage extends StatelessWidget {
                                 itemBuilder: (_, index) => PageCard(
                                   items: [
                                     {
-                                      "State": data['states'][index]['state'] ?? 'none'.tr(),
-                                      "Doc Status": data['states'][index]['docstatus'].toString(),
-                                      "Allow Edit": data['states'][index]['allow_edit'] ?? 'none'.tr(),
+                                      "State": data['states'][index]['state'] ??
+                                          'none'.tr(),
+                                      "Doc Status": data['states'][index]
+                                              ['docstatus']
+                                          .toString(),
+                                      "Allow Edit": data['states'][index]
+                                              ['allow_edit'] ??
+                                          'none'.tr(),
                                     }
                                   ],
                                 ),
@@ -142,9 +148,15 @@ class WorkflowPage extends StatelessWidget {
                                 itemBuilder: (_, index) => PageCard(
                                   items: [
                                     {
-                                      "State": data['transitions'][index]['state'] ?? 'none'.tr(),
-                                      "Action": data['transitions'][index]['action'] ?? 'none'.tr(),
-                                      "Next State": data['transitions'][index]['next_state'] ?? 'none'.tr(),
+                                      "State": data['transitions'][index]
+                                              ['state'] ??
+                                          'none'.tr(),
+                                      "Action": data['transitions'][index]
+                                              ['action'] ??
+                                          'none'.tr(),
+                                      "Next State": data['transitions'][index]
+                                              ['next_state'] ??
+                                          'none'.tr(),
                                     }
                                   ],
                                 ),

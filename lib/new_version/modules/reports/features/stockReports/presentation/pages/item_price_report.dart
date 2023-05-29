@@ -1,6 +1,3 @@
-import '../../data/models/item_price_filters.dart';
-import '../bloc/item_price_bloc/item_price_bloc.dart';
-import '../bloc/item_price_bloc/item_price_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +8,9 @@ import '../../../../../../core/utils/error_dialog.dart';
 import '../../../../../../core/utils/request_state.dart';
 import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
 import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
+import '../../data/models/item_price_filters.dart';
+import '../bloc/item_price_bloc/item_price_bloc.dart';
+import '../bloc/item_price_bloc/item_price_state.dart';
 
 class ItemPriceReport extends StatelessWidget {
   const ItemPriceReport({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class ItemPriceReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<ItemPriceBloc>(context);
-    bloc.add(ResetItemPriceEvent());
+    bloc.add(const ResetItemPriceEvent());
 
     final itemPriceFilters =
         ModalRoute.of(context)!.settings.arguments as ItemPriceFilters;
@@ -45,7 +45,7 @@ class ItemPriceReport extends StatelessWidget {
             previous.getItemPriceReportData != current.getItemPriceReportData,
         builder: (context, state) {
           if (state.getItemPriceReportsState == RequestState.loading) {
-            return CustomLoadingWithImage();
+            return const CustomLoadingWithImage();
           }
           if (state.getItemPriceReportsState == RequestState.success) {
             Widget _generateRightHandSideColumnRow(
@@ -71,7 +71,7 @@ class ItemPriceReport extends StatelessWidget {
               body: ReportTable(
                 tableWidth: 400.w,
                 appBarName: 'Item Price',
-                mainRowList: [
+                mainRowList: const [
                   'Item Code',
                   'Item Name',
                   'Rate',
@@ -90,7 +90,7 @@ class ItemPriceReport extends StatelessWidget {
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

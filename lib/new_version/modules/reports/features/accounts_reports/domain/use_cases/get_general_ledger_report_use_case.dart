@@ -13,6 +13,6 @@ class GetGeneralLedgerUseCase
 
   @override
   Future<Either<Failure, List<GeneralLedgerReportEntity>>> call(
-      GeneralLedgerFilters parameters) async =>
+          GeneralLedgerFilters parameters) async =>
       await _repo.getGeneralLedgerReport(parameters);
 }

@@ -56,7 +56,6 @@ class EmployeeCheckinPage extends StatelessWidget {
                 widgetNumber: 1)
           ],
         ),
-
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: CustomMapView(
@@ -64,7 +63,6 @@ class EmployeeCheckinPage extends StatelessWidget {
             longitude: data['longitude'],
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
           child: ElevatedButton(
@@ -81,7 +79,6 @@ class EmployeeCheckinPage extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-
         CommentsButton(color: color),
         SizedBox(
           height: 50,

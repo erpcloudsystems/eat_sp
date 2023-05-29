@@ -12,7 +12,7 @@ Widget getBottomNavigationBar({
     key: key,
     index: index,
     height: 55.0,
-    items: <Widget>[
+    items: const <Widget>[
       Icon(Icons.receipt_long_outlined, size: 25, color: Colors.white),
       Icon(Icons.person, size: 25, color: Colors.white),
       Icon(Icons.home, size: 25, color: Colors.white),
@@ -23,7 +23,7 @@ Widget getBottomNavigationBar({
     buttonBackgroundColor: APPBAR_COLOR,
     backgroundColor: Colors.transparent,
     animationCurve: Curves.easeInOut,
-    animationDuration: Duration(milliseconds: 500),
+    animationDuration: const Duration(milliseconds: 500),
     onTap: onTap,
   );
 }

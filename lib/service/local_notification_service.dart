@@ -27,13 +27,12 @@ void notificationConfig(BuildContext context) async {
 
 // This Triggers when app in Foreground work
 // FOREGROUND: When the application is open, in view and in use.
-    //for IOS Foreground Notification
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+  //for IOS Foreground Notification
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   FirebaseMessaging.onMessage.listen((message) async {
     if (message.notification != null) {

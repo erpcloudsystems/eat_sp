@@ -127,7 +127,7 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
       });
   }
 
-@override
+  @override
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();

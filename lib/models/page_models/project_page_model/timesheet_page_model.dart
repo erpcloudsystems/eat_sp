@@ -6,7 +6,6 @@ class TimesheetPageModel {
 
   TimesheetPageModel(this.data);
 
-
   List<Map<String, String>> get card1Items {
     return [
       {

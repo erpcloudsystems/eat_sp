@@ -28,4 +28,10 @@ class ApiConstance {
 
   static const String getGeneralLedgerReport =
       'method/ecs_mobile.reports.accounts.general_ledger';
+
+  static const String getUserProfileData =
+      'method/ecs_mobile.user_profile.user_profile';
+
+  static const String updateUserProfileData =
+      'method/ecs_mobile.user_profile.update_user_profile';
 }

@@ -105,7 +105,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
       });
   }
 
- @override
+  @override
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();

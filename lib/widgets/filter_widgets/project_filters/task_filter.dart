@@ -60,6 +60,7 @@ class _TaskFilterScreenState extends State<TaskFilterScreen> {
             return _values['filter1'];
           },
         ),
+
         ///-------------------Sorting------------------------
         // CustomDropDown(
         //   'sort_field',

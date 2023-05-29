@@ -31,10 +31,10 @@ dependencies:
 
   #permission_handler:
   permission_handler: ^10.2.0
-  uuid: ^3.0.6
+  uuid: ^3.0.7
   curved_navigation_bar: ^1.0.3
 
-  image_picker: ^0.8.4+13
+  image_picker: ^0.8.7+5
 
   #GPS
   geolocator: ^9.0.2

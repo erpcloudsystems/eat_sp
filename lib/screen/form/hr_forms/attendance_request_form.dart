@@ -131,7 +131,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
       });
   }
 
-@override
+  @override
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();

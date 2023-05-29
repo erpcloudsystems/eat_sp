@@ -45,8 +45,7 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       'State',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      transitions['state'] = value,
+                      onSave: (key, value) => transitions['state'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -64,8 +63,7 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       'Action',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      transitions['action'] = value,
+                      onSave: (key, value) => transitions['action'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -83,8 +81,7 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       'Next State',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      transitions['next_state'] = value,
+                      onSave: (key, value) => transitions['next_state'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -102,8 +99,7 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       'Allowed',
                       disableValidation: false,
                       clearButton: true,
-                      onSave: (key, value) =>
-                      transitions['allowed'] = value,
+                      onSave: (key, value) => transitions['allowed'] = value,
                       onPressed: () async {
                         final res = await Navigator.of(context).push(
                           MaterialPageRoute(
@@ -121,7 +117,8 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       'Allow Self Approval'.tr(),
                       enable: true,
                       items: DocStatus,
-                      defaultValue: transitions['allow_self_approval'] ??DocStatus[0],
+                      defaultValue:
+                          transitions['allow_self_approval'] ?? DocStatus[0],
                       onChanged: (value) => setState(() {
                         transitions['allow_self_approval'] = value;
                       }),
@@ -131,7 +128,7 @@ class _AddTransitionsDialogState extends State<AddTransitionsDialog> {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            if(formKey.currentState!.validate()){
+                            if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
                               provider.setWorkflowTransitionsList(transitions);
                               Navigator.pop(context);

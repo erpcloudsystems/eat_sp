@@ -36,7 +36,8 @@ class StockReportsBloc extends Bloc<StockReportsEvent, StockReportsState> {
           (warehouseReports) => emit(state.copyWith(
                 getWarehouseReportsState: RequestState.success,
                 getWarehouseReportData: warehouseReports,
-                hasReachedMax: warehouseReports.length < ApiConstance.pageLength,
+                hasReachedMax:
+                    warehouseReports.length < ApiConstance.pageLength,
               )));
     } else {
       final result = await _warehouseReportsUseCase(WarehouseFilters(

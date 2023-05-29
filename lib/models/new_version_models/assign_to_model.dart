@@ -8,11 +8,11 @@ class AssignToModel {
 
   AssignToModel(
       {this.assignTo,
-        this.date,
-        this.priority,
-        this.description,
-        this.referenceType,
-        this.referenceName});
+      this.date,
+      this.priority,
+      this.description,
+      this.referenceType,
+      this.referenceName});
 
   AssignToModel.fromJson(Map<String, dynamic> json) {
     assignTo = json['assign_to'].cast<String>();

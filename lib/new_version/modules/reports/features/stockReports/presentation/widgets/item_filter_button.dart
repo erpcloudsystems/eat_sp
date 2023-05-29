@@ -25,6 +25,7 @@ class ItemFilterButton extends StatelessWidget {
         BlocProvider.of<StockReportsBloc>(context).add(
           ResetWarehouseEvent(),
         );
+
         /// Filter Warehouse ..
         final warehouseFilters = WarehouseFilters(
           warehouseFilter: warehouseCode,

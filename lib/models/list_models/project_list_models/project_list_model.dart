@@ -65,8 +65,9 @@ class ProjectItemModel {
     name = json['name'];
     status = json['status'];
     projectName = json['project_name'];
-    expectedStartDate= DateTime.parse(json['expected_start_date'] ?? "2001-01-01");
-    expectedEndDate= DateTime.parse(json['expected_end_date'] ?? "2001-01-01");
+    expectedStartDate =
+        DateTime.parse(json['expected_start_date'] ?? "2001-01-01");
+    expectedEndDate = DateTime.parse(json['expected_end_date'] ?? "2001-01-01");
     projectType = json['project_type'];
     priority = json['priority'];
     isActive = json['is_active'];

@@ -4,6 +4,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../../../core/network/failure.dart';
 
 abstract class AccountReportBaseRepo {
-  Future<Either<Failure, List<GeneralLedgerReportEntity>>> getGeneralLedgerReport(
-      GeneralLedgerFilters filters);
+  Future<Either<Failure, List<GeneralLedgerReportEntity>>>
+      getGeneralLedgerReport(GeneralLedgerFilters filters);
 }

@@ -20,7 +20,6 @@ class WorkflowListModel extends ListModel<WorkflowItemModel> {
   }
 }
 
-
 class WorkflowItemModel {
   String? name;
   String? owner;
@@ -41,21 +40,21 @@ class WorkflowItemModel {
 
   WorkflowItemModel(
       {this.name,
-        this.owner,
-        this.creation,
-        this.modified,
-        this.modifiedBy,
-        this.docstatus,
-        this.idx,
-        this.workflowName,
-        this.documentType,
-        this.isActive,
-        this.overrideStatus,
-        this.sendEmailAlert,
-        this.workflowStateField,
-        this.doctype,
-        this.transitions,
-        this.states});
+      this.owner,
+      this.creation,
+      this.modified,
+      this.modifiedBy,
+      this.docstatus,
+      this.idx,
+      this.workflowName,
+      this.documentType,
+      this.isActive,
+      this.overrideStatus,
+      this.sendEmailAlert,
+      this.workflowStateField,
+      this.doctype,
+      this.transitions,
+      this.states});
 
   WorkflowItemModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -72,8 +71,8 @@ class WorkflowItemModel {
     sendEmailAlert = json['send_email_alert'];
     workflowStateField = json['workflow_state_field'];
     doctype = json['doctype'];
-    transitions = json['transitions']?? [];
-    states = json['states']?? [];
+    transitions = json['transitions'] ?? [];
+    states = json['states'] ?? [];
   }
 
   Map<String, dynamic> toJson() {

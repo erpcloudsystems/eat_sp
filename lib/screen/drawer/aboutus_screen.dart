@@ -33,8 +33,8 @@ class _AboutUsState extends State<AboutUs> {
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
             width: width,
             height: height,
             child: Padding(
@@ -43,7 +43,7 @@ class _AboutUsState extends State<AboutUs> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('NextApp',
+                  const Text('NextApp',
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.w600)),
                   Container(
@@ -51,43 +51,43 @@ class _AboutUsState extends State<AboutUs> {
                     height: 2,
                     color: Colors.orangeAccent,
                   ),
-                  SizedBox(height: 30),
-                  Text('Version',
+                  const SizedBox(height: 30),
+                  const Text('Version',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
                   Text(versionNumber,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  SizedBox(height: 30),
-                  Text('Last Update',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w400)),
+                  const SizedBox(height: 30),
+                  const Text('Last Update',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                  Text('May 2023',
+                  const Text('May 2023',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  SizedBox(height: 30),
-                  Text(
+                  const SizedBox(height: 30),
+                  const Text(
                       'NextApp App is cloud ERP System on mobile to make your work easier .',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Powered by'),
+                      const Text('Powered by'),
                       TextButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://www.erpcloud.systems/'));
                         },
-                        child: Text(
+                        child: const Text(
                           'ERPCloud.systems',
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),

@@ -1,10 +1,11 @@
 import 'dart:developer';
 
-import '../global/global_variables.dart';
-import 'package:dio/dio.dart';
-import 'api_constance.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:dio/dio.dart';
+
 import 'exceptions.dart';
+import 'api_constance.dart';
+import '../global/global_variables.dart';
 
 abstract class BaseDioHelper {
   Future<dynamic> post({
@@ -20,6 +21,17 @@ abstract class BaseDioHelper {
   });
 
   Future<dynamic> get({
+    required String endPoint,
+    CancelToken? cancelToken,
+    bool isMultiPart = false,
+    String? base,
+    String? token,
+    dynamic data,
+    dynamic query,
+    Duration? timeOut,
+  });
+
+  Future<dynamic> patch({
     required String endPoint,
     CancelToken? cancelToken,
     bool isMultiPart = false,
@@ -111,6 +123,47 @@ class DioHelper implements BaseDioHelper {
 
     return await request(
         call: () async => await dio.post(
+              endPoint,
+              data: data,
+              queryParameters: query,
+              onSendProgress: progressCallback,
+              cancelToken: cancelToken,
+            ));
+  }
+
+  @override
+  Future patch({
+    ProgressCallback? progressCallback,
+    required String endPoint,
+    CancelToken? cancelToken,
+    bool isMultiPart = false,
+    String? base,
+    String? token,
+    data,
+    query,
+    Duration? timeOut,
+  }) async {
+    if (timeOut != null) {
+      dio.options.connectTimeout = timeOut;
+    }
+
+    dio.options.headers = {
+      if (isMultiPart) 'Content-Type': 'multipart/form-data',
+      if (!isMultiPart) 'Content-Type': 'application/json',
+      if (!isMultiPart) 'Accept': 'application/json',
+      if (token != null) 'Authorization': token,
+    };
+
+    // we use this method to get the Cookies from the old version authentication to get permission.
+    dio.interceptors.add(CookieManager(GlobalVariables().cookiesForNewVersion));
+
+    log('URL => ${dio.options.baseUrl + endPoint}');
+    log('Header => ${dio.options.headers.toString()}');
+    log('Body => $data');
+    log('Query => $query');
+
+    return await request(
+        call: () async => await dio.patch(
               endPoint,
               data: data,
               queryParameters: query,

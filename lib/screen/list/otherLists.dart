@@ -596,7 +596,7 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
         },
       );
     });
-    
+
 // selected item
 Widget newItemsScreen() => Builder(builder: (context) {
       return CustomListScreen<ItemSelectModel>(
@@ -839,43 +839,43 @@ Widget uomListScreen() => GenericListScreen<String>(
     );
 
 Widget statesListScreen() => GenericListScreen<String>(
-  title: 'Select State',
-  service: 'Workflow State',
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+      title: 'Select State',
+      service: 'Workflow State',
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 
 Widget workflowActionListScreen() => GenericListScreen<String>(
-  title: 'Select Action',
-  service: 'Workflow Action Master',
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+      title: 'Select Action',
+      service: 'Workflow Action Master',
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 
 Widget roleListScreen() => GenericListScreen<String>(
-  title: 'Select Role',
-  service: 'Role',
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+      title: 'Select Role',
+      service: 'Role',
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 
 Widget filteredUOMListScreen(String itemCode) =>
     GenericListScreen<Map<String, dynamic>>(
@@ -964,17 +964,17 @@ Widget projectTypeListScreen() => GenericListScreen<String>(
     );
 
 Widget documentTypeListScreen() => GenericListScreen<String>(
-  title: 'Select Document Type',
-  service: APIService.DOC_TYPE,
-  listItem: (value) => SingleValueTile(value,
-      onTap: (context) => Navigator.of(context).pop(value)),
-  serviceParser: (data) {
-    List<String> _list = [];
-    List.from(data['message'])
-        .forEach((element) => _list.add(element['name'] ?? tr('none')));
-    return ListModel<String>(_list);
-  },
-);
+      title: 'Select Document Type',
+      service: APIService.DOC_TYPE,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> _list = [];
+        List.from(data['message'])
+            .forEach((element) => _list.add(element['name'] ?? tr('none')));
+        return ListModel<String>(_list);
+      },
+    );
 Widget designationListScreen() => GenericListScreen<String>(
       title: 'Select Designation',
       service: APIService.DESIGNATION,

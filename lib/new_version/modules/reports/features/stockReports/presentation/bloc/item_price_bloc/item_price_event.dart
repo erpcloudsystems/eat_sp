@@ -11,7 +11,7 @@ abstract class ItemPriceEvent extends Equatable {
 class GetItemPriceEvent extends ItemPriceEvent {
   final ItemPriceFilters itemPriceFilters;
 
-   const GetItemPriceEvent({
+  const GetItemPriceEvent({
     required this.itemPriceFilters,
   });
 

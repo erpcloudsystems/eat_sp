@@ -22,8 +22,8 @@ showLoadingDialog(BuildContext context, String message) => showDialog(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(message, style: const TextStyle(fontSize: 17)),
-                Padding(
-                  padding: const EdgeInsets.all(16),
+                const Padding(
+                  padding: EdgeInsets.all(16),
                   child: LinearProgressIndicator(
                     color: LOADING_PROGRESS_COLOR,
                     backgroundColor: Colors.transparent,
@@ -51,20 +51,16 @@ Future<dynamic> checkDialog([
       title: (title != '') ? title : null,
       widget: Text(
         message,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         textAlign: TextAlign.center,
       ),
       borderRadius: GLOBAL_BORDER_RADIUS,
       backgroundColor: Colors.white,
       confirmBtnColor: Colors.white,
-      // okBtnElevation:0,
-      // okBtnhighlightElevation:0,
-      confirmBtnTextStyle: TextStyle(
+      confirmBtnTextStyle: const TextStyle(
           color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 18.0),
       lottieAsset: 'assets/lottie/warning.json',
       loopAnimation: false,
-      // contentOfTextAndButtonsPadding: EdgeInsets.fromLTRB(15,0,15,10),
-      // contentOflottiePadding: EdgeInsets.fromLTRB(0,5,0,0),
       onConfirmBtnTap: () {
         return Navigator.pop(context, true);
       },
@@ -72,32 +68,3 @@ Future<dynamic> checkDialog([
         return Navigator.pop(context, false);
       },
     );
-//
-// Future<bool?> checkDialogOld(context, String message) => showDialog(
-//     context: context,
-//     builder: (BuildContext context) => AlertDialog(
-//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
-//           backgroundColor: Colors.white,
-//           insetPadding: const EdgeInsets.all(12),
-//           content: Text(message,textAlign: TextAlign.center,),
-//           actions: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 Expanded(
-//                   child: TextButton(
-//                       style: TextButton.styleFrom(backgroundColor: Colors.red.withOpacity(0.8)),
-//                       child: Text('Cancel', style: const TextStyle(color: Colors.black, fontSize: 15)),
-//                       onPressed: () => Navigator.pop(context,false)),
-//                 ),
-//                 Flexible(child: SizedBox()),
-//                 Expanded(
-//                   child: TextButton(
-//                       style: TextButton.styleFrom(backgroundColor: Colors.green.withOpacity(0.8)),
-//                       child: Text('Yes', style: const TextStyle(color: Colors.black, fontSize: 15)),
-//                       onPressed: () => Navigator.pop(context, true)),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ));

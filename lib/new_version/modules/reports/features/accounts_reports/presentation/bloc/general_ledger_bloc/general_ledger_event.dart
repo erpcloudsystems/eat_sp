@@ -1,6 +1,6 @@
 part of 'general_ledger_bloc.dart';
 
-abstract class GeneralLedgerEvent extends Equatable{
+abstract class GeneralLedgerEvent extends Equatable {
   const GeneralLedgerEvent();
 
   @override
@@ -15,9 +15,7 @@ class GetGeneralLedgerEvent extends GeneralLedgerEvent {
   });
 
   @override
-  List<Object> get props => [
-    generalLedgerFilters
-  ];
+  List<Object> get props => [generalLedgerFilters];
 }
 
 class ResetGeneralLedgerEvent extends GeneralLedgerEvent {

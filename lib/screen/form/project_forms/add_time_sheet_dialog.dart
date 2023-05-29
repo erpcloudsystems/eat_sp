@@ -67,7 +67,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                         disableValidation: true,
                         clearButton: true,
                         enabled: false,
-                        initialValue: widget.projectName ??'',
+                        initialValue: widget.projectName ?? '',
                         onSave: (key, value) => timeSheet['project'] = value,
                       ),
                       SizedBox(

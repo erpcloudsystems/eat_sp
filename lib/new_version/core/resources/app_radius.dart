@@ -7,7 +7,7 @@ class AppRadius {
   static BorderRadius radiusOnlyBR = BorderRadius.only(
     bottomRight: Radius.circular(70),
   );
-  static BorderRadius radiusOnlyTop= BorderRadius.only(
+  static BorderRadius radiusOnlyTop = BorderRadius.only(
     topLeft: Radius.circular(18),
     topRight: Radius.circular(18),
   );

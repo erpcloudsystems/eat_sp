@@ -22,7 +22,7 @@ class ModuleProvider extends ChangeNotifier {
   ModuleType? _currentModule;
 
   /// store current module and page_models data here temporary until the user pop the connection list
-  Map<String, dynamic> _oldData = {};
+  final Map<String, dynamic> _oldData = {};
 
   Map<String, dynamic> _pageData = {};
 
@@ -69,16 +69,15 @@ class ModuleProvider extends ChangeNotifier {
   List<dynamic> workflowStates = [];
   List<dynamic> workflowTransitions = [];
 
-  void setWorkflowStateList(Map<String,dynamic> data){
+  void setWorkflowStateList(Map<String, dynamic> data) {
     workflowStates.add(data);
     notifyListeners();
   }
 
-  void setWorkflowTransitionsList(Map<String,dynamic> data){
+  void setWorkflowTransitionsList(Map<String, dynamic> data) {
     workflowTransitions.add(data);
     notifyListeners();
   }
-
 
   int? get pageSubmitStatus => _pageSubmitStatus;
 
@@ -456,20 +455,20 @@ class ModuleProvider extends ChangeNotifier {
   Widget submitDocumentWidget() {
     switch (_pageSubmitStatus) {
       case (0):
-        return SubmitButton();
+        return const SubmitButton();
       case (1):
-        return CancelButton();
+        return const CancelButton();
       case (2):
-        return AmendButton();
+        return const AmendButton();
 
       default:
-        return SizedBox();
+        return const SizedBox();
     }
   }
 
   Future<void> updatePage(Map<String, dynamic> data) async {
     await APIService()
-        .updatePage(_currentModule!.genericListService + '/' + _pageId, data);
+        .updatePage('${_currentModule!.genericListService}/$_pageId', data);
     await loadPage();
   }
 
@@ -516,7 +515,7 @@ class ModuleProvider extends ChangeNotifier {
       try {
         if (res['message']['name'] != null) {
           loadPage();
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(const Duration(seconds: 1), () {
             showSnackBar('File Uploaded Successfully', context);
           });
         }
@@ -556,13 +555,13 @@ class ModuleProvider extends ChangeNotifier {
   }
 
   void printPdf(BuildContext context) async {
-    if (pdfFormats.length == 1)
+    if (pdfFormats.length == 1) {
       APIService().printInvoice(
           context: context,
           docType: _currentModule!.genericListService,
           id: _pageId,
           format: pdfFormats[0]);
-    else {
+    } else {
       final format = await showDialog(
           context: context,
           builder: (_) => SelectFormatDialog(
@@ -589,13 +588,13 @@ class ModuleProvider extends ChangeNotifier {
     }
 
     try {
-      var file;
+      File? file;
 
       if (pdfFormats.length == 1) {
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
-          _pageId + '.pdf',
+          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '$_pageId.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
             'name': _pageId,
@@ -611,8 +610,8 @@ class ModuleProvider extends ChangeNotifier {
         if (format == null) return;
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
-          '$_pageId-$format' + '.pdf',
+          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '$_pageId-$format' '.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
             'name': _pageId,

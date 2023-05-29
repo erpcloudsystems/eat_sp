@@ -20,17 +20,16 @@ class StockLedgerReport extends StatelessWidget {
     bloc.add(ResetStockLedgerEvent());
 
     final stockLedgerFilter =
-    ModalRoute.of(context)!.settings.arguments as StockLedgerFilters;
+        ModalRoute.of(context)!.settings.arguments as StockLedgerFilters;
     bloc.add(GetStockLedgerEvent(
       stockLedgerFilters: stockLedgerFilter,
     ));
 
     return Scaffold(
-      body: BlocConsumer<StockLedgerBloc,StockLedgerState>(
+      body: BlocConsumer<StockLedgerBloc, StockLedgerState>(
         listenWhen: (previous, current) =>
-        previous.getStockLedgerReportsState !=
+            previous.getStockLedgerReportsState !=
             current.getStockLedgerReportsState,
-
         listener: (context, state) {
           if (state.getStockLedgerReportsState == RequestState.error) {
             Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
@@ -42,10 +41,9 @@ class StockLedgerReport extends StatelessWidget {
             );
           }
         },
-
         buildWhen: (previous, current) =>
-        previous.getStockLedgerReportData != current.getStockLedgerReportData,
-
+            previous.getStockLedgerReportData !=
+            current.getStockLedgerReportData,
         builder: (context, state) {
           if (state.getStockLedgerReportsState == RequestState.loading) {
             return CustomLoadingWithImage();
@@ -68,13 +66,18 @@ class StockLedgerReport extends StatelessWidget {
                   RightHandDetailWidgets(
                       text: state.getStockLedgerReportData[index].itemGroup),
                   RightHandDetailWidgets(
-                      text: state.getStockLedgerReportData[index].inQty.toString()),
+                      text: state.getStockLedgerReportData[index].inQty
+                          .toString()),
                   RightHandDetailWidgets(
-                      text: state.getStockLedgerReportData[index].outQty.toString()),
+                      text: state.getStockLedgerReportData[index].outQty
+                          .toString()),
                   RightHandDetailWidgets(
-                      text: state.getStockLedgerReportData[index].qtyAfterTransaction.toString()),
+                      text: state
+                          .getStockLedgerReportData[index].qtyAfterTransaction
+                          .toString()),
                   RightHandDetailWidgets(
-                      text: state.getStockLedgerReportData[index].voucherNo.toString()),
+                      text: state.getStockLedgerReportData[index].voucherNo
+                          .toString()),
                   RightHandDetailWidgets(
                       text: state.getStockLedgerReportData[index].warehouse),
                 ],
@@ -98,14 +101,13 @@ class StockLedgerReport extends StatelessWidget {
                   'Warehouse',
                 ],
                 leftColumnData: (index) =>
-                state.getStockLedgerReportData[index].itemCode,
+                    state.getStockLedgerReportData[index].itemCode,
                 table: state.getStockLedgerReportData,
-                refreshFun: () =>
-                    BlocProvider.of<StockLedgerBloc>(context).add(
-                      GetStockLedgerEvent(
-                        stockLedgerFilters: stockLedgerFilter,
-                      ),
-                    ),
+                refreshFun: () => BlocProvider.of<StockLedgerBloc>(context).add(
+                  GetStockLedgerEvent(
+                    stockLedgerFilters: stockLedgerFilter,
+                  ),
+                ),
                 tableWidget: _generateRightHandSideColumnRow,
               ),
             );

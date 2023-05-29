@@ -52,17 +52,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 //Get the device token
 Future<void> getDeviceTokenToSendNotification() async {
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseMessaging fcm = FirebaseMessaging.instance;
 
   try {
-    final token = await _fcm.getToken();
+    final token = await fcm.getToken();
 
     if (token != null) {
       deviceTokenToSendPushNotification = token;
       isTokenRefreshed = true;
     } else {
-      await _fcm.requestPermission();
-      final newToken = await _fcm.getToken();
+      await fcm.requestPermission();
+      final newToken = await fcm.getToken();
       deviceTokenToSendPushNotification = newToken!;
       isTokenRefreshed = false;
     }
@@ -82,7 +82,7 @@ Future<void> getDeviceTokenToSendNotification() async {
 ///****** 1- End Push Notifications ******///
 
 void main() async {
-  HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = MyHttpOverrides();
 
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -108,17 +108,19 @@ void main() async {
       .then((_) {
     runApp(
       EasyLocalization(
-         supportedLocales: AppLocal.supportLocals,
+          supportedLocales: AppLocal.supportLocals,
           path: AppLocal.path, // <-- change the path of the translation fileses
           child: MultiProvider(
             providers: StateManagement.stateManagement,
-            child: MyApp(),
+            child: const MyApp(),
           )),
     );
   });
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -131,7 +133,7 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         theme: ThemeData(
           textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
-          primaryColor: Color(0xffF9F9F9),
+          primaryColor: const Color(0xffF9F9F9),
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.blue,
           ).copyWith(secondary: Colors.blue),
@@ -141,7 +143,7 @@ class MyApp extends StatelessWidget {
               color: APPBAR_COLOR,
               elevation: 1,
               foregroundColor: Colors.black,
-              iconTheme: IconThemeData(color: Colors.white),
+              iconTheme: const IconThemeData(color: Colors.white),
               toolbarTextStyle: TextTheme(
                 // center text style
                 titleLarge: GoogleFonts.cairo(
@@ -159,7 +161,7 @@ class MyApp extends StatelessWidget {
                 ),
                 // Side text style
               ).titleLarge),
-          tabBarTheme: TabBarTheme(
+          tabBarTheme: const TabBarTheme(
             indicator: UnderlineTabIndicator(
               borderSide: BorderSide(
                 color: APPBAR_COLOR,
@@ -175,7 +177,9 @@ class MyApp extends StatelessWidget {
                         future: userProvider.getUserData(),
                         builder: (_, snapshot) {
                           if (snapshot.connectionState ==
-                              ConnectionState.waiting) return SplashScreen();
+                              ConnectionState.waiting) {
+                            return const SplashScreen();
+                          }
                           return LoginScreen();
                         }),
                   )

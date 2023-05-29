@@ -30,7 +30,6 @@ class WarehouseReports extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.getWarehouseReportsState !=
             current.getWarehouseReportsState,
-
         listener: (context, state) {
           if (state.getWarehouseReportsState == RequestState.error) {
             Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);

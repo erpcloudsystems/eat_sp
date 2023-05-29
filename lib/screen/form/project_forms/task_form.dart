@@ -51,7 +51,9 @@ class _TaskFormState extends State<TaskForm> {
             : 'Creating Your Task');
 
     // To print the body we send to backend
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -61,22 +63,23 @@ class _TaskFormState extends State<TaskForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['task'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['task'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['task']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['task'] != null) {
       provider.pushPage(res['message']['task']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -86,11 +89,12 @@ class _TaskFormState extends State<TaskForm> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
         setState(() {});
       });
+    }
 
     //DocFromPage Mode
     if (provider.isCreateFromPage) {
@@ -127,16 +131,16 @@ class _TaskFormState extends State<TaskForm> {
         child: Scaffold(
           appBar: AppBar(
             title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Task")
-                : Text("Create Task"),
+                ? const Text("Edit Task")
+                : const Text("Create Task"),
             actions: [
               Material(
                   color: Colors.transparent,
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   clipBehavior: Clip.hardEdge,
                   child: IconButton(
                     onPressed: submit,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.check,
                       color: FORM_SUBMIT_BTN_COLOR,
                     ),
@@ -144,7 +148,7 @@ class _TaskFormState extends State<TaskForm> {
             ],
           ),
           body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Form(
               key: _formKey,
               child: Column(
@@ -153,7 +157,7 @@ class _TaskFormState extends State<TaskForm> {
                   Group(
                     child: Column(
                       children: [
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         //_______________________________________Subject_____________________________________________________
                         CustomTextField(
                           'subject',
@@ -281,11 +285,11 @@ class _TaskFormState extends State<TaskForm> {
                                 child: DatePicker(
                               'exp_start_date',
                               'Expected Start Date',
-                              initialValue: data['exp_start_date'] ?? null,
+                              initialValue: data['exp_start_date'],
                               onChanged: (value) => setState(
                                   () => data['exp_start_date'] = value),
                             )),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             //____________________________________Expected End Date______________________________________________
                             Flexible(
                                 child: DatePicker(
@@ -294,8 +298,7 @@ class _TaskFormState extends State<TaskForm> {
                                         Duration.zero,
                                         () => setState(() =>
                                             data['exp_end_date'] = value)),
-                                    initialValue:
-                                        data['exp_end_date'] ?? null)),
+                                    initialValue: data['exp_end_date'])),
                           ],
                         ),
                         Row(

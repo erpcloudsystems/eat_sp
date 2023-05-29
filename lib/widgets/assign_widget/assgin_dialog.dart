@@ -144,24 +144,22 @@ class _AssignToDialogState extends State<AssignToDialog> {
                     ),
                   ),
                   //---------------------------------------Assign to me ---------------------------
-                  CheckBoxWidget(
-                    'assign_to_me',
-                    'Assign to me',
-                    initialValue: assignToMe,
-                    onChanged: (id, value) {
-                      if(!assignToMe){
-                        setState(() {
-                          assignToList.add(context.read<UserProvider>().userId);
-                          assignToMe = !assignToMe;
-                        });
-                      }else{
-                        setState(() {
-                          assignToList.remove(context.read<UserProvider>().userId);
-                          assignToMe = !assignToMe;
-                        });
-                      }
+                  CheckBoxWidget('assign_to_me', 'Assign to me',
+                      initialValue: assignToMe, onChanged: (id, value) {
+                    if (!assignToMe) {
+                      setState(() {
+                        assignToList.add(context.read<UserProvider>().userId);
+                        assignToMe = !assignToMe;
+                      });
+                    } else {
+                      setState(() {
+                        assignToList
+                            .remove(context.read<UserProvider>().userId);
+                        assignToMe = !assignToMe;
+                      });
                     }
-                  ),
+                  }),
+
                   /// Priority
                   CustomDropDown(
                     'priority',

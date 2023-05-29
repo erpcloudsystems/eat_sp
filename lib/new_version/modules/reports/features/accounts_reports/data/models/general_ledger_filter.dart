@@ -4,7 +4,7 @@ class GeneralLedgerFilters extends Equatable {
   final String? account;
   final String? partyType;
   final String? party;
-  final String? toDate ;
+  final String? toDate;
   final String? fromDate;
   final int? startKey;
 
@@ -19,11 +19,11 @@ class GeneralLedgerFilters extends Equatable {
 
   @override
   List<Object?> get props => [
-    account,
-    partyType,
-    party,
-    toDate,
-    fromDate,
-    startKey,
-  ];
+        account,
+        partyType,
+        party,
+        toDate,
+        fromDate,
+        startKey,
+      ];
 }

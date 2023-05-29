@@ -91,8 +91,8 @@ class TimesheetModel {
     employeeDetail = json['employee_detail'] ?? 'none';
     department = json['department'] ?? 'none';
     user = json['user'] ?? 'none';
-    startDate = DateTime.parse(json['start_date']  ?? "2001-01-01");
-    endDate =  DateTime.parse(json['end_date']  ?? "2001-01-01");
+    startDate = DateTime.parse(json['start_date'] ?? "2001-01-01");
+    endDate = DateTime.parse(json['end_date'] ?? "2001-01-01");
     totalHours = json['total_hours'] ?? 'none';
     totalBillableHours = json['total_billable_hours'] ?? 'none';
     baseTotalBillableAmount = json['base_total_billable_amount'] ?? 'none';

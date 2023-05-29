@@ -21,7 +21,6 @@ class WorkflowPageModel {
         tr('Is Active'): data['is_active'].toString(),
         tr('Override Status'): data['override_status'].toString(),
       },
-
       {
         tr('Creation'): data['creation'] ?? tr('none'),
         tr('Modified'): data['modified'] ?? tr('none')

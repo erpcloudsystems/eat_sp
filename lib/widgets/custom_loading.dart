@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomLoadingWithImage extends StatefulWidget {
-  CustomLoadingWithImage({Key? key}) : super(key: key);
+  const CustomLoadingWithImage({Key? key}) : super(key: key);
 
   @override
   State<CustomLoadingWithImage> createState() => _CustomLoadingWithImageState();
@@ -29,7 +29,7 @@ class _CustomLoadingWithImageState extends State<CustomLoadingWithImage>
 
   Future changeColors() async {
     while (true) {
-      await new Future.delayed(const Duration(seconds: 0), () {
+      await Future.delayed(const Duration(seconds: 0), () {
         if (controller.status == AnimationStatus.completed) {
           controller.reverse();
         } else {
@@ -55,7 +55,7 @@ class _CustomLoadingWithImageState extends State<CustomLoadingWithImage>
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(bottom: 25),
+        margin: const EdgeInsets.only(bottom: 25),
         width: 180,
         child: Column(
           mainAxisSize: MainAxisSize.min,

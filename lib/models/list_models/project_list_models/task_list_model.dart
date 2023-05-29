@@ -20,7 +20,7 @@ class TaskListModel extends ListModel<TaskItemModel> {
   }
 }
 
-class TaskItemModel{
+class TaskItemModel {
   final String? name,
       subject,
       project,
@@ -32,7 +32,7 @@ class TaskItemModel{
       department,
       company;
   final double progress, expectedTime;
-   final List<dynamic>? dependsOn;
+  final List<dynamic>? dependsOn;
   final DateTime expectedStartDate, expectedEndDate;
 
   TaskItemModel({

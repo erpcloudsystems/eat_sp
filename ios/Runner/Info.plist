@@ -32,6 +32,10 @@
 	<string>Location permission is required to know your current location as we need it to create several DOCTYPEs like Sales Invoice.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location permission is required to know your current location as we need it to create several DOCTYPEs like Sales Invoice.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>NextApp needs access to your photo library to allow you to select and upload photos for items.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>NextApp need to access to your Camera if you want to update your profile photo</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -43,8 +47,6 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to your photo library to allow you to select and upload photos for items.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

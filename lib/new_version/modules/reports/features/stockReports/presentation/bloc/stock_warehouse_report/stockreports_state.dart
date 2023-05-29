@@ -26,7 +26,7 @@ class StockReportsState extends Equatable {
             getWarehouseReportMessage ?? this.getWarehouseReportMessage,
         getWarehouseReportData:
             getWarehouseReportData ?? this.getWarehouseReportData,
-        hasReachedMax: hasReachedMax ?? this.hasReachedMax,    
+        hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       );
 
   @override

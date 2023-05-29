@@ -1,23 +1,22 @@
-import 'drawer/drawer_screen.dart';
-import 'home_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'drawer/drawer_screen.dart';
 
-import '../provider/module/module_provider.dart';
-import '../provider/user/user_provider.dart';
 import '../service/service.dart';
-import '../widgets/botton_navigation_bar.dart';
-import 'list/generic_list_screen.dart';
 import 'other/app_settings.dart';
+import 'list/generic_list_screen.dart';
 import 'other/notification_screen.dart';
-import 'other/user_profile.dart';
+import '../provider/user/user_provider.dart';
+import '../widgets/botton_navigation_bar.dart';
+import '../provider/module/module_provider.dart';
+import '../new_version/modules/user_profile/presentation/pages/user_profile_screen.dart';
 
 class SubCategoryScreen extends StatefulWidget {
   final String title;
   final int moduleIndex;
 
-  SubCategoryScreen(this.title, this.moduleIndex);
+  const SubCategoryScreen(this.title, this.moduleIndex, {super.key});
 
   @override
   State<SubCategoryScreen> createState() => _SubCategoryScreenState();
@@ -25,17 +24,17 @@ class SubCategoryScreen extends StatefulWidget {
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
   int _page = 2;
-  GlobalKey _bottomNavigationKey = GlobalKey();
+  final GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     // final List<String> list = context.read<UserProvider>().getNames(title);
     final UserProvider userProvider = Provider.of(context, listen: false);
-    DateTime _lastExitTime = DateTime.now();
+    DateTime lastExitTime = DateTime.now();
 
     List<Widget?> pages = [
-      AppSettings(),
-      UserProfile(),
+      const AppSettings(),
+      const UserProfileScreen(),
       GridView.count(
         padding:
             const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
@@ -109,7 +108,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           }),
       extendBody: true,
       body: Container(
-          padding: EdgeInsets.only(bottom: 50),
+          padding: const EdgeInsets.only(bottom: 50),
           child: pages[
               _page]), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -147,10 +146,10 @@ class HomeItem extends StatelessWidget {
         ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.grey.shade200,
               elevation: 0,
               //shadowColor: Colors.grey.withOpacity(0.5),
               primary: Colors.white,
-              onPrimary: Colors.grey.shade200,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6))),
           onPressed: onPressed,
@@ -163,7 +162,7 @@ class HomeItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(6),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 100),
+                      constraints: const BoxConstraints(maxWidth: 100),
                       child: AspectRatio(
                         aspectRatio: 1,
                         child: Image.network(
@@ -171,14 +170,14 @@ class HomeItem extends StatelessWidget {
                           headers: APIService().getHeaders,
                           loadingBuilder: (context, child, progress) {
                             return progress != null
-                                ? SizedBox(
+                                ? const SizedBox(
                                     child: Icon(Icons.image,
                                         color: Colors.grey, size: 60))
                                 : child;
                           },
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {
-                            return SizedBox(
+                            return const SizedBox(
                                 child: Icon(Icons.image,
                                     color: Colors.grey, size: 60));
                           },

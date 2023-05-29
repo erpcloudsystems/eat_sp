@@ -115,7 +115,7 @@ class _WorkflowFormState extends State<WorkflowForm> {
       });
   }
 
-    @override
+  @override
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();

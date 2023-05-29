@@ -16,9 +16,12 @@ const List<String> requestTypeList = [
   'Suggestions',
   'Other'
 ];
+
 /// Sorting List
 const List<String> SortingFieldList = [
-  'creation', 'modified', 'name',
+  'creation',
+  'modified',
+  'name',
 ];
 
 const List<String> SortingType = [
@@ -176,24 +179,25 @@ String? mailValidation(String? value) {
 String? numberValidation(value, {bool isInt = false, bool allowNull = false}) {
   if (allowNull) return null;
   if (value == null || value.isEmpty) return 'This field is required';
-  var num;
 
-  if (isInt)
-    num = int.tryParse(value);
-  else
-    num = double.tryParse(value);
+  num? theNum;
+  if (isInt) {
+    theNum = int.tryParse(value);
+  } else {
+    theNum = double.tryParse(value);
+  }
 
-  if (num == null || num < 0) return 'Invalid value';
+  if (theNum == null || theNum < 0) return 'Invalid value';
 
   return null;
 }
 
 String? validateMobile(String? value) {
   String pattern = r'(^(?:[+0]9)?[0-9]{11,12}$)';
-  RegExp regExp = new RegExp(pattern);
-  if (value?.length == 0) {
+  RegExp regExp = RegExp(pattern);
+  if (value == null || value.isEmpty) {
     return 'Please enter mobile number';
-  } else if (!regExp.hasMatch(value!)) {
+  } else if (!regExp.hasMatch(value)) {
     return 'Please enter valid mobile number';
   }
   return null;
@@ -201,21 +205,22 @@ String? validateMobile(String? value) {
 
 String? numberValidationToast(String? value, String field,
     {bool isInt = false}) {
-  print(value);
+  debugPrint(value);
   if (value == null || value.isEmpty) {
     Fluttertoast.showToast(
         msg: '$field is required',
         backgroundColor: Colors.grey.shade700.withOpacity(0.8));
     return '';
   }
-  var num;
+  num? theNum;
 
-  if (isInt)
-    num = int.tryParse(value);
-  else
-    num = double.tryParse(value);
+  if (isInt) {
+    theNum = int.tryParse(value);
+  } else {
+    theNum = double.tryParse(value);
+  }
 
-  if (num == null || num < 0) {
+  if (theNum == null || theNum < 0) {
     Fluttertoast.showToast(
         msg: '$value is not a valid $field',
         backgroundColor: Colors.grey.shade700.withOpacity(0.8));
@@ -277,8 +282,9 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
 
   @override
   void didUpdateWidget(covariant CheckBoxWidget oldWidget) {
-    if (oldWidget.initialValue != widget.initialValue)
+    if (oldWidget.initialValue != widget.initialValue) {
       _value = widget.initialValue;
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -298,18 +304,19 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                 ? (value) {
                     if (value != null) {
                       setState(() => _value = value);
-                      if (widget.onChanged != null)
+                      if (widget.onChanged != null) {
                         widget.onChanged!(widget.id, value);
+                      }
                     }
                   }
                 : null),
         if (widget.clear)
           Material(
             color: Colors.transparent,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             clipBehavior: Clip.hardEdge,
             child: IconButton(
-                icon: Icon(Icons.clear, color: Colors.grey),
+                icon: const Icon(Icons.clear, color: Colors.grey),
                 splashRadius: 20,
                 onPressed: () {
                   setState(() => _value = false);
@@ -426,9 +433,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
     super.didUpdateWidget(oldWidget);
     if ((oldWidget.initialValue != widget.initialValue ||
             widget.clearValue == true) &&
-        widget.initialValue != controller.value.text)
-      Future.delayed(Duration(seconds: 0))
+        widget.initialValue != controller.value.text) {
+      Future.delayed(const Duration(seconds: 0))
           .then((value) => controller.text = widget.initialValue ?? '');
+    }
   }
 
   @override
@@ -457,7 +465,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         onFieldSubmitted: widget.onSubmit,
         decoration: InputDecoration(
             labelText: tr(widget.title),
-            labelStyle: TextStyle(color: Colors.grey),
+            labelStyle: const TextStyle(color: Colors.grey),
             isDense: true,
             isCollapsed: false,
             hintText: widget.hintText,
@@ -473,18 +481,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide(color: Colors.grey.shade300)),
             focusColor: widget.onPressed != null ? Colors.grey : null,
             contentPadding: const EdgeInsets.all(2),
-            errorStyle: widget.disableError ? TextStyle(height: 0) : null,
+            errorStyle: widget.disableError ? const TextStyle(height: 0) : null,
             suffix: !widget.clearButton
                 ? null
                 : SizedBox(
                     height: 24,
                     child: Material(
                       color: Colors.transparent,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       clipBehavior: Clip.hardEdge,
                       child: IconButton(
                           padding: EdgeInsets.zero,
-                          icon: Icon(Icons.clear, color: Colors.grey),
+                          icon: const Icon(Icons.clear, color: Colors.grey),
                           splashRadius: 20,
                           onPressed: () {
                             controller.text = '';
@@ -530,8 +538,8 @@ class _CustomExpandableTileState extends State<CustomExpandableTile> {
         trailing: !widget.hideArrow
             ? AnimatedRotation(
                 turns: widget.isOpened ? .5 : 0,
-                duration: Duration(milliseconds: 400),
-                child: Icon(Icons.expand_more),
+                duration: const Duration(milliseconds: 400),
+                child: const Icon(Icons.expand_more),
               )
             : null,
         onExpansionChanged: (v) {
@@ -620,8 +628,9 @@ class _NumberTextFieldState extends State<NumberTextField> {
 
   @override
   void initState() {
-    if (widget.initialValue != null)
+    if (widget.initialValue != null) {
       controller.text = widget.initialValue!.toStringAsFixed(2);
+    }
     super.initState();
   }
 
@@ -630,9 +639,11 @@ class _NumberTextFieldState extends State<NumberTextField> {
     super.didUpdateWidget(oldWidget);
     if ((oldWidget.initialValue != widget.initialValue ||
             widget.clearValue == true) &&
-        widget.initialValue != num.tryParse(controller.value.text))
-      Future.delayed(Duration(seconds: 0)).then((value) => controller.text =
+        widget.initialValue != num.tryParse(controller.value.text)) {
+      Future.delayed(const Duration(seconds: 0)).then((value) => controller
+              .text =
           widget.initialValue == null ? '' : widget.initialValue.toString());
+    }
   }
 
   @override
@@ -659,7 +670,7 @@ class _NumberTextFieldState extends State<NumberTextField> {
             : widget.onSave!(widget.id, controller.text),
         decoration: InputDecoration(
           labelText: tr(widget.title),
-          labelStyle: TextStyle(color: Colors.grey),
+          labelStyle: const TextStyle(color: Colors.grey),
           isDense: true,
           hintText: widget.hintText,
           contentPadding: const EdgeInsets.all(2),
@@ -675,7 +686,7 @@ class _NumberTextFieldState extends State<NumberTextField> {
               ? UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey.shade300))
               : null,
-          errorStyle: widget.disableError ? TextStyle(height: 0) : null,
+          errorStyle: widget.disableError ? const TextStyle(height: 0) : null,
         ),
         validator: widget.validator ??
             (value) {
@@ -755,9 +766,8 @@ class _DatePickerState extends State<DatePicker> {
       if (widget.initialValue.toString().contains("T")) {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
       } else if (widget.initialValue.toString().contains(" ")) {
-        var date = widget.initialValue.toString().split(" ")[0] +
-            "T" +
-            widget.initialValue.toString().split(" ")[1];
+        var date =
+            "${widget.initialValue.toString().split(" ")[0]}T${widget.initialValue.toString().split(" ")[1]}";
         controller.text = formatDate(DateTime.parse(date));
       } else {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
@@ -769,7 +779,7 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
-    if (oldWidget.initialValue != widget.initialValue)
+    if (oldWidget.initialValue != widget.initialValue) {
       Future.delayed(Duration.zero).then((value) {
         setState(() {
           if (widget.initialValue == null) {
@@ -780,15 +790,15 @@ class _DatePickerState extends State<DatePicker> {
                 ? ''
                 : formatDate(DateTime.parse(widget.initialValue!));
           } else if (widget.initialValue.toString().contains(" ")) {
-            var date = widget.initialValue.toString().split(" ")[0] +
-                "T" +
-                widget.initialValue.toString().split(" ")[1];
+            var date =
+                "${widget.initialValue.toString().split(" ")[0]}T${widget.initialValue.toString().split(" ")[1]}";
             controller.text = formatDate(DateTime.parse(date));
           } else {
             controller.text = formatDate(DateTime.parse(widget.initialValue!));
           }
         });
       });
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -812,17 +822,17 @@ class _DatePickerState extends State<DatePicker> {
             suffixIcon: widget.clear && controller.text.isNotEmpty
                 ? Material(
                     color: Colors.transparent,
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     clipBehavior: Clip.hardEdge,
                     child: IconButton(
-                        icon: Icon(Icons.clear),
+                        icon: const Icon(Icons.clear),
                         splashRadius: 20,
                         onPressed: () {
                           setState(() => controller.text = '');
                           if (widget.onClear != null) widget.onClear!();
                         }),
                   )
-                : Icon(Icons.date_range),
+                : const Icon(Icons.date_range),
             labelText: widget.title),
         onTap: !widget.enable
             ? null
@@ -844,8 +854,9 @@ class _DatePickerState extends State<DatePicker> {
 
                 if (selectedDate != null) {
                   setState(() => controller.text = formatDate(selectedDate));
-                  if (widget.onChanged != null)
+                  if (widget.onChanged != null) {
                     widget.onChanged!(selectedDate.toIso8601String());
+                  }
                 }
               },
         validator: widget.disableValidation
@@ -920,17 +931,11 @@ class _TimePickerState extends State<TimePicker> {
   void initState() {
     if (widget.initialValue != null) {
       if (widget.initialValue.toString().contains("T")) {
-        controller.text = widget.initialValue!.split("T")[1].split(":")[0] +
-            ":" +
-            widget.initialValue!.split("T")[1].split(":")[1] +
-            ":" +
-            "00";
+        controller.text =
+            "${widget.initialValue!.split("T")[1].split(":")[0]}:${widget.initialValue!.split("T")[1].split(":")[1]}:00";
       } else {
-        controller.text = widget.initialValue!.split(" ")[1].split(":")[0] +
-            ":" +
-            widget.initialValue!.split(" ")[1].split(":")[1] +
-            ":" +
-            "00";
+        controller.text =
+            "${widget.initialValue!.split(" ")[1].split(":")[0]}:${widget.initialValue!.split(" ")[1].split(":")[1]}:00";
       }
     }
     super.initState();
@@ -938,7 +943,7 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   void didUpdateWidget(covariant TimePicker oldWidget) {
-    if (oldWidget.initialValue != widget.initialValue)
+    if (oldWidget.initialValue != widget.initialValue) {
       Future.delayed(Duration.zero).then((value) {
         setState(() {
           if (widget.initialValue == null) {
@@ -947,22 +952,15 @@ class _TimePickerState extends State<TimePicker> {
               widget.initialValue.toString().contains("T")) {
             controller.text = widget.initialValue!.isEmpty
                 ? ''
-                : widget.initialValue!.split("T")[1].split(":")[0] +
-                    ":" +
-                    widget.initialValue!.split("T")[1].split(":")[1] +
-                    ":" +
-                    "00";
+                : "${widget.initialValue!.split("T")[1].split(":")[0]}:${widget.initialValue!.split("T")[1].split(":")[1]}:00";
           } else {
             controller.text = widget.initialValue!.isEmpty
                 ? ''
-                : widget.initialValue!.split(" ")[1].split(":")[0] +
-                    ":" +
-                    widget.initialValue!.split(" ")[1].split(":")[1] +
-                    ":" +
-                    "00";
+                : "${widget.initialValue!.split(" ")[1].split(":")[0]}:${widget.initialValue!.split(" ")[1].split(":")[1]}:00";
           }
         });
       });
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -986,17 +984,17 @@ class _TimePickerState extends State<TimePicker> {
             suffixIcon: widget.clear && controller.text.isNotEmpty
                 ? Material(
                     color: Colors.transparent,
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     clipBehavior: Clip.hardEdge,
                     child: IconButton(
-                        icon: Icon(Icons.clear),
+                        icon: const Icon(Icons.clear),
                         splashRadius: 20,
                         onPressed: () {
                           setState(() => controller.text = '');
                           if (widget.onClear != null) widget.onClear!();
                         }),
                   )
-                : Icon(Icons.schedule),
+                : const Icon(Icons.schedule),
             labelText: widget.title),
         onTap: !widget.enable
             ? null
@@ -1013,8 +1011,9 @@ class _TimePickerState extends State<TimePicker> {
                 );
                 if (selectedTime != null) {
                   setState(() => controller.text = formatTime(selectedTime));
-                  if (widget.onChanged != null)
+                  if (widget.onChanged != null) {
                     widget.onChanged!(formatTime(selectedTime));
+                  }
                 }
               },
         validator: widget.disableValidation
@@ -1087,7 +1086,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             fontSize: widget.fontSize,
           ),
         ),
-        Spacer(),
+        const Spacer(),
         DropdownButton<String>(
             value: _value,
             borderRadius: BorderRadius.circular(5),
@@ -1114,10 +1113,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
         if (widget.clear && _value != null)
           Material(
             color: Colors.transparent,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             clipBehavior: Clip.hardEdge,
             child: IconButton(
-                icon: Icon(Icons.clear, color: Colors.grey),
+                icon: const Icon(Icons.clear, color: Colors.grey),
                 splashRadius: 20,
                 onPressed: () {
                   setState(() => _value = null);
@@ -1168,7 +1167,7 @@ class _SelectImageState extends State<SelectImage> {
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Center(child: Text('Add Image')),
+                const Center(child: Text('Add Image')),
                 if (_image != null)
                   TextButton(
                     onPressed: () {
@@ -1176,11 +1175,11 @@ class _SelectImageState extends State<SelectImage> {
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: const [
                         Icon(Icons.delete, color: Colors.red, size: 25),
                         Text(
                           'Remove Image',
-                          style: const TextStyle(color: Colors.red),
+                          style: TextStyle(color: Colors.red),
                         )
                       ],
                     ),
@@ -1191,16 +1190,15 @@ class _SelectImageState extends State<SelectImage> {
         ),
         Material(
           color: Colors.transparent,
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           clipBehavior: Clip.hardEdge,
           child: IconButton(
             onPressed: () async {
-              final _picker = ImagePicker();
-              final image =
-                  await _picker.pickImage(source: ImageSource.gallery);
+              final picker = ImagePicker();
+              final image = await picker.pickImage(source: ImageSource.gallery);
               if (image != null) setState(() => _image = image);
             },
-            icon: Icon(Icons.add, color: Colors.blueAccent, size: 30),
+            icon: const Icon(Icons.add, color: Colors.blueAccent, size: 30),
           ),
         )
       ],
