@@ -34,4 +34,7 @@ class ApiConstance {
 
   static const String updateUserProfileData =
       'method/ecs_mobile.user_profile.update_user_profile';
+
+  static const String getDashboardData =
+      'method/ecs_mobile.home_dashboard.get_home_data';
 }

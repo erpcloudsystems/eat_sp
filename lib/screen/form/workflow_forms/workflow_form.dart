@@ -97,13 +97,14 @@ class _WorkflowFormState extends State<WorkflowForm> {
     provider.workflowTransitions.clear();
 
     //Editing mode & Duplicate mode
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
         provider.workflowStates = data['states'];
         provider.workflowTransitions = data['transitions'];
         setState(() {});
       });
+    }
 
     data['states'] = provider.workflowStates;
     data['transitions'] = provider.workflowTransitions;

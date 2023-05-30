@@ -57,10 +57,10 @@ class SalesInvoicePage extends StatelessWidget {
             ),
             Stack(
               alignment: Alignment.center,
-              children: [
+              children: const [
                 Text(
                   'Sales Invoice',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -101,10 +101,10 @@ class SalesInvoicePage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -169,13 +169,13 @@ class SalesInvoicePage extends StatelessWidget {
               MapsLauncher.launchCoordinates(
                   data['latitude'], data['longitude']);
             },
-            child: Text(
+            child: const Text(
               "Open in Maps",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         CommentsButton(color: color),
@@ -217,9 +217,9 @@ class SalesInvoicePage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: model.items.length,
                             itemBuilder: (BuildContext context, int index) =>
@@ -246,9 +246,9 @@ class SalesInvoicePage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -267,9 +267,9 @@ class SalesInvoicePage extends StatelessWidget {
 
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -289,9 +289,9 @@ class SalesInvoicePage extends StatelessWidget {
                                 )),
 
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

@@ -22,18 +22,25 @@ class PageDetailsDialog extends StatelessWidget {
         LimitedBox(
           maxHeight: MediaQuery.of(context).size.height * 0.85,
           child: Dialog(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.blueAccent),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(color: Colors.blueAccent),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
             backgroundColor: Colors.white,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                     //padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: Colors.blueAccent))),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ),
                     height: 50,
                     child: Center(
                         child: Text(title,
@@ -42,7 +49,7 @@ class PageDetailsDialog extends StatelessWidget {
                 Flexible(
                   child: ShaderMask(
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [

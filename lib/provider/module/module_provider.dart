@@ -79,6 +79,44 @@ class ModuleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Workflow ----------------------------------------------------------------
+  bool getWorkflow = false;
+
+  bool get hasWorkflow => getWorkflow;
+
+  Future checkDocTypeWorkflow() async {
+    getWorkflow =
+        await APIService().hasWorkflow(docTypeName: currentModule.title);
+    notifyListeners();
+  }
+
+  List<dynamic> actionsList = [];
+
+  Future<void> getActionList() async {
+    var response = await APIService().genericGet(
+      WORKFLOW_ACTION_LIST,
+      {
+        'doctype': currentModule.title,
+        'docname': pageId,
+      },
+    );
+    actionsList = response['message'];
+    notifyListeners();
+  }
+
+  String? workflowStatus;
+  Future<void> getWorkflowStatus() async {
+    var response = await APIService().genericGet(
+      WORKFLOW_STATUS,
+      {
+        'doctype': currentModule.title,
+        'docname': pageId,
+      },
+    );
+    workflowStatus = response['message'];
+    notifyListeners();
+  }
+  //---------------------------------------------------------------------------
   int? get pageSubmitStatus => _pageSubmitStatus;
 
   Map<String, dynamic> get filter => _filter;

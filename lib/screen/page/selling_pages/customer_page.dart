@@ -1,4 +1,7 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../models/page_models/selling_page_model/customer_page_model.dart';
+import '../../../widgets/form_widgets.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
@@ -22,14 +25,13 @@ class CustomerPage extends StatelessWidget {
     final Color? color = context.read<ModuleProvider>().color;
 
     final model = CustomerPageModel(data);
-
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
         PageCard(
           header: [
             Text(
-              tr('Customer Name') + ': ${data['customer_name'] ?? tr('none')}',
+              '${tr('Customer Name')}: ${data['customer_name'] ?? tr('none')}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
@@ -44,7 +46,7 @@ class CustomerPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -52,10 +54,12 @@ class CustomerPage extends StatelessWidget {
             SwapWidget(
                 1,
                 SizedBox(
-                    height: 30,
-                    child: Checkbox(
-                        value: (data['disabled'] ?? 0) == 0 ? false : true,
-                        onChanged: null)),
+                  height: 30,
+                  child: Checkbox(
+                    value: (data['disabled'] ?? 0) == 0 ? false : true,
+                    onChanged: null,
+                  ),
+                ),
                 widgetNumber: 2)
           ],
         ),
@@ -91,13 +95,13 @@ class CustomerPage extends StatelessWidget {
               MapsLauncher.launchCoordinates(
                   data['latitude'], data['longitude']);
             },
-            child: Text(
+            child: const Text(
               "Open in Maps",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         CommentsButton(color: color),
@@ -108,18 +112,23 @@ class CustomerPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
               //border: Border.all(color: Colors.blueAccent),
             ),
-            child: Center(
-                child: Text('Connections',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold))),
             padding: const EdgeInsets.all(8),
             margin: const EdgeInsets.all(8),
+            child: const Center(
+              child: Text(
+                'Connections',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -130,7 +139,7 @@ class CustomerPage extends StatelessWidget {
                         docTypeId: data['conn'][index]['name'] ?? tr('none'),
                         count: data['conn'][index]['count'].toString());
                   })
-              : NothingHere(),
+              : const NothingHere(),
         ),
       ],
     );

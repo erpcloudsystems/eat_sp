@@ -1,14 +1,6 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 
-import '../network/dio_helper.dart';
-import '../network/network_info.dart';
-import '../../modules/user_profile/domain/repositories/base_user_repo.dart';
-import '../../modules/user_profile/data/repositories/user_profile_repo.dart';
-import '../../modules/user_profile/presentation/bloc/user_profile_bloc.dart';
-import '../../modules/user_profile/data/datasources/user_profile_data_source.dart';
-import '../../modules/user_profile/domain/usecases/get_user_profile_data_use_case.dart';
-import '../../modules/user_profile/domain/usecases/update_user_profile_data_use_case.dart';
 import '../../modules/reports/common/GeneralReports/data/datasources/reports_data_source.dart';
 import '../../modules/reports/common/GeneralReports/data/repositories/reports_repo.dart';
 import '../../modules/reports/common/GeneralReports/domain/repositories/general_reports_base_repo.dart';
@@ -28,6 +20,14 @@ import '../../modules/reports/features/stockReports/domain/usecases/get_warehous
 import '../../modules/reports/features/stockReports/presentation/bloc/item_price_bloc/item_price_bloc.dart';
 import '../../modules/reports/features/stockReports/presentation/bloc/stock_ledger_bloc/stock_ledger_bloc.dart';
 import '../../modules/reports/features/stockReports/presentation/bloc/stock_warehouse_report/stockreports_bloc.dart';
+import '../../modules/user_profile/data/datasources/user_profile_data_source.dart';
+import '../../modules/user_profile/data/repositories/user_profile_repo.dart';
+import '../../modules/user_profile/domain/repositories/base_user_repo.dart';
+import '../../modules/user_profile/domain/usecases/get_user_profile_data_use_case.dart';
+import '../../modules/user_profile/domain/usecases/update_user_profile_data_use_case.dart';
+import '../../modules/user_profile/presentation/bloc/user_profile_bloc.dart';
+import '../network/dio_helper.dart';
+import '../network/network_info.dart';
 
 final sl = GetIt.instance;
 
@@ -65,6 +65,7 @@ Future<void> init() async {
       () => StockReportsRepo(sl(), sl()));
   sl.registerLazySingleton<AccountReportBaseRepo>(
       () => AccountReportsRepo(sl(), sl()));
+  
 
   // User Profile
   sl.registerLazySingleton<BaseUserRepository>(
@@ -79,7 +80,7 @@ Future<void> init() async {
       () => StockReportDataSourceByDio(sl()));
   sl.registerLazySingleton<BaseAccountReportDataSource>(
       () => AccountReportDataSourceByDio(sl()));
-
+  
   // User Profile
   sl.registerLazySingleton<BaseUserProfileDataSource>(
       () => UserDataSourceByDio(sl()));

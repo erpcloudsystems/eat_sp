@@ -121,7 +121,7 @@ class APIService {
   // Reports
   static const REPORTS = 'Mobile Report';
 
-  final BaseOptions options = new BaseOptions(
+  final BaseOptions options = BaseOptions(
     connectTimeout: ApiConstance.connectionTimeOut,
     receiveTimeout: ApiConstance.connectionTimeOut,
     followRedirects: false,
@@ -199,12 +199,13 @@ class APIService {
       //   print(response?.headers.toString());
 
       if (response.statusCode == 200) {
-        print("login request" + response.data.toString());
-        print("login response" + response.toString());
+        print("login request${response.data}");
+        print("login response$response");
 
         return Map<String, dynamic>.from(response.data);
-      } else if (response.data['message'] != null)
+      } else if (response.data['message'] != null) {
         throw ServerException((response.data['message']).toString());
+      }
     } on ServerException catch (e) {
       throw e;
     } on DioError catch (ex) {
@@ -409,14 +410,14 @@ class APIService {
     try {
       final response = await dio.post(url, data: data);
       print(response.requestOptions.uri);
-      print("request" + response.realUri.path.toString());
-      print("response" + response.toString());
+      print("request${response.realUri.path}");
+      print("response$response");
       print(response.data);
       print('${response.statusCode}');
 
       if (response.statusCode == 200) return response.data;
 
-      throw ServerException('something went wrong!!' + response.toString());
+      throw ServerException('something went wrong!!$response');
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
@@ -428,6 +429,64 @@ class APIService {
         print(
             "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         throw ServerException('something went wrong :(');
+      }
+    }
+  }
+
+  Future patchRequest(String url, Map<String, dynamic> data) async {
+    print('⚠️ Post this data: $data');
+    try {
+      final response = await dio.patch(url, data: data);
+      print(response.requestOptions.uri);
+      print("request${response.realUri.path}");
+      print("response$response");
+      print(response.data);
+      print('${response.statusCode}');
+
+      if (response.statusCode == 200) return response.data;
+
+      throw ServerException('something went wrong!!$response');
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (error, stacktrace) {
+      if (error is DioError) {
+        if (error.response?.data != null) {
+          print(
+              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+        }
+        print(
+            "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+        throw ServerException('something went wrong :(');
+      }
+    }
+  }
+
+  ///Check doc type has workflow
+  Future hasWorkflow({String? docTypeName}) async {
+    try {
+      final response = await dio.post(
+        'method/ecs_mobile.workflow.has_workflow',
+        data: {
+          'doctype': docTypeName,
+        },
+      );
+      print('_____________________AAAAAAAAA_____________________');
+      print(response.data);
+      print('_____________________AAAAAAAAA_____________________');
+      if (response.statusCode == 200) return response.data['message'];
+
+      throw ServerException('something went wrong!!$response');
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (error, stacktrace) {
+      if (error is DioError) {
+        if (error.response?.data != null) {
+          print(
+              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+        }
+        print(
+            "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+        throw const ServerException('something went wrong :(');
       }
     }
   }
@@ -444,7 +503,7 @@ class APIService {
       print(response.statusCode);
 
       if (response.statusCode == 200) return response.data;
-      throw ServerException('something went wrong!!' + response.toString());
+      throw ServerException('something went wrong!!$response');
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {

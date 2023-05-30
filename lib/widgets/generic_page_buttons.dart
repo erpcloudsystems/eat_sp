@@ -28,7 +28,7 @@ class GenericPageButtons extends StatelessWidget {
           itemContainerColor: Colors.transparent,
           height: DoublesManager.d_30,
           width: DoublesManager.d_50,
-          items: [
+          items: const [
             AssignPageButton(),
             SizedBox(width: DoublesManager.d_20),
             EditPageButton(),
@@ -58,10 +58,10 @@ class AssignPageButton extends StatelessWidget {
             AssignToDialog(),
           );
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.add,
         ),
-        padding: EdgeInsets.only(bottom: DoublesManager.d_10),
+        padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
         tooltip: 'Assign',
         iconSize: DoublesManager.d_25,
         splashRadius: DoublesManager.d_20,
