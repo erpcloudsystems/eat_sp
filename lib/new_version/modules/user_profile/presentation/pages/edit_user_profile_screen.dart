@@ -25,7 +25,7 @@ class EditUserProfileScreen extends StatelessWidget {
       backgroundColor: ColorsManager.userProfileScaffoldBackGroundColor,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          DoublesManager.d_90.h,
+          DoublesManager.d_50.h,
         ),
         child: const UserProfileAppBar(title: StringsManager.editUserProfile),
       ),

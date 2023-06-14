@@ -8,7 +8,6 @@ import 'other/app_settings.dart';
 import 'list/generic_list_screen.dart';
 import 'other/notification_screen.dart';
 import '../provider/user/user_provider.dart';
-import '../widgets/botton_navigation_bar.dart';
 import '../provider/module/module_provider.dart';
 import '../new_version/modules/user_profile/presentation/pages/user_profile_screen.dart';
 
@@ -23,7 +22,7 @@ class SubCategoryScreen extends StatefulWidget {
 }
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
-  int _page = 2;
+  final int _page = 2;
   final GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override
@@ -96,21 +95,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         title: Text(appBarTitles[_page]),
         centerTitle: true,
       ),
-      bottomNavigationBar: getBottomNavigationBar(
-          key: _bottomNavigationKey,
-          onTap: (index) {
-            if (index == 2 && pages[_page] == pages[2]) {
-              Navigator.of(context).pop();
-            }
-            setState(() {
-              _page = index;
-            });
-          }),
+
       extendBody: true,
-      body: Container(
-          padding: const EdgeInsets.only(bottom: 50),
-          child: pages[
-              _page]), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Container(child: pages[_page]),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -147,9 +135,8 @@ class HomeItem extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               foregroundColor: Colors.grey.shade200,
+              backgroundColor: Colors.white,
               elevation: 0,
-              //shadowColor: Colors.grey.withOpacity(0.5),
-              primary: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6))),
           onPressed: onPressed,

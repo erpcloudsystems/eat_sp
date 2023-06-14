@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       CustomDrawer(),
     ];
     List<String> appBarTitles = [
-      'Modules',
+      'Reports',
       'User Profile',
       'Home',
       'Notification',
