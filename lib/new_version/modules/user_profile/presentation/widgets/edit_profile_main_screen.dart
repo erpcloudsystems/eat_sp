@@ -37,7 +37,7 @@ class EditUserProfileMainScreen extends StatelessWidget {
           lastName: lastNameController.text.trim(),
           gender: updatedGender ?? userOldData.gender,
           birthDate: updatedBirthDate ?? userOldData.birthDate,
-          // filename: fileName,
+          filename: fileName,
           imageContent: photoIn64,
         );
 

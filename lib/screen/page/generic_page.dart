@@ -1,14 +1,8 @@
 import 'package:NextApp/service/service.dart';
-import 'package:NextApp/widgets/snack_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../core/constants.dart';
-import '../../service/service_constants.dart';
-import '../../widgets/form_widgets.dart';
 import '../../widgets/nothing_here.dart';
 import '../../provider/module/module_provider.dart';
 import '../../widgets/generic_page_buttons.dart';
@@ -49,6 +43,7 @@ class GenericPage extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.only(
                 top: 3,
+                left: 50,
               ),
               child: Text(
                 context.watch<ModuleProvider>().currentModule.title,
@@ -77,7 +72,6 @@ class _GenericPageBody extends StatefulWidget {
 }
 
 class _GenericPageBodyState extends State<_GenericPageBody> {
-
   @override
   void initState() {
     super.initState();
