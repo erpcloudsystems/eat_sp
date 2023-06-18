@@ -10,9 +10,9 @@
 **/.vagrant/
 **/DerivedData/
 Icon?
-**/Pods/
+# **/Pods/
 **/.symlinks/
-profile
+# profile
 xcuserdata
 **/.generated/
 Flutter/App.framework
