@@ -1,3 +1,9 @@
+import 'package:NextApp/new_version/modules/new_item/data/datasources/items_data_source.dart';
+import 'package:NextApp/new_version/modules/new_item/data/repositories/items_repo.dart';
+import 'package:NextApp/new_version/modules/new_item/domain/repositories/item_base_repo.dart';
+import 'package:NextApp/new_version/modules/new_item/domain/usecases/get_item_group_use_case.dart';
+import 'package:NextApp/new_version/modules/new_item/domain/usecases/get_items_use_case.dart';
+import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -67,7 +73,10 @@ Future<void> init() async {
   // Dashboard bloc
   sl.registerFactory(() => DashboardBloc(sl()));
   sl.registerFactory(() => TotalBloc(sl()));
-  sl.registerFactory(() => TransactionBloc(sl(),sl(),sl(),sl()));
+  sl.registerFactory(() => TransactionBloc(sl(), sl(), sl(), sl()));
+
+  ///Item Bloc
+  sl.registerFactory(() => NewItemBloc(sl(),sl()));
 
   /// Use cases
 
@@ -93,6 +102,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetEmployeeCheckingUseCase(sl()));
   sl.registerLazySingleton(() => GetAttendanceRequestUseCase(sl()));
 
+// New Item use case
+  sl.registerLazySingleton(() => GetItemsUseCase(sl()));
+  sl.registerLazySingleton(() => GetItemsGroupUseCase(sl()));
+
   /// Repositories
 
   // Reports
@@ -110,8 +123,10 @@ Future<void> init() async {
   sl.registerLazySingleton<FaqBaseRepo>(
       () => FaqImplementationRepo(sl(), sl()));
   // dashboard
-  sl.registerLazySingleton<DashboardBaseRepo>(
-          () => DashboardRepo(sl(), sl()));
+  sl.registerLazySingleton<DashboardBaseRepo>(() => DashboardRepo(sl(), sl()));
+
+  // New item
+  sl.registerLazySingleton<ItemBaseRepo>(() => ItemsRepo(sl(), sl()));
 
   /// DataSources
 
@@ -132,7 +147,11 @@ Future<void> init() async {
 
   // Dashboard
   sl.registerLazySingleton<BaseDashboardDataDataSource>(
-          () => DashboardDataSourceByDio(sl()));
+      () => DashboardDataSourceByDio(sl()));
+
+  // Dashboard
+  sl.registerLazySingleton<BaseItemsDataSource>(
+      () => ItemDataSourceByDio(sl()));
 
   /// External
   sl.registerLazySingleton<BaseDioHelper>(() => DioHelper());

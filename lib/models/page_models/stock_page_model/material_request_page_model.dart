@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../provider/user/user_provider.dart';
 import '../model_functions.dart';
 
 class MaterialRequestPageModel {
@@ -54,11 +52,12 @@ class MaterialRequestPageModel {
   }
 
   List<MapEntry<String, String>> getItemCard(int index) {
+    int qty = items[index]['qty'].toInt();
     return [
       MapEntry(tr("Item Code"), items[index]['item_code'] ?? tr('none')),
       MapEntry(tr("Item Group"), items[index]['item_group'] ?? tr('none')),
       MapEntry(tr("UOM"), items[index]['uom'] ?? tr('none')),
-      MapEntry(tr("Quantity"), items[index]['qty'].toString()),
+      MapEntry(tr("Quantity"), qty.toString()),
       // MapEntry(tr("Rate"), currency(itemsList[index]['rate'])),
       // MapEntry(tr("Amount"), currency(itemsList[index]['amount'])),
     ];

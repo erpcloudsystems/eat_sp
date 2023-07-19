@@ -30,8 +30,8 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
     "doctype": "Attendance Request",
     "reason": "Work From Home",
     'half_day': 0,
-    "from_date": DateTime.now().toIso8601String().split("T")[0],
-    "to_date": DateTime.now().toIso8601String().split("T")[0],
+    "from_date": DateTime.now().toIso8601String(),
+    "to_date": DateTime.now().toIso8601String(),
     "to_time": DateTime.now().toString(),
     "from_time": DateTime.now().toString(),
     "latitude": 0.0,
@@ -124,9 +124,9 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
       Future.delayed(Duration.zero, () {
         data['latitude'] = location.latitude;
         data['longitude'] = location.longitude;
-        if (provider.isEditing) {
-          data['location'] = gpsService.placemarks[0].subAdministrativeArea;
-        }
+        // if (provider.isEditing) {
+        //   data['location'] = gpsService.getCurrentLocation(context);
+        // }
         data = context.read<ModuleProvider>().updateData;
         for (var k in data.keys) {
           log("➡️ $k: ${data[k]}");
@@ -185,7 +185,6 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                           await _getEmployeeData(res['name']);
 
                           setState(() {
-                            data['name'] = res['name'];
                             data['employee'] = res['name'];
                             data['employee_name'] = res['employee_name'];
                             data['company'] = res['company'];
@@ -277,6 +276,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                         initialValue: data['half_day'] == 1 ? true : false,
                         onChanged: (id, value) => setState(() {
                               data[id] = value ? 1 : 0;
+                              data["half_day_date"] = DateTime.now().toString();
                             })),
                     if (data['half_day'] == 1)
                       Row(
@@ -286,9 +286,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                               child: DatePickerTest(
                             'half_day_date',
                             'Half Day Date'.tr(),
-                            initialValue: (data['from_date'] == data['to_date'])
-                                ? data['from_date']
-                                : data['half_day_date'],
+                            initialValue: data['half_day_date'],
                             onChanged: (value) =>
                                 setState(() => data['half_day_date'] = value),
                             firstDate:
@@ -313,7 +311,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                       onSave: (key, value) => data[key] = value,
                     ),
                     const SizedBox(height: 8),
-                     Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

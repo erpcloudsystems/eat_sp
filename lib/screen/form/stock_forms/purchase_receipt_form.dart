@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -19,7 +20,6 @@ import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/stock_page_model/purchase_receipt_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
@@ -49,17 +49,16 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
+    final provider = context.read<ModuleProvider>();
     if (!_formKey.currentState!.validate()) {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
 
-    if (InheritedForm.of(context).items.isEmpty) {
+    if (provider.newItemList.isEmpty) {
       showSnackBar('Please add an item at least', context);
       return;
     }
-
-    final provider = context.read<ModuleProvider>();
 
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeAmendingFunction(context, data);
@@ -74,15 +73,18 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
     data['taxes'] =
         (provider.isEditing) ? [] : context.read<UserProvider>().defaultTax;
 
-    InheritedForm.of(context).items.forEach((element) {
-      if (data['is_return'] == 1) element.qty = element.qty * -1;
-      data['items'].add(element.toJson);
-    });
-
-    if (data['items'][0]['rate'] == 0.0 || data['items'][0]['rate'] == "") {
-      showSnackBar('net rate is Zero', context);
-      return;
+    // InheritedForm.of(context).items.forEach((element) {
+    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
+    //   data['items'].add(element.toJson);
+    // });
+    for (var element in provider.newItemList) {
+      data['items'].add(element);
     }
+
+    // if (data['items'][0]['rate'] == 0.0 || data['items'][0]['rate'] == "") {
+    //   showSnackBar('net rate is Zero', context);
+    //   return;
+    // }
 
     //DocFromPage Mode from Sales Order
     // data['items'].forEach((element) {
@@ -164,11 +166,15 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
         final items = PurchaseReceiptPageModel(context, data).items;
 
+        //New Item
         for (var element in items) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
+          provider.setItemToList(element);
         }
+        // for (var element in items) {
+        //   InheritedForm.of(context)
+        //       .items
+        //       .add(ItemSelectModel.fromJson(element));
+        // }
       });
     }
 
@@ -188,10 +194,9 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
         // From Purchase Order:
         if (data['doctype'] == DocTypesName.purchaseOrder) {
-          data['purchase_order_items'].forEach((element) =>
-              InheritedForm.of(context)
-                  .items
-                  .add(ItemSelectModel.fromJson(element)));
+          data['purchase_invoice_item'].forEach((element) {
+            provider.newItemList.add(element);
+          });
 
           InheritedForm.of(context).data['buying_price_list'] =
               data['buying_price_list'];
@@ -202,10 +207,13 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
 
         // from Purchase Invoice
         if (data['doctype'] == 'Purchase Invoice') {
+          // data['purchase_invoice_item'].forEach((element) {
+          //   InheritedForm.of(context)
+          //       .items
+          //       .add(ItemSelectModel.fromJson(element));
+          // });
           data['purchase_invoice_item'].forEach((element) {
-            InheritedForm.of(context)
-                .items
-                .add(ItemSelectModel.fromJson(element));
+            provider.newItemList.add(element);
           });
           InheritedForm.of(context).data['buying_price_list'] =
               data['buying_price_list'];
@@ -652,10 +660,14 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                 ],
               )),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-                child: SelectedItemsList(),
-              ),
+               AddItemsWidget(
+                priceList: data['buying_price_list'] ??
+                    context.read<UserProvider>().defaultSellingPriceList,
+               ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+              //   child: SelectedItemsList(),
+              // ),
             ],
           ),
         ),

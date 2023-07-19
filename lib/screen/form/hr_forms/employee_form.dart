@@ -8,7 +8,6 @@ import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
-import '../../../core/constants.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
@@ -56,7 +55,9 @@ class _EmployeeFormState extends State<EmployeeForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Employee');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -66,16 +67,16 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null && res['message']['employee_data_name'] != null) {
+    } else if (res != null && res['message']['employee_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['employee_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -89,10 +90,12 @@ class _EmployeeFormState extends State<EmployeeForm> {
     super.initState();
 
     final provider = context.read<ModuleProvider>();
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) log("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          log("➡️ $k: ${data[k]}");
+        }
         // _getEmployeeData(data['name']).then((value) {
         //   data['company'] = selectedEmployeeData['defaultCompany'];
         // });
@@ -105,6 +108,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
         setState(() {});
       });
+    }
   }
 
   @override
@@ -137,7 +141,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
               Group(
                 child: ListView(
                   children: [
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     CustomTextFieldTest(
                       'first_name',
                       tr('First Name'),
@@ -160,12 +164,21 @@ class _EmployeeFormState extends State<EmployeeForm> {
                       tr('Gender'),
                       clearButton: true,
                       initialValue: data['gender'],
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => genderListScreen(),
-                        ),
-                      ),
+                      onSave: (key, value) => setState(() {
+                        data['gender'] = value;
+                      }),
+                      onChanged: (value) => setState(() {
+                        data['gender'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => genderListScreen(),
+                          ),
+                        );
+                        data['gender'] = res;
+                        return res;
+                      },
                     ),
                     Row(children: [
                       Flexible(
@@ -177,13 +190,18 @@ class _EmployeeFormState extends State<EmployeeForm> {
                             setState(() => data['date_of_birth'] = value),
                         firstDate: DateTime(DateTime.now().year - 100),
                       )),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                     ]),
-                    CustomDropDown('status', 'Status'.tr(),
-                        items: employeeStatus,
-                        defaultValue: data['order_type'] ?? employeeStatus[0],
-                        onChanged: (value) => data['order_type'] = value),
-                    SizedBox(height: 4),
+                    CustomDropDown(
+                      'status',
+                      'Status'.tr(),
+                      items: employeeStatus,
+                      onChanged: (value) => setState(() {
+                        data['status'] = value;
+                      }),
+                      defaultValue: data['status'] ?? employeeStatus[0],
+                    ),
+                    const SizedBox(height: 4),
                   ],
                 ),
               ),
@@ -194,40 +212,85 @@ class _EmployeeFormState extends State<EmployeeForm> {
               Group(
                 child: ListView(
                   children: [
-                    SizedBox(height: 8),
-                    CustomTextFieldTest('department', tr('Department'),
-                        initialValue: data['department'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => departmentListScreen()))),
-                    CustomTextFieldTest('designation', tr('Designation'),
-                        initialValue: data['designation'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => designationListScreen()))),
-                    CustomTextFieldTest('branch', tr('Branch'),
-                        initialValue: data['branch'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => branchListScreen()))),
+                    const SizedBox(height: 8),
                     CustomTextFieldTest(
-                        'employment_type', tr('Employment Type'),
-                        initialValue: data['employment_type'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => employmentTypeListScreen()))),
+                      'department',
+                      tr('Department'),
+                      initialValue: data['department'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['department'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => departmentListScreen(),
+                          ),
+                        );
+                        data['department'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'designation',
+                      tr('Designation'),
+                      initialValue: data['designation'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['designation'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => designationListScreen(),
+                          ),
+                        );
+                        data['designation'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'branch',
+                      tr('Branch'),
+                      initialValue: data['branch'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['branch'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => branchListScreen(),
+                          ),
+                        );
+                        data['branch'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'employment_type',
+                      tr('Employment Type'),
+                      initialValue: data['employment_type'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => data['employment_type'] = value,
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => employmentTypeListScreen(),
+                          ),
+                        );
+                        data['employment_type'] = res;
+                        return res;
+                      },
+                    ),
                     Row(children: [
                       Flexible(
                           child: DatePickerTest(
@@ -238,26 +301,47 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         onChanged: (value) =>
                             setState(() => data['date_of_joining'] = value),
                       )),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                     ]),
-                    CustomTextFieldTest('leave_approver', tr('Leave Approver'),
-                        initialValue: data['leave_approver'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => leaveApproverScreen()))),
                     CustomTextFieldTest(
-                        'expense_approver', tr('Expense Approver'),
-                        initialValue: data['expense_approver'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => leaveApproverScreen()))),
-                    SizedBox(height: 8),
+                      'leave_approver',
+                      tr('Leave Approver'),
+                      initialValue: data['leave_approver'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['leave_approver'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => leaveApproverScreen(),
+                          ),
+                        );
+                        data['leave_approver'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'expense_approver',
+                      tr('Expense Approver'),
+                      initialValue: data['expense_approver'],
+                      clearButton: true,
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => leaveApproverScreen(),
+                          ),
+                        );
+                        data['expense_approver'] = res;
+
+                        return res;
+                      },
+                    ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
@@ -265,13 +349,14 @@ class _EmployeeFormState extends State<EmployeeForm> {
               Group(
                 child: ListView(
                   children: [
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     CustomTextFieldTest('cell_number', tr('Phone Number'),
                         clearButton: true,
                         disableValidation: true,
                         initialValue: data['cell_number'],
                         keyboardType: TextInputType.phone,
                         validator: validateMobile,
+                        onChanged: (value) => data['cell_number'] = value,
                         onSave: (key, value) => data[key] = value),
                     CustomTextFieldTest('company_email', tr('Company Email'),
                         clearButton: true,
@@ -279,6 +364,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         initialValue: data['company_email'],
                         keyboardType: TextInputType.emailAddress,
                         validator: mailValidation,
+                        onChanged: (value) => data['company_email'] = value,
                         onSave: (key, value) => data[key] = value),
                     CustomTextFieldTest('personal_email', tr('Personal Email'),
                         clearButton: true,
@@ -286,6 +372,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         initialValue: data['personal_email'],
                         keyboardType: TextInputType.emailAddress,
                         validator: mailValidation,
+                        onChanged: (value) => data['personal_email'] = value,
                         onSave: (key, value) => data[key] = value),
                     if (data['user_id'] != null)
                       CustomTextFieldTest(
@@ -294,6 +381,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                           disableValidation: true,
                           enabled: false,
                           onSave: (key, value) => data[key] = value,
+                          onChanged: (value) => data['prefered_email'] = value,
                           initialValue: data['prefered_email'] ??
                               selectedEmployeeData['prefered_email']),
                     CustomTextFieldTest(
@@ -301,11 +389,13 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         clearButton: true,
                         disableValidation: true,
                         onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['current_address'] = value,
                         initialValue: data['current_address']),
                     CustomTextFieldTest(
                         'permanent_address', tr('Permanent Address'),
                         clearButton: true,
                         disableValidation: true,
+                        onChanged: (value) => data['permanent_address'] = value,
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['permanent_address']),
                     CustomTextFieldTest('user_id', tr('ERPNext User'),
@@ -313,10 +403,15 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         disableValidation: true,
                         initialValue: data['user_id'],
                         onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => setState(() {
+                              data['user_id'] = value;
+                            }),
                         onPressed: () async {
                           final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => leaveApproverScreen()));
+                            MaterialPageRoute(
+                              builder: (_) => leaveApproverScreen(),
+                            ),
+                          );
                           if (res != null) {
                             setState(() {
                               data['user_id'] = res;
@@ -344,7 +439,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                       validator: (value) => numberValidationToast(
                           value, 'Attendance Device ID (Biometric/RF tag ID)'),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
@@ -352,24 +447,48 @@ class _EmployeeFormState extends State<EmployeeForm> {
               Group(
                   child: ListView(
                 children: [
-                  SizedBox(height: 8),
-                  CustomTextFieldTest('holiday_list', tr('Holiday List'),
-                      clearButton: true,
-                      disableValidation: true,
-                      initialValue: data['holiday_list'],
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => holidayListScreen()))),
-                  CustomTextFieldTest('default_shift', tr('Default Shift '),
-                      clearButton: true,
-                      disableValidation: true,
-                      initialValue: data['default_shift'],
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => shiftTypeListScreen()))),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
+                  CustomTextFieldTest(
+                    'holiday_list',
+                    tr('Holiday List'),
+                    clearButton: true,
+                    disableValidation: true,
+                    initialValue: data['holiday_list'],
+                    onSave: (key, value) => data[key] = value,
+                    onChanged: (value) => setState(() {
+                      data['holiday_list'] = value;
+                    }),
+                    onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => holidayListScreen(),
+                        ),
+                      );
+                      data['holiday_list'] = res;
+                      return res;
+                    },
+                  ),
+                  CustomTextFieldTest(
+                    'default_shift',
+                    tr('Default Shift '),
+                    clearButton: true,
+                    disableValidation: true,
+                    initialValue: data['default_shift'],
+                    onSave: (key, value) => data[key] = value,
+                    onChanged: (value) => setState(() {
+                      data['default_shift'] = value;
+                    }),
+                    onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => shiftTypeListScreen(),
+                        ),
+                      );
+                      data['default_shift'] = res;
+                      return res;
+                    },
+                  ),
+                  const SizedBox(height: 8),
                 ],
               )),
             ],

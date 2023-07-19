@@ -1,7 +1,6 @@
 import 'package:NextApp/screen/sorting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 import '../../core/cloud_system_widgets.dart';
 import '../../models/list_models/statistics_model.dart';
@@ -9,7 +8,6 @@ import '../../test/statisics_widget.dart';
 import '../home_screen.dart';
 import '/widgets/pagination.dart' as pagination;
 import '../../core/constants.dart';
-import '../../core/showcase_consts.dart';
 import '../../models/list_models/list_model.dart';
 import '../../provider/module/module_provider.dart';
 import '../../provider/user/user_provider.dart';
@@ -77,7 +75,7 @@ class GenericListScreen<T> extends StatefulWidget {
 
   /// used to make [GenericListScreen] method use [ModuleProvider]
   factory GenericListScreen.module() {
-    return GenericListScreen._(useProvider: true);
+    return const GenericListScreen._(useProvider: true);
   }
 
   @override
@@ -305,6 +303,7 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     userProvider = Provider.of<UserProvider>(context, listen: false);
     if (!userProvider.showcaseProgress!.contains('list_tut')) {
       Future.delayed(Duration.zero, () {
@@ -316,13 +315,16 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final moduleProvider = Provider.of<ModuleProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: widget.disableAppBar
           ? null
           : AppBar(
               elevation: 0,
-              title: Text(widget.title.toString()),
+              title: Text(
+                moduleProvider.currentModule.title,
+              ),
               actions: [
                 if (widget.createForm != null)
                   IconButton(

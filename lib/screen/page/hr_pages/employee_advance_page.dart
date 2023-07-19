@@ -1,22 +1,12 @@
+import '../../../models/page_models/hr_page_model/employee_advance_page_model.dart';
 import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
 
 import '../../../core/constants.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/attendance_request_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_advance_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_checkin_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
-import '../../../service/service.dart';
 import '../../../widgets/comments_button.dart';
 
 class EmployeeAdvancePage extends StatelessWidget {
@@ -31,18 +21,18 @@ class EmployeeAdvancePage extends StatelessWidget {
     final model = EmployeeAdvancePageModel(context, data);
 
     return ListView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Employee Advance',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
             Padding(
@@ -54,7 +44,7 @@ class EmployeeAdvancePage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['employee_name'] ?? 'none'),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -62,7 +52,10 @@ class EmployeeAdvancePage extends StatelessWidget {
             SwapWidget(
                 3,
                 Checkbox(
-                    value: (data['is_paid'] ?? 0) == 0 ? false : true,
+                    value:
+                        (data['repay_unclaimed_amount_from_salary'] ?? 0) == 0
+                            ? false
+                            : true,
                     onChanged: null),
                 widgetNumber: 1)
           ],
@@ -83,18 +76,18 @@ class EmployeeAdvancePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
               //border: Border.all(color: Colors.blueAccent),
             ),
-            child: Center(
-                child: Text('Connections',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold))),
             padding: const EdgeInsets.all(8),
             margin: const EdgeInsets.all(8),
+            child: const Center(
+                child: Text('Connections',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
           ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -105,9 +98,9 @@ class EmployeeAdvancePage extends StatelessWidget {
                         docTypeId: data['conn'][index]['name'] ?? tr('none'),
                         count: data['conn'][index]['count'].toString());
                   })
-              : NothingHere(),
+              : const NothingHere(),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

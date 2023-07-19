@@ -108,6 +108,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
         for (var k in data.keys) {
           log("➡️ $k: ${data[k]}");
         }
+        data['start_date'] = data['start_date'];
+        data['end_date'] = data['end_date'];
         customerName = data['customer'];
         projectName = data['parent_project'];
 
@@ -199,16 +201,19 @@ class _TimesheetFormState extends State<TimesheetForm> {
                         onSave: (key, value) {
                           data[key] = value;
                         },
+                        onChanged: (value) => data['parent_project'] = value,
                         onPressed: () async {
                           final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => projectScreen(),
                             ),
                           );
+                          data['parent_project'] = res['name'];
                           setState(() {
-                            customerName = res['customer'].toString();
+                            data['customer'] = res['customer'].toString();
                             projectName = res['name'].toString();
                           });
+
                           return res['name'];
                         },
                       ),
@@ -216,27 +221,30 @@ class _TimesheetFormState extends State<TimesheetForm> {
                       CustomTextFieldTest(
                         'customer',
                         'Customer',
-                        initialValue: customerName ?? '',
+                        initialValue: data['customer'] ?? '',
                         disableValidation: true,
                         clearButton: true,
                         enabled: false,
+                        onChanged: (value) => data['customer'] = value,
                         onSave: (key, value) => data[key] = value,
                       ),
                       //_______________________________________Employee___________________________________________________
                       CustomTextFieldTest(
                         'employee',
                         'Employee',
-                        initialValue: data['employee_name'],
+                        initialValue: data['employee'],
                         disableValidation: true,
                         clearButton: true,
                         onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['employee'] = value,
                         onPressed: () async {
                           final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => selectEmployeeScreen(),
                             ),
                           );
-                          return res['employee_name'];
+                          data['employee'] = res['name'];
+                          return res['name'];
                         },
                       ),
                       //__________________________________________Second Group_____________________________________________________

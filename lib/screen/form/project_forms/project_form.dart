@@ -50,7 +50,9 @@ class _ProjectFormState extends State<ProjectForm> {
             : 'Creating Your Project');
 
 // To print the body we send to backend
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -63,13 +65,14 @@ class _ProjectFormState extends State<ProjectForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['project'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['project'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['project']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
             builder: (_) => const GenericPage(),
@@ -107,7 +110,7 @@ class _ProjectFormState extends State<ProjectForm> {
       Future.delayed(Duration.zero, () {
         data = provider.createFromPageData;
         data['doctype'] = "Project";
-        print('${data}');
+        print('$data');
         setState(() {});
       });
     }
@@ -229,9 +232,9 @@ class _ProjectFormState extends State<ProjectForm> {
                       ),
                       //_______________________________________From Template_____________________________________________________
                       CustomTextFieldTest(
-                        'form_template',
-                        'Task Template'.tr(),
-                        initialValue: data['form_template'],
+                        'project_template',
+                        'Project Template'.tr(),
+                        initialValue: data['project_template'],
                         disableValidation: true,
                         clearButton: true,
                         onSave: (key, value) => data[key] = value,
@@ -241,12 +244,11 @@ class _ProjectFormState extends State<ProjectForm> {
                               builder: (_) => projectTemplateListScreen(),
                             ),
                           );
-                          data['form_template'] = res;
+                          data['project_template'] = res;
                           return res;
                         },
                         onChanged: (value) => setState(() {
-                          data['form_template'] = value;
-                          print(data['form_template']);
+                          data['project_template'] = value;
                         }),
                       ),
                     ],
@@ -311,7 +313,7 @@ class _ProjectFormState extends State<ProjectForm> {
                               child: DatePickerTest(
                             'expected_start_date',
                             'Expected Start Date',
-                            initialValue: data['expected_start_date'] ?? null,
+                            initialValue: data['expected_start_date'],
                             onChanged: (value) => setState(
                                 () => data['expected_start_date'] = value),
                           )),
@@ -324,8 +326,7 @@ class _ProjectFormState extends State<ProjectForm> {
                                       Duration.zero,
                                       () => setState(() =>
                                           data['expected_end_date'] = value)),
-                                  initialValue:
-                                      data['expected_end_date'] ?? null)),
+                                  initialValue: data['expected_end_date'])),
                         ],
                       ),
                     ],
@@ -343,7 +344,9 @@ class _ProjectFormState extends State<ProjectForm> {
                     disableValidation: false,
                     clearButton: true,
                     onSave: (key, value) => data[key] = value,
-                    onChanged: (value) => data['notes'] = value,
+                    onChanged: (value) => setState(() {
+                      data['notes'] = value;
+                    }),
                   ),
                 ),
               ],

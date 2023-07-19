@@ -63,7 +63,7 @@ class _ActionWidgetState extends State<ActionWidget> {
                           bottom: MediaQuery.of(context).size.height * 0.4,
                         ),
                         content: SizedBox(
-                          height: provider.actionsList.length > 2 ? 100 : 60,
+                          height: provider.actionsList.length > 2 ? 140 : 100,
                           width: 30,
                           child: ListView.builder(
                             itemCount: provider.actionsList.length,
@@ -128,7 +128,7 @@ class _ActionWidgetState extends State<ActionWidget> {
                     borderRadius: BorderRadius.circular(12),
                     color: APPBAR_COLOR,
                   ),
-                  child:  Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(

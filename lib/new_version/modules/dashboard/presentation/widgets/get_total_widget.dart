@@ -89,7 +89,7 @@ class GetTotalWidget extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () async{
+                            onPressed: () async {
                               dashboardBloc.add(GetDashboardDataEvent(
                                 dateFilter: TotalFilters(
                                   fromDate: fromDate.toString(),
@@ -121,8 +121,8 @@ class GetTotalWidget extends StatelessWidget {
                 );
               },
               child: Container(
-                width: 100,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
+                width: 90,
+                padding: const EdgeInsets.symmetric(horizontal: 3),
                 margin: const EdgeInsets.only(bottom: 8, right: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),

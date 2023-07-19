@@ -3,7 +3,6 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../core/constants.dart';
 import '../screen/page/page_screen.dart';
 import 'assign_widget/assgin_dialog.dart';
 import '../provider/module/module_provider.dart';
@@ -16,7 +15,7 @@ class GenericPageButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Flexible(
+    return Flexible(
       fit: FlexFit.loose,
       child: Padding(
         padding: const EdgeInsets.only(
@@ -25,8 +24,9 @@ class GenericPageButtons extends StatelessWidget {
           right: DoublesManager.d_5,
         ),
         child: ExpandableMenu(
-           backgroundColor: const Color(0xFF4B5042).withOpacity(.8),
+          backgroundColor: const Color(0xFF4B5042).withOpacity(.8),
           // backgroundColor: APPBAR_COLOR,
+
           itemContainerColor: Colors.transparent,
           height: DoublesManager.d_30,
           width: DoublesManager.d_50,
@@ -153,22 +153,22 @@ class AttachmentPageButton extends StatelessWidget {
       icon: badges.Badge(
         badgeContent: Text(
           '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
-          style: const TextStyle(fontSize: 13, color: Colors.white, height: 1.5),
+          style:
+              const TextStyle(fontSize: 13, color: Colors.white, height: 1.5),
         ),
         stackFit: StackFit.passthrough,
         badgeColor: Colors.redAccent,
         elevation: 0,
-        showBadge:
-            ((context.read<ModuleProvider>().pageData['attachments'] as List?)
+        showBadge: ((context.read<ModuleProvider>().pageData['attachments']
+                        as List?)
+                    ?.length) ==
+                null
+            ? false
+            : ((context.read<ModuleProvider>().pageData['attachments'] as List?)
                         ?.length) ==
-                    null
+                    0
                 ? false
-                : ((context.read<ModuleProvider>().pageData['attachments']
-                                as List?)
-                            ?.length) ==
-                        0
-                    ? false
-                    : true,
+                : true,
         child: Container(
           margin: const EdgeInsets.only(bottom: 15),
           child: const Icon(

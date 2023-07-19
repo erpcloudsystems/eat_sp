@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String release = '';
 
-
   @override
   void initState() {
     super.initState();
@@ -41,18 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<Widget?> pages = [
       const ModulesPage(),
+
       /// Home Screen
       Scaffold(
         appBar: AppBar(
           elevation: 1,
-          backgroundColor: Colors.white,
           centerTitle: true,
           title: const Text(
             'Modules',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 22,
-              color: Colors.black,
             ),
           ),
         ),

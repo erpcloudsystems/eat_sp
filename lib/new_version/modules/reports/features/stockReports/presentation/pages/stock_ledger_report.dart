@@ -88,7 +88,7 @@ class StockLedgerReport extends StatelessWidget {
               body: ReportTable(
                 tableWidth: 910.w,
                 appBarName: 'Stock Ledger',
-                mainRowList: [
+                mainRowList: const [
                   'Item Code',
                   'Date',
                   'Item Name',

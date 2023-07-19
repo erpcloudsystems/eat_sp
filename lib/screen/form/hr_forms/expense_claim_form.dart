@@ -16,7 +16,6 @@ import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../widgets/inherited_widgets/add_expenses_list.dart';
 import '../../../models/list_models/hr_list_model/expense_table_model.dart';
-import '../../../models/page_models/hr_page_model/expense_claim_page_model.dart';
 
 class ExpenseClaimForm extends StatefulWidget {
   const ExpenseClaimForm({Key? key}) : super(key: key);
@@ -119,20 +118,23 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
     if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
+        InheritedExpenseForm.of(context).expense.clear();
         for (var k in data.keys) {
           log("➡️ $k: ${data[k]}");
         }
 
-        final expenses = ExpenseClaimPageModel(context, data).expenses;
-        for (var element in expenses) {
+        for (var element in data['expenses']) {
           InheritedExpenseForm.of(context)
               .expense
               .add(ExpenseModel.fromJson(element));
         }
+
         InheritedExpenseForm.of(context).taxData['rate'] =
             data['taxes'][0]['rate'].toString();
 
-        setState(() {});
+        setState(() {
+        
+        });
       });
     }
   }
@@ -140,6 +142,7 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
   @override
   void deactivate() {
     super.deactivate();
+
     context.read<ModuleProvider>().resetCreationForm();
   }
 
@@ -276,14 +279,24 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
                           return res['name'];
                         },
                       ),
-                      CustomTextFieldTest('cost_center', 'Cost Center',
-                          disableValidation: true,
-                          clearButton: true,
-                          initialValue: data['cost_center'] ?? '',
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => costCenterScreen()))),
+                      CustomTextFieldTest(
+                        'cost_center',
+                        'Cost Center',
+                        disableValidation: true,
+                        clearButton: true,
+                        initialValue: data['cost_center'] ?? '',
+                        onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['cost_center'] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => costCenterScreen(),
+                            ),
+                          );
+                          data['cost_center'] = res;
+                          return res;
+                        },
+                      ),
                     ],
                   )),
                 ],

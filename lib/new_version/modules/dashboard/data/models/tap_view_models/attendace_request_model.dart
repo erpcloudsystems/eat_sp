@@ -5,11 +5,13 @@ class AttendanceRequestModel extends TapViewEntity {
     required super.name,
     required super.title,
     required super.status,
+    required super.subtitle,
   });
 
   factory AttendanceRequestModel.fromJson(Map<String, dynamic> json) => AttendanceRequestModel(
     name: json['name'] ?? 'none',
     title: json['employee_name'] ?? 'none',
-    status: json['from_date'] ?? 'none',
+    subtitle: json['from_date'] ?? 'none',
+    status: json['docstatus'] == 0 ? 'Draft': json['docstatus'] == 1 ?'Submitted': 'Cancelled',
   );
 }

@@ -17,7 +17,7 @@ import '../../models/list_models/hr_list_model/expense_table_model.dart';
 class InheritedExpenseForm extends InheritedWidget {
   InheritedExpenseForm(
       {Key? key, required Widget child, List<ExpenseModel>? expense})
-      : this.expense = expense ?? [],
+      : expense = expense ?? [],
         super(key: key, child: child);
 
   final List<ExpenseModel> expense;
@@ -40,7 +40,7 @@ class SelectedExpensesList extends StatefulWidget {
 }
 
 class _SelectedExpensesListState extends State<SelectedExpensesList> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   int rowNo = 0;
   bool isSlid = false;
 
@@ -55,12 +55,15 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   @override
   void initState() {
     final provider = context.read<ModuleProvider>();
-    if (!provider.isEditing && !provider.duplicateMode) // Not Editing
+    if (!provider.isEditing && !provider.duplicateMode) {
+      // Not Editing
       Future.delayed(Duration.zero).then((value) {
         InheritedExpenseForm.of(context).expense.clear();
         InheritedExpenseForm.of(context).taxData.clear();
         setState(() {});
       });
+    }
+
     super.initState();
   }
 
@@ -68,14 +71,16 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    initExpense['cost_center'] = Map<String, dynamic>.from(await APIService()
-        .genericGet('method/ecs_mobile.general.general_service?doctype=' +
-            APIService.COMPANY))['message'][0]['round_off_cost_center'];
+    initExpense[
+        'cost_center'] = Map<String, dynamic>.from(await APIService().genericGet(
+            'method/ecs_mobile.general.general_service?doctype=${APIService.COMPANY}'))[
+        'message'][0]['round_off_cost_center'];
 
-    InheritedExpenseForm.of(context).taxData['cost_center'] =
-        Map<String, dynamic>.from(await APIService().genericGet(
-            'method/ecs_mobile.general.general_service?doctype=' +
-                APIService.COMPANY))['message'][0]['round_off_cost_center'];
+    InheritedExpenseForm.of(context).taxData[
+        'cost_center'] = Map<String, dynamic>.from(await APIService().genericGet(
+            'method/ecs_mobile.general.general_service?doctype=${APIService.COMPANY}'))[
+        'message'][0]['round_off_cost_center'];
+    setState(() {});
     print('asdas${InheritedExpenseForm.of(context).taxData['cost_center']}');
   }
 
@@ -83,7 +88,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             //color: Colors.white,
@@ -100,80 +105,80 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
           ),
           child: Card(
             elevation: 0,
-            margin: EdgeInsets.symmetric(
+            margin: const EdgeInsets.symmetric(
               horizontal: 8.0,
             ),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Container(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                child: Column(
-                  children: [
-                    _Totals(),
-                    Divider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Expenses',
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                          SizedBox(
-                            width: 40,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero),
-                              onPressed: () async {
-                                setState(() {
-                                  InheritedExpenseForm.of(context)
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+              child: Column(
+                children: [
+                  const _Totals(),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Expenses',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600)),
+                        SizedBox(
+                          width: 40,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero),
+                            onPressed: () async {
+                              setState(() {
+                                InheritedExpenseForm.of(context)
+                                    .expense
+                                    .add(ExpenseModel.fromJson(initExpense));
+                              });
+
+                              Timer(
+                                  const Duration(milliseconds: 50),
+                                  () => _scrollController.animateTo(
+                                      _scrollController
+                                          .position.maxScrollExtent,
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      curve: Curves.easeInOut));
+
+                              //Dismiss Tutorial for user
+                              if (InheritedExpenseForm.of(context)
                                       .expense
-                                      .add(ExpenseModel.fromJson(initExpense));
-                                });
-
+                                      .length <
+                                  2) {
                                 Timer(
-                                    Duration(milliseconds: 50),
-                                    () => _scrollController.animateTo(
-                                        _scrollController
-                                            .position.maxScrollExtent,
-                                        duration: Duration(milliseconds: 200),
-                                        curve: Curves.easeInOut));
-
-                                //Dismiss Tutorial for user
-                                if (InheritedExpenseForm.of(context)
-                                        .expense
-                                        .length <
-                                    2)
-                                  Timer(
-                                      Duration(milliseconds: 2500),
-                                      () => setState(() {
-                                            isSlid = true;
-                                            Timer(
-                                                Duration(milliseconds: 1000),
-                                                () => setState(() {
-                                                      isSlid = false;
-                                                    }));
-                                          }));
-                                rowNo++;
-                              },
-                              child: Icon(Icons.add,
-                                  size: 25, color: Colors.white),
-                            ),
+                                    const Duration(milliseconds: 2500),
+                                    () => setState(() {
+                                          isSlid = true;
+                                          Timer(
+                                              const Duration(
+                                                  milliseconds: 1000),
+                                              () => setState(() {
+                                                    isSlid = false;
+                                                  }));
+                                        }));
+                              }
+                              rowNo++;
+                            },
+                            child: const Icon(Icons.add,
+                                size: 25, color: Colors.white),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         (InheritedExpenseForm.of(context).expense.isNotEmpty)
             ? Padding(
                 padding:
@@ -192,7 +197,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                             InheritedExpenseForm.of(context).taxData.clear();
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           'Clear All',
                           style: TextStyle(color: Colors.black87),
                         ),
@@ -244,8 +249,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          padding: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
           ),
           child: ConstrainedBox(
@@ -254,13 +259,13 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                     ? MediaQuery.of(context).size.height * 0.10
                     : MediaQuery.of(context).size.height * 0.41),
             child: InheritedExpenseForm.of(context).expense.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text('no expenses added',
                         style: TextStyle(color: Colors.grey, fontSize: 16)))
                 : ShaderMask(
                     blendMode: BlendMode.dstOut,
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -273,7 +278,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                       ).createShader(bounds);
                     },
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         //reverse: true,
                         itemCount:
@@ -304,10 +309,10 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             color: Colors.redAccent),
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(16),
                                             child: Icon(Icons.delete_forever,
                                                 color: Colors.white, size: 30),
                                           ),
@@ -319,7 +324,8 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
                                               bottom: Radius.circular(8),
                                               top: Radius.circular(8),
                                             ),
@@ -366,7 +372,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                       }),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Flexible(
                                                     child: CustomTextField(
                                                         'expense_type',
@@ -452,7 +458,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                               value, 'Amount'),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Flexible(
                                                     child: CustomTextField(
                                                       'sanctioned_amount',
@@ -484,10 +490,10 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                       onChanged: (value) {
                                                         setState(() {
                                                           InheritedExpenseForm.of(
-                                                                    context)
-                                                                .expense[index]
-                                                                .description =
-                                                            value;
+                                                                      context)
+                                                                  .expense[index]
+                                                                  .description =
+                                                              value;
                                                         });
                                                       },
                                                       disableValidation: true,
@@ -499,7 +505,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                               value,
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Flexible(
                                                     child: CustomTextField(
                                                         'cost_center',
@@ -557,34 +563,46 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
   }
 }
 
-class _Totals extends StatelessWidget {
+class _Totals extends StatefulWidget {
   const _Totals({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    double totalSanctionedAmount = 0;
-    double grandTotal = 0;
-    double totalTaxesAndCharges = 0;
-    double totalClaimedAmount = 0;
+  State<_Totals> createState() => _TotalsState();
+}
+
+class _TotalsState extends State<_Totals> {
+  double totalSanctionedAmount = 0;
+  double grandTotal = 0;
+  double totalTaxesAndCharges = 0;
+  double totalClaimedAmount = 0;
+  @override
+  void initState() {
+    super.initState();
 
     //double taxAmount = 0;
 
-    InheritedExpenseForm.of(context).expense.forEach((expense) {
-      totalSanctionedAmount += expense.amount;
-      totalTaxesAndCharges = (totalSanctionedAmount *
-          ((double.tryParse((InheritedExpenseForm.of(context)
-                      .taxData['rate']
-                      .toString())) ??
-                  0.0) /
-              100));
-      grandTotal = totalSanctionedAmount + totalTaxesAndCharges;
-      totalClaimedAmount = totalSanctionedAmount;
+    Future.delayed(Duration.zero, () {
+      InheritedExpenseForm.of(context).expense.forEach((expense) {
+        totalSanctionedAmount += expense.amount;
+        totalTaxesAndCharges = (totalSanctionedAmount *
+            ((double.tryParse((InheritedExpenseForm.of(context)
+                        .taxData['rate']
+                        .toString())) ??
+                    0.0) /
+                100));
+        grandTotal = totalSanctionedAmount + totalTaxesAndCharges;
+        totalClaimedAmount = totalSanctionedAmount;
 
-      InheritedExpenseForm.of(context).taxData['tax_amount'] =
-          totalTaxesAndCharges;
-      InheritedExpenseForm.of(context).taxData['total'] = grandTotal;
+        InheritedExpenseForm.of(context).taxData['tax_amount'] =
+            totalTaxesAndCharges;
+        InheritedExpenseForm.of(context).taxData['total'] = grandTotal;
+      });
+      setState(() {});
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Row(

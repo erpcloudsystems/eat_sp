@@ -28,6 +28,7 @@ class _IssueFormState extends State<IssueForm> {
   final server = APIService();
   Map<String, dynamic> data = {
     "doctype": "Issue",
+    'priority': IssuePriorityList[0],
   };
 
   final _formKey = GlobalKey<FormState>();
@@ -217,23 +218,23 @@ class _IssueFormState extends State<IssueForm> {
                         },
                       ),
                       //_______________________________________Department_____________________________________________________
-                      CustomTextFieldTest(
-                        'department',
-                        'Department',
-                        initialValue: data['department'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => departmentListScreen(),
-                            ),
-                          );
-                          data['department'] = res;
-                          return res;
-                        },
-                      ),
+                      // CustomTextFieldTest(
+                      //   'department',
+                      //   'Department',
+                      //   initialValue: data['department'],
+                      //   disableValidation: true,
+                      //   clearButton: true,
+                      //   onSave: (key, value) => data[key] = value,
+                      //   onPressed: () async {
+                      //     final res = await Navigator.of(context).push(
+                      //       MaterialPageRoute(
+                      //         builder: (_) => departmentListScreen(),
+                      //       ),
+                      //     );
+                      //     data['department'] = res;
+                      //     return res;
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

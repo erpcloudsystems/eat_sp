@@ -38,7 +38,7 @@ class ItemCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(values[0], textAlign: TextAlign.center),
               ),
-              Divider(color: Colors.blueAccent, height: 1),
+              const Divider(color: Colors.blueAccent, height: 1),
               Row(
                 children: [
                   Flexible(
@@ -55,16 +55,20 @@ class ItemCard extends StatelessWidget {
                           // height: 45,
                           loadingBuilder: (context, child, progress) {
                             return progress != null
-                                ? SizedBox(
+                                ? const SizedBox(
                                     child: Icon(Icons.image,
                                         color: Colors.grey, size: 40))
                                 : child;
                           },
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {
-                            return SizedBox(
-                                child: Icon(Icons.image,
-                                    color: Colors.grey, size: 40));
+                            return const SizedBox(
+                              child: Icon(
+                                Icons.image,
+                                color: Colors.grey,
+                                size: 40,
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -86,7 +90,7 @@ class ItemCard extends StatelessWidget {
                                   _CardItem(
                                       title: names[i - 1], value: values[i]),
                                   if (i != values.length - 1)
-                                    Divider(color: Colors.grey),
+                                    const Divider(color: Colors.grey),
                                 ],
                               ),
                           ],

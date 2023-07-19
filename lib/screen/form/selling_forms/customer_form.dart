@@ -61,7 +61,7 @@ class _CustomerFormState extends State<CustomerForm> {
     if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
-      data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+      data['location'] = gpsService.placeman[0].subAdministrativeArea;
     }
     showLoadingDialog(
         context,

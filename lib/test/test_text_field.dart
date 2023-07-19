@@ -416,9 +416,8 @@ class _DatePickerTestState extends State<DatePickerTest> {
       if (widget.initialValue.toString().contains("T")) {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
       } else if (widget.initialValue.toString().contains(" ")) {
-        var date = widget.initialValue.toString().split(" ")[0] +
-            "T" +
-            widget.initialValue.toString().split(" ")[1];
+        var date =
+            "${widget.initialValue.toString().split(" ")[0]}T${widget.initialValue.toString().split(" ")[1]}";
         controller.text = formatDate(DateTime.parse(date));
       } else {
         controller.text = formatDate(DateTime.parse(widget.initialValue!));
@@ -441,9 +440,8 @@ class _DatePickerTestState extends State<DatePickerTest> {
                 ? ''
                 : formatDate(DateTime.parse(widget.initialValue!));
           } else if (widget.initialValue.toString().contains(" ")) {
-            var date = widget.initialValue.toString().split(" ")[0] +
-                "T" +
-                widget.initialValue.toString().split(" ")[1];
+            var date =
+                "${widget.initialValue.toString().split(" ")[0]}T${widget.initialValue.toString().split(" ")[1]}";
             controller.text = formatDate(DateTime.parse(date));
           } else {
             controller.text = formatDate(DateTime.parse(widget.initialValue!));
@@ -639,9 +637,11 @@ class _TimePickerTestState extends State<TimePickerTest> {
       if (widget.initialValue.toString().contains("T")) {
         controller.text =
             "${widget.initialValue!.split("T")[1].split(":")[0]}:${widget.initialValue!.split("T")[1].split(":")[1]}:00";
-      } else {
+      } else if (widget.initialValue.toString().contains(" ")) {
         controller.text =
             "${widget.initialValue!.split(" ")[1].split(":")[0]}:${widget.initialValue!.split(" ")[1].split(":")[1]}:00";
+      } else {
+        controller.text = widget.initialValue.toString();
       }
     }
     super.initState();

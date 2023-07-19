@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -70,7 +71,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       return;
     }
 
-    if (InheritedForm.of(context).items.isEmpty) {
+    if (provider.newItemList.isEmpty) {
       showSnackBar('Please add an item at least', context);
       return;
     }
@@ -87,10 +88,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    InheritedForm.of(context).items.forEach((element) {
-      if (data['is_return'] == 1) element.qty = element.qty * -1;
-      data['items'].add(element.toJson);
-    });
+    // InheritedForm.of(context).items.forEach((element) {
+    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
+    //   data['items'].add(element.toJson);
+    // });
+    for (var element in provider.newItemList) {
+      data['items'].add(element);
+    }
 
     //DocFromPage Mode from Sales Invoice
     data['items'].forEach((element) {
@@ -102,7 +106,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
-      data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+      data['location'] = gpsService.placeman[0].subAdministrativeArea;
     }
 
     showLoadingDialog(
@@ -179,7 +183,10 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         data['longitude'] = 0.0;
 
         final items = SalesInvoicePageModel(context, data).items;
-
+        //New Item
+        for (var element in items) {
+          provider.setItemToList(element);
+        }
         for (var element in items) {
           InheritedForm.of(context)
               .items
@@ -201,10 +208,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         // // Because "Customer Visit" doesn't have Items.
         if (data['doctype'] != DocTypesName.customerVisit) {
           InheritedForm.of(context).items.clear();
+          // data['items'].forEach((element) {
+          //   InheritedForm.of(context)
+          //       .items
+          //       .add(ItemSelectModel.fromJson(element));
+          // });
           data['items'].forEach((element) {
-            InheritedForm.of(context)
-                .items
-                .add(ItemSelectModel.fromJson(element));
+            provider.newItemList.add(element);
           });
         }
         InheritedForm.of(context).data['selling_price_list'] =
@@ -733,7 +743,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                                 builder: (_) => salesPartnerScreen())),
                       ),
                       const SizedBox(height: 8),
-                       Row(
+                      const Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -754,13 +764,17 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   ),
                 ),
 
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 13.0,
-                    horizontal: 8,
-                  ),
-                  child: SelectedItemsList(),
+                AddItemsWidget(
+                  priceList: data['selling_price_list'] ??
+                      context.read<UserProvider>().defaultSellingPriceList,
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(
+                //     vertical: 13.0,
+                //     horizontal: 8,
+                //   ),
+                //   child: SelectedItemsList(),
+                // ),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:NextApp/bloc/custom_form_bloc/cubit/custom_from_cubit_cubit.dart';
+import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
 
 import '../../modules/dashboard/presentation/bloc/dasboard_bloc.dart';
 import '../../modules/dashboard/presentation/bloc/total_bloc/total_bloc.dart';
@@ -21,7 +22,9 @@ import '../../modules/reports/features/stockReports/presentation/bloc/stock_ware
 
 class StateManagement {
   static dynamic stateManagement = [
-    ChangeNotifierProvider<ModuleProvider>(create: (_) => ModuleProvider()),
+    ChangeNotifierProvider<ModuleProvider>(
+      create: (_) => ModuleProvider(),
+    ),
     ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
     BlocProvider(create: (_) => di.sl<GeneralReportsBloc>()),
     BlocProvider(create: (_) => di.sl<GeneralLedgerBloc>()),
@@ -34,10 +37,9 @@ class StateManagement {
           ..add(GetUserProfileDataEvent(
               userName: context.read<UserProvider>().userId))),
     BlocProvider(create: (_) => di.sl<TotalBloc>()),
-    BlocProvider(
-        create: (_) =>
-            di.sl<DashboardBloc>()),
+    BlocProvider(create: (_) => di.sl<DashboardBloc>()),
     BlocProvider(create: (_) => di.sl<TransactionBloc>()),
     BlocProvider(create: (_) => CustomFromCubitCubit()),
+    BlocProvider(create: (_) => di.sl<NewItemBloc>()),
   ];
 }

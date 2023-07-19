@@ -48,4 +48,9 @@ class ApiConstance {
 
   static const String generalListEndPoint =
       'method/ecs_mobile.general.general_service';
+
+  static const String generalItemListEndPoint =
+      'method/ecs_mobile.general.get_item_list';
+
+  static const String getItemGroup = 'method/ecs_mobile.itemGroup.itemList';
 }

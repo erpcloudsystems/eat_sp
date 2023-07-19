@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import '../../models/list_models/list_model.dart';
@@ -118,6 +119,31 @@ class ModuleProvider extends ChangeNotifier {
   }
 
   //---------------------------------------------------------------------------
+  //----------------------- New Items------------------------------------------
+  List<Map<String, dynamic>> newItemList = [];
+  // dynamic total = 0.0;
+  void setItemToList(Map<String, dynamic> item) {
+    newItemList.add(item);
+    item['amount'] = item['qty'] * item['rate'];
+    
+    notifyListeners();
+  }
+
+  List<String> getUOMList = [];
+
+  Future<void> getUOM({required String itemCode}) async {
+    var response = await APIService().genericGet(
+      'method/ecs_mobile.general.get_item_uoms',
+      {
+        'item_code': itemCode,
+      },
+    );
+    print(response);
+    getUOMList = response['message']['uom'];
+    notifyListeners();
+  }
+  //---------------------------------------------------------------------------
+
   int? get pageSubmitStatus => _pageSubmitStatus;
 
   Map<String, dynamic> get filter => _filter;
@@ -725,5 +751,6 @@ class ModuleProvider extends ChangeNotifier {
     _editPage = false;
     _amendDoc = false;
     _duplicateMode = false;
+    newItemList.clear();
   }
 }

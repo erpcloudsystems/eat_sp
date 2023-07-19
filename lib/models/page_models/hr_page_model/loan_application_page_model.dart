@@ -36,7 +36,7 @@ class LoanApplicationPageModel {
         tr("Is Secured Loan"): data['is_secured_loan'].toString(),
       },
       {
-        tr("Rate of Interest"): data['rate_of_interest'].toString() + " %",
+        tr("Rate of Interest"): "${data['rate_of_interest']} %",
         tr("Maximum Loan Amount"): data['maximum_loan_amount'].toString(),
       },
       {

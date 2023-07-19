@@ -152,6 +152,10 @@ Color statusColor(String status) {
       return Colors.grey;
     case 'Claimed':
       return Colors.blue;
+    case 'IN':
+      return Colors.green;
+    case 'OUT':
+      return Colors.red;
 
     // Project
     case 'Working':

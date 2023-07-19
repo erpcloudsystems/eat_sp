@@ -8,11 +8,14 @@ import '../../widgets/generic_page_buttons.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
 import '../home_screen.dart';
 
-class GenericPage extends StatelessWidget {
+class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
 
-  //TODO: try use bool variable here for is available pdf for
+  @override
+  State<GenericPage> createState() => _GenericPageState();
+}
 
+class _GenericPageState extends State<GenericPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +32,7 @@ class GenericPage extends StatelessWidget {
               onPressed: () {
                 final provider = context.read<ModuleProvider>();
                 // We use this method to navigate back to "List Screen", and only in "Amended Mode".
+
                 if (provider.isAmended) {
                   provider.pushPage(provider.previousPageId);
                   Navigator.of(context).pushReplacement(
@@ -38,6 +42,11 @@ class GenericPage extends StatelessWidget {
                   );
                   provider.NotifyAmended = false;
                 }
+
+                setState(() {
+                  context.read<ModuleProvider>().getWorkflow = false;
+                });
+
                 Navigator.of(context).pop();
               },
               icon: const Icon(
@@ -91,7 +100,7 @@ class _GenericPageBodyState extends State<_GenericPageBody> {
   @override
   void initState() {
     super.initState();
-
+    context.read<ModuleProvider>().getWorkflow = false;
     final provider = context.read<ModuleProvider>();
     provider.checkDocTypeWorkflow();
     provider.getActionList();
@@ -100,7 +109,6 @@ class _GenericPageBodyState extends State<_GenericPageBody> {
 
   @override
   void deactivate() {
-    // TODO: implement deactivate
     context.read<ModuleProvider>().getWorkflow = false;
     super.deactivate();
   }

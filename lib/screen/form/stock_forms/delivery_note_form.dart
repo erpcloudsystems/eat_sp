@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -16,7 +16,6 @@ import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/stock_page_model/delivery_note_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
@@ -45,7 +44,7 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     if (!_formKey.currentState!.validate()) return;
 
     final provider = context.read<ModuleProvider>();
-    if (InheritedForm.of(context).items.isEmpty) {
+    if (provider.newItemList.isEmpty) {
       showSnackBar('Please add an item at least', context);
       return;
     }
@@ -61,10 +60,13 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    InheritedForm.of(context).items.forEach((element) {
-      if (data['is_return'] == 1) element.qty = element.qty * -1;
-      data['items'].add(element.toJson);
-    });
+    // InheritedForm.of(context).items.forEach((element) {
+    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
+    //   data['items'].add(element.toJson);
+    // });
+    for (var element in provider.newItemList) {
+      data['items'].add(element);
+    }
 
     //DocFromPage Mode from Sales Order
     data['items'].forEach((element) {
@@ -152,12 +154,14 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
             }));
 
         final items = DeliveryNotePageModel(context, data).items;
-
         for (var element in items) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
+          provider.setItemToList(element);
         }
+        // for (var element in items) {
+        //   InheritedForm.of(context)
+        //       .items
+        //       .add(ItemSelectModel.fromJson(element));
+        // }
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
 
@@ -175,13 +179,16 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
       Future.delayed(Duration.zero, () {
         data = provider.createFromPageData;
 
-        InheritedForm.of(context).items.clear();
+        // InheritedForm.of(context).items.clear();
+        // data['items'].forEach((element) {
+        //   if (!InheritedForm.of(context).items.contains(element)) {
+        //     InheritedForm.of(context)
+        //         .items
+        //         .add(ItemSelectModel.fromJson(element));
+        //   }
+        // });
         data['items'].forEach((element) {
-          if (!InheritedForm.of(context).items.contains(element)) {
-            InheritedForm.of(context)
-                .items
-                .add(ItemSelectModel.fromJson(element));
-          }
+          provider.newItemList.add(element);
         });
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
@@ -614,11 +621,14 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                   ],
                 ),
               ),
-
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-                child: SelectedItemsList(),
+              AddItemsWidget(
+                priceList: data['selling_price_list'] ??
+                    context.read<UserProvider>().defaultSellingPriceList,
               ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+              //   child: SelectedItemsList(),
+              // ),
             ],
           ),
         ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:NextApp/service/service.dart';
 
 import '../provider/user/user_provider.dart';
@@ -47,6 +49,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   Future<void> getItems() async {
     if (!mounted) return;
+
     setState(() => _isLoading = true);
 
     pageCount += PAGINATION_PAGE_LENGTH;
@@ -241,11 +244,10 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   final TextEditingController controller = TextEditingController();
+  Timer? debounceTimer;
 
   @override
   Widget build(BuildContext context) {
-    String searchText = '';
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: SizedBox(
@@ -266,20 +268,22 @@ class _SearchBarState extends State<SearchBar> {
           child: TextField(
             controller: controller,
             onChanged: (value) {
-              setState(() {
-                widget.search(controller.text);
-              });
-              if (value.isEmpty && searchText.isNotEmpty) {
-                widget.search(value);
-                FocusScope.of(context).unfocus();
-              }
-            },
-            onEditingComplete: () {
-              FocusScope.of(context).unfocus();
-              setState(() {
-                widget.search(controller.text);
+              // Clear the previous debounce timer
+              debounceTimer?.cancel();
+
+              // Set a new debounce timer
+              debounceTimer = Timer(const Duration(milliseconds: 1000), () {
+                setState(() {
+                  widget.search(value);
+                });
               });
             },
+            // onEditingComplete: () {
+            //   FocusScope.of(context).unfocus();
+            //   // setState(() {
+            //   //   widget.search(controller.text);
+            //   // });
+            // },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
               hintText: "Search",

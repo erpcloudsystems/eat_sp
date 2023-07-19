@@ -128,6 +128,8 @@ class _ContactFormState extends State<ContactForm> {
   @override
   void deactivate() {
     super.deactivate();
+    InheritedContactForm.of(context).emails.clear();
+    InheritedContactForm.of(context).phones.clear();
     context.read<ModuleProvider>().resetCreationForm();
   }
 
@@ -262,11 +264,15 @@ class _ContactFormState extends State<ContactForm> {
                             return id;
                           },
                         ),
-                      CheckBoxWidget('is_primary_address', 'Is Primary',
-                          initialValue:
-                              data['is_primary_address'] == 1 ? true : false,
-                          onChanged: (id, value) =>
-                              setState(() => data[id] = value ? 1 : 0)),
+                      CheckBoxWidget(
+                        'is_primary_address',
+                        'Is Primary',
+                        initialValue:
+                            data['is_primary_address'] == 1 ? true : false,
+                        onChanged: (id, value) => setState(
+                          () => data[id] = value ? 1 : 0,
+                        ),
+                      ),
                     ],
                   ),
                 ),

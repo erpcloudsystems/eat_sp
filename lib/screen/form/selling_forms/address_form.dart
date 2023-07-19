@@ -67,7 +67,7 @@ class _AddressFormState extends State<AddressForm> {
     if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
-      data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+      data['location'] = gpsService.placeman[0].subAdministrativeArea;
     }
 
     Provider.of<ModuleProvider>(context, listen: false)
@@ -128,9 +128,11 @@ class _AddressFormState extends State<AddressForm> {
         data['longitude'] = 0.0;
 
         if (data['reference'] != null) {
-          data['links'][0]['link_doctype'] =
+          data['reference'][0]['link_doctype'] =
               data['reference'][0]['link_doctype'];
-          data['links'][0]['link_name'] = data['reference'][0]['link_name'];
+          data['reference'][0]['link_name'] = data['reference'][0]['link_name'];
+          data['link_doctype'] = data['reference'][0]['link_doctype'];
+          data['link_name'] = data['reference'][0]['link_name'];
         }
 
         setState(() {});
@@ -292,7 +294,7 @@ class _AddressFormState extends State<AddressForm> {
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
                     const SizedBox(height: 8),
-                     Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

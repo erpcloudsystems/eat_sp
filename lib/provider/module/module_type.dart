@@ -1116,8 +1116,8 @@ class ModuleType {
         id: item.id,
         title: item.name,
         status: item.status,
-        leftIcon: Icons.account_balance_outlined,
-        leftText: item.department,
+        leftIcon: Icons.date_range_outlined,
+        leftText: item.fromDate.formatDate(),
         rightIcon: Icons.output_outlined,
         rightText: item.leaveType,
         // names: [
@@ -1164,10 +1164,10 @@ class ModuleType {
       return ListCardTest(
         id: item.id,
         title: item.name,
-        status: item.status,
+        status: item.logType,
 
-        leftIcon: Icons.perm_identity_sharp,
-        leftText: item.employee,
+        leftIcon: Icons.date_range_outlined,
+        leftText: item.time.formatDate(),
         rightIcon: Icons.access_time,
         rightText: '${item.time.hour}:${item.time.minute}',
         // names: [
@@ -1215,8 +1215,8 @@ class ModuleType {
         id: item.id,
         title: item.name,
         status: item.docStatus,
-        leftIcon: Icons.perm_identity_sharp,
-        leftText: item.employee,
+        leftIcon: Icons.date_range_outlined,
+        leftText: item.fromDate.formatDate(),
         rightIcon: Icons.request_page_outlined,
         rightText: item.reason,
         // names: [
@@ -1262,8 +1262,8 @@ class ModuleType {
         id: item.id,
         title: item.name,
         status: item.status,
-        leftIcon: Icons.perm_identity_sharp,
-        leftText: item.employee,
+        leftIcon: Icons.money,
+        leftText: item.advanceAmount.toString(),
         rightIcon: Icons.date_range,
         rightText:
             '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
@@ -1308,8 +1308,8 @@ class ModuleType {
         id: item.id,
         title: item.name,
         status: item.status,
-        leftIcon: Icons.perm_identity_sharp,
-        leftText: item.employee,
+        leftIcon: Icons.money,
+        leftText: item.grandTotal.toString(),
         rightIcon: Icons.date_range,
         rightText:
             '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
@@ -1439,8 +1439,8 @@ class ModuleType {
         id: item.name!,
         status: item.status!,
         title: item.project ?? 'none'.tr(),
-        leftIcon: Icons.priority_high,
-        leftText: item.priority ?? 'none'.tr(),
+        leftIcon: Icons.subject_outlined,
+        leftText: item.subject ?? 'none'.tr(),
         rightIcon: Icons.calendar_month_outlined,
         rightText: item.expectedEndDate.formatDate(),
         onPressed: (context) => _onListCardPressed(
@@ -1470,7 +1470,7 @@ class ModuleType {
         title: item.parentProject!,
         status: item.status!,
         leftIcon: Icons.person_outline_rounded,
-        leftText: item.customer ?? 'none',
+        leftText: item.employeeName ?? 'none',
         rightIcon: Icons.date_range,
         rightText: item.startDate!.formatDate(),
         onPressed: (context) => _onListCardPressed(

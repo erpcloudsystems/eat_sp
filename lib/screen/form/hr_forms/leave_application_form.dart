@@ -161,12 +161,10 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                           await _getEmployeeData(res['name']);
 
                           setState(() {
-                            data['name'] = res['name'];
                             data['employee'] = res['name'];
                             data['employee_name'] = res['employee_name'];
                             data['department'] = res['department'];
-                            data['leaver_approver'] =
-                                selectedEmployeeData['leave_approver'];
+                            data['leave_approver'] = res['leave_approver'];
                             data['leave_approver_name'] =
                                 selectedEmployeeData['leave_approver_name'];
                           });
@@ -238,12 +236,13 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                     ),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    if (data['leaver_approver'] != null)
+                    if (data['leave_approver'] != null)
                       CustomTextFieldTest(
-                        'leaver_approver',
+                        'leave_approver',
                         'Leave Approver',
-                        initialValue: data['leaver_approver'],
+                        initialValue: data['leave_approver'],
                         disableValidation: false,
+                        onChanged: (value) => data['leave_approver'] = value,
                         clearButton: false,
                         enabled: false,
                       ),

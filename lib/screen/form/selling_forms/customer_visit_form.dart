@@ -69,7 +69,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     data['docstatus'] = 0;
     data['latitude'] = location.latitude;
     data['longitude'] = location.longitude;
-    data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+    data['location'] = gpsService.placeman[0].subAdministrativeArea;
     if (data['time'].toString().contains('T')) {
       data['time'] = data['time'].toString().split('T')[1].split('.')[0];
     }

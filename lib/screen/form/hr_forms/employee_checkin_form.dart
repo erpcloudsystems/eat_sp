@@ -80,7 +80,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
     if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
-      data['location'] = gpsService.placemarks[0].subAdministrativeArea;
+      data['location'] = gpsService.placeman[0].subAdministrativeArea;
     }
 
     data['time'] = data['date_only'] + " " + data['time_only'];

@@ -5,11 +5,13 @@ class LeaveApplicationModel extends TapViewEntity {
     required super.name,
     required super.title,
     required super.status,
+    required super.subtitle,
   });
 
   factory LeaveApplicationModel.fromJson(Map<String, dynamic> json) => LeaveApplicationModel(
     name: json['name'] ?? 'none',
     title: json['employee_name'] ?? 'none',
     status: json['status'] ?? 'none',
+    subtitle: json['from_date'] ?? 'none',
   );
 }

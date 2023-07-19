@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -17,7 +18,6 @@ import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/buying_page_model/purchase_invoice_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
@@ -53,7 +53,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
-    if (InheritedForm.of(context).items.isEmpty) {
+    if (provider.newItemList.isEmpty) {
       showSnackBar('Please add an item at least', context);
       return;
     }
@@ -76,10 +76,14 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
     //         .getPage(PURCHASE_INVOICE_DEFAULT_TAX, ''))['message']
     //     ['sales_taxes_table']);
 
-    InheritedForm.of(context).items.forEach((element) {
-      if (data['is_return'] == 1) element.qty = element.qty * -1;
-      data['items'].add(element.toJson);
-    });
+    // InheritedForm.of(context).items.forEach((element) {
+    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
+    //   data['items'].add(element.toJson);
+    // });
+    for (var element in provider.newItemList) {
+      if (data['is_return'] == 1) element['qty'] = element['qty'] * -1;
+      data['items'].add(element);
+    }
 
     //DocFromPage Mode from Purchase Invoice
     data['items'].forEach((element) {
@@ -160,10 +164,14 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
 
         final items = PurchaseInvoicePageModel(context, data).items;
 
+        // for (var element in items) {
+        //   InheritedForm.of(context)
+        //       .items
+        //       .add(ItemSelectModel.fromJson(element));
+        // }
+        //New Item
         for (var element in items) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
+          provider.setItemToList(element);
         }
         InheritedForm.of(context).data['buying_price_list'] =
             data['buying_price_list'];
@@ -187,10 +195,13 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
 
         // from Purchase Invoice
         if (data['doctype'] == 'Purchase Invoice') {
+          // data['purchase_invoice_item'].forEach((element) {
+          //   InheritedForm.of(context)
+          //       .items
+          //       .add(ItemSelectModel.fromJson(element));
+          // });
           data['purchase_invoice_item'].forEach((element) {
-            InheritedForm.of(context)
-                .items
-                .add(ItemSelectModel.fromJson(element));
+            provider.newItemList.add(element);
           });
           InheritedForm.of(context).data['buying_price_list'] =
               data['buying_price_list'];
@@ -201,11 +212,13 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
 
         // From Purchase Order:
         if (data['doctype'] == DocTypesName.purchaseOrder) {
-          data['purchase_order_items'].forEach((element) =>
-              InheritedForm.of(context)
-                  .items
-                  .add(ItemSelectModel.fromJson(element)));
-
+          // data['purchase_order_items'].forEach((element) =>
+          //     InheritedForm.of(context)
+          //         .items
+          //         .add(ItemSelectModel.fromJson(element)));
+          data['purchase_order_items'].forEach((element) {
+            provider.newItemList.add(element);
+          });
           InheritedForm.of(context).data['buying_price_list'] =
               data['buying_price_list'];
 
@@ -683,11 +696,14 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
                         color: Colors.grey, height: 1, thickness: 0.7),
                 ],
               )),
-
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-                child: SelectedItemsList(),
+              AddItemsWidget(
+                priceList: data['buying_price_list'] ??
+                    context.read<UserProvider>().defaultBuyingPriceList,
               ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+              //   child: SelectedItemsList(),
+              // ),
             ],
           ),
         ),

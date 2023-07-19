@@ -47,7 +47,7 @@ class _IssueFilterScreenState extends State<IssueFilterScreen> {
         ),
         CustomTextField(
           'filter3',
-          'Project Type'.tr(),
+          'Project'.tr(),
           clearButton: true,
           onClear: () => _values.remove('filter3'),
           onSave: (key, value) => _values[key] = value,
@@ -55,10 +55,10 @@ class _IssueFilterScreenState extends State<IssueFilterScreen> {
           onPressed: () async {
             final res = await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => issueTypeListScreen(),
+                builder: (context) => projectScreen(),
               ),
             );
-            if (res != null) _values['filter3'] = res;
+            if (res != null) _values['filter3'] = res['name'];
             return _values['filter3'];
           },
         ),

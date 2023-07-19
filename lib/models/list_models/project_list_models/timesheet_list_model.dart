@@ -31,6 +31,7 @@ class TimesheetModel {
 
   String? parentProject;
   String? employeeDetail;
+  String? employeeName;
   String? department;
   String? user;
 
@@ -89,6 +90,7 @@ class TimesheetModel {
     status = json['status'] ?? 'none';
     parentProject = json['parent_project'] ?? 'none';
     employeeDetail = json['employee_detail'] ?? 'none';
+    employeeName = json['employee_name'] ?? 'none';
     department = json['department'] ?? 'none';
     user = json['user'] ?? 'none';
     startDate = DateTime.parse(json['start_date'] ?? "2001-01-01");
@@ -134,6 +136,7 @@ class TimesheetModel {
     data['time_logs'] = this.timeLogs;
     data['attachments'] = this.attachments;
     data['comments'] = this.comments;
+    data['employee_name'] = this.employeeName;
     return data;
   }
 }

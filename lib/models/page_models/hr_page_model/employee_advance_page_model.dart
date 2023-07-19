@@ -41,7 +41,8 @@ class EmployeeAdvancePageModel {
         tr("Claimed Amount"): data['claimed_amount'].toString(),
       },
       {
-        tr("Returned Amount"): data['return_amount'].toString(),
+        tr("Returned Amount"):
+            data['repay_unclaimed_amount_from_salary'].toString(),
       },
     ];
   }

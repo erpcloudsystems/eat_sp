@@ -396,7 +396,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                       ),
                                     ),
                                     child: ItemCard(
-                                        names: [
+                                        names: const[
                                           'Code',
                                           'Group',
                                           'UoM',

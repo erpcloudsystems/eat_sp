@@ -1,20 +1,17 @@
+import 'package:NextApp/core/constants.dart';
+
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
 import '../test/home_item_test.dart';
 import 'drawer/drawer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
-import 'drawer/drawer_screen.dart';
-
 import '../service/service.dart';
 import 'other/app_settings.dart';
 import 'list/generic_list_screen.dart';
 import 'other/notification_screen.dart';
 import '../provider/user/user_provider.dart';
 import '../provider/module/module_provider.dart';
-import '../new_version/modules/user_profile/presentation/pages/user_profile_screen.dart';
 
 class SubCategoryScreen extends StatefulWidget {
   final String title;
@@ -27,7 +24,7 @@ class SubCategoryScreen extends StatefulWidget {
 }
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
-  int _page = 1;
+  final int _page = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +97,16 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: APPBAR_COLOR,
         elevation: 1,
         iconTheme: const IconThemeData(
-          color: Colors.black,
+          color: Colors.white,
         ),
         title: Text(
           appBarTitles[_page],
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
       ),

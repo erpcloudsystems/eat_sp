@@ -24,40 +24,53 @@ class ContactPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-             Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
-                Text('Contact',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(
+                  'Contact',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
             Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(context.read<ModuleProvider>().pageId,
-                    style: const TextStyle(fontWeight: FontWeight.bold))),
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                context.read<ModuleProvider>().pageId,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             // Text('Employee Id: ' + (data['employee'] ?? 'none')),
             // Padding(
             //   padding: const EdgeInsets.only(bottom: 4),
             //   child: Text(data['employee_name'] ?? 'none'),
             // ),
             // SizedBox(height: 4),
-            Divider(color: Colors.grey.shade400, thickness: 1),
+            Divider(
+              color: Colors.grey.shade400,
+              thickness: 1,
+            ),
           ],
           items: model.card1Items,
           swapWidgets: [
             SwapWidget(
                 3,
                 Checkbox(
-                    value: data['is_primary_contact'] == 0 ? false : true,
+                    value: data['is_primary'] == 0 ? false : true,
                     onChanged: null),
                 widgetNumber: 2),
             SwapWidget(
-                2,
-                Checkbox(
-                    value: data['is_primary_phone'] == 0 ? false : true,
-                    onChanged: null),
-                widgetNumber: 2)
+              2,
+              Checkbox(
+                  value: data['is_primary_phone'] == 0 ? false : true,
+                  onChanged: null),
+              widgetNumber: 2,
+            )
           ],
         ),
         if (data['links'] != null)

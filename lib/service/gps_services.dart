@@ -18,7 +18,7 @@ class GPSService {
   double? latitude;
   double? longitude;
   bool? isMocked;
-  List<Placemark> placemarks = [];
+  List<Placemark> placeman = [];
 
   Future<LatLng> getCurrentLocation(BuildContext context) async {
     if (!(await Permission.location.request().isGranted)) {
@@ -46,7 +46,7 @@ class GPSService {
       isMocked = position.isMocked;
       latLang = LatLng(position.latitude, position.longitude);
       try {
-        placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+        placeman = await placemarkFromCoordinates(latitude!, longitude!);
       } catch (e) {
         print("Fail To get Address from Coordinates.: $e");
       }

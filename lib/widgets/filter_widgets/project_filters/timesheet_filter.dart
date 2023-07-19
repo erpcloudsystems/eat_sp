@@ -61,6 +61,23 @@ class _TimesheetFilterScreenState extends State<TimesheetFilterScreen> {
             return _values['filter2'];
           },
         ),
+        CustomTextField(
+          'filter3',
+          'Employee'.tr(),
+          clearButton: true,
+          onClear: () => _values.remove('filter3'),
+          onSave: (key, value) => _values[key] = value,
+          initialValue: _values['filter3'],
+          onPressed: () async {
+            final res = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => selectEmployeeScreen(),
+              ),
+            );
+            if (res != null) _values['filter3'] = res['name'];
+            return _values['filter3'];
+          },
+        ),
       ],
     );
   }

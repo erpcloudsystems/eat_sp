@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants.dart';
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
@@ -19,7 +20,6 @@ import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/selling_page_model/sales_order_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
@@ -51,7 +51,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
       return;
     }
 
-    if (InheritedForm.of(context).items.isEmpty) {
+    if (provider.newItemList.isEmpty) {
       showSnackBar('Please add an item at least', context);
       return;
     }
@@ -67,9 +67,12 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
     data['docstatus'] = 0;
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
-    InheritedForm.of(context)
-        .items
-        .forEach((element) => data['items'].add(element.toJson));
+    // InheritedForm.of(context)
+    //     .items
+    //     .forEach((element) => data['items'].add(element.toJson));
+    for (var element in provider.newItemList) {
+      data['items'].add(element);
+    }
 
     //DocFromPage Mode from Sales Order
     data['items'].forEach((element) {
@@ -157,11 +160,16 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
 
         final items = SalesOrderPageModel(context, data).items;
 
+        //New Item
         for (var element in items) {
-          InheritedForm.of(context)
-              .items
-              .add(ItemSelectModel.fromJson(element));
+          provider.setItemToList(element);
         }
+
+        // for (var element in items) {
+        //   InheritedForm.of(context)
+        //       .items
+        //       .add(ItemSelectModel.fromJson(element));
+        // }
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
         print('123E6${InheritedForm.of(context).items}');
@@ -181,10 +189,13 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
         // Because "Customer Visit" doesn't have Items.
         if (data['doctype'] != DocTypesName.customerVisit) {
           InheritedForm.of(context).items.clear();
+          // data['items'].forEach((element) {
+          //   InheritedForm.of(context)
+          //       .items
+          //       .add(ItemSelectModel.fromJson(element));
+          // });
           data['items'].forEach((element) {
-            InheritedForm.of(context)
-                .items
-                .add(ItemSelectModel.fromJson(element));
+            provider.newItemList.add(element);
           });
         }
 
@@ -666,11 +677,14 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                   ],
                 ),
               ),
-
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-                child: SelectedItemsList(),
+              AddItemsWidget(
+                priceList: data['selling_price_list'] ??
+                    context.read<UserProvider>().defaultSellingPriceList,
               ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+              //   child: SelectedItemsList(),
+              // ),
             ],
           ),
         ),

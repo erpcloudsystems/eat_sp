@@ -13,20 +13,22 @@ class TransactionCard extends StatelessWidget {
     required this.status,
     required this.image,
     required this.docType,
+    required this.name,
   }) : super(key: key);
   final String docType;
   final String title;
   final String subTitle;
   final String status;
   final String image;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
     final provider = context.read<ModuleProvider>();
     return InkWell(
-      onTap: (){
+      onTap: () {
         provider.setModule = docType;
-        provider.pushPage(subTitle);
+        provider.pushPage(name);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => const GenericPage(),
@@ -49,7 +51,7 @@ class TransactionCard extends StatelessWidget {
             ),
           ],
         ),
-        child:  ListTile(
+        child: ListTile(
           leading: CircleAvatar(
             radius: 20,
             backgroundColor: Colors.white,
@@ -67,17 +69,21 @@ class TransactionCard extends StatelessWidget {
           ),
           subtitle: Text(subTitle),
           trailing: Container(
-            padding: const EdgeInsets.all(8),
+            width: 85,
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: statusColor(status),
             ),
-            child: Text(
-              status,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            child: Center(
+              child: Text(
+                status,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

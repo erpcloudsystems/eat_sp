@@ -26,6 +26,18 @@ class DashboardTapView extends StatelessWidget {
       animationDuration: const Duration(milliseconds: 800),
       length: 4,
       child: BlocConsumer<TransactionBloc, TransactionState>(
+        // listenWhen: (previous, current) =>
+        //     previous.getTaskState != current.getTaskState &&
+        //     previous.getAttendanceState != current.getAttendanceState &&
+        //     previous.getEmployeeState != current.getEmployeeState &&
+        //     previous.getLeaveState != current.getLeaveState,
+        // buildWhen: (previous, current) =>
+        //     previous.getTaskList != current.getTaskList &&
+        //     previous.getAttendanceRequestList !=
+        //         current.getAttendanceRequestList &&
+        //     previous.getEmployeeCheckingList !=
+        //         current.getEmployeeCheckingList &&
+        //     previous.getLeaveApplicationList != current.getLeaveApplicationList,
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
@@ -115,7 +127,8 @@ class DashboardTapView extends StatelessWidget {
               return TransactionCard(
                 docType: title,
                 title: listData[index].title,
-                subTitle: listData[index].name,
+                subTitle: listData[index].subtitle,
+                name: listData[index].name,
                 status: listData[index].status,
                 image: 'assets/$title.png',
               );
