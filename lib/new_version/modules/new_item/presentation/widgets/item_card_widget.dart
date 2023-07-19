@@ -15,13 +15,12 @@ class ItemCardWidget extends StatefulWidget {
     required this.itemName,
     required this.rate,
     required this.uom,
-    this.qty = 1,
     required this.imageUrl,
     required this.itemCode,
     required this.uomList,
+    required this.itemGroup,
   }) : super(key: key);
-  final String itemName, imageUrl, itemCode;
-  int qty;
+  final String itemName, imageUrl, itemCode, itemGroup;
   final double rate;
   String uom;
   final List<UomModel> uomList;
@@ -31,6 +30,9 @@ class ItemCardWidget extends StatefulWidget {
 }
 
 class _ItemCardWidgetState extends State<ItemCardWidget> {
+  final formKey = GlobalKey<FormState>();
+  String? UOM;
+  int QTY = 1;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
@@ -54,207 +56,216 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
           ),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Flexible(
-            child: Text(
-              widget.itemName,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: Colors.black,
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Flexible(
+              child: Text(
+                widget.itemName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          Flexible(
-            child: Image.network(
-              context.read<UserProvider>().url + widget.imageUrl,
-              headers: APIService().getHeaders,
-              fit: BoxFit.fill,
-              height: 100,
-              width: 140,
-              loadingBuilder: (context, child, progress) {
-                return progress != null
-                    ? const SizedBox(
-                        child: Icon(Icons.image, color: Colors.grey, size: 40))
-                    : child;
-              },
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return const SizedBox(
-                  child: Icon(
-                    Icons.image,
-                    color: Colors.grey,
-                    size: 80,
-                  ),
-                );
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const Flexible(
-                child: Text(
-                  'Rate: ',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Text(
-                  widget.rate.toStringAsFixed(2),
-                  //widget.rate.toString(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Flexible(
-                child: CustomTextFieldTest(
-                  'qty',
-                  'QTY',
-                  initialValue: widget.qty.toString(),
-                  keyboardType: TextInputType.number,
-                  disableError: true,
-                  onSave: (_, value) => widget.qty = int.parse(value),
-                  onChanged: (value) {
-                    widget.qty = int.parse(value);
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-
-              ///UOM List
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Uom',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+            Flexible(
+              child: Image.network(
+                context.read<UserProvider>().url + widget.imageUrl,
+                headers: APIService().getHeaders,
+                fit: BoxFit.fill,
+                height: 100,
+                width: 140,
+                loadingBuilder: (context, child, progress) {
+                  return progress != null
+                      ? const SizedBox(
+                          child:
+                              Icon(Icons.image, color: Colors.grey, size: 40))
+                      : child;
+                },
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return const SizedBox(
+                    child: Icon(
+                      Icons.image,
+                      color: Colors.grey,
+                      size: 80,
                     ),
-                    SizedBox(
-                      height: 40,
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              insetPadding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).size.height * 0.1,
-                              ),
-                              content: SizedBox(
-                                height: widget.uomList.length > 2 ? 100 : 80,
-                                width: 20,
-                                child: ListView.builder(
-                                  itemCount: widget.uomList.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () async {
-                                        setState(() {
-                                          widget.uom =
-                                              widget.uomList[index].uom;
-                                        });
+                  );
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const Flexible(
+                  child: Text(
+                    'Rate: ',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    widget.rate.toStringAsFixed(2),
+                    //widget.rate.toString(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: CustomTextFieldTest(
+                    'qty',
+                    'QTY',
+                    initialValue: QTY.toString(),
+                    keyboardType: TextInputType.number,
+                    disableError: true,
+                    onSave: (_, value) => QTY = int.parse(value),
+                    onChanged: (value) {
+                      QTY = int.parse(value);
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
 
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        margin: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: Colors.black,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            widget.uomList[index].uom,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white,
+                ///UOM List
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Uom',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                insetPadding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                ),
+                                content: SizedBox(
+                                  height: widget.uomList.length > 2 ? 100 : 80,
+                                  width: 20,
+                                  child: ListView.builder(
+                                    itemCount: widget.uomList.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () async {
+                                          setState(() {
+                                            UOM = widget.uomList[index].uom;
+                                            widget.uom =
+                                                widget.uomList[index].uom;
+                                          });
+
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: Colors.black,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              widget.uomList[index].uom,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: APPBAR_COLOR,
-                              )),
-                          child: Center(
-                            child: Text(
-                              widget.uom,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: APPBAR_COLOR,
+                                )),
+                            child: Center(
+                              child: Text(
+                                UOM ?? widget.uom,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          InkWell(
-            onTap: () {
-              provider.setItemToList({
-                "item_code": widget.itemCode,
-                "item_name": widget.itemName,
-                "qty": widget.qty,
-                "uom": widget.uom,
-                "rate": widget.rate,
-              });
-              showSnackBar(
-                'Item ${widget.itemName} Added',
-                context,
-                color: Colors.green,
-              );
-            },
-            child: Container(
-              height: 35,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: APPBAR_COLOR,
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.add,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ),
+              ],
             ),
-          )
-        ],
+            InkWell(
+              onTap: () {
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
+                  provider.setItemToList({
+                    "item_code": widget.itemCode,
+                    "item_name": widget.itemName,
+                    "item_group": widget.itemGroup,
+                    "qty": QTY,
+                    "uom": UOM ?? widget.uom,
+                    "rate": widget.rate,
+                  });
+                  showSnackBar(
+                    'Item ${widget.itemName} Added',
+                    context,
+                    color: Colors.green,
+                  );
+                }
+              },
+              child: Container(
+                height: 35,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: APPBAR_COLOR,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

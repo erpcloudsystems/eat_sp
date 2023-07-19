@@ -1,4 +1,3 @@
-import 'package:NextApp/new_version/modules/new_item/presentation/pages/item_list_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/no_data_screen.dart';
@@ -27,7 +26,7 @@ class Routes {
   static const String modulesScreen = '/modules';
   static const String reportsScreen = '/reports';
   static const String noDataScreen = '/no_data';
-  static const String itemsScreen = '/items_screen';
+
 
   static Map<String, WidgetBuilder> get routes {
     return {
@@ -42,7 +41,6 @@ class Routes {
       editUserProfileScreen: (context) => const EditUserProfileScreen(),
       accountReportFilterScreen: (context) => const FilterAccountScreen(),
       generalLedgerReportScreen: (context) => const GeneralLedgerReportScreen(),
-      itemsScreen: (context) => const ItemListScreen(),
     };
   }
 }

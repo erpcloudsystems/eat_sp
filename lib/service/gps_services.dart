@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:trust_location/trust_location.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -63,9 +62,7 @@ class GPSService {
           latLang = LatLng(0.0, 0.0);
         }
 
-        List<String?> positionCheck = await TrustLocation.getLatLong;
-        bool isMockLocation = await TrustLocation.isMockLocation;
-        print('isMockLocation Trust Package:$isMockLocation');
+        
       }
     } catch (e) {
       print("Getting location Error: $e");

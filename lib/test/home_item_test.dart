@@ -47,7 +47,7 @@ class HomeItemTest extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: ORANGE_COLOR,
                     fontWeight: FontWeight.bold,
                   ),

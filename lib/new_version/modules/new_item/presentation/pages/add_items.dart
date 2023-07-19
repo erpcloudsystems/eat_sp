@@ -34,7 +34,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-              child: Column(
+              child: ListView(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

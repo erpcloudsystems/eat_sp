@@ -4,6 +4,8 @@ import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_state.dart';
 import 'package:NextApp/widgets/nothing_here.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -20,10 +22,10 @@ import '../widgets/new_search_widget.dart';
 class ItemListScreen extends StatefulWidget {
   const ItemListScreen({
     super.key,
-    // required this.itemGroup,
-    // required this.priceList,
+    required this.itemGroup,
+    required this.priceList,
   });
-  // final String itemGroup, priceList;
+  final String itemGroup, priceList;
 
   @override
   State<ItemListScreen> createState() => _ItemListScreenState();
@@ -41,15 +43,35 @@ class _ItemListScreenState extends State<ItemListScreen> {
   void loadData() {
     final bloc = BlocProvider.of<NewItemBloc>(context);
     bloc.add(const ResetItemEvent());
-    final filters = ModalRoute.of(context)!.settings.arguments as ItemsFilter;
+
     bloc.add(
       GetItemEvent(
         itemFilter: ItemsFilter(
-          itemGroup: filters.itemGroup,
-          priceList: filters.priceList,
+          itemGroup: widget.itemGroup,
+          priceList: widget.priceList,
         ),
       ),
     );
+  }
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.BARCODE,
+      );
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      searchText = barcodeScanRes;
+    });
   }
 
   @override
@@ -61,17 +83,36 @@ class _ItemListScreenState extends State<ItemListScreen> {
             'Select Item',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 22,
             ),
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(40),
-            child: NewSearchWidget(
-              searchFunction: (value) {
-                setState(() {
-                  searchText = value;
-                });
-              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: NewSearchWidget(
+                      searchFunction: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
+                      },
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      scanBarcodeNormal();
+                    },
+                    child: const Icon(
+                      Icons.qr_code_outlined,
+                      size: 35,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -93,13 +134,18 @@ class _ItemListScreenState extends State<ItemListScreen> {
               previous.getItemData != current.getItemData,
           builder: (context, state) {
             List<ItemEntity> filteredData = state.getItemData
-                .where((item) =>
-                    item.itemName
-                        .toLowerCase()
-                        .contains(searchText.toLowerCase()) ||
-                    item.itemCode
-                        .toLowerCase()
-                        .contains(searchText.toLowerCase()))
+                .where(
+                  (item) =>
+                      item.itemName
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()) ||
+                      item.itemCode
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()) ||
+                      item.barCode
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()),
+                )
                 .toList();
 
             return state.getItemsState == RequestState.loading
@@ -123,6 +169,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                       child: ItemCardWidget(
                                         itemCode: filteredData[index].itemCode,
                                         itemName: filteredData[index].itemName,
+                                        itemGroup: filteredData[index].itemGroup,
                                         rate: filteredData[index].netRate,
                                         uom: filteredData[index].uom,
                                         imageUrl: filteredData[index].imageUrl,

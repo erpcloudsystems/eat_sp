@@ -38,13 +38,12 @@ dependencies:
 
   #GPS
   geolocator: ^9.0.2
-  trust_location: ^2.0.13
   google_maps_flutter: ^2.2.1
-  geocoding: ^2.0.5
-  maps_launcher: ^2.0.1
-  flutter_map: ^3.0.0
-  latlong2: ^0.8.1
-  app_settings: ^4.1.8
+  geocoding: ^2.1.0
+  maps_launcher: ^2.2.0
+  flutter_map: 
+  latlong2: 
+  app_settings: 
 
   #Alert
   cool_alert: ^1.1.0

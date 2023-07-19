@@ -8,10 +8,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/dismiss_keyboard.dart';
-import '../../../../core/resources/routes.dart';
 import '../../../../core/utils/request_state.dart';
 import '../../data/models/item_filter.dart';
 import '../widgets/new_search_widget.dart';
+import 'item_list_screen.dart';
 
 class ItemGroupScreen extends StatefulWidget {
   const ItemGroupScreen({super.key, required this.priceList});
@@ -204,27 +204,22 @@ class _ItemGroupScreenState extends State<ItemGroupScreen> {
                                                   );
                                                 } else {
                                                   // Go to item screen filtered by Item Group name
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          Routes.itemsScreen,
-                                                          arguments:
-                                                              ItemsFilter(
-                                                            itemGroup: state
-                                                                .getItemGroupData[
-                                                                    index]
-                                                                .name,
-                                                            priceList: widget
-                                                                .priceList,
-                                                          ));
-                                                  // Navigator.push(context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) {
-                                                  //   return ItemListScreen(
-                                                  //     itemGroup:
-                                                  //         filteredData[index].name,
-                                                  //     priceList: widget.priceList,
-                                                  //   );
-                                                  // }));
+
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return ItemListScreen(
+                                                          itemGroup: state
+                                                              .getItemGroupData[
+                                                                  index]
+                                                              .name,
+                                                          priceList:
+                                                              widget.priceList,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
                                                 }
                                               },
                                               child: Container(

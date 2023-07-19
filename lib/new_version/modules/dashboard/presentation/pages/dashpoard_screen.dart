@@ -156,6 +156,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListView(
+                          
                           shrinkWrap: true,
                           children: [
                             const GetTotalWidget(),
