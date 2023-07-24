@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -26,6 +28,7 @@ class _ProjectFormState extends State<ProjectForm> {
   final server = APIService();
   Map<String, dynamic> data = {
     "doctype": "Project",
+    'is_active': "Yes",
   };
 
   final _formKey = GlobalKey<FormState>();
@@ -36,11 +39,9 @@ class _ProjectFormState extends State<ProjectForm> {
       showSnackBar(KFillRequiredSnackBar, context);
       return;
     }
-
+    _formKey.currentState!.save();
     Provider.of<ModuleProvider>(context, listen: false)
         .initializeDuplicationMode(data);
-
-    _formKey.currentState!.save();
 
     showLoadingDialog(
         context,
@@ -71,14 +72,14 @@ class _ProjectFormState extends State<ProjectForm> {
         context.read<ModuleProvider>().pushPage(res['message']['project']);
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['project'] != null) {
       provider.pushPage(res['message']['project']);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => GenericPage(),
+          builder: (_) => const GenericPage(),
         ),
       );
     }
@@ -90,7 +91,7 @@ class _ProjectFormState extends State<ProjectForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode & Duplication Mode
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
@@ -99,13 +100,14 @@ class _ProjectFormState extends State<ProjectForm> {
         }
         setState(() {});
       });
+    }
 
     //DocFromPage Mode
     if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = provider.createFromPageData;
         data['doctype'] = "Project";
-        print('${data['items']}');
+        print('${data}');
         setState(() {});
       });
     }
@@ -133,189 +135,208 @@ class _ProjectFormState extends State<ProjectForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Project")
-                : Text("Create Project"),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(
-                      Icons.check,
-                      color: FORM_SUBMIT_BTN_COLOR,
-                    ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  //_________________________________________First Group_____________________________________________________
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        //_______________________________________Project Name_____________________________________________________
-                        CustomTextField(
-                          'project_name',
-                          'Project Name',
-                          initialValue: data['project_name'],
-                          disableValidation: false,
-                          clearButton: true,
-                          onChanged: (value) => data['project_name'] = value,
-                          onSave: (key, value) => data[key] = value,
-                        ),
-                        //_______________________________________Project Type_____________________________________________________
-                        CustomTextField(
-                          'project_type',
-                          'Project Type'.tr(),
-                          initialValue: data['project_type'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
+          body: Form(
+            key: _formKey,
+            child: CustomPageViewForm(
+              submit: () {
+                _formKey.currentState!.save();
+                submit();
+              },
+              widgetGroup: [
+                //_________________________________________First Group_____________________________________________________
+                Group(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 4),
+                      //_______________________________________Project Name_____________________________________________________
+                      CustomTextFieldTest(
+                        'project_name',
+                        'Project Name',
+                        initialValue: data['project_name'],
+                        disableValidation: false,
+                        clearButton: true,
+                        onChanged: (value) => data['project_name'] = value,
+                        onSave: (key, value) => data[key] = value,
+                      ),
+                      //_______________________________________Project Type_____________________________________________________
+                      CustomTextFieldTest(
+                        'project_type',
+                        'Project Type'.tr(),
+                        initialValue: data['project_type'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onChanged: (value) => setState(() {
+                          data['project_type'] = value;
+                        }),
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => projectTypeListScreen(),
                             ),
-                          ),
-                        ),
-                        //_______________________________________Customer_____________________________________________________
-                        CustomTextField(
-                          'customer',
-                          'Customer',
-                          initialValue: data['customer'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => selectCustomerScreen(),
-                              ),
-                            );
-                            return res['name'];
-                          },
-                        ),
-                        //_______________________________________Department_____________________________________________________
-                        CustomTextField(
-                          'department',
-                          'Department'.tr(),
-                          initialValue: data['department'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
+                          );
+                          data['project_type'] = res;
+                          return res;
+                        },
+                      ),
+                      //_______________________________________Customer_____________________________________________________
+                      CustomTextFieldTest(
+                        'customer',
+                        'Customer',
+                        initialValue: data['customer'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => setState(() {
+                          data['customer'] = value;
+                        }),
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => selectCustomerScreen(),
+                            ),
+                          );
+                          data['customer'] = res['name'];
+                          return res['name'];
+                        },
+                      ),
+                      //_______________________________________Department_____________________________________________________
+                      CustomTextFieldTest(
+                        'department',
+                        'Department'.tr(),
+                        initialValue: data['department'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => departmentListScreen(),
                             ),
-                          ),
-                        ),
-                        //_______________________________________From Template_____________________________________________________
-                        CustomTextField(
-                          'form_template',
-                          'Task Template'.tr(),
-                          initialValue: data['department'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
+                          );
+                          print(res);
+                          print(data['department']);
+                          data['department'] = res;
+                          print(data['department']);
+                          return res;
+                        },
+                        onSave: (key, value) => setState(() {
+                          data[key] = value;
+                        }),
+                        onChanged: (value) => setState(() {
+                          data['department'] = value;
+                          print(data['department']);
+                        }),
+                      ),
+                      //_______________________________________From Template_____________________________________________________
+                      CustomTextFieldTest(
+                        'form_template',
+                        'Task Template'.tr(),
+                        initialValue: data['form_template'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          var res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => projectTemplateListScreen(),
                             ),
-                          ),
-                        ),
-                        //_______________________________________Priority___________________________________________________
-                        CustomDropDown(
-                          'priority',
-                          'Priority',
-                          items: ProjectPriorityList,
-                          defaultValue:
-                              data['priority'] ?? ProjectPriorityList[0],
-                          onChanged: (value) => setState(() {
-                            data['priority'] = value;
-                          }),
-                        ),
-                        //_______________________________________Status_____________________________________________________
-                        CustomDropDown(
-                          'status',
-                          'Status'.tr(),
-                          items: ProjectStatusList,
-                          defaultValue: data['status'] ?? ProjectStatusList[0],
-                          onChanged: (value) => setState(() {
-                            data['status'] = value;
-                          }),
-                        ),
-                        //_______________________________________Task Completion_____________________________________________________
-                        CustomDropDown(
-                          'percent_complete_method',
-                          'Task Completion'.tr(),
-                          items: TaskCompletionList,
-                          defaultValue: data['percent_complete_method'] ??
-                              TaskCompletionList[0],
-                          onChanged: (value) => setState(() {
-                            data['percent_complete_method'] = value;
-                          }),
-                        ),
-                        //_______________________________________Is Group_____________________________________________________
-                        CheckBoxWidget(
-                          'is_active',
-                          'Is Active',
-                          initialValue:
-                              data['is_active'] == 'Yes' ? true : false,
-                          onChanged: (id, value) => setState(
-                            () {
-                              if (value == true) {
-                                data['is_active'] = 'Yes';
-                              } else {
-                                data['is_active'] = 'No';
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                          );
+                          data['form_template'] = res;
+                          return res;
+                        },
+                        onChanged: (value) => setState(() {
+                          data['form_template'] = value;
+                          print(data['form_template']);
+                        }),
+                      ),
+                    ],
                   ),
+                ),
 
-                  //__________________________________________Second Group_____________________________________________________
-                  Group(
-                    child: Row(
-                      children: [
-                        //____________________________________Expected Start Date______________________________________________
-                        Flexible(
-                            child: DatePicker(
-                          'expected_start_date',
-                          'Expected Start Date',
-                          initialValue: data['expected_start_date'] ?? null,
-                          onChanged: (value) => setState(
-                              () => data['expected_start_date'] = value),
-                        )),
-                        SizedBox(width: 10),
-                        //____________________________________Expected End Date______________________________________________
-                        Flexible(
-                            child: DatePicker(
-                                'expected_end_date', 'Expected End Date',
-                                onChanged: (value) => Future.delayed(
-                                    Duration.zero,
-                                    () => setState(() =>
-                                        data['expected_end_date'] = value)),
-                                initialValue:
-                                    data['expected_end_date'] ?? null)),
-                      ],
-                    ),
+                //__________________________________________Second Group_____________________________________________________
+                Group(
+                  child: ListView(
+                    children: [
+                      //_______________________________________Priority___________________________________________________
+                      CustomDropDown(
+                        'priority',
+                        'Priority',
+                        items: ProjectPriorityList,
+                        defaultValue:
+                            data['priority'] ?? ProjectPriorityList[0],
+                        onChanged: (value) => setState(() {
+                          data['priority'] = value;
+                        }),
+                      ),
+                      //_______________________________________Status_____________________________________________________
+                      CustomDropDown(
+                        'status',
+                        'Status'.tr(),
+                        items: ProjectStatusList,
+                        defaultValue: data['status'] ?? ProjectStatusList[0],
+                        onChanged: (value) => setState(() {
+                          data['status'] = value;
+                        }),
+                      ),
+                      //_______________________________________Task Completion_____________________________________________________
+                      CustomDropDown(
+                        'percent_complete_method',
+                        'Task Completion'.tr(),
+                        items: TaskCompletionList,
+                        defaultValue: data['percent_complete_method'] ??
+                            TaskCompletionList[0],
+                        onChanged: (value) => setState(() {
+                          data['percent_complete_method'] = value;
+                        }),
+                      ),
+                      //_______________________________________Is Group_____________________________________________________
+                      CheckBoxWidget(
+                        'is_active',
+                        'Is Active',
+                        initialValue: data['is_active'] == 'Yes' ? true : false,
+                        onChanged: (id, value) => setState(
+                          () {
+                            if (value == true) {
+                              data['is_active'] = 'Yes';
+                            } else {
+                              data['is_active'] = 'No';
+                            }
+                          },
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          //____________________________________Expected Start Date______________________________________________
+                          Flexible(
+                              child: DatePickerTest(
+                            'expected_start_date',
+                            'Expected Start Date',
+                            initialValue: data['expected_start_date'] ?? null,
+                            onChanged: (value) => setState(
+                                () => data['expected_start_date'] = value),
+                          )),
+                          const SizedBox(width: 10),
+                          //____________________________________Expected End Date______________________________________________
+                          Flexible(
+                              child: DatePickerTest(
+                                  'expected_end_date', 'Expected End Date',
+                                  onChanged: (value) => Future.delayed(
+                                      Duration.zero,
+                                      () => setState(() =>
+                                          data['expected_end_date'] = value)),
+                                  initialValue:
+                                      data['expected_end_date'] ?? null)),
+                        ],
+                      ),
+                    ],
                   ),
-                  //________________________________________Task Description_____________________________________________________
-                  Group(
-                      child: CustomTextField(
+                ),
+                //________________________________________Task Description_____________________________________________________
+                Group(
+                  child: CustomTextFieldTest(
                     'notes',
                     'Description',
-                    minLines: 1,
+                    minLines: 6,
                     maxLines: null,
                     removeUnderLine: true,
                     initialValue: data['notes'],
@@ -323,9 +344,9 @@ class _ProjectFormState extends State<ProjectForm> {
                     clearButton: true,
                     onSave: (key, value) => data[key] = value,
                     onChanged: (value) => data['notes'] = value,
-                  )),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

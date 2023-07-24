@@ -115,6 +115,12 @@ const List<String> TimeSheetList = [
   'Submitted',
 ];
 
+const List<String> termLoan = [
+    ' ',
+    'Repay Fixed Amount per Period',
+    'Repay Over Numbers of Periods',
+  ];
+
 const List<String> KQuotationToList = ['Lead', 'Customer'];
 const List<String> KPaymentPartyList = ['Customer', 'Supplier'];
 const List<String> applicantTypeList = ['Employee', 'Customer'];
@@ -122,8 +128,8 @@ const List<String> paymentType = ['Receive', 'Pay', 'Internal Transfer'];
 const List<String> customerType = ['Company', 'Individual'];
 const List<String> supplierType = ['Company', 'Individual'];
 const List<String> leaveApplicationStatus = [
-  'Approved',
   'Open',
+  'Approved',
   'Cancelled',
   'Rejected                   '
 ];
@@ -521,10 +527,14 @@ class CustomExpandableTile extends StatefulWidget {
     required this.title,
     required this.children,
     required this.hideArrow,
+    this.opened,
   }) : super(key: key);
   final bool hideArrow;
   final Widget title;
   final List<Widget>? children;
+
+  final Function? opened;
+
   bool isOpened = false;
 
   @override
@@ -545,6 +555,7 @@ class _CustomExpandableTileState extends State<CustomExpandableTile> {
         onExpansionChanged: (v) {
           setState(() {
             widget.isOpened = !widget.isOpened;
+            widget.opened!(v);
           });
         },
         childrenPadding: EdgeInsets.zero,

@@ -12,7 +12,21 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
-    return getNotificationListScreen();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Notification',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: getNotificationListScreen(),
+    );
   }
 }
 
@@ -86,7 +100,7 @@ class NotificationCard extends StatelessWidget {
                               radius: 24,
                               child: Text(
                                 for_user.toString()[0],
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.w400),
                               ),
                             ),
@@ -97,7 +111,7 @@ class NotificationCard extends StatelessWidget {
                               child: Text(subject, maxLines: 3),
                             ),
                           ),
-                          SizedBox(width: 6)
+                          const SizedBox(width: 6)
                         ],
                       ),
                     ),

@@ -42,6 +42,7 @@ class _TableScreenState extends State<TableScreen> {
         centerTitle: true,
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         child: HorizontalDataTable(
           leftHandSideColumnWidth: KLeftColumnWidth,
           // to make the table takes full width always
@@ -70,7 +71,6 @@ class _TableScreenState extends State<TableScreen> {
             radius: Radius.circular(5.0),
           ),
         ),
-        height: MediaQuery.of(context).size.height,
       ),
     );
   }

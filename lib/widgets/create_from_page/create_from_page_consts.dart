@@ -1,3 +1,7 @@
+import 'package:NextApp/screen/form/project_forms/issue_form.dart';
+import 'package:NextApp/screen/form/project_forms/task_form.dart';
+import 'package:NextApp/screen/form/project_forms/timesheet_form.dart';
+import 'package:NextApp/screen/form/stock_forms/stock_entry_form.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../inherited_widgets/select_items_list.dart';
@@ -18,69 +22,92 @@ import '../../screen/form/buying_forms/supplier_quotation_form.dart';
 //Selling
 //Lead
 Map<String, Widget> fromLead = {
-  'Customer': CustomerForm(),
-  'Opportunity': InheritedForm(child: OpportunityForm()),
-  'Quotation': InheritedForm(child: QuotationForm()),
+  'Customer': const CustomerForm(),
+  'Opportunity': InheritedForm(child: const OpportunityForm()),
+  'Quotation': InheritedForm(child: const QuotationForm()),
 };
 //Opportunity
 Map<String, Widget> fromOpportunity = {
-  'Supplier Quotation': InheritedForm(child: SupplierQuotationForm()),
-  'Quotation': InheritedForm(child: QuotationForm()),
+  'Supplier Quotation': InheritedForm(child: const SupplierQuotationForm()),
+  'Quotation': InheritedForm(child: const QuotationForm()),
 };
 Map<String, Widget> fromOpportunity2 = {
-  'Customer': CustomerForm(),
-  'Supplier Quotation': InheritedForm(child: SupplierQuotationForm()),
-  'Quotation': InheritedForm(child: QuotationForm()),
+  'Customer': const CustomerForm(),
+  'Supplier Quotation': InheritedForm(child: const SupplierQuotationForm()),
+  'Quotation': InheritedForm(child: const QuotationForm()),
 };
 
 //Sales Order
 Map<String, Widget> fromSalesOrder = {
-  'Delivery Note': InheritedForm(child: DeliveryNoteForm()),
-  'Sales Invoice': InheritedForm(child: SalesInvoiceForm()),
-  'Material Request': InheritedForm(child: MaterialRequestForm()),
-  'Purchase Order': InheritedForm(child: PurchaseOrderForm()),
-  'Payment Entry': PaymentForm(),
+  'Delivery Note': InheritedForm(child: const DeliveryNoteForm()),
+  'Sales Invoice': InheritedForm(child: const SalesInvoiceForm()),
+  'Material Request': InheritedForm(child: const MaterialRequestForm()),
+  'Purchase Order': InheritedForm(child: const PurchaseOrderForm()),
+  'Payment Entry': const PaymentForm(),
 };
 
 //Quotation
 Map<String, Widget> fromQuotation = {
-  'Sales Order': InheritedForm(child: SalesOrderForm()),
+  'Sales Order': InheritedForm(child: const SalesOrderForm()),
 };
 
 //Sales Invoice
 Map<String, Widget> fromSalesInvoice = {
-  'Payment Entry': PaymentForm(),
-  'Return / Credit Note': InheritedForm(child: SalesInvoiceForm()),
+  'Payment Entry': const PaymentForm(),
+  'Return / Credit Note': InheritedForm(child: const SalesInvoiceForm()),
 };
 Map<String, Widget> fromSalesInvoice2 = {
-  'Return / Credit Note': InheritedForm(child: SalesInvoiceForm()),
+  'Return / Credit Note': InheritedForm(child: const SalesInvoiceForm()),
 };
 
 //Delivery Note
 Map<String, Widget> fromDeliveryNote = {
-  'Sales Return': InheritedForm(child: DeliveryNoteForm()),
-  'Sales Invoice': InheritedForm(child: SalesInvoiceForm()),
+  'Sales Return': InheritedForm(child: const DeliveryNoteForm()),
+  'Sales Invoice': InheritedForm(child: const SalesInvoiceForm()),
 };
 
 // Customer Visit:
 Map<String, Widget> fromCustomerVisit = {
-  DocTypesName.salesInvoice: InheritedForm(child: SalesInvoiceForm()),
-  DocTypesName.salesOrder: InheritedForm(child: SalesOrderForm()),
-  DocTypesName.paymentEntry: PaymentForm(),
+  DocTypesName.salesInvoice: InheritedForm(child: const SalesInvoiceForm()),
+  DocTypesName.salesOrder: InheritedForm(child: const SalesOrderForm()),
+  DocTypesName.paymentEntry: const PaymentForm(),
+};
+
+// Project:
+Map<String, Widget> fromProject = {
+  DocTypesName.task: const TaskForm(),
+  DocTypesName.timesheet: InheritedForm(child: const TimesheetForm()),
+  DocTypesName.issue: InheritedForm(child: const IssueForm()),
 };
 
 // Buying Modules:
 
 // Purchase Order:
 Map<String, Widget> fromPurchaseOrder = {
-  DocTypesName.purchaseReceipt: InheritedForm(child: PurchaseReceiptForm()),
-  DocTypesName.purchaseInvoice: InheritedForm(child: PurchaseInvoiceForm()),
-  DocTypesName.paymentEntry: InheritedForm(child: PaymentForm()),
+  DocTypesName.purchaseReceipt:
+      InheritedForm(child: const PurchaseReceiptForm()),
+  DocTypesName.purchaseInvoice:
+      InheritedForm(child: const PurchaseInvoiceForm()),
+  DocTypesName.paymentEntry: InheritedForm(child: const PaymentForm()),
 };
 
 // Purchase Invoice:
 Map<String, Widget> fromPurchaseInvoice = {
-  'Purchase Receipt': InheritedForm(child: PurchaseReceiptForm()),
-  'Debit Note': InheritedForm(child: PurchaseInvoiceForm()),
-  'Payment Entry': PaymentForm(),
+  'Purchase Receipt': InheritedForm(child: const PurchaseReceiptForm()),
+  'Debit Note': InheritedForm(child: const PurchaseInvoiceForm()),
+  'Payment Entry': const PaymentForm(),
+};
+
+//Supplier Quotation
+Map<String, Widget> formSupplierQuotation = {
+  'Purchase Order': InheritedForm(child: const PurchaseOrderForm()),
+};
+
+///Stock :
+//Material Request
+Map<String, Widget> formMaterialRequestToPurchaseOrder = {
+  DocTypesName.purchaseOrder: InheritedForm(child: const PurchaseOrderForm()),
+};
+Map<String, Widget> formMaterialRequestStockEntry = {
+  DocTypesName.stockEntry: InheritedForm(child: const StockEntryForm()),
 };

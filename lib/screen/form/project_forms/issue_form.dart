@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
@@ -48,7 +50,9 @@ class _IssueFormState extends State<IssueForm> {
             ? 'Updating ${provider.pageId}'
             : 'Creating Your Issue');
     // To print the body we send to backend
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -61,23 +65,24 @@ class _IssueFormState extends State<IssueForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['issue'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['issue'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['issue']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['issue'] != null) {
       provider.pushPage(res['message']['issue']);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => GenericPage(),
+          builder: (_) => const GenericPage(),
         ),
       );
     }
@@ -90,7 +95,7 @@ class _IssueFormState extends State<IssueForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode & Duplication Mode
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
@@ -99,13 +104,31 @@ class _IssueFormState extends State<IssueForm> {
         }
         setState(() {});
       });
+    }
 
     //DocFromPage Mode
     if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = provider.createFromPageData;
+        data = context.read<ModuleProvider>().createFromPageData;
         data['doctype'] = "Issue";
-        log('${data['items']}');
+        data['project'] = data['name'];
+
+        data.remove('print_formats');
+        data.remove('project_name');
+        data.remove('notes');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('taxes');
+        data.remove('users');
+        data.remove('actual_time');
+
         setState(() {});
       });
     }
@@ -133,131 +156,128 @@ class _IssueFormState extends State<IssueForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Issue")
-                : Text("Create Issue"),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(
-                      Icons.check,
-                      color: FORM_SUBMIT_BTN_COLOR,
-                    ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  //_________________________________________First Group_____________________________________________________
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        //_______________________________________Subject_____________________________________________________
-                        CustomTextField(
-                          'subject',
-                          'Subject',
-                          initialValue: data['subject'],
-                          disableValidation: false,
-                          clearButton: true,
-                          onChanged: (value) => data['subject'] = value,
-                          onSave: (key, value) => data[key] = value,
-                        ),
-                        //_______________________________________Issue Type_____________________________________________________
-                        CustomTextField(
-                          'issue_type',
-                          'Issue Type'.tr(),
-                          initialValue: data['issue_type'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
+          body: Form(
+            key: _formKey,
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                //_________________________________________First Group_____________________________________________________
+                Group(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 4),
+                      //_______________________________________Subject_____________________________________________________
+                      CustomTextFieldTest(
+                        'subject',
+                        'Subject',
+                        initialValue: data['subject'],
+                        disableValidation: false,
+                        clearButton: true,
+                        onChanged: (value) => data['subject'] = value,
+                        onSave: (key, value) => data[key] = value,
+                      ),
+                      //_______________________________________Issue Type_____________________________________________________
+                      CustomTextFieldTest(
+                        'issue_type',
+                        'Issue Type'.tr(),
+                        initialValue: data['issue_type'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => issueTypeListScreen(),
                             ),
-                          ),
-                        ),
-                        //___________________________________Project_____________________________________________________
-                        CustomTextField(
-                          'project',
-                          'Project',
-                          clearButton: true,
-                          initialValue: data['project'],
-                          onSave: (key, value) {
-                            data[key] = value;
-                          },
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => projectScreen(),
-                              ),
-                            );
-                            return res['name'];
-                          },
-                        ),
-                        //_______________________________________Department_____________________________________________________
-                        CustomTextField(
-                          'department',
-                          'Department',
-                          initialValue: data['department'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
+                          );
+                          data['issue_type'] = res;
+                          return res;
+                        },
+                      ),
+                      //___________________________________Project_____________________________________________________
+                      CustomTextFieldTest(
+                        'project',
+                        'Project',
+                        clearButton: true,
+                        initialValue: data['project'],
+                        onSave: (key, value) {
+                          data[key] = value;
+                        },
+                        onChanged: (value) => setState(() {
+                          data['project'] = value;
+                        }),
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => projectScreen(),
+                            ),
+                          );
+                          data['project'] = res['name'];
+                          return res['name'];
+                        },
+                      ),
+                      //_______________________________________Department_____________________________________________________
+                      CustomTextFieldTest(
+                        'department',
+                        'Department',
+                        initialValue: data['department'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => departmentListScreen(),
                             ),
-                          ),
-                        ),
-                        //_______________________________________Priority___________________________________________________
-                        CustomDropDown(
-                          'priority',
-                          'Priority',
-                          items: IssuePriorityList,
-                          defaultValue:
-                              data['priority'] ?? IssuePriorityList[0],
-                          onChanged: (value) => setState(() {
-                            data['priority'] = value;
-                          }),
-                        ),
-                        //_______________________________________Status_____________________________________________________
-                        CustomDropDown(
-                          'status',
-                          'Status'.tr(),
-                          items: IssueStatusList,
-                          defaultValue: data['status'] ?? IssueStatusList[0],
-                          onChanged: (value) => setState(() {
-                            data['status'] = value;
-                          }),
-                        ),
-                      ],
-                    ),
+                          );
+                          data['department'] = res;
+                          return res;
+                        },
+                      ),
+                    ],
                   ),
-                  //________________________________________Task Description_____________________________________________________
-                  Group(
-                      child: CustomTextField(
-                    'description',
-                    'Description',
-                    minLines: 1,
-                    maxLines: null,
-                    removeUnderLine: true,
-                    initialValue: data['description'],
-                    disableValidation: false,
-                    clearButton: true,
-                    onSave: (key, value) => data[key] = value,
-                    onChanged: (value) => data['description'] = value,
-                  )),
-                ],
-              ),
+                ),
+                //________________________________________Task Description_____________________________________________________
+                Group(
+                  child: ListView(
+                    children: [
+                      //_______________________________________Priority___________________________________________________
+                      CustomDropDown(
+                        'priority',
+                        'Priority',
+                        items: IssuePriorityList,
+                        defaultValue: data['priority'] ?? IssuePriorityList[0],
+                        onChanged: (value) => setState(() {
+                          data['priority'] = value;
+                        }),
+                      ),
+                      //_______________________________________Status_____________________________________________________
+                      CustomDropDown(
+                        'status',
+                        'Status'.tr(),
+                        items: IssueStatusList,
+                        defaultValue: data['status'] ?? IssueStatusList[0],
+                        onChanged: (value) => setState(() {
+                          data['status'] = value;
+                        }),
+                      ),
+
+                      CustomTextFieldTest(
+                        'description',
+                        'Description',
+                        minLines: 6,
+                        maxLines: null,
+                        removeUnderLine: true,
+                        initialValue: data['description'],
+                        disableValidation: false,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['description'] = value,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

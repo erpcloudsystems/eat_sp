@@ -33,7 +33,7 @@ String reverse(String? date) =>
 String currency(double? value) {
   if (value == null) return tr('none');
 
-  final oCcy = new NumberFormat("#,##0.00", "en_US");
+  final oCcy = NumberFormat("#,##0.00", "en_US");
   return oCcy.format(value);
 }
 

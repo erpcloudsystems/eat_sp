@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import 'quotation_form.dart';
 import '../../list/otherLists.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/list_card.dart';
@@ -14,7 +15,6 @@ import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../models/page_models/model_functions.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../models/page_models/selling_page_model/opportunity_page_model.dart';
@@ -54,7 +54,9 @@ class _OpportunityFormState extends State<OpportunityForm> {
     _formKey.currentState!.save();
 
     data['items'] = [];
-    _items.forEach((element) => data['items'].add(element.toJson));
+    for (var element in _items) {
+      data['items'].add(element.toJson);
+    }
 
     showLoadingDialog(
         context,
@@ -64,7 +66,9 @@ class _OpportunityFormState extends State<OpportunityForm> {
 
     final server = APIService();
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -78,17 +82,18 @@ class _OpportunityFormState extends State<OpportunityForm> {
     if (provider.isEditing) Navigator.pop(context);
 
     if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['opportunity'] != null)
+      if (res != null && res['message']['opportunity'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['opportunity']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['opportunity'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['opportunity']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -106,13 +111,13 @@ class _OpportunityFormState extends State<OpportunityForm> {
     data['source'] = null;
     data['campaign'] = null;
 
-    if (newType == KQuotationToList.last)
+    if (newType == KQuotationToList.last) {
       setState(() => _type = quotationType.customer);
-    else if (newType == KQuotationToList.first)
+    } else if (newType == KQuotationToList.first) {
       setState(() => _type = quotationType.lead);
+    }
   }
 
-  final _controller = ScrollController();
   final List<ItemQuantity> _items = [];
 
   Future<void> _getCustomerData(String customer) async {
@@ -131,10 +136,11 @@ class _OpportunityFormState extends State<OpportunityForm> {
         data = context.read<ModuleProvider>().updateData;
         final items = OpportunityPageModel(context, data).items;
 
-        items.forEach((element) {
+        for (var element in items) {
           final item = ItemSelectModel.fromJson(element);
-          _items.add(ItemQuantity(item, qty: item.qty));
-        });
+          _items.add(
+              ItemQuantity(item, qty: item.qty, rate: item.netRate.toDouble()));
+        }
         setState(() {});
       });
     }
@@ -194,9 +200,9 @@ class _OpportunityFormState extends State<OpportunityForm> {
 
   @override
   Widget build(BuildContext context) {
-    _items.forEach((item) {
+    for (var item in _items) {
       totalAmount += item.total;
-    });
+    }
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
@@ -210,223 +216,190 @@ class _OpportunityFormState extends State<OpportunityForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Opportunity")
-              : Text("Create Opportunity"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(
-                    Icons.check,
-                    color: FORM_SUBMIT_BTN_COLOR,
-                  ),
-                ))
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          controller: _controller,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 4),
-                      CustomDropDown('id', 'Opportunity From'.tr(),
-                          items: KQuotationToList,
-                          onChanged: changeType,
-                          defaultValue:
-                              data["opportunity_from"] ?? KQuotationToList[1]),
-                      Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      CustomTextField(
-                        'party_name',
-                        data['opportunity_from'].toString().tr(),
-                        initialValue: data['party_name'],
-                        onPressed: () async {
-                          String? id;
+        body: Form(
+          key: _formKey,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomDropDown('id', 'Opportunity From'.tr(),
+                        items: KQuotationToList,
+                        onChanged: changeType,
+                        defaultValue:
+                            data["opportunity_from"] ?? KQuotationToList[1]),
+                    const Divider(
+                        color: Colors.grey, height: 1, thickness: 0.7),
+                    CustomTextFieldTest(
+                      'party_name',
+                      data['opportunity_from'].toString().tr(),
+                      initialValue: data['party_name'],
+                      onPressed: () async {
+                        String? id;
 
-                          if (_type == quotationType.customer) {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectCustomerScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              setState(() {
-                                data['party_name'] = res['name'];
-                                data['customer_name'] = res['customer_name'];
-                                data['territory'] = res['territory'];
-                                data['customer_group'] = res['customer_group'];
-                                data['customer_address'] =
-                                    res["customer_primary_address"];
-                                data['contact_person'] =
-                                    res["customer_primary_contact"];
-                              });
-                            }
-                          } else if (_type == quotationType.lead) {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => selectLeadScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              setState(() {
-                                data['party_name'] = res['name'];
-                                data['customer_name'] = res['lead_name'];
-                                data['territory'] = res['territory'];
-                                data['source'] = res['source'];
-                                data['campaign'] = res['campaign_name'];
-                              });
-                            }
-                          } else {
-                            showSnackBar('select quotation to first', context);
+                        if (_type == quotationType.customer) {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectCustomerScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            setState(() {
+                              data['party_name'] = res['name'];
+                              data['customer_name'] = res['customer_name'];
+                              data['territory'] = res['territory'];
+                              data['customer_group'] = res['customer_group'];
+                              data['customer_address'] =
+                                  res["customer_primary_address"];
+                              data['contact_person'] =
+                                  res["customer_primary_contact"];
+                              data['contact_mobile'] = res['mobile_no'];
+                            });
                           }
-                          return id;
-                        },
+                        } else if (_type == quotationType.lead) {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => selectLeadScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            setState(() {
+                              data['party_name'] = res['name'];
+                              data['customer_name'] = res['lead_name'];
+                              data['territory'] = res['territory'];
+                              data['source'] = res['source'];
+                              data['campaign'] = res['campaign_name'];
+                              data['contact_mobile'] = res['mobile_no'];
+                              data['contact_email'] = res['email_id'];
+                            });
+                          }
+                        } else {
+                          showSnackBar('select quotation to first', context);
+                        }
+                        return id;
+                      },
+                    ),
+                    if (data['customer_name'] != null)
+                      CustomTextFieldTest(
+                        'customer_name',
+                        data['opportunity_from'] ?? '',
+                        initialValue: data['customer_name'],
+                        disableValidation: true,
+                        enabled: false,
                       ),
-                      if (data['customer_name'] != null)
-                        CustomTextField(
-                          'customer_name',
-                          data['opportunity_from'] ?? '',
-                          initialValue: data['customer_name'],
-                          disableValidation: true,
-                          enabled: false,
-                        ),
-                      DatePicker('transaction_date', 'Date'.tr(),
-                          initialValue: data['transaction_date'],
-                          onChanged: (value) =>
-                              setState(() => data['transaction_date'] = value)),
-                      if (_type == quotationType.customer)
-                        CustomTextField('customer_group', 'Customer Group'.tr(),
-                            initialValue: data['customer_group'],
-                            disableValidation: true,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => customerGroupScreen()))),
-                      CustomTextField('territory', 'Territory'.tr(),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['territory'],
+                    DatePickerTest('transaction_date', 'Date'.tr(),
+                        initialValue: data['transaction_date'],
+                        onChanged: (value) =>
+                            setState(() => data['transaction_date'] = value)),
+                    if (_type == quotationType.customer)
+                      CustomTextFieldTest(
+                          'customer_group', 'Customer Group'.tr(),
+                          initialValue: data['customer_group'],
                           disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (_) => territoryScreen()))),
-                      if (_type == quotationType.customer)
-                        CustomTextField(
-                            'customer_address', 'Customer Address'.tr(),
-                            initialValue: data['customer_address'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value,
-                            liestenToInitialValue:
-                                data['customer_address'] == null,
-                            onPressed: () async {
-                              if (data['party_name'] == null)
-                                return showSnackBar(
-                                    'Please select a customer to first',
-                                    context);
-
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => customerAddressScreen(
-                                          data['party_name'])));
-                              data['customer_address'] = res;
-                              return res;
-                            }),
-                      if (_type == quotationType.customer)
-                        CustomTextField('contact_person', 'Contact Person'.tr(),
-                            initialValue: data['contact_person'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              if (data['customer_name'] == null) {
-                                showSnackBar(
-                                    'Please select a customer', context);
-                                return null;
-                              }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          contactScreen(data['party_name'])));
-                              return res;
-                            }),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-
-                ///
-                /// group 2
-                ///
-                Group(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 4),
-                      if (_type == quotationType.lead)
-                        CustomTextField('campaign', 'Campaign'.tr(),
-                            onSave: (key, value) => data[key] = value,
-                            initialValue: data['campaign'],
-                            disableValidation: true,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => campaignScreen()))),
-                      if (_type == quotationType.lead)
-                        CustomTextField('source', 'Source',
-                            onSave: (key, value) => data[key] = value,
-                            initialValue: data['source'],
-                            disableValidation: true,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => sourceScreen()))),
-                      CustomTextField('opportunity_type', 'Opportunity Type',
-                          initialValue: data['opportunity_type'],
+                                  builder: (_) => customerGroupScreen()))),
+                    CustomTextFieldTest('territory', 'Territory'.tr(),
+                        onSave: (key, value) => data[key] = value,
+                        initialValue: data['territory'],
+                        disableValidation: true,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => territoryScreen()))),
+                    if (_type == quotationType.customer)
+                      CustomTextFieldTest(
+                          'customer_address', 'Customer Address'.tr(),
+                          initialValue: data['customer_address'],
                           disableValidation: true,
                           onSave: (key, value) => data[key] = value,
+                          onChanged: (value) {
+                            setState(() {
+                              data['customer_address'] = value;
+                            });
+                          },
+                          // liestenToInitialValue:
+                          //     data['customer_address'] == null,
+                          onPressed: () async {
+                            if (data['party_name'] == null) {
+                              return showSnackBar(
+                                  'Please select a customer to first', context);
+                            }
+
+                            final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => customerAddressScreen(
+                                        data['party_name'])));
+                            print(res);
+                            print('------------------------------------');
+                            data['customer_address'] = res['name'];
+                            return res['name'];
+                          }),
+                    if (_type == quotationType.customer)
+                      CustomTextFieldTest(
+                          'contact_person', 'Contact Person'.tr(),
+                          initialValue: data['contact_person'],
+                          disableValidation: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () async {
+                            if (data['customer_name'] == null) {
+                              showSnackBar('Please select a customer', context);
+                              return null;
+                            }
+                            final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        contactScreen(data['party_name'])));
+                            return res;
+                          }),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+
+              ///
+              /// group 2
+              ///
+              Group(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 4),
+                    if (_type == quotationType.lead)
+                      CustomTextFieldTest('campaign', 'Campaign'.tr(),
+                          onSave: (key, value) => data[key] = value,
+                          initialValue: data['campaign'],
+                          disableValidation: true,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (_) => opportunityTypeScreen()))),
-                      if (_type == quotationType.lead)
-                        // CustomTextField('contact_by', 'Next Contact By'.tr(),
-                        //     initialValue: data['contact_by'],
-                        //
-                        //     disableValidation: true,
-                        //     onSave: (key, value) => data[key] = value,
-                        //     onPressed: () => Navigator.of(context).push(
-                        //         MaterialPageRoute(
-                        //             builder: (_) => userListScreen()))),
-                        // if (_type == quotationType.lead)
-                        //   DatePicker('contact_date', tr('Next Contact Date'),
-                        //       initialValue: data['contact_date'],
-                        //       disableValidation: true,
-                        //       onChanged: (value) =>
-                        //           setState(() => data['contact_date'] = value)),
-                        CustomTextField('to_discuss', 'To Discuss'.tr(),
-                            initialValue: data['to_discuss'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value),
-                      // CheckBoxWidget('with_items', 'With Items'.tr(),
-                      //     initialValue: data['with_items'] == 1 ? true : false,
-                      //     onChanged: (id, value) {
-                      //   setState(() => data[id] = value ? 1 : 0);
-                      //   if (value)
-                      //     Future.delayed(Duration(milliseconds: 100))
-                      //         .then((value) => _controller.animateTo(
-                      //               _controller.position.pixels + 200,
-                      //               curve: Curves.easeOut,
-                      //               duration: const Duration(milliseconds: 500),
-                      //             ));
-                      // }),
-                    ],
-                  ),
+                                  builder: (_) => campaignScreen()))),
+                    if (_type == quotationType.lead)
+                      CustomTextFieldTest('source', 'Source',
+                          onSave: (key, value) => data[key] = value,
+                          initialValue: data['source'],
+                          disableValidation: true,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => sourceScreen()))),
+                    CustomTextFieldTest('opportunity_type', 'Opportunity Type',
+                        initialValue: data['opportunity_type'],
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => opportunityTypeScreen()))),
+                    if (_type == quotationType.lead)
+                      CustomTextFieldTest('to_discuss', 'To Discuss'.tr(),
+                          initialValue: data['to_discuss'],
+                          disableValidation: true,
+                          onSave: (key, value) => data[key] = value),
+                  ],
                 ),
+              ),
 
-                SizedBox(height: 8),
-                Container(
-                    child: Column(
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+                child: ListView(
                   children: [
                     Card(
                       elevation: 1,
@@ -446,10 +419,13 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Items',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600)),
+                                    const Text(
+                                      'Items',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                     SizedBox(
                                       width: 40,
                                       child: ElevatedButton(
@@ -462,25 +438,27 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                       builder: (_) =>
                                                           itemListScreen('')));
                                           if (res != null &&
-                                              !_items.contains(res))
+                                              !_items.contains(res)) {
                                             setState(() =>
                                                 _items.add(ItemQuantity(res)));
+                                          }
                                         },
-                                        child: Icon(Icons.add,
+                                        child: const Icon(Icons.add,
                                             size: 25, color: Colors.white),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Divider(),
+                              const Divider(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   ListTitle(
-                                      title: 'Total',
-                                      value: currency(totalAmount)),
+                                    title: 'Total',
+                                    value: totalAmount.toString(),
+                                  ),
                                 ],
                               ),
                             ],
@@ -495,14 +473,14 @@ class _OpportunityFormState extends State<OpportunityForm> {
                             maxHeight:
                                 MediaQuery.of(context).size.height * 0.55),
                         child: _items.isEmpty
-                            ? Center(
+                            ? const Center(
                                 child: Text('no items added',
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontStyle: FontStyle.italic,
                                         fontSize: 16)))
                             : ListView.builder(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 padding: const EdgeInsets.only(bottom: 12),
                                 itemCount: _items.length,
                                 itemBuilder: (context, index) => Padding(
@@ -515,7 +493,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                             decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
-                                                    BorderRadius.vertical(
+                                                    const BorderRadius.vertical(
                                                         bottom:
                                                             Radius.circular(8)),
                                                 border: Border.all(
@@ -530,8 +508,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                               children: [
                                                 Expanded(
                                                     child: CustomTextField(
-                                                  _items[index].itemCode +
-                                                      'Quantity',
+                                                  '${_items[index].itemCode}Quantity',
                                                   'Quantity',
                                                   initialValue:
                                                       _items[index].qty == 0
@@ -556,11 +533,12 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                         _items[index].qty *
                                                             _items[index].rate;
                                                     Future.delayed(
-                                                        Duration(seconds: 1),
+                                                        const Duration(
+                                                            seconds: 1),
                                                         () => setState(() {}));
                                                   },
                                                 )),
-                                                SizedBox(width: 12),
+                                                const SizedBox(width: 12),
                                                 Expanded(
                                                     child: CustomTextField(
                                                   'rate',
@@ -584,11 +562,12 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                         _items[index].qty *
                                                             _items[index].rate;
                                                     Future.delayed(
-                                                        Duration(seconds: 1),
+                                                        const Duration(
+                                                            seconds: 1),
                                                         () => setState(() {}));
                                                   },
                                                 )),
-                                                SizedBox(width: 12),
+                                                const SizedBox(width: 12),
                                                 Expanded(
                                                     child: CustomTextField(
                                                   'amount',
@@ -600,7 +579,7 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                   enabled: false,
                                                   disableError: true,
                                                 )),
-                                                SizedBox(width: 12),
+                                                const SizedBox(width: 12),
                                               ],
                                             ),
                                           ),
@@ -619,13 +598,11 @@ class _OpportunityFormState extends State<OpportunityForm> {
                                                         BorderRadius.circular(
                                                             12),
                                                     color: Colors.red),
-                                                child: Align(
+                                                child: const Align(
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16),
+                                                    padding: EdgeInsets.all(16),
                                                     child: Icon(
                                                       Icons.delete_forever,
                                                       color: Colors.white,
@@ -656,9 +633,9 @@ class _OpportunityFormState extends State<OpportunityForm> {
                       ),
                     )
                   ],
-                )),
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

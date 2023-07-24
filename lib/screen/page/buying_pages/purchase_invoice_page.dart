@@ -29,7 +29,7 @@ class PurchaseInvoicePage extends StatelessWidget {
     final Color? color = context.read<ModuleProvider>().color;
 
     return ListView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 12),
       children: [
         PageCard(
@@ -43,8 +43,9 @@ class PurchaseInvoicePage extends StatelessWidget {
                   doctype: 'Purchase Invoice',
                   data: data,
                   items: fromPurchaseInvoice,
-                  disableCreate: false,
-                  //disableCreate: data['docstatus'].toString() == "1" ?  false:true,
+                  // disableCreate: false,
+                  disableCreate:
+                      data['docstatus'].toString() == "1" ? false : true,
                 ),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Padding(
@@ -54,12 +55,12 @@ class PurchaseInvoicePage extends StatelessWidget {
                   ),
               ],
             ),
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Purchase Invoice',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
             Padding(
@@ -84,10 +85,10 @@ class PurchaseInvoicePage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -171,9 +172,9 @@ class PurchaseInvoicePage extends StatelessWidget {
                   child: TabBarView(children: [
                     data['purchase_invoice_item'] == null ||
                             data['purchase_invoice_item'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -202,7 +203,7 @@ class PurchaseInvoicePage extends StatelessWidget {
                     //
                     data['child_purchase_taxes_and_charges'] == null ||
                             data['child_purchase_taxes_and_charges'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount:
@@ -227,7 +228,7 @@ class PurchaseInvoicePage extends StatelessWidget {
                     //
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
@@ -248,7 +249,7 @@ class PurchaseInvoicePage extends StatelessWidget {
                                 )),
 
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,

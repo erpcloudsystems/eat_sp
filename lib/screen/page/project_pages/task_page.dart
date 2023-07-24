@@ -29,9 +29,9 @@ class TaskPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-            Text(
+            const Text(
               'Task',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -45,7 +45,7 @@ class TaskPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -60,10 +60,10 @@ class TaskPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -95,23 +95,23 @@ class TaskPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
             //border: Border.all(color: Colors.blueAccent),
           ),
-          child: Center(
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          child: const Center(
             child: Text(
               'Connections',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -119,7 +119,7 @@ class TaskPage extends StatelessWidget {
                       imageUrl: data['conn'][index]['icon'] ?? tr('none'),
                       docTypeId: data['conn'][index]['name'] ?? tr('none'),
                       count: data['conn'][index]['count'].toString()))
-              : NothingHere(),
+              : const NothingHere(),
         ),
       ],
     );

@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
-import '../../../core/constants.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
 import '../../../widgets/form_widgets.dart';
@@ -72,7 +73,9 @@ class _ContactFormState extends State<ContactForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Contact');
 
-    for (var k in data.keys) print("➡️ \"$k\": \"${data[k]}\"");
+    for (var k in data.keys) {
+      print("➡️ \"$k\": \"${data[k]}\"");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -82,16 +85,16 @@ class _ContactFormState extends State<ContactForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null && res['message']['contact_data_name'] != null) {
+    } else if (res != null && res['message']['contact_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['contact_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -101,10 +104,12 @@ class _ContactFormState extends State<ContactForm> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          print("➡️ $k: ${data[k]}");
+        }
 
         // data['links'] = data['reference'].asMap();
 
@@ -117,6 +122,7 @@ class _ContactFormState extends State<ContactForm> {
 
         setState(() {});
       });
+    }
   }
 
   @override
@@ -142,65 +148,63 @@ class _ContactFormState extends State<ContactForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Contact".tr())
-                : Text("Create Contact".tr()),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                  ))
-            ],
-          ),
           body: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Group(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: 4),
-                        CustomTextField(
-                          'first_name',
-                          'First Name'.tr(),
-                          initialValue: data['first_name'],
-                          onChanged: (value) => data['first_name'] = value,
-                          onSave: (key, value) => data[key] = value,
-                          clearButton: true,
-                          onClear: () {
-                            setState(() {
-                              data['first_name'] = '';
-                            });
-                          },
-                        ),
-                        CustomTextField(
-                          'user',
-                          'User Id'.tr(),
-                          initialValue: data['user'],
-                          onChanged: (value) => data['user'] = value,
-                          onSave: (key, value) => data[key] = value,
-                          disableValidation: true,
-                          clearButton: true,
-                          onClear: () {
-                            setState(() {
-                              data['user'] = '';
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CustomTextFieldTest(
+                        'first_name',
+                        'First Name'.tr(),
+                        initialValue: data['first_name'],
+                        onChanged: (value) => data['first_name'] = value,
+                        onSave: (key, value) => data[key] = value,
+                        clearButton: true,
+                        onClear: () {
+                          setState(() {
+                            data['first_name'] = '';
+                          });
+                        },
+                      ),
+                      CustomTextFieldTest(
+                        'user',
+                        'User Id'.tr(),
+                        initialValue: data['user'],
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          var res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => userListScreen(),
+                            ),
+                          );
+                          data['user'] = res;
+                          return res;
+                        },
+                      ),
+                      // CustomTextFieldTest(
+                      //   'user',
+                      //   'User Id'.tr(),
+                      //   initialValue: data['user'],
+                      //   onChanged: (value) => data['user'] = value,
+                      //   onSave: (key, value) => data[key] = value,
+                      //   disableValidation: true,
+                      //   clearButton: true,
+                      //   onClear: () {
+                      //     setState(() {
+                      //       data['user'] = '';
+                      //     });
+                      //   },
+                      // ),
+                    ],
                   ),
-                  SelectedPhonesList(),
-                  Group(
-                      child: Column(
+                ),
+                const SelectedPhonesList(),
+                Group(
+                  child: ListView(
                     children: [
                       CustomDropDown('link_doctype', 'Link Document Type'.tr(),
                           items: linkDocumentTypeList,
@@ -215,7 +219,7 @@ class _ContactFormState extends State<ContactForm> {
                           thickness: 0.9),
                       if (data['links']?[0]['link_doctype'] ==
                           linkDocumentTypeList[0])
-                        CustomTextField(
+                        CustomTextFieldTest(
                           'link_name',
                           'Link Name'.tr(),
                           initialValue: data['links']?[0]['link_name'],
@@ -238,7 +242,7 @@ class _ContactFormState extends State<ContactForm> {
                         ),
                       if (data['links']?[0]['link_doctype'] ==
                           linkDocumentTypeList[1])
-                        CustomTextField(
+                        CustomTextFieldTest(
                           'link_name',
                           'Link Name',
                           initialValue: data['links']?[0]['link_name'],
@@ -264,10 +268,9 @@ class _ContactFormState extends State<ContactForm> {
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                     ],
-                  )),
-                  SizedBox(height: 100),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

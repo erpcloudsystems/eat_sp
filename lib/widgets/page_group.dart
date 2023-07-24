@@ -35,8 +35,8 @@ class PageGroup extends StatelessWidget {
       ),
       child: Container(
         margin: EdgeInsets.zero,
-        padding: EdgeInsets.fromLTRB(8, 14, 8, 10),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.fromLTRB(8, 14, 8, 10),
+        decoration: const BoxDecoration(
             // borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
             // border: Border.all(color: Colors.transparent),
             ),
@@ -84,15 +84,23 @@ class PageCard extends StatelessWidget {
       //initialize row children
       // for each item in the row
       for (int j = 0; j < _keys.length; j++) {
-        _rowChildren
-            .add(ListTitle(title: _keys[j], value: items[i][_keys[j]]!));
+        _rowChildren.add(
+          ListTitle(
+            title: _keys[j],
+            value: items[i][_keys[j]]!,
+          ),
+        );
 
         //vertical separator between items
-        if (j < _keys.length - 1)
-          _rowChildren.add(Container(
+        if (j < _keys.length - 1) {
+          _rowChildren.add(
+            Container(
               width: 1,
               padding: const EdgeInsets.symmetric(vertical: 20),
-              color: Colors.grey.shade300));
+              color: Colors.grey.shade300,
+            ),
+          );
+        }
       }
       // add the initialized row to the column children
       _columnChildren.add(Row(
@@ -101,14 +109,15 @@ class PageCard extends StatelessWidget {
 
       //separator if the item is not last item
       // if (i < items.length - 1 ) _columnChildren.add(Divider(color: Colors.grey.shade400, thickness: 1));
-      if (i < items.length - 1 && items[i].isNotEmpty)
+      if (i < items.length - 1 && items[i].isNotEmpty) {
         _columnChildren.add(Divider(color: Colors.grey.shade300, thickness: 1));
+      }
     }
 
     // //replace the status with status widget to show the status  color
     // if (statusIndex > 0) (_columnChildren[header.length - 2 + (statusIndex * 2)] as Row).children.last = StatusWidget(items[statusIndex - 1]['Status']!);
 
-    if (swapWidgets.isNotEmpty)
+    if (swapWidgets.isNotEmpty) {
       swapWidgets.forEach((element) =>
           (_columnChildren[header.length - 2 + (element.rowNumber * 2)] as Row)
                   .children[element.widgetIndex] =
@@ -118,6 +127,7 @@ class PageCard extends StatelessWidget {
                       .toList()[element.widgetNumber - 1]
                       .key,
                   child: element.widget));
+    }
 
     return PageGroup(
       color: color,
@@ -159,27 +169,34 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
       _keys = widget.items[i].keys.toList();
       for (int j = 0; j < _keys.length; j++) {
         _columnChildren.add(
-            // Row(
-            //   children: [
-            //     Text(_keys[j],maxLines: 1),
-            //     Text(widget.items[i][_keys[j]],maxLines: 2)
-            //   ],
-            // ),
+          // Row(
+          //   children: [
+          //     Text(_keys[j],maxLines: 1),
+          //     Text(widget.items[i][_keys[j]],maxLines: 2)
+          //   ],
+          // ),
 
-            ListTile(
-                horizontalTitleGap: 2,
-                contentPadding: EdgeInsets.zero,
-                title: Text(_keys[j], maxLines: 1),
-                trailing: SizedBox(
-                    width: 200,
-                    child: Text(widget.items[i][_keys[j]],
-                        textAlign: TextAlign.right,
-                        style: TextStyle(overflow: TextOverflow.visible),
-                        maxLines: 2))));
+          ListTile(
+            horizontalTitleGap: 2,
+            contentPadding: EdgeInsets.zero,
+            title: Text(_keys[j], maxLines: 1),
+            trailing: SizedBox(
+              width: 200,
+              child: Text(
+                widget.items[i][_keys[j]],
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  overflow: TextOverflow.visible,
+                ),
+                maxLines: 2,
+              ),
+            ),
+          ),
+        );
       }
     }
 
-    return Container(
+    return SizedBox(
       width: widget.width,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -187,8 +204,8 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
           trailing: !widget.hideArrow
               ? AnimatedRotation(
                   turns: widget.isOpened ? .5 : 0,
-                  duration: Duration(milliseconds: 400),
-                  child: Icon(Icons.expand_more),
+                  duration: const Duration(milliseconds: 400),
+                  child: const Icon(Icons.expand_more),
                 )
               : null,
           onExpansionChanged: (v) {
@@ -201,10 +218,12 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
           tilePadding: EdgeInsets.zero,
           expandedAlignment: Alignment.centerLeft,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          title: Text(widget.title,
-              textAlign: widget.titleAlign,
-              style: TextStyle(fontWeight: FontWeight.w600),
-              maxLines: 1),
+          title: Text(
+            widget.title,
+            textAlign: widget.titleAlign,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            maxLines: 1,
+          ),
           children: _columnChildren,
         ),
       ),
@@ -255,7 +274,7 @@ class ConnectionCard extends StatelessWidget {
                       return true;
                     },
                   ),
-              settings: RouteSettings(name: CONNECTION_ROUTE)),
+              settings: const RouteSettings(name: CONNECTION_ROUTE)),
           (route) => route.settings.name == null,
         );
       } else {
@@ -271,7 +290,7 @@ class ConnectionCard extends StatelessWidget {
                         return true;
                       },
                     ),
-                settings: RouteSettings(name: CONNECTION_ROUTE)))
+                settings: const RouteSettings(name: CONNECTION_ROUTE)))
             .then((value) {});
       }
     }
@@ -301,7 +320,7 @@ class ConnectionCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-                side: BorderSide(color: Colors.transparent, width: 0.8)),
+                side: const BorderSide(color: Colors.transparent, width: 0.8)),
           ),
           child: Row(
             children: [
@@ -314,7 +333,7 @@ class ConnectionCard extends StatelessWidget {
                     height: 45,
                     loadingBuilder: (context, child, progress) {
                       return progress != null
-                          ? SizedBox(
+                          ? const SizedBox(
                               width: 45,
                               height: 45,
                               child: Icon(Icons.image, color: Colors.grey))
@@ -322,7 +341,7 @@ class ConnectionCard extends StatelessWidget {
                     },
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
-                      return SizedBox(
+                      return const SizedBox(
                           width: 45,
                           height: 45,
                           child: Icon(Icons.image, color: Colors.grey));
@@ -367,12 +386,13 @@ class ItemCard3 extends StatelessWidget {
     List<Widget> secondRow = [];
     for (int i = 3; i < values.length; i++) {
       secondRow.add(ListTitle(title: values[i].key, value: values[i].value));
-      if (i < values.length - 1)
+      if (i < values.length - 1) {
         secondRow.add(Container(
           width: 1,
           color: Colors.grey.shade400,
           height: 42,
         ));
+      }
     }
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -482,12 +502,13 @@ class ItemWithImageCard extends StatelessWidget {
           title: names[i].key,
           child: Text(names[i].value,
               maxLines: 1, overflow: TextOverflow.ellipsis)));
-      if (i < names.length - 1)
+      if (i < names.length - 1) {
         secondRow.add(Container(
           width: 1,
           color: Colors.grey.shade400,
           padding: const EdgeInsets.symmetric(vertical: 25),
         ));
+      }
     }
     return Card(
         elevation: 2,
@@ -532,7 +553,7 @@ class ItemWithImageCard extends StatelessWidget {
                                     // height: 45,
                                     loadingBuilder: (context, child, progress) {
                                       return progress != null
-                                          ? SizedBox(
+                                          ? const SizedBox(
                                               child: Icon(Icons.image,
                                                   color: Colors.grey, size: 40))
                                           : child;
@@ -540,7 +561,7 @@ class ItemWithImageCard extends StatelessWidget {
                                     errorBuilder: (BuildContext context,
                                         Object exception,
                                         StackTrace? stackTrace) {
-                                      return SizedBox(
+                                      return const SizedBox(
                                           child: Icon(Icons.image,
                                               color: Colors.grey, size: 40));
                                     },

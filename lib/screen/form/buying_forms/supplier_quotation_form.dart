@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
@@ -29,7 +31,7 @@ class SupplierQuotationForm extends StatefulWidget {
 }
 
 class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
-  quotationType _type = quotationType.supplier;
+  final quotationType _type = quotationType.supplier;
 
   String? _terms;
 
@@ -72,7 +74,9 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         .items
         .forEach((element) => data['items'].add(element.toJson));
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     showLoadingDialog(
         context,
@@ -103,18 +107,19 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         context);
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['quotation_name'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['quotation_name'] != null) {
         context
             .read<ModuleProvider>()
             .pushPage(res['message']['quotation_name']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null &&
@@ -122,8 +127,8 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['supplier_quotation_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -136,6 +141,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
   void initState() {
     final provider = context.read<ModuleProvider>();
     super.initState();
+    data['default_currency'] = context.read<UserProvider>().defaultCurrency;
 
     //Editing Mode
     if (provider.isEditing ||
@@ -160,12 +166,13 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         //print('➡️ This is existing data: $data');
         final items = SupplierQuotationPageModel(context, data).items;
 
-        items.forEach((element) => InheritedForm.of(context)
-            .items
-            .add(ItemSelectModel.fromJson(element)));
+        for (var element in items) {
+          InheritedForm.of(context)
+              .items
+              .add(ItemSelectModel.fromJson(element));
+        }
         InheritedForm.of(context).data['buying_price_list'] =
             data['buying_price_list'];
-
         setState(() {});
       });
     }
@@ -183,7 +190,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
               .add(ItemSelectModel.fromJson(element));
         });
 
-        print('asdfsf1${data}');
+        print('asdfsf1$data');
         data['doctype'] = "Supplier Quotation";
         data['transaction_date'] = DateTime.now().toIso8601String();
         data['apply_discount_on'] = grandTotalList[0];
@@ -225,6 +232,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<UserProvider>();
     InheritedForm.of(context).data['selling_price_list'] = '';
     return WillPopScope(
       onWillPop: () async {
@@ -239,361 +247,297 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Supplier Quotation")
-              : Text("Create Supplier Quotation"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(
-                    Icons.check,
-                    color: FORM_SUBMIT_BTN_COLOR,
-                  ),
-                ))
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Group(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 4),
-                      CustomTextField(
-                        'supplier',
-                        'Supplier',
-                        initialValue: data['supplier'],
-                        onPressed: () async {
-                          String? id;
-                          if (_type == quotationType.supplier) {
+        body: Form(
+          key: _formKey,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomTextFieldTest(
+                      'supplier',
+                      'Supplier',
+                      initialValue: data['supplier'],
+                      onPressed: () async {
+                        String? id;
+                        if (_type == quotationType.supplier) {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectSupplierScreen())); //todo check @run
+
+                          if (res != null) {
+                            id = res['name'];
+                            _getSupplierData(res['name']);
+                            // selectedSupplierData = Map<String, dynamic>.from(
+                            //     await APIService().getPage(
+                            //         SUPPLIER_PAGE, res['name']))['message'];
+                            setState(() {
+                              data['name'] = res['name'];
+                              data['supplier'] = res['name'];
+                              data['supplier_name'] = res['supplier_name'];
+                              data['valid_till'] = DateTime.now()
+                                  .add(Duration(days: int.parse('30')))
+                                  .toIso8601String(); // selectedSupplierData['credit_days']
+                              data['supplier_address'] = selectedSupplierData[
+                                  "supplier_primary_address"];
+                              // data['contact_mobile'] =
+                              //     selectedSupplierData["mobile_no"];
+                              // data['contact_email'] =
+                              //     selectedSupplierData["email_id"];
+                              data['contact_person'] = selectedSupplierData[
+                                  "supplier_primary_contact"];
+                              data['contact_display'] = selectedSupplierData[
+                                  "supplier_primary_contact"];
+                              data['currency'] =
+                                  selectedSupplierData['default_currency'];
+                              // if (data['buying_price_list'] !=
+                              //     res['default_price_list']) {
+                              //   data['buying_price_list'] =
+                              //       res['default_price_list'];
+                              //   InheritedForm.of(context).items.clear();
+                              // InheritedForm.of(context)
+                              //         .data['buying_price_list'] =
+                              //     res['default_price_list'];
+                              // }
+                            });
+                          }
+                        } else {
+                          showSnackBar('select quotation to first', context);
+                        }
+                        return id;
+                      },
+                    ),
+                    Row(children: [
+                      Flexible(
+                        child: DatePickerTest(
+                          'transaction_date',
+                          'Quotation Date',
+                          initialValue: data['transaction_date'],
+                          onChanged: (value) =>
+                              setState(() => data['transaction_date'] = value),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                          child: DatePickerTest(
+                        'valid_till',
+                        'Valid Till',
+                        onChanged: (value) =>
+                            setState(() => data['valid_till'] = value),
+                        initialValue: data['valid_till'] ??
+                            DateTime.now()
+                                .add(Duration(days: int.parse('30')))
+                                .toIso8601String(),
+                      )),
+                    ]),
+                    CustomExpandableTile(
+                      hideArrow: data['supplier'] == null,
+                      title: CustomTextFieldTest(
+                          'supplier_address', 'Supplier Address',
+                          initialValue: data['supplier_address'],
+                          disableValidation: true,
+                          clearButton: false,
+                          onSave: (key, value) => data[key] = value,
+                          liestenToInitialValue:
+                              data['supplier_address'] == null,
+                          onPressed: () async {
+                            if (data['supplier'] == null) {
+                              return showSnackBar(
+                                  'Please select a supplier to first', context);
+                            }
                             final res = await Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectSupplierScreen())); //todo check @run
-
-                            if (res != null) {
-                              id = res['name'];
-                              _getSupplierData(res['name']);
-                              // selectedSupplierData = Map<String, dynamic>.from(
-                              //     await APIService().getPage(
-                              //         SUPPLIER_PAGE, res['name']))['message'];
-                              setState(() {
-                                data['name'] = res['name'];
-                                data['supplier'] = res['name'];
-                                data['supplier_name'] = res['supplier_name'];
-                                data['valid_till'] = DateTime.now()
-                                    .add(Duration(days: int.parse('30')))
-                                    .toIso8601String(); // selectedSupplierData['credit_days']
-                                data['supplier_address'] = selectedSupplierData[
-                                    "supplier_primary_address"];
-                                // data['contact_mobile'] =
-                                //     selectedSupplierData["mobile_no"];
-                                // data['contact_email'] =
-                                //     selectedSupplierData["email_id"];
-                                data['contact_person'] = selectedSupplierData[
-                                    "supplier_primary_contact"];
-                                data['contact_display'] = selectedSupplierData[
-                                    "supplier_primary_contact"];
-                                data['currency'] =
-                                    selectedSupplierData['default_currency'];
-                                if (data['buying_price_list'] !=
-                                    res['default_price_list']) {
-                                  data['buying_price_list'] =
-                                      res['default_price_list'];
-                                  InheritedForm.of(context).items.clear();
-                                  InheritedForm.of(context)
-                                          .data['buying_price_list'] =
-                                      res['default_price_list'];
-                                }
-                              });
-                            }
-                          } else {
-                            showSnackBar('select quotation to first', context);
-                          }
-                          return id;
-                        },
-                      ),
-                      Row(children: [
-                        Flexible(
-                          child: DatePicker(
-                            'transaction_date',
-                            'Quotation Date',
-                            initialValue: data['transaction_date'],
-                            onChanged: (value) => setState(
-                                () => data['transaction_date'] = value),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                            child: DatePicker(
-                          'valid_till',
-                          'Valid Till',
-                          onChanged: (value) =>
-                              setState(() => data['valid_till'] = value),
-                          initialValue: data['valid_till'] ??
-                              DateTime.now()
-                                  .add(Duration(days: int.parse('30')))
-                                  .toIso8601String(),
-                        )),
-                      ]),
-                      // CustomTextField(
-                      //   'quotation_number',
-                      //   'Quotation No',
-                      //   onSave: (key, value) => data[key] = value,
-                      //   initialValue: data['quotation_number'] ,
-                      //   clearButton: false,
-                      //   disableValidation: false,
-                      //   validator: (value) =>
-                      //       numberValidation(value, allowNull: true),
-                      //   keyboardType: TextInputType.number,
-                      // ),
-
-                      CustomExpandableTile(
-                        hideArrow: data['supplier'] == null,
-                        title: CustomTextField(
-                            'supplier_address', 'Supplier Address',
-                            initialValue: data['supplier_address'],
-                            disableValidation: true,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            liestenToInitialValue:
-                                data['supplier_address'] == null,
-                            onPressed: () async {
-                              if (data['supplier'] == null)
-                                return showSnackBar(
-                                    'Please select a supplier to first',
-                                    context);
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => customerAddressScreen(
-                                          data['supplier'])));
-                              setState(() {
-                                data['supplier_address'] = res['name'];
-                                selectedSupplierData['address_line1'] =
-                                    res['address_line1'];
-                                selectedSupplierData['city'] = res['city'];
-                                selectedSupplierData['country'] =
-                                    res['country'];
-                              });
-                              return res['name'];
-                            }),
-                        children: (data['supplier_address'] != null)
-                            ? <Widget>[
-                                if (selectedSupplierData['address_line1'] !=
-                                    null)
-                                  ListTile(
-                                    trailing: Icon(Icons.location_on),
-                                    title: Text(
-                                        selectedSupplierData['address_line1'] ??
-                                            ''),
-                                  ),
-                                if (selectedSupplierData['city'] != null)
-                                  ListTile(
-                                    trailing: Icon(Icons.location_city),
-                                    title: Text(
-                                        selectedSupplierData['city'] ?? ''),
-                                  ),
-                                if (selectedSupplierData['country'] != null)
-                                  ListTile(
-                                    trailing: Icon(Icons.flag),
-                                    title: Text(
-                                        selectedSupplierData['country'] ?? ''),
-                                  )
-                              ]
-                            : null,
-                      ),
-                      CustomExpandableTile(
-                        hideArrow: data['supplier'] == null,
-                        title:
-                            CustomTextField('contact_person', 'Contact Person',
-                                initialValue: data['contact_person'],
-                                disableValidation: true,
-                                clearButton: false,
-                                onSave: (key, value) => data[key] = value,
-                                onPressed: () async {
-                                  if (data['supplier'] == null) {
-                                    showSnackBar(
-                                        'Please select a supplier', context);
-                                    return null;
-                                  }
-                                  final res = await Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              contactScreen(data['supplier'])));
-                                  setState(() {
-                                    data['contact_person'] = res['name'];
-
-                                    selectedSupplierData['contact_display'] =
-                                        res['contact_person'];
-                                    selectedSupplierData['mobile_no'] =
-                                        res['mobile_no'];
-                                    selectedSupplierData['phone'] =
-                                        res['phone'];
-                                    selectedSupplierData['email_id'] =
-                                        res['email_id'];
-                                  });
-                                  return res['name'];
-                                }),
-                        children: (data['contact_person'] != null)
-                            ? <Widget>[
+                                    builder: (_) => customerAddressScreen(
+                                        data['supplier'])));
+                            setState(() {
+                              data['supplier_address'] = res['name'];
+                              selectedSupplierData['address_line1'] =
+                                  res['address_line1'];
+                              selectedSupplierData['city'] = res['city'];
+                              selectedSupplierData['country'] = res['country'];
+                            });
+                            return res['name'];
+                          }),
+                      children: (data['supplier_address'] != null)
+                          ? <Widget>[
+                              if (selectedSupplierData['address_line1'] != null)
                                 ListTile(
-                                  trailing: Icon(Icons.person),
-                                  title: Text('' +
-                                      (selectedSupplierData[
-                                              'contact_display'] ??
-                                          '')),
+                                  trailing: const Icon(Icons.location_on),
+                                  title: Text(
+                                      selectedSupplierData['address_line1'] ??
+                                          ''),
                                 ),
+                              if (selectedSupplierData['city'] != null)
                                 ListTile(
-                                  trailing: Icon(Icons.phone_iphone),
-                                  title: Text('Mobile :  ' +
-                                      (selectedSupplierData['mobile_no'] ??
-                                          'none')),
+                                  trailing: const Icon(Icons.location_city),
+                                  title:
+                                      Text(selectedSupplierData['city'] ?? ''),
                                 ),
+                              if (selectedSupplierData['country'] != null)
                                 ListTile(
-                                  trailing: Icon(Icons.call),
-                                  title: Text('Phone :  ' +
-                                      (selectedSupplierData['phone'] ??
-                                          'none')),
-                                ),
-                                ListTile(
-                                  trailing: Icon(Icons.alternate_email),
-                                  title: Text('' +
-                                      ((selectedSupplierData['email_id']) ??
-                                          'none')),
+                                  trailing: const Icon(Icons.flag),
+                                  title: Text(
+                                      selectedSupplierData['country'] ?? ''),
                                 )
-                              ]
-                            : null,
-                      ),
-
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-
-                ///
-                /// group 2
-                ///
-                Group(
-                  child: Column(
-                    children: [
-                      CustomTextField('currency', 'Currency',
-                          initialValue: data['currency'],
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => currencyListScreen()))),
-                      CustomTextField(
-                        'conversion_rate',
-                        'Exchange Rate'.tr(),
-                        initialValue: '${data['conversion_rate'] ?? '1'}',
-                        hintText: 'ex:1.0',
-                        clearButton: true,
-                        validator: (value) =>
-                            numberValidation(value, allowNull: true),
-                        keyboardType: TextInputType.number,
-                        onSave: (key, value) =>
-                            data[key] = double.tryParse(value) ?? 1,
-                      ),
-                      CustomTextField(
-                        'plc_conversion_rate',
-                        'Price List Exchange Rate'.tr(),
-                        initialValue: '${data['conversion_rate'] ?? '1'}',
-                        hintText: 'ex:1.0',
-                        clearButton: true,
-                        validator: (value) =>
-                            numberValidation(value, allowNull: true),
-                        keyboardType: TextInputType.number,
-                        onSave: (key, value) =>
-                            data[key] = double.tryParse(value) ?? 1,
-                      ),
-                      CustomTextField('buying_price_list', 'Price List'.tr(),
-                          initialValue: data['buying_price_list'],
-                          disableValidation: true, onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => buyingPriceListScreen()));
-                        if (res != null && res.isNotEmpty) {
-                          setState(() {
-                            if (data['buying_price_list'] != res['name']) {
-                              InheritedForm.of(context).items.clear();
-                              InheritedForm.of(context)
-                                  .data['buying_price_list'] = res['name'];
-                              data['buying_price_list'] = res['name'];
-                            }
-                            data['price_list_currency'] = res['currency'];
-                          });
-                          return res['name'];
-                        }
-                        return null;
-                      }),
-                      CustomTextField(
-                          'price_list_currency', 'Price List Currency',
-                          initialValue: data['price_list_currency'],
+                            ]
+                          : null,
+                    ),
+                    CustomExpandableTile(
+                      hideArrow: data['supplier'] == null,
+                      title: CustomTextFieldTest(
+                          'contact_person', 'Contact Person',
+                          initialValue: data['contact_person'],
                           disableValidation: true,
+                          clearButton: false,
                           onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => currencyListScreen()))),
-                      CheckBoxWidget(
-                          'ignore_pricing_rule', 'Ignore Pricing Rule',
-                          initialValue:
-                              data['ignore_pricing_rule'] == 1 ? true : false,
-                          onChanged: (id, value) =>
-                              setState(() => data[id] = value ? 1 : 0)),
-                    ],
-                  ),
+                          onPressed: () async {
+                            if (data['supplier'] == null) {
+                              showSnackBar('Please select a supplier', context);
+                              return null;
+                            }
+                            final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        contactScreen(data['supplier'])));
+                            setState(() {
+                              data['contact_person'] = res['name'];
+
+                              selectedSupplierData['contact_display'] =
+                                  res['contact_person'];
+                              selectedSupplierData['mobile_no'] =
+                                  res['mobile_no'];
+                              selectedSupplierData['phone'] = res['phone'];
+                              selectedSupplierData['email_id'] =
+                                  res['email_id'];
+                            });
+                            return res['name'];
+                          }),
+                      children: (data['contact_person'] != null)
+                          ? <Widget>[
+                              ListTile(
+                                trailing: const Icon(Icons.person),
+                                title: Text('' +
+                                    (selectedSupplierData['contact_display'] ??
+                                        '')),
+                              ),
+                              ListTile(
+                                trailing: const Icon(Icons.phone_iphone),
+                                title: Text('Mobile :  ' +
+                                    (selectedSupplierData['mobile_no'] ??
+                                        'none')),
+                              ),
+                              ListTile(
+                                trailing: const Icon(Icons.call),
+                                title: Text('Phone :  ' +
+                                    (selectedSupplierData['phone'] ?? 'none')),
+                              ),
+                              ListTile(
+                                trailing: const Icon(Icons.alternate_email),
+                                title: Text('' +
+                                    ((selectedSupplierData['email_id']) ??
+                                        'none')),
+                              )
+                            ]
+                          : null,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
+              ),
 
-                // ///
-                // /// group 3
-                // ///
-                // Group(
-                //   child: Column(
-                //     children: [
-                //       CustomDropDown('apply_discount_on', 'Apply Additional Discount On',
-                //           items: grandTotalList, defaultValue: grandTotalList[0], onChanged: (value) => data['apply_discount_on'] = value),
-                //       Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                //       CustomTextField(
-                //         'additional_discount_percentage',
-                //         'Additional Discount Percentage',
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //       CustomTextField(
-                //         'discount_amount',
-                //         'Additional Discount Amount (Company Currency)',
-                //         keyboardType: TextInputType.number,
-                //         onSave: (key, value) => data[key] = double.tryParse(value) ?? 0,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('Net Total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('VAT', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                //   child: Text('Total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                SizedBox(height: 8),
-                SelectedItemsList(),
-              ],
-            ),
+              ///
+              /// group 2
+              ///
+              Group(
+                child: ListView(
+                  children: [
+                    CustomTextFieldTest(
+                      'currency',
+                      'Currency',
+                      initialValue:
+                          data['currency'] ?? provider.defaultCurrency,
+                      onSave: (key, value) => data[key] = value,
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => currencyListScreen(),
+                        ),
+                      ),
+                    ),
+                    CustomTextFieldTest(
+                      'conversion_rate',
+                      'Exchange Rate'.tr(),
+                      initialValue: '${data['conversion_rate'] ?? '1'}',
+                      hintText: 'ex:1.0',
+                      clearButton: true,
+                      validator: (value) =>
+                          numberValidation(value, allowNull: true),
+                      keyboardType: TextInputType.number,
+                      onSave: (key, value) =>
+                          data[key] = double.tryParse(value) ?? 1,
+                    ),
+                    CustomTextFieldTest(
+                      'plc_conversion_rate',
+                      'Price List Exchange Rate'.tr(),
+                      initialValue: '${data['conversion_rate'] ?? '1'}',
+                      hintText: 'ex:1.0',
+                      clearButton: true,
+                      validator: (value) =>
+                          numberValidation(value, allowNull: true),
+                      keyboardType: TextInputType.number,
+                      onSave: (key, value) =>
+                          data[key] = double.tryParse(value) ?? 1,
+                    ),
+                    CustomTextFieldTest('buying_price_list', 'Price List'.tr(),
+                        initialValue: data['buying_price_list'] ??
+                            provider.defaultBuyingPriceList,
+                        disableValidation: true, onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => buyingPriceListScreen(),
+                        ),
+                      );
+                      if (res != null && res.isNotEmpty) {
+                        setState(() {
+                          if (data['buying_price_list'] != res['name']) {
+                            InheritedForm.of(context).items.clear();
+                            InheritedForm.of(context)
+                                .data['buying_price_list'] = res['name'];
+                            data['buying_price_list'] = res['name'];
+                          }
+                          data['price_list_currency'] = res['currency'];
+                        });
+                        return res['name'];
+                      }
+                      return null;
+                    }),
+                    CustomTextFieldTest(
+                      'price_list_currency',
+                      'Price List Currency',
+                      initialValue: data['price_list_currency'],
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => currencyListScreen(),
+                        ),
+                      ),
+                    ),
+                    CheckBoxWidget('ignore_pricing_rule', 'Ignore Pricing Rule',
+                        initialValue:
+                            data['ignore_pricing_rule'] == 1 ? true : false,
+                        onChanged: (id, value) =>
+                            setState(() => data[id] = value ? 1 : 0)),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
+                child: SelectedItemsList(),
+              ),
+            ],
           ),
         ),
       ),

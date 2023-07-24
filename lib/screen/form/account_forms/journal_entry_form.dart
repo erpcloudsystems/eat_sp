@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -82,7 +84,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
           .read<ModuleProvider>()
           .pushPage(res['message']['ejournal_entry_data_name']);
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -149,93 +151,77 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Journal Entry".tr())
-              : Text("Create Journal Entry ".tr()),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ))
-          ],
-        ),
         body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 4),
-                      CustomDropDown('voucher_type', 'Entry Type'.tr(),
-                          items: journalEntryTypeStatus,
-                          defaultValue:
-                              data['voucher_type'] ?? journalEntryTypeStatus[0],
-                          onChanged: (value) => setState(() {
-                                data['voucher_type'] = value;
-                              })),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker(
-                          'posting_date',
-                          'Posting Date'.tr(),
-                          initialValue: data['posting_date'],
-                          onChanged: (value) =>
-                              setState(() => data['posting_date'] = value),
-                        )),
-                        SizedBox(width: 10),
-                      ]),
-                    ],
-                  ),
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomDropDown('voucher_type', 'Entry Type'.tr(),
+                        items: journalEntryTypeStatus,
+                        defaultValue:
+                            data['voucher_type'] ?? journalEntryTypeStatus[0],
+                        onChanged: (value) => setState(() {
+                              data['voucher_type'] = value;
+                            })),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'posting_date',
+                        'Posting Date'.tr(),
+                        initialValue: data['posting_date'],
+                        onChanged: (value) =>
+                            setState(() => data['posting_date'] = value),
+                      )),
+                      const SizedBox(width: 10),
+                    ]),
+                  ],
                 ),
-                Group(
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        'cheque_no',
-                        'Reference Number'.tr(),
-                        initialValue: data['cheque_no'],
-                        onChanged: (value) => data['cheque_no'] = value,
-                        onSave: (key, value) => data[key] = value,
-                        keyboardType: TextInputType.number,
-                        disableError: true,
-                        validator: (value) => numberValidationToast(
-                            value, 'Reference Number'.tr()),
-                        disableValidation: true,
-                      ),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker(
-                          'cheque_date',
-                          'Reference Date'.tr(),
-                          initialValue: data['cheque_date'],
-                          onChanged: (value) =>
-                              setState(() => data['cheque_date'] = value),
-                        )),
-                      ]),
-                      CustomTextField(
-                        'user_remark',
-                        'User Remark'.tr(),
-                        initialValue: data['user_remark'],
-                        onChanged: (value) => data['user_remark'] = value,
-                        onSave: (key, value) => data[key] = value,
-                        disableValidation: true,
-                      ),
-                    ],
-                  ),
+              ),
+              Group(
+                child: ListView(
+                  children: [
+                    CustomTextFieldTest(
+                      'cheque_no',
+                      'Reference Number'.tr(),
+                      initialValue: data['cheque_no'],
+                      onChanged: (value) => data['cheque_no'] = value,
+                      onSave: (key, value) => data[key] = value,
+                      keyboardType: TextInputType.number,
+                      disableError: true,
+                      validator: (value) => numberValidationToast(
+                          value, 'Reference Number'.tr()),
+                      disableValidation: true,
+                    ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'cheque_date',
+                        'Reference Date'.tr(),
+                        initialValue: data['cheque_date'],
+                        onChanged: (value) =>
+                            setState(() => data['cheque_date'] = value),
+                      )),
+                    ]),
+                    CustomTextFieldTest(
+                      'user_remark',
+                      'User Remark'.tr(),
+                      initialValue: data['user_remark'],
+                      onChanged: (value) => data['user_remark'] = value,
+                      onSave: (key, value) => data[key] = value,
+                      disableValidation: true,
+                    ),
+                  ],
                 ),
-                SelectedAccountsList(),
-                SizedBox(height: 8),
-              ],
-            ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 13),
+                child: SelectedAccountsList(),
+              ),
+            ],
           ),
         ),
       ),

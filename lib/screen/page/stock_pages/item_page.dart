@@ -36,7 +36,7 @@ class ItemPage extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 100),
+                        constraints: const BoxConstraints(maxHeight: 100),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.network(
@@ -47,7 +47,7 @@ class ItemPage extends StatelessWidget {
                             // height: 45,
                             loadingBuilder: (context, child, progress) {
                               return progress != null
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       child: Icon(
                                         Icons.image,
                                         color: Colors.grey,
@@ -58,7 +58,7 @@ class ItemPage extends StatelessWidget {
                             },
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace? stackTrace) {
-                              return SizedBox(
+                              return const SizedBox(
                                 child: Icon(
                                   Icons.image,
                                   color: Colors.grey,
@@ -99,7 +99,7 @@ class ItemPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(
               color: Colors.grey.shade400,
               thickness: 1,
@@ -195,7 +195,7 @@ class ItemPage extends StatelessWidget {
               MapEntry('projected_qty', tr('Projected Qty')),
             ]),
 
-        SizedBox(height: 10)
+        const SizedBox(height: 10)
       ],
     );
   }
@@ -244,8 +244,8 @@ class TableButton extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                       color: Colors.black)),
-              Spacer(),
-              Icon(Icons.arrow_right_sharp, color: Colors.blueAccent, size: 26)
+              const Spacer(),
+              const Icon(Icons.arrow_right_sharp, color: Colors.blueAccent, size: 26)
             ],
           )),
     );

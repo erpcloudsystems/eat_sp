@@ -12,6 +12,8 @@ import '../../core/constants.dart';
 import '../../core/shared_pref.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -33,9 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() async {
     if (userNameController.text.isEmpty ||
         passwordController.text.isEmpty ||
-        urlController.text.isEmpty)
+        urlController.text.isEmpty) {
       Fluttertoast.showToast(msg: tr("login_err"));
-    else {
+    } else {
       setState(() => _isLoading = true);
 
       try {
@@ -55,36 +57,36 @@ class _LoginScreenState extends State<LoginScreen> {
     return DismissKeyboard(
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xffF2F4F5),
+          backgroundColor: const Color(0xffF2F4F5),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             height: screenHeight,
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Image.asset("assets/logo.png",
                       width: 280,
                       height: screenHeight / 4,
                       fit: BoxFit.contain),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border:
                             Border.all(color: Colors.transparent, width: 1.5),
-                        borderRadius: new BorderRadius.all(
-                          const Radius.circular(10.0),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10.0),
                         )),
                     child: Column(
                       children: [
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Text("Welcome")),
-                        Text("To NextApp"),
+                        const Text("To NextApp"),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: TextField(
@@ -146,8 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           horizontal: 8),
                                       child: Text(
                                         tr("for_pass"),
-                                        style:
-                                            TextStyle(color: Color(0xff0488FA)),
+                                        style: const TextStyle(
+                                            color: Color(0xff0488FA)),
                                       ),
                                     ),
                                   ],
@@ -161,26 +163,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: const EdgeInsets.all(20.0),
                                   child: Container(
                                     height: 50,
-                                    child: Center(
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xff0488FA),
+                                        border: Border.all(
+                                            color: const Color(0xffE8E8E8),
+                                            width: 1.5),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        )),
+                                    child: const Center(
                                       child: Text(
                                         "Log in",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 18),
                                       ),
                                     ),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xff0488FA),
-                                        border: Border.all(
-                                            color: Color(0xffE8E8E8),
-                                            width: 1.5),
-                                        borderRadius: new BorderRadius.all(
-                                          const Radius.circular(10.0),
-                                        )),
                                   ),
                                 ),
                               )
-                            : Padding(
-                                padding: const EdgeInsets.all(20),
+                            : const Padding(
+                                padding: EdgeInsets.all(20),
                                 child: SizedBox(
                                   height: 50,
                                   child: Center(
@@ -192,24 +194,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Powered by'),
+                      const Text('Powered by'),
                       TextButton(
                         onPressed: () {
                           launchUrl(Uri.parse('https://www.erpcloud.systems/'));
                         },
-                        child: Text(
+                        child: const Text(
                           'ERPCloud.systems',
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -225,20 +227,20 @@ final textFieldDecoration = InputDecoration(
   //Hides label on focus or if filled
   filled: true,
   // Needed for adding a fill color
-  fillColor: Color(0xffF6F6F6),
+  fillColor: const Color(0xffF6F6F6),
   isDense: true,
   // Reduces height a bit
   border: OutlineInputBorder(
     borderSide: BorderSide.none, // No border
     borderRadius: BorderRadius.circular(12), // Apply corner radius
   ),
-  enabledBorder: OutlineInputBorder(
+  enabledBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Color(0xffE8E8E8)),
   ),
-  focusedBorder: OutlineInputBorder(
+  focusedBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Color(0xffE8E8E8)),
   ),
-  errorBorder: OutlineInputBorder(
+  errorBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Colors.redAccent),
   ),
 );

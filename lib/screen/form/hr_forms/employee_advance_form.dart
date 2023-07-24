@@ -4,8 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
@@ -54,7 +55,9 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Employee Advance');
 
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -64,17 +67,17 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null &&
+    } else if (res != null &&
         res['message']['employee_advance_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['employee_advance_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -94,12 +97,15 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
   void initState() {
     super.initState();
     final provider = context.read<ModuleProvider>();
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) log("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          log("➡️ $k: ${data[k]}");
+        }
         setState(() {});
       });
+    }
   }
 
   @override
@@ -123,191 +129,169 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Employee Advance".tr())
-              : Text("Create Employee Advance".tr()),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ))
-          ],
-        ),
         body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 4),
-                      CustomTextField(
-                        'employee',
-                        'Employee',
-                        initialValue: data['employee'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectEmployeeScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            await _getEmployeeData(res['name']);
-
-                            setState(() {
-                              data['employee'] = res['name'];
-                              data['employee_name'] = res['employee_name'];
-                              data['department'] = res['department'];
-                              data['company'] = res['company'];
-                              data['currency'] = res['currency'];
-                              data['advance_account'] = res['advance_account'];
-                            });
-                          }
-                          return id;
-                        },
-                      ),
-                      if (data['employee_name'] != null)
-                        CustomTextField(
-                          'employee_name',
-                          'Employee Name',
-                          initialValue: data['employee_name'],
-                          enabled: false,
-                        ),
-                      if (data['department'] != null)
-                        CustomTextField(
-                          'department',
-                          'Department',
-                          initialValue: data['department'],
-                          enabled: false,
-                        ),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker(
-                          'posting_date',
-                          'Posting Date'.tr(),
-                          initialValue: data['posting_date'],
-                          onChanged: (value) =>
-                              setState(() => data['posting_date'] = value),
-                        )),
-                        SizedBox(width: 10),
-                      ]),
-                      if (data['currency'] != null)
-                        CustomTextField(
-                          'currency',
-                          'Currency',
-                          initialValue: data['currency'],
-                          enabled: false,
-                        ),
-                      ////// This is Hidden in docs
-                      // if (data['exchange_rate'] != null)
-                      //   CustomTextField(
-                      //     'exchange_rate',
-                      //     'Exchange Rate',
-                      //     initialValue: data['exchange_rate'],
-                      //     enabled: false,
-                      //   ),
-                      //
-                      CheckBoxWidget('repay_unclaimed_amount_from_salary',
-                          'Repay Unclaimed Amount from Salary',
-                          initialValue:
-                              data['repay_unclaimed_amount_from_salary'] == 1
-                                  ? true
-                                  : false,
-                          onChanged: (id, value) => setState(() {
-                                data[id] = value ? 1 : 0;
-                              })),
-
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-
-                ///
-                /// group 2
-                ///
-                Group(
-                    child: Column(
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
                   children: [
-                    //if (data['pending_amount'] != null)
-                    CustomTextField(
-                      'pending_amount',
-                      'Pending Amount',
-                      initialValue:
-                          currency((data['pending_amount'] ?? 0.0).toDouble()),
-                      enabled: false,
-                    ),
-                    NumberTextField(
-                      'advance_amount',
-                      'Advance Amount',
-                      initialValue: data['advance_amount'],
-                      keyboardType: TextInputType.number,
-                      disableError: true,
-                      onChanged: (value) => data['advance_amount'] = value,
-                      onSave: (key, value) => data[key] = value,
-                      validator: (value) =>
-                          numberValidationToast(value, 'Advance Amount'),
-                    ),
-                    CustomTextField(
-                      'purpose',
-                      tr('Purpose'),
-                      onChanged: (value) => data['purpose'] = value,
-                      onSave: (key, value) => data[key] = value,
-                      initialValue: data['purpose'],
-                    ),
+                    const SizedBox(height: 4),
+                    CustomTextFieldTest(
+                      'employee',
+                      'Employee',
+                      initialValue: data['employee'],
+                      onPressed: () async {
+                        String? id;
+                        final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => selectEmployeeScreen()));
+                        if (res != null) {
+                          id = res['name'];
+                          await _getEmployeeData(res['name']);
 
-                    if (data['status'] != null)
-                      CustomTextField(
-                        'status',
-                        'Status',
-                        initialValue: data['status'],
+                          setState(() {
+                            data['employee'] = res['name'];
+                            data['employee_name'] = res['employee_name'];
+                            data['department'] = res['department'];
+                            data['company'] = res['company'];
+                            data['currency'] = res['currency'];
+                            data['advance_account'] = res['advance_account'];
+                          });
+                        }
+                        return id;
+                      },
+                    ),
+                    if (data['employee_name'] != null)
+                      CustomTextFieldTest(
+                        'employee_name',
+                        'Employee Name',
+                        initialValue: data['employee_name'],
                         enabled: false,
                       ),
+                    if (data['department'] != null)
+                      CustomTextFieldTest(
+                        'department',
+                        'Department',
+                        initialValue: data['department'],
+                        enabled: false,
+                      ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'posting_date',
+                        'Posting Date'.tr(),
+                        initialValue: data['posting_date'],
+                        onChanged: (value) =>
+                            setState(() => data['posting_date'] = value),
+                      )),
+                      const SizedBox(width: 10),
+                    ]),
+                    if (data['currency'] != null)
+                      CustomTextFieldTest(
+                        'currency',
+                        'Currency',
+                        initialValue: data['currency'],
+                        enabled: false,
+                      ),
+                    ////// This is Hidden in docs
+                    // if (data['exchange_rate'] != null)
+                    //   CustomTextField(
+                    //     'exchange_rate',
+                    //     'Exchange Rate',
+                    //     initialValue: data['exchange_rate'],
+                    //     enabled: false,
+                    //   ),
+                    //
+                    CheckBoxWidget('repay_unclaimed_amount_from_salary',
+                        'Repay Unclaimed Amount from Salary',
+                        initialValue:
+                            data['repay_unclaimed_amount_from_salary'] == 1
+                                ? true
+                                : false,
+                        onChanged: (id, value) => setState(() {
+                              data[id] = value ? 1 : 0;
+                            })),
 
-                    CustomTextField('advance_account', tr('Advance Account'),
-                        initialValue: data['advance_account'],
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          var res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => accountListScreen()));
-                          return res['parent_account'];
-                        }),
-
-                    CustomTextField('company', tr('Company'),
-                        initialValue: data['company'],
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => companyListScreen()));
-                          print('eee3333 $res');
-
-                          return res['name'];
-                        }),
-
-                    CustomTextField('mode_of_payment', tr('Mode of Payment'),
-                        initialValue: data['mode_of_payment'],
-                        clearButton: true,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => modeOfPaymentScreen()))),
+                    const SizedBox(height: 8),
                   ],
-                )),
+                ),
+              ),
 
-                SizedBox(height: 100),
-              ],
-            ),
+              ///
+              /// group 2
+              ///
+              Group(
+                  child: ListView(
+                children: [
+                  //if (data['pending_amount'] != null)
+                  CustomTextFieldTest(
+                    'pending_amount',
+                    'Pending Amount',
+                    initialValue:
+                        currency((data['pending_amount'] ?? 0.0).toDouble()),
+                    enabled: false,
+                  ),
+                  NumberTextField(
+                    'advance_amount',
+                    'Advance Amount',
+                    initialValue: data['advance_amount'],
+                    keyboardType: TextInputType.number,
+                    disableError: false,
+                    onChanged: (value) => data['advance_amount'] = value,
+                    onSave: (key, value) => data[key] = value,
+                    validator: (value) =>
+                        numberValidationToast(value, 'Advance Amount'),
+                  ),
+                  CustomTextFieldTest(
+                    'purpose',
+                    tr('Purpose'),
+                    onChanged: (value) => data['purpose'] = value,
+                    onSave: (key, value) => data[key] = value,
+                    initialValue: data['purpose'],
+                  ),
+                  if (data['status'] != null)
+                    CustomTextFieldTest(
+                      'status',
+                      'Status',
+                      initialValue: data['status'],
+                      enabled: false,
+                    ),
+
+                  // CustomTextFieldTest('advance_account', tr('Advance Account'),
+                  //     initialValue: data['advance_account'],
+                  //     onSave: (key, value) => data[key] = value,
+                  //     onPressed: () async {
+                  //       var res = await Navigator.of(context).push(
+                  //           MaterialPageRoute(
+                  //               builder: (_) => accountListScreen()));
+                  //       return res['parent_account'];
+                  //     }),
+
+                  // CustomTextFieldTest('company', tr('Company'),
+                  //     initialValue: data['company'],
+                  //     onSave: (key, value) => data[key] = value,
+                  //     onPressed: () async {
+                  //       final res = await Navigator.of(context).push(
+                  //           MaterialPageRoute(
+                  //               builder: (_) => companyListScreen()));
+                  //       print('eee3333 $res');
+
+                  //       return res['name'];
+                  //     }),
+
+                  // CustomTextFieldTest('mode_of_payment', tr('Mode of Payment'),
+                  //     initialValue: data['mode_of_payment'],
+                  //     clearButton: true,
+                  //     disableValidation: true,
+                  //     onSave: (key, value) => data[key] = value,
+                  //     onPressed: () => Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //             builder: (_) => modeOfPaymentScreen()))),
+                ],
+              )),
+            ],
           ),
         ),
       ),

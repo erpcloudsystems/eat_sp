@@ -97,7 +97,7 @@ Color statusColor(String status) {
     case 'To Deliver':
       return Colors.orange;
     case 'Pending':
-      return Colors.orange;
+      return Colors.orange.shade100;
     case 'Partially Ordered':
       return Colors.orange;
     case 'bill':
@@ -159,7 +159,7 @@ Color statusColor(String status) {
     case 'Template':
       return Colors.blue;
     case 'Pending Review':
-      return Colors.orange;
+      return Colors.deepOrange;
     case 'Replied':
       return Colors.blue;
     case 'On Hold':
@@ -167,6 +167,6 @@ Color statusColor(String status) {
     case 'Resolved':
       return Colors.green;
     default:
-      return Colors.transparent;
+      return Colors.grey;
   }
 }

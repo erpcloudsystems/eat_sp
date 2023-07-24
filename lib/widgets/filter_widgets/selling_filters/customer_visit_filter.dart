@@ -38,6 +38,7 @@ class _CustomerVisitFilterState extends State<CustomerVisitFilter> {
             return _values['filter1'];
           },
         ),
+
         CustomTextField(
           'filter2',
           'Address'.tr(),
@@ -55,6 +56,7 @@ class _CustomerVisitFilterState extends State<CustomerVisitFilter> {
             return _values['filter2'];
           },
         ),
+
         DatePicker(
           'filter3',
           'From Date'.tr(),

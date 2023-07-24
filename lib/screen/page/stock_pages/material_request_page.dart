@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
@@ -28,12 +30,25 @@ class MaterialRequestPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
+            Row(
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Material Request',
+                  data: data,
+                  items: data['material_request_type'] == 'Purchase'
+                      ? formMaterialRequestToPurchaseOrder
+                      : formMaterialRequestStockEntry,
+                  disableCreate:
+                      data['docstatus'].toString() == "1" ? false : true,
+                ),
+              ],
+            ),
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Material Request   ',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Material Request   ',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
@@ -63,10 +78,10 @@ class MaterialRequestPage extends StatelessWidget {
                           Icon(Icons.circle,
                               color: statusColor(data['status'] ?? 'none'),
                               size: 12),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           FittedBox(
-                            child: Text(data['status'] ?? 'none'),
                             fit: BoxFit.fitHeight,
+                            child: Text(data['status'] ?? 'none'),
                           ),
                         ],
                       )
@@ -109,9 +124,9 @@ class MaterialRequestPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -135,9 +150,9 @@ class MaterialRequestPage extends StatelessWidget {
                             ),
                           ),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

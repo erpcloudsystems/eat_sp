@@ -1,6 +1,5 @@
 import 'package:NextApp/models/list_models/project_list_models/project_list_model.dart';
 import 'package:NextApp/new_version/core/extensions/status_converter.dart';
-import 'package:NextApp/screen/form/workflow_forms/workflow_form.dart';
 
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
@@ -13,6 +12,7 @@ import '../../screen/form/project_forms/task_form.dart';
 import '../../screen/form/project_forms/timesheet_form.dart';
 import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
+import '../../screen/form/workflow_forms/workflow_form.dart';
 import '../../screen/page/project_pages/issue_page.dart';
 import '../../screen/page/project_pages/project_page.dart';
 import '../../screen/page/project_pages/task_page.dart';
@@ -20,6 +20,7 @@ import '../../screen/page/project_pages/timesheet_page.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
 import '../../screen/page/selling_pages/opportunity_page.dart';
 import '../../screen/page/workflow_pages/workflow_page.dart';
+import '../../test/list_card.dart';
 import '../../widgets/filter_widgets/project_filters/issue_filter.dart';
 import '../../widgets/filter_widgets/project_filters/project_filter.dart';
 import '../../widgets/filter_widgets/project_filters/task_filter.dart';
@@ -228,9 +229,10 @@ class ModuleType {
   static void _onListCardPressed(BuildContext context, String pageId) {
     context.read<ModuleProvider>().pushPage(pageId);
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => GenericPage(),
-      settings:
-          isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
+      builder: (context) => const GenericPage(),
+      settings: isFirstRoute(context)
+          ? null
+          : const RouteSettings(name: CONNECTION_ROUTE),
     ));
   }
 
@@ -240,29 +242,21 @@ class ModuleType {
     title: 'Lead',
     listItem: (item) {
       item as LeadItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Company'.tr(),
-          'Territory'.tr(),
-          'Source'.tr(),
-          'Segment'.tr()
-        ],
-        values: [
-          item.companyName,
-          item.territory,
-          item.source,
-          item.marketSegment
-        ],
+        leftIcon: Icons.account_balance_outlined,
+        leftText: item.companyName,
+        rightIcon: Icons.location_city_outlined,
+        rightText: item.territory,
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: LeadForm(),
+    createForm: const LeadForm(),
     serviceParser: (data) => LeadListModel.fromJson(data),
     pageService: LEAD_PAGE,
-    pageWidget: LeadPage(),
+    pageWidget: const LeadPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Quotation"];
       var items;
@@ -275,7 +269,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: LeadFilter(),
+    filter: const LeadFilter(),
   );
 
   static final opportunity = ModuleType._(
@@ -283,26 +277,31 @@ class ModuleType {
       title: 'Opportunity',
       listItem: (item) {
         item as OpportunityItemModel;
-        return ListCard(
+        return ListCardTest(
           id: item.id,
           title: item.customerName,
           status: item.status,
-          names: [
-            'Opportunity'.tr(),
-            'Date'.tr(),
-            'Type'.tr(),
-            'Sales Stage'.tr()
-          ],
-          values: [
-            item.opportunityFrom,
-            '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
-            item.opportunityType,
-            item.salesStage
-          ],
+          leftIcon: Icons.person_outline_rounded,
+          leftText: item.opportunityFrom,
+          rightIcon: Icons.date_range,
+          rightText:
+              '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+          // names: [
+          //   'Opportunity'.tr(),
+          //   'Date'.tr(),
+          //   'Type'.tr(),
+          //   'Sales Stage'.tr()
+          // ],
+          // values: [
+          //   item.opportunityFrom,
+          //   '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+          //   item.opportunityType,
+          //   item.salesStage
+          // ],
           onPressed: (context) => _onListCardPressed(context, item.id),
         );
       },
-      createForm: InheritedForm(child: OpportunityForm()),
+      createForm: InheritedForm(child: const OpportunityForm()),
       serviceParser: (data) => OpportunityListModel.fromJson(data),
       editPage: (pageData) {
         pageData["doctype"] = ["Quotation"];
@@ -316,37 +315,43 @@ class ModuleType {
 
         // return InheritedForm(child: QuotationForm(), items: items);
       },
-      filter: OpportunityFilter(),
+      filter: const OpportunityFilter(),
       pageService: OPPORTUNITY_PAGE,
-      pageWidget: OpportunityPage());
+      pageWidget: const OpportunityPage());
 
   static final customer = ModuleType._(
     genericListService: 'Customer',
     title: 'Customer',
     listItem: (item) {
       item as CustomerItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Group'.tr(),
-          'Type'.tr(),
-          'Currency'.tr(),
-          'Territory'.tr(),
-          'Mobile'.tr()
-        ],
-        values: [
-          item.customerGroup,
-          item.customerType,
-          item.currency,
-          item.territory,
-          item.mobile
-        ],
+
+        leftIcon: Icons.group,
+        leftText: item.customerGroup,
+
+        rightIcon: Icons.location_city_outlined,
+        rightText: item.territory,
+        // names:
+        //   'Group'.tr(),
+        //   'Type'.tr(),
+        //   'Currency'.tr(),
+        //   'Territory'.tr(),
+        //   'Mobile'.tr()
+        // ],
+        // values: [
+        //   item.customerGroup,
+        //   item.customerType,
+        //   item.currency,
+        //   item.territory,
+        //   item.mobile
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: CustomerForm(),
+    createForm: const CustomerForm(),
     serviceParser: (data) => CustomerListModel.fromJson(data),
     pageService: CUSTOMER_PAGE,
     pageWidget: CustomerPage(),
@@ -360,7 +365,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: CustomerFilter(),
+    filter: const CustomerFilter(),
   );
 
   static final quotation = ModuleType._(
@@ -368,26 +373,32 @@ class ModuleType {
       title: 'Quotation',
       listItem: (item) {
         item as QuotationItemModel;
-        return ListCard(
-            id: item.id,
-            title: item.customerName,
-            status: item.status,
-            names: [
-              'Quotation To'.tr(),
-              'Date'.tr(),
-              'Total'.tr() + ' (${item.currency})'
-            ],
-            onPressed: (context) => _onListCardPressed(context, item.id),
-            values: [
-              item.quotationTo,
-              formatDate(item.transactionDate),
-              currency(item.grandTotal)
-            ]);
+        return ListCardTest(
+          id: item.id,
+          title: item.customerName,
+          status: item.status,
+
+          leftIcon: Icons.money,
+          leftText: currency(item.grandTotal),
+          rightIcon: Icons.date_range,
+          rightText: formatDate(item.transactionDate),
+          // names: [
+          //   'Quotation To'.tr(),
+          //   'Date'.tr(),
+          //   'Total'.tr() + ' (${item.currency})'
+          // ],
+          // values: [
+          //   item.quotationTo,
+          //   formatDate(item.transactionDate),
+          //   currency(item.grandTotal)
+          // ],
+          onPressed: (context) => _onListCardPressed(context, item.id),
+        );
       },
-      createForm: InheritedForm(child: QuotationForm()),
+      createForm: InheritedForm(child: const QuotationForm()),
       serviceParser: (data) => QuotationListModel.fromJson(data),
       pageService: QUOTATION_PAGE,
-      pageWidget: QuotationPage(),
+      pageWidget: const QuotationPage(),
       editPage: (pageData) {
         pageData["doctype"] = ["Quotation"];
         var items;
@@ -398,31 +409,37 @@ class ModuleType {
           return ItemSelectModel.fromJson(e);
         }).toList();
       },
-      filter: QuotationFilter());
+      filter: const QuotationFilter());
 
   static final salesOrder = ModuleType._(
     genericListService: 'Sales Order',
     title: 'Sales Order',
     listItem: (item) {
       item as OrderItemModel;
-      return ListCard(
+      return ListCardTest(
         title: item.customerName,
         status: item.status,
         id: item.id,
-        names: ['Address', 'Date'.tr(), 'Total' + ' (${item.currency})'],
-        values: [
-          item.customerAddress,
-          formatDate(item.transactionDate),
-          currency(item.grandTotal).toString()
-        ],
+
+        leftIcon: Icons.location_on_outlined,
+        leftText: item.customerAddress,
+
+        rightIcon: Icons.date_range,
+        rightText: formatDate(item.transactionDate),
+        // names: ['Address', 'Date'.tr(), 'Total' + ' (${item.currency})'],
+        // values: [
+        //   item.customerAddress,
+        //   formatDate(item.transactionDate),
+        //   currency(item.grandTotal).toString()
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: SalesOrderForm()),
+    createForm: InheritedForm(child: const SalesOrderForm()),
     serviceParser: (data) => OrderListModel.fromJson(data),
     pageService: SALES_ORDER_PAGE,
-    pageWidget: SalesOrderPage(),
-    filter: new SalesOrderFilter(),
+    pageWidget: const SalesOrderPage(),
+    filter: const SalesOrderFilter(),
     editPage: (pageData) {
       pageData["doctype"] = ["Quotation"];
       var items;
@@ -440,27 +457,22 @@ class ModuleType {
     title: 'Sales Invoice',
     listItem: (item) {
       item as SalesInvoiceItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.customerName,
         status: item.status,
-        names: [
-          'Address'.tr(),
-          'Posting Date'.tr(),
-          'Total'.tr() + ' (${item.currency})'
-        ],
-        values: [
-          item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          currency(item.grandTotal).toString()
-        ],
+        leftIcon: Icons.edit_location_outlined,
+        leftText: item.customerAddress,
+        rightIcon: Icons.date_range,
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: SalesInvoiceForm()),
+    createForm: InheritedForm(child: const SalesInvoiceForm()),
     serviceParser: (data) => SalesInvoiceListModel.fromJson(data),
     pageService: SALES_INVOICE_PAGE,
-    pageWidget: SalesInvoicePage(),
+    pageWidget: const SalesInvoicePage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Quotation"];
       var items;
@@ -471,7 +483,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: SalesInvoiceFilter(),
+    filter: const SalesInvoiceFilter(),
   );
 
   static final paymentEntry = ModuleType._(
@@ -479,29 +491,35 @@ class ModuleType {
     title: 'Payment Entry',
     listItem: (item) {
       item as PaymentEntryItem;
-      return ListCard(
+      return ListCardTest(
         title: item.partyName,
         id: item.id,
         status: item.status,
-        names: [
-          'Payment Type'.tr(),
-          'Mode Of Payment'.tr(),
-          'Date'.tr(),
-          'Amount '.tr() + '(${item.currency})'
-        ],
-        values: [
-          item.paymentType,
-          item.modeOfPayment,
-          formatDate(item.postingDate),
-          currency(item.paidAmount)
-        ],
+        leftIcon: Icons.type_specimen_outlined,
+        leftText:  item.paymentType,
+
+        rightIcon: Icons.date_range,
+        rightText: formatDate(item.postingDate),
+
+        // names: [
+        //   'Payment Type'.tr(),
+        //   'Mode Of Payment'.tr(),
+        //   'Date'.tr(),
+        //   'Amount '.tr() + '(${item.currency})'
+        // ],
+        // values: [
+        //   item.paymentType,
+        //   item.modeOfPayment,
+        //   formatDate(item.postingDate),
+        //   currency(item.paidAmount)
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: PaymentForm(),
+    createForm: const PaymentForm(),
     serviceParser: (data) => PaymentEntryModel.fromJson(data),
     pageService: PAYMENT_ENTRY_PAGE,
-    pageWidget: PaymentEntryPage(),
+    pageWidget: const PaymentEntryPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Quotation"];
       var items;
@@ -514,7 +532,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: PaymentEntryFilter(),
+    filter: const PaymentEntryFilter(),
   );
 
   static final customerVisit = ModuleType._(
@@ -522,31 +540,38 @@ class ModuleType {
     title: 'Customer Visit',
     listItem: (item) {
       item as CustomerVisitItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.customer,
         status: item.status.convertStatusToString(),
-        names: [
-          'Customer Address'.tr(),
-          'Posting Date'.tr(),
-          'Time'.tr(),
-        ],
-        values: [
-          item.customerAddress,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          item.time,
-        ],
+
+        leftIcon: Icons.edit_location_alt_outlined,
+        leftText: item.customerAddress,
+
+        rightIcon: Icons.date_range,
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Customer Address'.tr(),
+        //   'Posting Date'.tr(),
+        //   'Time'.tr(),
+        // ],
+        // values: [
+        //   item.customerAddress,
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   item.time,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: CustomerVisitForm(),
+    createForm: const CustomerVisitForm(),
     serviceParser: (data) => CustomerVisitListModel.fromJson(data),
     pageService: CUSTOMER_VISIT_PAGE,
-    pageWidget: CustomerVisitPage(),
+    pageWidget: const CustomerVisitPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Quotation"];
     },
-    filter: CustomerVisitFilter(),
+    filter: const CustomerVisitFilter(),
   );
 
   static final address = ModuleType._(
@@ -554,37 +579,43 @@ class ModuleType {
     title: 'Address',
     listItem: (item) {
       item as AddressItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.addressTitle,
         status: item.status,
-        names: [
-          'Address Type'.tr(),
-          'Address Line1'.tr(),
-          'city'.tr(),
-          'Country'.tr(),
-          'Link Doctype'.tr(),
-          'Link Name'.tr(),
-        ],
-        values: [
-          item.addressType,
-          item.addressLine1,
-          item.city,
-          item.country,
-          item.linkDocType,
-          item.linkName,
-        ],
+
+        leftIcon: Icons.edit_location_alt_outlined,
+        leftText: item.addressLine1,
+
+        rightIcon: Icons.location_city_outlined,
+        rightText: item.city,
+        // names: [
+        //   'Address Type'.tr(),
+        //   'Address Line1'.tr(),
+        //   'city'.tr(),
+        //   'Country'.tr(),
+        //   'Link Doctype'.tr(),
+        //   'Link Name'.tr(),
+        // ],
+        // values: [
+        //   item.addressType,
+        //   item.addressLine1,
+        //   item.city,
+        //   item.country,
+        //   item.linkDocType,
+        //   item.linkName,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: AddressForm(),
+    createForm: const AddressForm(),
     serviceParser: (data) => AddressListModel.fromJson(data),
     pageService: ADDRESS_PAGE,
-    pageWidget: AddressPage(),
+    pageWidget: const AddressPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Address"];
     },
-    filter: AddressFilter(),
+    filter: const AddressFilter(),
   );
 
   static final contact = ModuleType._(
@@ -592,37 +623,43 @@ class ModuleType {
     title: 'Contact',
     listItem: (item) {
       item as ContactItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.firstName,
         status: item.status,
-        names: [
-          'User'.tr(),
-          'Mobile No'.tr(),
-          'Phone'.tr(),
-          'Email ID'.tr(),
-          'Link Doctype'.tr(),
-          'Link Name'.tr(),
-        ],
-        values: [
-          item.user,
-          item.mobileNo,
-          item.emailId,
-          item.emailId,
-          item.linkDoctype,
-          item.linkName,
-        ],
+
+        leftIcon: Icons.email_outlined,
+        leftText: item.emailId,
+
+        rightIcon: Icons.phone,
+        rightText: item.mobileNo,
+        // names: [
+        //   'User'.tr(),
+        //   'Mobile No'.tr(),
+        //   'Phone'.tr(),
+        //   'Email ID'.tr(),
+        //   'Link Doctype'.tr(),
+        //   'Link Name'.tr(),
+        // ],
+        // values: [
+        //   item.user,
+        //   item.mobileNo,
+        //   item.emailId,
+        //   item.emailId,
+        //   item.linkDoctype,
+        //   item.linkName,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedContactForm(child: ContactForm()),
+    createForm: InheritedContactForm(child: const ContactForm()),
     serviceParser: (data) => ContactListModel.fromJson(data),
     pageService: CONTACT_PAGE,
-    pageWidget: ContactPage(),
+    pageWidget: const ContactPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Contact"];
     },
-    filter: ContactFilter(),
+    filter: const ContactFilter(),
   );
 
   // Stock
@@ -637,14 +674,14 @@ class ModuleType {
         onPressed: (context) => _onListCardPressed(context, item.itemCode),
       );
     },
-    createForm: InheritedUOMForm(child: ItemForm()),
+    createForm: InheritedUOMForm(child: const ItemForm()),
     editPage: (pageData) {
       pageData["doctype"] = ["Item"];
     },
     serviceParser: (data) => ItemTableModel.fromJson(data),
     pageService: ITEM_PAGE,
-    pageWidget: ItemPage(),
-    filter: ItemFilter(),
+    pageWidget: const ItemPage(),
+    filter: const ItemFilter(),
   );
 
   static final stockEntry = ModuleType._(
@@ -652,23 +689,29 @@ class ModuleType {
     title: 'Stock Entry',
     listItem: (item) {
       item as StockEntryItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.stockEntryType,
-        names: ['From Warehouse'.tr(), 'To Warehouse'.tr(), 'Date'.tr()],
         status: mapStatus(item.docStatus),
-        values: [
-          item.fromWarehouse,
-          item.toWarehouse,
-          formatDate(item.postingDate)
-        ],
+
+        leftIcon: Icons.warehouse,
+        leftText: item.fromWarehouse,
+
+        rightIcon: Icons.warehouse_outlined,
+        rightText: item.toWarehouse,
+        // names: ['From Warehouse'.tr(), 'To Warehouse'.tr(), 'Date'.tr()],
+        // values: [
+        //   item.fromWarehouse,
+        //   item.toWarehouse,
+        //   formatDate(item.postingDate)
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: StockEntryForm(),
+    createForm: const StockEntryForm(),
     serviceParser: (data) => StockEntryListModel.fromJson(data),
     pageService: STOCK_ENTRY_PAGE,
-    pageWidget: StockEntryPage(),
+    pageWidget: const StockEntryPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Stock Entry"];
       var items;
@@ -681,7 +724,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: StockEntryFilter(),
+    filter: const StockEntryFilter(),
   );
 
   static final deliveryNote = ModuleType._(
@@ -689,29 +732,34 @@ class ModuleType {
     title: 'Delivery Note',
     listItem: (item) {
       item as DeliveryNoteItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.customer,
         status: item.status,
-        names: [
-          'Territory'.tr(),
-          'Date'.tr(),
-          'Warehouse'.tr(),
-          'Currency'.tr()
-        ],
-        values: [
-          item.territory,
-          formatDate(item.postingDate),
-          item.setWarehouse,
-          item.currency
-        ],
+
+        leftIcon: Icons.location_city_outlined,
+        leftText: item.territory,
+        rightIcon: Icons.date_range,
+        rightText: formatDate(item.postingDate),
+        // names: [
+        //   'Territory'.tr(),
+        //   'Date'.tr(),
+        //   'Warehouse'.tr(),
+        //   'Currency'.tr()
+        // ],
+        // values: [
+        //   item.territory,
+        //   formatDate(item.postingDate),
+        //   item.setWarehouse,
+        //   item.currency
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: DeliveryNoteForm()),
+    createForm: InheritedForm(child: const DeliveryNoteForm()),
     serviceParser: (data) => DeliveryNoteModel.fromJson(data),
     pageService: DELIVERY_NOTE_PAGE,
-    pageWidget: DeliveryNotePage(),
+    pageWidget: const DeliveryNotePage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Delivery Note"];
       var items;
@@ -724,7 +772,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: DeliveryNoteFilter(),
+    filter: const DeliveryNoteFilter(),
   );
 
   static final purchaseReceipt = ModuleType._(
@@ -732,25 +780,29 @@ class ModuleType {
     title: 'Purchase Receipt',
     listItem: (item) {
       item as PurchaseReceiptItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.supplier,
-        names: [
-          'Warehouse'.tr(),
-          'Date'.tr(),
-        ],
-        values: [
-          item.setWarehouse,
-          formatDate(item.postingDate),
-        ],
+        leftIcon: Icons.warehouse_outlined,
+        leftText: item.setWarehouse,
+        rightIcon: Icons.date_range,
+        rightText: formatDate(item.postingDate),
+        // names: [
+        //   'Warehouse'.tr(),
+        //   'Date'.tr(),
+        // ],
+        // values: [
+        //   item.setWarehouse,
+        //   formatDate(item.postingDate),
+        // ],
         status: item.status,
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: PurchaseReceiptForm()),
+    createForm: InheritedForm(child: const PurchaseReceiptForm()),
     serviceParser: (data) => PurchaseReceiptListModel.fromJson(data),
     pageService: PURCHASE_RECEIPT_PAGE,
-    pageWidget: PurchaseReceiptPage(),
+    pageWidget: const PurchaseReceiptPage(),
     editPage: (pageData) {
       //TODO Check @Run
       pageData["doctype"] = ["Purchase Receipt"];
@@ -764,7 +816,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: PurchaseReceiptFilter(),
+    filter: const PurchaseReceiptFilter(),
   );
 
   static final materialRequest = ModuleType._(
@@ -772,19 +824,24 @@ class ModuleType {
     title: 'Material Request',
     listItem: (item) {
       item as MaterialItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.setWarehouse,
         status: item.status,
-        names: ['Request Type', 'Date'.tr()],
-        values: [item.requestType, formatDate(item.transactionDate)],
+
+        leftIcon: Icons.request_quote_outlined,
+        leftText: item.requestType,
+        rightIcon: Icons.date_range,
+        rightText: formatDate(item.transactionDate),
+        // names: ['Request Type', 'Date'.tr()],
+        // values: [item.requestType, formatDate(item.transactionDate)],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: MaterialRequestForm()),
+    createForm: InheritedForm(child: const MaterialRequestForm()),
     serviceParser: (data) => MaterialListModel.fromJson(data),
     pageService: MATERIAL_REQUEST_PAGE,
-    pageWidget: MaterialRequestPage(),
+    pageWidget: const MaterialRequestPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Stock Entry"];
       var items;
@@ -797,7 +854,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: MaterialRequestFilter(),
+    filter: const MaterialRequestFilter(),
   );
 
   //Buying
@@ -806,28 +863,34 @@ class ModuleType {
     title: 'Supplier',
     listItem: (item) {
       item as SupplierItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Group'.tr(),
-          'Type'.tr(),
-          'Currency'.tr(),
-          'Country'.tr(),
-          'Mobile'.tr()
-        ],
-        values: [
-          item.supplierGroup,
-          item.supplierType,
-          item.currency,
-          item.country,
-          item.mobile
-        ],
+
+        leftIcon: Icons.group,
+        leftText: item.supplierGroup,
+
+        rightIcon: Icons.phone,
+        rightText: item.mobile,
+        // names: [
+        //   'Group'.tr(),
+        //   'Type'.tr(),
+        //   'Currency'.tr(),
+        //   'Country'.tr(),
+        //   'Mobile'.tr()
+        // ],
+        // values: [
+        //   item.supplierGroup,
+        //   item.supplierType,
+        //   item.currency,
+        //   item.country,
+        //   item.mobile
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: SupplierForm(),
+    createForm: const SupplierForm(),
     serviceParser: (data) => SupplierListModel.fromJson(data),
     pageService: SUPPLIER_PAGE,
     pageWidget: SupplierPage(),
@@ -843,7 +906,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: SupplierFilter(),
+    filter: const SupplierFilter(),
   );
 
   static final supplierQuotation = ModuleType._(
@@ -851,27 +914,32 @@ class ModuleType {
     title: 'Supplier Quotation',
     listItem: (item) {
       item as SupplierQuotationItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Transaction Date'.tr(),
-          'Valid Till'.tr(),
-          'Total'.tr() + ' (${item.currency})',
-        ],
-        values: [
-          item.transactionDate,
-          item.validTill,
-          currency(item.grandTotal).toString() + ' (${item.currency})'
-        ],
+        leftIcon: Icons.money,
+        leftText: '${currency(item.grandTotal)} (${item.currency})',
+
+        rightIcon: Icons.date_range,
+        rightText: item.transactionDate,
+        // names: [
+        //   'Transaction Date'.tr(),
+        //   'Valid Till'.tr(),
+        //   'Total'.tr() + ' (${item.currency})',
+        // ],
+        // values: [
+        //   item.transactionDate,
+        //   item.validTill,
+        //   currency(item.grandTotal).toString() + ' (${item.currency})'
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: SupplierQuotationForm()),
+    createForm: InheritedForm(child: const SupplierQuotationForm()),
     serviceParser: (data) => SupplierQuotationListModel.fromJson(data),
     pageService: SUPPLIER_QUOTATION_PAGE,
-    pageWidget: SupplierQuotationPage(),
+    pageWidget: const SupplierQuotationPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Supplier Quotation"];
       var items;
@@ -882,7 +950,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: SupplierQuotationFilter(),
+    filter: const SupplierQuotationFilter(),
   );
 
   static final purchaseInvoice = ModuleType._(
@@ -890,25 +958,29 @@ class ModuleType {
     title: 'Purchase Invoice',
     listItem: (item) {
       item as PurchaseInvoiceItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Posting Date'.tr(),
-          'Total'.tr() + ' (${item.currency})',
-        ],
-        values: [
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          currency(item.grandTotal).toString()
-        ],
+        leftIcon: Icons.money,
+        leftText:  currency(item.grandTotal).toString(),
+        rightIcon: Icons.date_range,
+        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Posting Date'.tr(),
+        //   'Total'.tr() + ' (${item.currency})',
+        // ],
+        // values: [
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   currency(item.grandTotal).toString()
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: PurchaseInvoiceForm()),
+    createForm: InheritedForm(child: const PurchaseInvoiceForm()),
     serviceParser: (data) => PurchaseInvoiceListModel.fromJson(data),
     pageService: PURCHASE_INVOICE_PAGE,
-    pageWidget: PurchaseInvoicePage(),
+    pageWidget: const PurchaseInvoicePage(),
     editPage: (pageData) {
       //TODO Check @Run
       pageData["doctype"] = ["Purchase Invoice"];
@@ -927,7 +999,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: PurchaseInvoiceFilter(),
+    filter: const PurchaseInvoiceFilter(),
   );
 
   static final purchaseOrder = ModuleType._(
@@ -935,27 +1007,31 @@ class ModuleType {
     title: 'Purchase Order',
     listItem: (item) {
       item as PurchaseOrderItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Transaction Date'.tr(),
-          'Warehouse'.tr(),
-          'Total'.tr() + ' (${item.currency})'
-        ],
-        values: [
-          '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
-          item.setWarehouse,
-          currency(item.grandTotal).toString()
-        ],
+        leftIcon: Icons.money,
+        leftText: currency(item.grandTotal).toString(),
+        rightIcon: Icons.date_range,
+        rightText: '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+        // names: [
+        //   'Transaction Date'.tr(),
+        //   'Warehouse'.tr(),
+        //   'Total'.tr() + ' (${item.currency})'
+        // ],
+        // values: [
+        //   '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+        //   item.setWarehouse,
+        //   currency(item.grandTotal).toString()
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: PurchaseOrderForm()),
+    createForm: InheritedForm(child: const PurchaseOrderForm()),
     serviceParser: (data) => PurchaseOrderListModel.fromJson(data),
     pageService: PURCHASE_ORDER_PAGE,
-    pageWidget: PurchaseOrderPage(),
+    pageWidget: const PurchaseOrderPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Purchase Order"];
       var items;
@@ -968,7 +1044,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: PurchaseOrderFilter(), //TODO (waiting for backend)
+    filter: const PurchaseOrderFilter(), //TODO (waiting for backend)
   );
 
   // HR
@@ -978,26 +1054,32 @@ class ModuleType {
     title: 'Employee',
     listItem: (item) {
       item as EmployeeItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'branch'.tr(),
-          'Designation'.tr(),
-          'Attendance Device Id'.tr(),
-          'Department'.tr(),
-        ],
-        values: [
-          item.branch,
-          item.designation,
-          item.attendanceDeviceId,
-          item.department,
-        ],
+
+        leftIcon: Icons.account_balance_outlined,
+        leftText: item.department,
+
+        rightIcon: Icons.location_city,
+        rightText: item.branch,
+        // names: [
+        //   'branch'.tr(),
+        //   'Designation'.tr(),
+        //   'Attendance Device Id'.tr(),
+        //   'Department'.tr(),
+        // ],
+        // values: [
+        //   item.branch,
+        //   item.designation,
+        //   item.attendanceDeviceId,
+        //   item.department,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: EmployeeForm(),
+    createForm: const EmployeeForm(),
     serviceParser: (data) => EmployeeListModel.fromJson(data),
     pageService: EMPLOYEE_PAGE,
     pageWidget: EmployeePage(),
@@ -1013,7 +1095,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: EmployeeFilter(),
+    filter: const EmployeeFilter(),
   );
 
   static final leaveApplication = ModuleType._(
@@ -1021,31 +1103,35 @@ class ModuleType {
     title: 'Leave Application',
     listItem: (item) {
       item as LeaveApplicationItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Department'.tr(),
-          'From Date'.tr(),
-          'To Date'.tr(),
-          'Total Leave Days'.tr(),
-          'Leave Type'.tr(),
-        ],
-        values: [
-          item.department,
-          '${item.fromDate.day}/${item.fromDate.month}/${item.fromDate.year}',
-          '${item.toDate.day}/${item.toDate.month}/${item.toDate.year}',
-          item.totalLeaveDays.toString(),
-          item.leaveType,
-        ],
+        leftIcon: Icons.account_balance_outlined,
+        leftText:  item.department,
+        rightIcon: Icons.output_outlined,
+        rightText: item.leaveType,
+        // names: [
+        //   'Department'.tr(),
+        //   'From Date'.tr(),
+        //   'To Date'.tr(),
+        //   'Total Leave Days'.tr(),
+        //   'Leave Type'.tr(),
+        // ],
+        // values: [
+        //   item.department,
+        //   '${item.fromDate.day}/${item.fromDate.month}/${item.fromDate.year}',
+        //   '${item.toDate.day}/${item.toDate.month}/${item.toDate.year}',
+        //   item.totalLeaveDays.toString(),
+        //   item.leaveType,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: LeaveApplicationForm()),
+    createForm: InheritedForm(child: const LeaveApplicationForm()),
     serviceParser: (data) => LeaveApplicationListModel.fromJson(data),
     pageService: LEAVE_APPLICATION_PAGE,
-    pageWidget: LeaveApplicationPage(),
+    pageWidget: const LeaveApplicationPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Leave Application"];
       var items;
@@ -1058,7 +1144,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: LeaveApplicationFilter(),
+    filter: const LeaveApplicationFilter(),
   );
 
   static final employeeCheckin = ModuleType._(
@@ -1066,31 +1152,36 @@ class ModuleType {
     title: 'Employee Checkin',
     listItem: (item) {
       item as EmployeeCheckinItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Employee Id'.tr(),
-          'Log Type'.tr(),
-          'Time'.tr(),
-          'Shift'.tr(),
-          'Device Id'.tr(),
-        ],
-        values: [
-          item.employee,
-          item.logType,
-          '${item.time.hour}:${item.time.minute}}',
-          item.shift,
-          item.deviceId.toString(),
-        ],
+
+        leftIcon: Icons.perm_identity_sharp,
+        leftText: item.employee,
+        rightIcon: Icons.access_time,
+        rightText: '${item.time.hour}:${item.time.minute}',
+        // names: [
+        //   'Employee Id'.tr(),
+        //   'Log Type'.tr(),
+        //   'Time'.tr(),
+        //   'Shift'.tr(),
+        //   'Device Id'.tr(),
+        // ],
+        // values: [
+        //   item.employee,
+        //   item.logType,
+        //   '${item.time.hour}:${item.time.minute}}',
+        //   item.shift,
+        //   item.deviceId.toString(),
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: EmployeeCheckinFrom()),
+    createForm: InheritedForm(child: const EmployeeCheckinFrom()),
     serviceParser: (data) => EmployeeCheckinListModel.fromJson(data),
     pageService: EMPLOYEE_CHECKIN_PAGE,
-    pageWidget: EmployeeCheckinPage(),
+    pageWidget: const EmployeeCheckinPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Employee Checkin"];
       var items;
@@ -1103,7 +1194,7 @@ class ModuleType {
 
       // return InheritedForm(child: QuotationForm(), items: items);
     },
-    filter: EmployeeCheckinFilter(),
+    filter: const EmployeeCheckinFilter(),
   );
 
   static final attendanceRequest = ModuleType._(
@@ -1111,31 +1202,35 @@ class ModuleType {
     title: 'Attendance Request',
     listItem: (item) {
       item as AttendanceRequestItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.docStatus,
-        names: [
-          'Employee Id'.tr(),
-          'From Date'.tr(),
-          'To Date'.tr(),
-          'Reason'.tr(),
-          'Department'.tr(),
-        ],
-        values: [
-          item.employee,
-          '${item.fromDate.day}/${item.fromDate.month}/${item.fromDate.year}',
-          '${item.toDate.day}/${item.toDate.month}/${item.toDate.year}',
-          item.reason,
-          item.department,
-        ],
+        leftIcon: Icons.perm_identity_sharp,
+        leftText: item.employee,
+        rightIcon: Icons.request_page_outlined,
+        rightText: item.reason,
+        // names: [
+        //   'Employee Id'.tr(),
+        //   'From Date'.tr(),
+        //   'To Date'.tr(),
+        //   'Reason'.tr(),
+        //   'Department'.tr(),
+        // ],
+        // values: [
+        //   item.employee,
+        //   '${item.fromDate.day}/${item.fromDate.month}/${item.fromDate.year}',
+        //   '${item.toDate.day}/${item.toDate.month}/${item.toDate.year}',
+        //   item.reason,
+        //   item.department,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedForm(child: AttendanceRequestForm()),
+    createForm: InheritedForm(child: const AttendanceRequestForm()),
     serviceParser: (data) => AttendanceRequestListModel.fromJson(data),
     pageService: ATTENDANCE_REQUEST_PAGE,
-    pageWidget: AttendanceRequestPage(),
+    pageWidget: const AttendanceRequestPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Attendance Request"];
       var items;
@@ -1146,7 +1241,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: AttendanceRequestFilter(),
+    filter: const AttendanceRequestFilter(),
   );
 
   static final employeeAdvance = ModuleType._(
@@ -1154,29 +1249,33 @@ class ModuleType {
     title: 'Employee Advance',
     listItem: (item) {
       item as EmployeeAdvanceItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Employee'.tr(),
-          'Posting Date'.tr(),
-          'Purpose'.tr(),
-          'Department'.tr(),
-        ],
-        values: [
-          item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          item.purpose,
-          item.department,
-        ],
+        leftIcon: Icons.perm_identity_sharp,
+        leftText: item.employee,
+        rightIcon: Icons.date_range,
+        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Employee'.tr(),
+        //   'Posting Date'.tr(),
+        //   'Purpose'.tr(),
+        //   'Department'.tr(),
+        // ],
+        // values: [
+        //   item.employee,
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   item.purpose,
+        //   item.department,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: EmployeeAdvanceForm(),
+    createForm: const EmployeeAdvanceForm(),
     serviceParser: (data) => EmployeeAdvanceListModel.fromJson(data),
     pageService: EMPLOYEE_ADVANCE_PAGE,
-    pageWidget: EmployeeAdvancePage(),
+    pageWidget: const EmployeeAdvancePage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Employee Advance"];
       var items;
@@ -1187,7 +1286,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: EmployeeAdvanceFilter(),
+    filter: const EmployeeAdvanceFilter(),
   );
 
   static final expenseClaim = ModuleType._(
@@ -1195,29 +1294,33 @@ class ModuleType {
     title: 'Expense Claim',
     listItem: (item) {
       item as ExpenseClaimItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.name,
         status: item.status,
-        names: [
-          'Employee'.tr(),
-          'Posting Date'.tr(),
-          'Grand Total'.tr(),
-          'Department'.tr(),
-        ],
-        values: [
-          item.employee,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          item.grandTotal.toString(),
-          item.department,
-        ],
+        leftIcon: Icons.perm_identity_sharp,
+        leftText: item.employee,
+        rightIcon: Icons.date_range,
+        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Employee'.tr(),
+        //   'Posting Date'.tr(),
+        //   'Grand Total'.tr(),
+        //   'Department'.tr(),
+        // ],
+        // values: [
+        //   item.employee,
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   item.grandTotal.toString(),
+        //   item.department,
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedExpenseForm(child: ExpenseClaimForm()),
+    createForm: InheritedExpenseForm(child: const ExpenseClaimForm()),
     serviceParser: (data) => ExpenseClaimListModel.fromJson(data),
     pageService: EXPENSE_CLAIM_PAGE,
-    pageWidget: ExpenseClaimPage(),
+    pageWidget: const ExpenseClaimPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Expense Claim"];
       var items;
@@ -1228,7 +1331,7 @@ class ModuleType {
         return ItemSelectModel.fromJson(e);
       }).toList();
     },
-    filter: ExpenseClaimFilter(),
+    filter: const ExpenseClaimFilter(),
   );
 
   static final loanApplication = ModuleType._(
@@ -1236,35 +1339,39 @@ class ModuleType {
     title: 'Loan Application',
     listItem: (item) {
       item as LoanApplicationItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.applicantName,
         status: item.status,
-        names: [
-          'Applicant Type'.tr(),
-          'Posting Date'.tr(),
-          'Applicant'.tr(),
-          'Loan Type'.tr(),
-          'Loan Amount'.tr(),
-        ],
-        values: [
-          item.applicantType,
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          item.applicant,
-          item.loanType,
-          item.loanAmount.toString(),
-        ],
+        leftIcon: Icons.attach_money,
+        leftText: item.loanAmount.toString(),
+        rightIcon: Icons.date_range,
+        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Applicant Type'.tr(),
+        //   'Posting Date'.tr(),
+        //   'Applicant'.tr(),
+        //   'Loan Type'.tr(),
+        //   'Loan Amount'.tr(),
+        // ],
+        // values: [
+        //   item.applicantType,
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   item.applicant,
+        //   item.loanType,
+        //   item.loanAmount.toString(),
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: LoanApplicationForm(),
+    createForm: const LoanApplicationForm(),
     serviceParser: (data) => LoanApplicationListModel.fromJson(data),
     pageService: LOAN_APPLICATION_PAGE,
-    pageWidget: LoanApplicationPage(),
+    pageWidget: const LoanApplicationPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Loan Application"];
     },
-    filter: LoanApplicationFilter(),
+    filter: const LoanApplicationFilter(),
   );
 
   static final journalEntry = ModuleType._(
@@ -1272,35 +1379,39 @@ class ModuleType {
     title: 'Journal Entry',
     listItem: (item) {
       item as JournalEntryItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.id,
         title: item.voucherType,
         status: item.docStatus.convertStatusToString(),
-        names: [
-          'Total'.tr(),
-          'Posting Date'.tr(),
-          'Mode Of Payment'.tr(),
-          'Cheque No'.tr(),
-          'Cheque Date'.tr(),
-        ],
-        values: [
-          item.totalDebit.toString(),
-          '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-          item.modeOfPayment,
-          item.chequeNo,
-          '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',
-        ],
+        leftIcon: Icons.money,
+        leftText: item.totalDebit.toString(),
+        rightIcon: Icons.date_range,
+        rightText:  '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        // names: [
+        //   'Total'.tr(),
+        //   'Posting Date'.tr(),
+        //   'Mode Of Payment'.tr(),
+        //   'Cheque No'.tr(),
+        //   'Cheque Date'.tr(),
+        // ],
+        // values: [
+        //   item.totalDebit.toString(),
+        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        //   item.modeOfPayment,
+        //   item.chequeNo,
+        //   '${item.chequeDate.day}/${item.chequeDate.month}/${item.chequeDate.year}',
+        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
-    createForm: InheritedAccountForm(child: JournalEntryForm()),
+    createForm: InheritedAccountForm(child: const JournalEntryForm()),
     serviceParser: (data) => JournalEntryListModel.fromJson(data),
     pageService: JOURNAL_ENTRY_PAGE,
-    pageWidget: JournalEntryPage(),
+    pageWidget: const JournalEntryPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Journal Entry"];
     },
-    filter: JournalEntryFilter(),
+    filter: const JournalEntryFilter(),
   );
 
   ///__________________________________________New version modules____________________________________
@@ -1311,21 +1422,14 @@ class ModuleType {
     title: DocTypesName.task,
     listItem: (item) {
       item as TaskItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.name!,
         status: item.status!,
-        names: [
-          'Subject',
-          'Priority',
-          'Project',
-          'Expected End Date',
-        ],
-        values: [
-          item.subject!,
-          item.priority!,
-          item.project!,
-          item.expectedEndDate.formatDate(),
-        ],
+        title: item.project ?? 'none'.tr(),
+        leftIcon: Icons.priority_high,
+        leftText: item.priority ?? 'none'.tr(),
+        rightIcon: Icons.calendar_month_outlined,
+        rightText: item.expectedEndDate.formatDate(),
         onPressed: (context) => _onListCardPressed(
           context,
           item.name!,
@@ -1333,13 +1437,13 @@ class ModuleType {
       );
     },
     serviceParser: (data) => TaskListModel.fromJson(data),
-    createForm: TaskForm(),
+    createForm: const TaskForm(),
     pageService: TASK_PAGE,
-    pageWidget: TaskPage(),
+    pageWidget: const TaskPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Task"];
     },
-    filter: TaskFilterScreen(),
+    filter: const TaskFilterScreen(),
   );
 
   /// Timesheet
@@ -1348,22 +1452,14 @@ class ModuleType {
     title: DocTypesName.timesheet,
     listItem: (item) {
       item as TimesheetModel;
-      return ListCard(
+      return ListCardTest(
         id: item.name!,
         title: item.parentProject!,
         status: item.status!,
-        names: [
-          'Customer',
-          'Exchange Rate',
-          'Start Date',
-          'End Date',
-        ],
-        values: [
-          item.customer!,
-          item.exchangeRate.toString(),
-          item.startDate!.formatDate(),
-          item.endDate!.formatDate(),
-        ],
+        leftIcon: Icons.person_outline_rounded,
+        leftText: item.customer ?? 'none',
+        rightIcon: Icons.date_range,
+        rightText: item.startDate!.formatDate(),
         onPressed: (context) => _onListCardPressed(
           context,
           item.name!,
@@ -1371,13 +1467,13 @@ class ModuleType {
       );
     },
     serviceParser: (data) => TimesheetListModel.fromJson(data),
-    createForm: TimesheetForm(),
+    createForm: const TimesheetForm(),
     pageService: TIMESHEET_PAGE,
-    pageWidget: TimesheetPage(),
+    pageWidget: const TimesheetPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Timesheet"];
     },
-    filter: TimesheetFilterScreen(),
+    filter: const TimesheetFilterScreen(),
   );
 
   /// Project
@@ -1386,23 +1482,14 @@ class ModuleType {
     title: DocTypesName.project,
     listItem: (item) {
       item as ProjectItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.name!,
         status: item.status!,
-        names: [
-          'Project',
-          'Priority',
-          'Percent Complete',
-          'Customer',
-          'End Date',
-        ],
-        values: [
-          item.projectName!,
-          item.priority!,
-          item.percentComplete.toString(),
-          item.customer ?? 'none'.tr(),
-          item.expectedEndDate!.formatDate(),
-        ],
+        title: item.projectName ?? 'none',
+        rightIcon: Icons.date_range,
+        rightText: item.expectedStartDate!.formatDate(),
+        leftIcon: Icons.priority_high,
+        leftText: item.priority ?? 'none',
         onPressed: (context) => _onListCardPressed(
           context,
           item.name!,
@@ -1410,13 +1497,13 @@ class ModuleType {
       );
     },
     serviceParser: (data) => ProjectListModel.fromJson(data),
-    createForm: ProjectForm(),
+    createForm: const ProjectForm(),
     pageService: PROJECT_PAGE,
-    pageWidget: ProjectPage(),
+    pageWidget: const ProjectPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Project"];
     },
-    filter: ProjectFilterScreen(),
+    filter: const ProjectFilterScreen(),
   );
 
   /// Issue
@@ -1425,21 +1512,14 @@ class ModuleType {
     title: DocTypesName.issue,
     listItem: (item) {
       item as IssueItemModel;
-      return ListCard(
+      return ListCardTest(
         id: item.name!,
         status: item.status!,
-        names: [
-          'Subject',
-          'Priority',
-          'Project',
-          'Opening Date',
-        ],
-        values: [
-          item.subject ?? 'none',
-          item.priority ?? 'none',
-          item.project ?? 'none',
-          item.openingDate ?? 'none',
-        ],
+        title: item.subject ?? 'none',
+        rightIcon: Icons.date_range,
+        rightText: item.openingDate ?? 'none',
+        leftIcon: Icons.priority_high,
+        leftText: item.priority ?? 'none',
         onPressed: (context) => _onListCardPressed(
           context,
           item.name!,
@@ -1447,13 +1527,13 @@ class ModuleType {
       );
     },
     serviceParser: (data) => IssueListModel.fromJson(data),
-    createForm: IssueForm(),
+    createForm: const IssueForm(),
     pageService: ISSUE_PAGE,
-    pageWidget: IssuePage(),
+    pageWidget: const IssuePage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Issue"];
     },
-    filter: IssueFilterScreen(),
+    filter: const IssueFilterScreen(),
   );
 
   ///Workflow
@@ -1464,7 +1544,7 @@ class ModuleType {
       item as WorkflowItemModel;
       return ListCard(
         id: item.name!,
-        names: [
+        names: const [
           'Is Active',
           'Document Type',
         ],
@@ -1479,12 +1559,12 @@ class ModuleType {
       );
     },
     serviceParser: (data) => WorkflowListModel.fromJson(data),
-    createForm: WorkflowForm(),
+    createForm: const WorkflowForm(),
     pageService: WORKFLOW_PAGE,
-    pageWidget: WorkflowPage(),
+    pageWidget: const WorkflowPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Workflow"];
     },
-    filter: WorkflowFilterScreen(),
+    filter: const WorkflowFilterScreen(),
   );
 }

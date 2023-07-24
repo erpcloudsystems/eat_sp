@@ -81,7 +81,7 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         SizedBox(height: 8),
         Container(
@@ -482,11 +482,13 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
                                                               .expense[index]
                                                               .description,
                                                       onChanged: (value) {
-                                                        InheritedExpenseForm.of(
+                                                        setState(() {
+                                                          InheritedExpenseForm.of(
                                                                     context)
                                                                 .expense[index]
                                                                 .description =
                                                             value;
+                                                        });
                                                       },
                                                       disableValidation: true,
                                                       onSave: (key, value) =>

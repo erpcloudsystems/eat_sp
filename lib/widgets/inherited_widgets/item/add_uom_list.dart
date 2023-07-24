@@ -14,7 +14,7 @@ class InheritedUOMForm extends InheritedWidget {
     Key? key,
     required Widget child,
     List<UOMModel>? uoms,
-  })  : this.uoms = uoms ?? [],
+  })  : uoms = uoms ?? [],
         super(key: key, child: child);
 
   final List<UOMModel> uoms;
@@ -36,7 +36,7 @@ class SelectedUOMsList extends StatefulWidget {
 }
 
 class _SelectedUOMsListState extends State<SelectedUOMsList> {
-  ScrollController _uomScrollController = ScrollController();
+  final ScrollController _uomScrollController = ScrollController();
 
   Map<String, dynamic> initUOM = {
     "uom": null,
@@ -57,75 +57,71 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
   }
 
   @override
-  void dispose() {
-    print('dispose called');
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         ////// Add Phone Row //////
         Card(
           elevation: 1,
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8.0,
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('UOMs',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
-                        SizedBox(
-                          width: 40,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero),
-                            onPressed: () async {
-                              setState(() {
-                                FocusScope.of(context).unfocus();
-
-                                // InheritedUOMForm.of(context).uoms.insert(
-                                //     0, UOMModel.fromJson(initPhone));
-                                InheritedUOMForm.of(context)
-                                    .uoms
-                                    .add(UOMModel.fromJson(initUOM));
-                              });
-                              // Timer(Duration(milliseconds: 200), () => _uomScrollController.jumpTo(_uomScrollController.position.maxScrollExtent));
-
-                              Timer(
-                                  Duration(milliseconds: 50),
-                                  () => _uomScrollController.animateTo(
-                                      _uomScrollController
-                                          .position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut));
-                            },
-                            child:
-                                Icon(Icons.add, size: 25, color: Colors.white),
-                          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'UOMs',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero),
+                          onPressed: () async {
+                            setState(() {
+                              FocusScope.of(context).unfocus();
+
+                              // InheritedUOMForm.of(context).uoms.insert(
+                              //     0, UOMModel.fromJson(initPhone));
+                              InheritedUOMForm.of(context)
+                                  .uoms
+                                  .add(UOMModel.fromJson(initUOM));
+                            });
+                            // Timer(Duration(milliseconds: 200), () => _uomScrollController.jumpTo(_uomScrollController.position.maxScrollExtent));
+
+                            Timer(
+                                const Duration(milliseconds: 50),
+                                () => _uomScrollController.animateTo(
+                                    _uomScrollController
+                                        .position.maxScrollExtent,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut));
+                          },
+                          child: const Icon(Icons.add,
+                              size: 25, color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[100],
@@ -139,25 +135,25 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: InheritedUOMForm.of(context).uoms.isEmpty
                     ? MediaQuery.of(context).size.height * 0.10
-                    : MediaQuery.of(context).size.height * 0.24),
+                    : MediaQuery.of(context).size.height * 1),
             child: InheritedUOMForm.of(context).uoms.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text('no UOMs added',
                         style: TextStyle(color: Colors.grey, fontSize: 16)))
                 : ShaderMask(
                     blendMode: BlendMode.dstOut,
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -170,7 +166,7 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                       ).createShader(bounds);
                     },
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         controller: _uomScrollController,
                         // reverse: true,
                         itemCount: InheritedUOMForm.of(context).uoms.length,
@@ -200,10 +196,10 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             color: Colors.redAccent),
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(16),
                                             child: Icon(Icons.delete_forever,
                                                 color: Colors.white, size: 30),
                                           ),
@@ -212,7 +208,8 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.vertical(
+                                          borderRadius:
+                                              const BorderRadius.vertical(
                                             bottom: Radius.circular(8),
                                             top: Radius.circular(8),
                                           ),
@@ -242,7 +239,7 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 4,
                                                 ),
                                                 Flexible(
@@ -260,6 +257,16 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                                                   context)
                                                               .uoms[index]
                                                               .uom = value,
+                                                      onChanged: (value) =>
+                                                          setState(() {
+                                                            
+                                                            initUOM['uom'] =
+                                                                value;
+                                                            InheritedUOMForm.of(
+                                                                    context)
+                                                                .uoms[index]
+                                                                .uom = value;
+                                                          }),
                                                       onPressed: () async {
                                                         var res = await Navigator
                                                                 .of(context)
@@ -279,7 +286,7 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                                         return res;
                                                       }),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Flexible(
@@ -294,11 +301,15 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                                             .conversionFactor
                                                             .toString(),
                                                     onChanged: (value) =>
-                                                        InheritedUOMForm.of(
-                                                                    context)
-                                                                .uoms[index]
-                                                                .conversionFactor =
-                                                            double.parse(value),
+                                                        setState(() {
+                                                      initUOM['conversion_factor'] =
+                                                          double.parse(value);
+                                                      InheritedUOMForm.of(
+                                                                  context)
+                                                              .uoms[index]
+                                                              .conversionFactor =
+                                                          double.parse(value);
+                                                    }),
                                                     onSave: (key, value) =>
                                                         InheritedUOMForm.of(
                                                                     context)
@@ -316,7 +327,7 @@ class _SelectedUOMsListState extends State<SelectedUOMsList> {
                                                     disableValidation: true,
                                                   ),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 10,
                                                 ),
                                               ],

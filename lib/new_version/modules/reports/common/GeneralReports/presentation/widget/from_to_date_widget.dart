@@ -29,7 +29,7 @@ class FromDataToDateWidget extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Flexible(

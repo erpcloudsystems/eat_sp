@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../service/service.dart';
 import '../../provider/module/module_provider.dart';
-import '/widgets/pagination.dart';
+import '/widgets/pagination.dart' as pagination;
 
 /// FOR CUSTOM LIST API ONLY
 /// this is a generic paginated list screen,
@@ -69,10 +69,10 @@ class _CustomListScreenState<T> extends State<CustomListScreen> {
         title: Text(widget.title),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
-          child: SearchBar(search: _search),
+          child: pagination.SearchBar(search: _search),
         ),
       ),
-      body: PaginationList<T>(
+      body: pagination.PaginationList<T>(
         future: (_page) => service.getCustomList<T>(
             widget.service, _page, serviceParser,
             search: searchText),

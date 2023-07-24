@@ -8,8 +8,12 @@ class TaskFilterScreen extends StatefulWidget {
   const TaskFilterScreen({Key? key}) : super(key: key);
 
   static const List<String> _statusList = [
-    'desc',
-    'asc',
+    'Open',
+    'Working',
+    'Pending',
+    'Completed',
+    'Overdue',
+    'Template',
   ];
 
   @override
@@ -60,37 +64,6 @@ class _TaskFilterScreenState extends State<TaskFilterScreen> {
             return _values['filter1'];
           },
         ),
-
-        ///-------------------Sorting------------------------
-        // CustomDropDown(
-        //   'sort_field',
-        //   'Sorting Field'.tr(),
-        //   items: SortingFieldList,
-        //   onChanged: (String value) {
-        //     _values['sort_field'] = value;
-        //     setState(() {
-        //       isSorting =true;
-        //     });
-        //   },
-        //   onClear: (){
-        //     _values.remove('sort_field');
-        //     setState(() {
-        //       isSorting = false;
-        //     });
-        //   },
-        //   defaultValue: _values['sort_field'],
-        //   clear: true,
-        // ),
-        // if (isSorting)
-        //   CustomDropDown(
-        //     'sort_type',
-        //     'Sort Type'.tr(),
-        //     items: TaskFilterScreen._statusList,
-        //     onChanged: (String value) => _values['sort_type'] = value,
-        //     onClear: () => _values.remove('sort_type'),
-        //     defaultValue: _values['sort_type'],
-        //     clear: true,
-        //   ),
       ],
     );
   }

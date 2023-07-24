@@ -1,6 +1,23 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
+import '../../modules/dashboard/data/data_sources/dashboard_data_source.dart';
+import '../../modules/dashboard/data/repositories/dashboard_repo.dart';
+import '../../modules/dashboard/domain/repositories/dashboard_base_repo.dart';
+import '../../modules/dashboard/domain/use_cases/get_dashboard_data_use_case.dart';
+import '../../modules/dashboard/domain/use_cases/get_total.dart';
+import '../../modules/dashboard/domain/use_cases/tap_view_use_case/get_attendance_request_use_case.dart';
+import '../../modules/dashboard/domain/use_cases/tap_view_use_case/get_employeeChecking.dart';
+import '../../modules/dashboard/domain/use_cases/tap_view_use_case/get_leave_app_use_case.dart';
+import '../../modules/dashboard/domain/use_cases/tap_view_use_case/get_task_use_case.dart';
+import '../../modules/dashboard/presentation/bloc/dasboard_bloc.dart';
+import '../../modules/dashboard/presentation/bloc/total_bloc/total_bloc.dart';
+import '../../modules/dashboard/presentation/bloc/transaction_bloc/transaction_bloc.dart';
+import '../../modules/faq/data/datasources/faq_data_sourcs.dart';
+import '../../modules/faq/data/repositories/faq_implementaion_repo.dart';
+import '../../modules/faq/domain/repositories/faq_base_repo.dart';
+import '../../modules/faq/domain/usecases/get_faqs_use_case.dart';
+import '../../modules/faq/presentation/bloc/faq_bloc.dart';
 import '../../modules/reports/common/GeneralReports/data/datasources/reports_data_source.dart';
 import '../../modules/reports/common/GeneralReports/data/repositories/reports_repo.dart';
 import '../../modules/reports/common/GeneralReports/domain/repositories/general_reports_base_repo.dart';
@@ -44,6 +61,14 @@ Future<void> init() async {
   // User Profile
   sl.registerFactory(() => UserProfileBloc(sl(), sl()));
 
+  // Faqs
+  sl.registerFactory(() => FaqBloc(sl()));
+
+  // Dashboard bloc
+  sl.registerFactory(() => DashboardBloc(sl()));
+  sl.registerFactory(() => TotalBloc(sl()));
+  sl.registerFactory(() => TransactionBloc(sl(),sl(),sl(),sl()));
+
   /// Use cases
 
   // Reports
@@ -57,6 +82,17 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetUserProfileDataUseCase(sl()));
   sl.registerLazySingleton(() => UpdateUserProfileDataUseCase(sl()));
 
+  // Faqs
+  sl.registerLazySingleton(() => GetFaqsUseCase(sl()));
+
+  // Dashboard use case
+  sl.registerLazySingleton(() => GetDashboardUseCase(sl()));
+  sl.registerLazySingleton(() => GetTotalUseCase(sl()));
+  sl.registerLazySingleton(() => GetTaskUseCase(sl()));
+  sl.registerLazySingleton(() => GetLeaveApplicationCase(sl()));
+  sl.registerLazySingleton(() => GetEmployeeCheckingUseCase(sl()));
+  sl.registerLazySingleton(() => GetAttendanceRequestUseCase(sl()));
+
   /// Repositories
 
   // Reports
@@ -65,11 +101,17 @@ Future<void> init() async {
       () => StockReportsRepo(sl(), sl()));
   sl.registerLazySingleton<AccountReportBaseRepo>(
       () => AccountReportsRepo(sl(), sl()));
-  
 
   // User Profile
   sl.registerLazySingleton<BaseUserRepository>(
       () => UserProfileRepoImplementation(sl(), sl()));
+
+  // Faqs
+  sl.registerLazySingleton<FaqBaseRepo>(
+      () => FaqImplementationRepo(sl(), sl()));
+  // dashboard
+  sl.registerLazySingleton<DashboardBaseRepo>(
+          () => DashboardRepo(sl(), sl()));
 
   /// DataSources
 
@@ -80,10 +122,17 @@ Future<void> init() async {
       () => StockReportDataSourceByDio(sl()));
   sl.registerLazySingleton<BaseAccountReportDataSource>(
       () => AccountReportDataSourceByDio(sl()));
-  
+
   // User Profile
   sl.registerLazySingleton<BaseUserProfileDataSource>(
       () => UserDataSourceByDio(sl()));
+
+  // Faqs
+  sl.registerLazySingleton<FaqBaseDataSource>(() => FaqDataSourceByDio(sl()));
+
+  // Dashboard
+  sl.registerLazySingleton<BaseDashboardDataDataSource>(
+          () => DashboardDataSourceByDio(sl()));
 
   /// External
   sl.registerLazySingleton<BaseDioHelper>(() => DioHelper());

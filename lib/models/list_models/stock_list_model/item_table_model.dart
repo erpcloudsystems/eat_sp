@@ -120,7 +120,8 @@ class ItemSelectModel extends ItemModel {
         "item_name": itemName,
         "qty": _qty,
         "uom": stockUom,
-        "rate": rate
+        "rate": rate,
+        "image":imageUrl
       };
 
   @override

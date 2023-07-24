@@ -11,6 +11,10 @@ const LOADING_PROGRESS_COLOR = Color(0xff0066ff);
 const CIRCULAR_PROGRESS_COLOR = Color(0xff0066ff);
 const CONNECTION_ROUTE = 'CONNECTION_ROUTE';
 
+/// New Const
+const NEW_BLUE_COLOR = Color(0xFFE3F2FD);
+const ORANGE_COLOR = Color(0xffF78138);
+
 ///*** BORDER RADIUS ***///
 const GLOBAL_BORDER_RADIUS = 12.0;
 

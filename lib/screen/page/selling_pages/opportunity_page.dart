@@ -23,7 +23,7 @@ class OpportunityPage extends StatelessWidget {
     final Color? color = context.read<ModuleProvider>().color;
 
     final model = OpportunityPageModel(context, data);
-
+    data['with_items'] = data['items'] != null ? 1 : 0;
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 12),
       children: [
@@ -44,9 +44,8 @@ class OpportunityPage extends StatelessWidget {
                 ),
               ],
             ),
-            Text('Opportunity',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const Text('Opportunity',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
@@ -70,10 +69,10 @@ class OpportunityPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -133,9 +132,9 @@ class OpportunityPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -162,9 +161,9 @@ class OpportunityPage extends StatelessWidget {
                                     names: model.getItemCard(index)),
                           ),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

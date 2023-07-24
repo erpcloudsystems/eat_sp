@@ -100,7 +100,7 @@ class ModuleProvider extends ChangeNotifier {
         'docname': pageId,
       },
     );
-    actionsList = response['message'];
+    actionsList = response['message'] ?? [];
     notifyListeners();
   }
 
@@ -116,6 +116,7 @@ class ModuleProvider extends ChangeNotifier {
     workflowStatus = response['message'];
     notifyListeners();
   }
+
   //---------------------------------------------------------------------------
   int? get pageSubmitStatus => _pageSubmitStatus;
 

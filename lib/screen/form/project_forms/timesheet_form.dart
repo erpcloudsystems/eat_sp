@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import 'add_time_sheet_dialog.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
@@ -55,7 +57,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
             : 'Creating Your Timesheet');
 
     // To print the body we send to backend
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -70,22 +74,23 @@ class _TimesheetFormState extends State<TimesheetForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['timesheet'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['timesheet'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['timesheet']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['timesheet'] != null) {
       provider.pushPage(res['message']['timesheet']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -95,27 +100,45 @@ class _TimesheetFormState extends State<TimesheetForm> {
     super.initState();
 
     //Editing Mode & Duplicate &  Amending
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) log("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          log("➡️ $k: ${data[k]}");
+        }
         customerName = data['customer'];
         projectName = data['parent_project'];
         setState(() {});
       });
+    }
     Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
 
     //DocFromPage Mode
-    if (provider.isCreateFromPage) {
+    if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        data = provider.createFromPageData;
+        data = context.read<ModuleProvider>().createFromPageData;
         data['doctype'] = "Timesheet";
-        log('${data['items']}');
+        data['parent_project'] = data['name'];
+        projectName = data['name'];
+        customerName = data['customer'];
 
-        if (provider.isAmendingMode) {
-          data.remove('amended_to');
-          data['docstatus'] = 0;
-        }
+        data.remove('print_formats');
+        data.remove('conn');
+        data.remove('comments');
+        data.remove('attachments');
+        data.remove('docstatus');
+        data.remove('name');
+        data.remove('_pageData');
+        data.remove('_pageId');
+        data.remove('_availablePdfFormat');
+        data.remove('_currentModule');
+        data.remove('status');
+        data.remove('taxes');
+        data.remove('users');
+        data.remove('actual_time');
+
         setState(() {});
       });
     }
@@ -155,222 +178,206 @@ class _TimesheetFormState extends State<TimesheetForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Timesheet")
-                : Text("Create Timesheet"),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(
-                      Icons.check,
-                      color: FORM_SUBMIT_BTN_COLOR,
-                    ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  //_________________________________________First Group_____________________________________________________
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        //___________________________________Project_____________________________________________________
-                        CustomTextField(
-                          'parent_project',
-                          'Project',
-                          clearButton: true,
-                          initialValue: data['parent_project'],
-                          onSave: (key, value) {
-                            data[key] = value;
-                          },
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => projectScreen(),
-                              ),
-                            );
-                            setState(() {
-                              customerName = res['customer'].toString();
-                              projectName = res['name'].toString();
-                            });
-                            return res['name'];
-                          },
-                        ),
-                        //_______________________________________Customer_____________________________________________________
-                        CustomTextField(
-                          'customer',
-                          'Customer',
-                          initialValue: customerName ?? '',
-                          disableValidation: true,
-                          clearButton: true,
-                          enabled: false,
-                          onSave: (key, value) => data[key] = value,
-                        ),
-                        //_______________________________________Employee___________________________________________________
-                        CustomTextField(
-                          'employee',
-                          'Employee',
-                          initialValue: data['employee_name'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => selectEmployeeScreen(),
-                              ),
-                            );
-                            return res['employee_name'];
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //__________________________________________Second Group_____________________________________________________
-                  Group(
-                    child: Row(children: [
-                      //____________________________________Expected Start Date______________________________________________
-                      Flexible(
-                        child: DatePicker(
-                          'start_date',
-                          'Start Date',
-                          initialValue: data['start_date'] ?? null,
-                          onChanged: (value) => setState(
-                            () => data['start_date'] = value,
-                          ),
-                        ),
+          body: Form(
+            key: _formKey,
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                //_________________________________________First Group_____________________________________________________
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      //___________________________________Project_____________________________________________________
+                      CustomTextFieldTest(
+                        'parent_project',
+                        'Project',
+                        clearButton: true,
+                        initialValue: data['parent_project'],
+                        onSave: (key, value) {
+                          data[key] = value;
+                        },
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => projectScreen(),
+                            ),
+                          );
+                          setState(() {
+                            customerName = res['customer'].toString();
+                            projectName = res['name'].toString();
+                          });
+                          return res['name'];
+                        },
                       ),
-                      SizedBox(width: 10),
-                      //____________________________________Expected End Date______________________________________________
-                      Flexible(
-                        child: DatePicker(
-                          'end_date',
-                          'End Date',
-                          onChanged: (value) => Future.delayed(
-                            Duration.zero,
-                            () => setState(
-                              () => data['end_date'] = value,
+                      //_______________________________________Customer_____________________________________________________
+                      CustomTextFieldTest(
+                        'customer',
+                        'Customer',
+                        initialValue: customerName ?? '',
+                        disableValidation: true,
+                        clearButton: true,
+                        enabled: false,
+                        onSave: (key, value) => data[key] = value,
+                      ),
+                      //_______________________________________Employee___________________________________________________
+                      CustomTextFieldTest(
+                        'employee',
+                        'Employee',
+                        initialValue: data['employee_name'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => selectEmployeeScreen(),
+                            ),
+                          );
+                          return res['employee_name'];
+                        },
+                      ),
+                      //__________________________________________Second Group_____________________________________________________
+                      Row(
+                        children: [
+                          //____________________________________Expected Start Date______________________________________________
+                          Flexible(
+                            child: DatePickerTest(
+                              'start_date',
+                              'Start Date',
+                              initialValue: data['start_date'],
+                              onChanged: (value) => setState(
+                                () => data['start_date'] = value,
+                              ),
                             ),
                           ),
-                          initialValue: data['end_date'] ?? null,
-                        ),
-                      ),
-                    ]),
-                  ),
-                  //-------------------------------------------Time logs--------------------------------
-                  Group(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Add State",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
+                          const SizedBox(width: 10),
+                          //____________________________________Expected End Date______________________________________________
+                          Flexible(
+                            child: DatePickerTest(
+                              'end_date',
+                              'End Date',
+                              onChanged: (value) => Future.delayed(
+                                Duration.zero,
+                                () => setState(
+                                  () => data['end_date'] = value,
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  bottomSheetBuilder(
-                                    bottomSheetView: AddTimeSheetDialog(
-                                      projectName: projectName ?? '',
-                                    ),
-                                    context: context,
-                                  );
-                                },
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        8.0,
+                              initialValue: data['end_date'],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                ListView(
+                  children: [
+                    //-------------------------------------------Time logs--------------------------------
+                    Group(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Add State",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    bottomSheetBuilder(
+                                      bottomSheetView: AddTimeSheetDialog(
+                                        projectName: projectName ?? '',
+                                      ),
+                                      context: context,
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          8.0,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                child: Icon(
-                                  Icons.add,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-
-                        /// Time Logs list
-                        if (timeSheetData.isNotEmpty)
-                          SizedBox(
-                            height: 190,
-                            child: ListView.builder(
-                              itemCount: timeSheetData.length,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Expanded(
-                                      child: PageCard(
-                                        items: [
-                                          {
-                                            "Activity": timeSheetData[index]
-                                                    ['activity_type'] ??
-                                                'none',
-                                            "Project": projectName.toString(),
-                                            "Hours": timeSheetData[index]
-                                                    ['hours']
-                                                .toString(),
-                                          }
-                                        ],
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          timeSheetData.removeAt(index);
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                                  child: const Icon(
+                                    Icons.add,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                      ],
+
+                          /// Time Logs list
+                          if (timeSheetData.isNotEmpty)
+                            SizedBox(
+                              height: 190,
+                              child: ListView.builder(
+                                itemCount: timeSheetData.length,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: PageCard(
+                                          items: [
+                                            {
+                                              "Activity": timeSheetData[index]
+                                                      ['activity_type'] ??
+                                                  'none',
+                                              "Project": projectName.toString(),
+                                              "Hours": timeSheetData[index]
+                                                      ['hours']
+                                                  .toString(),
+                                            }
+                                          ],
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            timeSheetData.removeAt(index);
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                  //________________________________________Task Description_____________________________________________________
-                  Group(
-                    child: CustomTextField(
-                      'note',
-                      'Note',
-                      minLines: 1,
-                      maxLines: null,
-                      removeUnderLine: true,
-                      initialValue: data['note'],
-                      disableValidation: false,
-                      clearButton: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => data['note'] = value,
+                    //________________________________________Task Description_____________________________________________________
+                    Group(
+                      child: CustomTextFieldTest(
+                        'note',
+                        'Note',
+                        minLines: 6,
+                        maxLines: null,
+                        removeUnderLine: true,
+                        initialValue: data['note'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['note'] = value,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                )
+              ],
             ),
           ),
         ),

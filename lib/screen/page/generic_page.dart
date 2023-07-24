@@ -1,12 +1,12 @@
 import 'package:NextApp/service/service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/constants.dart';
 import '../../widgets/nothing_here.dart';
 import '../../provider/module/module_provider.dart';
 import '../../widgets/generic_page_buttons.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
+import '../home_screen.dart';
 
 class GenericPage extends StatelessWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -21,6 +21,10 @@ class GenericPage extends StatelessWidget {
         child: Directionality(
           textDirection: TextDirection.ltr,
           child: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.white,
             leading: IconButton(
               onPressed: () {
                 final provider = context.read<ModuleProvider>();
@@ -48,13 +52,25 @@ class GenericPage extends StatelessWidget {
               child: Text(
                 context.watch<ModuleProvider>().currentModule.title,
                 style: const TextStyle(
+                  color: Colors.black,
                   overflow: TextOverflow.visible,
                   height: 1,
                 ),
               ),
             ),
-            actions: const [
-              GenericPageButtons(),
+            actions: [
+              const GenericPageButtons(),
+              IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return const HomeScreen();
+                  }));
+                },
+                icon: const Icon(
+                  Icons.home_outlined,
+                ),
+              ),
             ],
           ),
         ),

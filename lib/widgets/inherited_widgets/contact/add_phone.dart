@@ -84,13 +84,13 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         ////// Add Email Row //////
         Card(
           elevation: 1,
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8.0,
           ),
           shape:
@@ -105,7 +105,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Email IDs',
+                        const Text('Email IDs',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600)),
                         SizedBox(
@@ -125,11 +125,12 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                               });
 
                               Timer(
-                                  Duration(milliseconds: 50),
+                                  const Duration(milliseconds: 50),
                                   () => _EmailScrollController.animateTo(
                                       _EmailScrollController
                                           .position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 200),
+                                      duration:
+                                          const Duration(milliseconds: 200),
                                       curve: Curves.easeInOut));
 
                               //Dismiss Tutorial for user
@@ -138,19 +139,20 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                       .length <
                                   2)
                                 Timer(
-                                    Duration(milliseconds: 2500),
+                                    const Duration(milliseconds: 2500),
                                     () => setState(() {
                                           isSlid = true;
                                           Timer(
-                                              Duration(milliseconds: 1000),
+                                              const Duration(
+                                                  milliseconds: 1000),
                                               () => setState(() {
                                                     isSlid = false;
                                                   }));
                                         }));
                               rowNo++;
                             },
-                            child:
-                                Icon(Icons.add, size: 25, color: Colors.white),
+                            child: const Icon(Icons.add,
+                                size: 25, color: Colors.white),
                           ),
                         ),
                       ],
@@ -161,7 +163,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         (InheritedContactForm.of(context).emails.isNotEmpty)
             ? Padding(
                 padding:
@@ -179,7 +181,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                             InheritedContactForm.of(context).emails.clear();
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           'Clear All',
                           style: TextStyle(color: Colors.black87),
                         ),
@@ -189,7 +191,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                 ),
               )
             : Container(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
 
         Container(
           decoration: BoxDecoration(
@@ -204,10 +206,10 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
           ),
           child: ConstrainedBox(
@@ -216,13 +218,13 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                     ? MediaQuery.of(context).size.height * 0.10
                     : MediaQuery.of(context).size.height * 0.24),
             child: InheritedContactForm.of(context).emails.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text('no emails added',
                         style: TextStyle(color: Colors.grey, fontSize: 16)))
                 : ShaderMask(
                     blendMode: BlendMode.dstOut,
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -235,7 +237,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                       ).createShader(bounds);
                     },
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         controller: _EmailScrollController,
                         // reverse: true,
                         itemCount:
@@ -266,10 +268,10 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             color: Colors.redAccent),
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(16),
                                             child: Icon(Icons.delete_forever,
                                                 color: Colors.white, size: 30),
                                           ),
@@ -281,7 +283,8 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
                                               bottom: Radius.circular(8),
                                               top: Radius.circular(8),
                                             ),
@@ -311,7 +314,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 4,
                                                   ),
                                                   Flexible(
@@ -333,16 +336,24 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                                                   .of(context)
                                                               .emails[index]
                                                               .emailId = value,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          InheritedContactForm
+                                                                  .of(context)
+                                                              .emails[index]
+                                                              .emailId = value;
+                                                        });
+                                                      },
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(
                                                       flex: 1,
                                                       child: Text(
                                                           'Row# ${index + 1}')),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                 ],
@@ -398,13 +409,13 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                   ),
           ),
         ),
-        SizedBox(height: 8),
-        Divider(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
         ////// Add Phone Row //////
         Card(
           elevation: 1,
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8.0,
           ),
           shape:
@@ -419,7 +430,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Contact Numbers',
+                        const Text('Contact Numbers',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600)),
                         SizedBox(
@@ -439,32 +450,35 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                               });
 
                               Timer(
-                                  Duration(milliseconds: 50),
+                                  const Duration(milliseconds: 50),
                                   () => _phoneScrollController.animateTo(
                                       _phoneScrollController
                                           .position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 200),
+                                      duration:
+                                          const Duration(milliseconds: 200),
                                       curve: Curves.easeInOut));
 
                               //Dismiss Tutorial for user
                               if (InheritedContactForm.of(context)
                                       .emails
                                       .length <
-                                  2)
+                                  2) {
                                 Timer(
-                                    Duration(milliseconds: 2500),
+                                    const Duration(milliseconds: 2500),
                                     () => setState(() {
                                           isSlid = true;
                                           Timer(
-                                              Duration(milliseconds: 1000),
+                                              const Duration(
+                                                  milliseconds: 1000),
                                               () => setState(() {
                                                     isSlid = false;
                                                   }));
                                         }));
+                              }
                               rowNo++;
                             },
-                            child:
-                                Icon(Icons.add, size: 25, color: Colors.white),
+                            child: const Icon(Icons.add,
+                                size: 25, color: Colors.white),
                           ),
                         ),
                       ],
@@ -475,7 +489,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         (InheritedContactForm.of(context).phones.isNotEmpty)
             ? Padding(
                 padding:
@@ -493,7 +507,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                             InheritedContactForm.of(context).phones.clear();
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           'Clear All',
                           style: TextStyle(color: Colors.black87),
                         ),
@@ -503,7 +517,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                 ),
               )
             : Container(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
 
         Container(
           decoration: BoxDecoration(
@@ -518,10 +532,10 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
           ),
           child: ConstrainedBox(
@@ -530,13 +544,13 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                     ? MediaQuery.of(context).size.height * 0.10
                     : MediaQuery.of(context).size.height * 0.24),
             child: InheritedContactForm.of(context).phones.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text('no phones added',
                         style: TextStyle(color: Colors.grey, fontSize: 16)))
                 : ShaderMask(
                     blendMode: BlendMode.dstOut,
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -549,7 +563,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                       ).createShader(bounds);
                     },
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         controller: _phoneScrollController,
                         // reverse: true,
                         itemCount:
@@ -580,10 +594,10 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             color: Colors.redAccent),
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(16),
                                             child: Icon(Icons.delete_forever,
                                                 color: Colors.white, size: 30),
                                           ),
@@ -597,7 +611,8 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
                                               bottom: Radius.circular(8),
                                               top: Radius.circular(8),
                                             ),
@@ -627,7 +642,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 4,
                                                   ),
                                                   Flexible(
@@ -647,16 +662,24 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                                                   .of(context)
                                                               .phones[index]
                                                               .phone = value,
+                                                              onChanged: (value) {
+                                                        setState(() {
+                                                          InheritedContactForm
+                                                                  .of(context)
+                                                              .phones[index]
+                                                              .phone = value;
+                                                        });
+                                                      },
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(
                                                       flex: 1,
                                                       child: Text(
                                                           'Row# ${index + 1}')),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                 ],
@@ -688,7 +711,7 @@ class _SelectedPhonesListState extends State<SelectedPhonesList> {
                                                               value ? 1 : 0),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(

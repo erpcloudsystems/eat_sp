@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -43,7 +45,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "longitude": 0.0,
   };
 
-  LatLng location = LatLng(0.0, 0.0);
+  LatLng location = const LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
   Map<String, dynamic> selectedCstData = {
@@ -60,9 +62,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       return;
     }
 
-    if (location == LatLng(0.0, 0.0)) {
+    if (location == const LatLng(0.0, 0.0)) {
       showSnackBar(KEnableGpsSnackBar, context);
-      Future.delayed(Duration(seconds: 1), () async {
+      Future.delayed(const Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
       });
       return;
@@ -109,7 +111,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
             ? 'Updating ${provider.pageId}'
             : 'Creating Your Sales Invoice');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -121,24 +125,25 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
 
     InheritedForm.of(context).data['selling_price_list'] = null;
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['sales_invoice'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['sales_invoice'] != null) {
         context
             .read<ModuleProvider>()
             .pushPage(res['message']['sales_invoice']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['sales_invoice'] != null) {
       provider.pushPage(res['message']['sales_invoice']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -154,7 +159,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode and Amending Mode
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         _getCustomerData(data['customer_name']).then((value) => setState(() {
@@ -173,15 +180,18 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
 
         final items = SalesInvoicePageModel(context, data).items;
 
-        items.forEach((element) => InheritedForm.of(context)
-            .items
-            .add(ItemSelectModel.fromJson(element)));
+        for (var element in items) {
+          InheritedForm.of(context)
+              .items
+              .add(ItemSelectModel.fromJson(element));
+        }
 
         InheritedForm.of(context).data['selling_price_list'] =
             data['selling_price_list'];
 
         setState(() {});
       });
+    }
 
     //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
@@ -281,6 +291,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack =
@@ -297,468 +308,460 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Sales Invoice")
-                : Text("Create Sales Invoice"),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(
-                      Icons.check,
-                      color: FORM_SUBMIT_BTN_COLOR,
-                    ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        CustomTextField(
-                          'customer',
-                          'Customer',
-                          initialValue: data['customer'],
-                          clearButton: true,
-                          onPressed: () async {
-                            String? id;
+          body: Form(
+            key: _formKey,
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CustomTextFieldTest(
+                        'customer',
+                        'Customer',
+                        initialValue: data['customer'],
+                        clearButton: true,
+                        onPressed: () async {
+                          String? id;
 
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectCustomerScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              await _getCustomerData(res['name']);
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectCustomerScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            await _getCustomerData(res['name']);
 
-                              setState(() {
-                                data['due_date'] = DateTime.now()
-                                    .add(Duration(
-                                        days: int.parse(
-                                            selectedCstData['credit_days']
-                                                .toString())))
-                                    .toIso8601String();
-                                data['customer'] = res['name'];
-                                data['customer_name'] = res['customer_name'];
-                                data['territory'] = res['territory'];
-                                data['customer_group'] = res['customer_group'];
-                                data['customer_address'] =
-                                    res["customer_primary_address"];
-                                data['contact_person'] =
-                                    res["customer_primary_contact"];
-                                data['currency'] = res['default_currency'];
-                                data['price_list_currency'] =
-                                    res['default_currency'];
-                                if (data['selling_price_list'] !=
-                                    res['default_price_list']) {
-                                  data['selling_price_list'] =
-                                      res['default_price_list'];
-                                  InheritedForm.of(context).items.clear();
-                                  InheritedForm.of(context)
-                                          .data['selling_price_list'] =
-                                      res['default_price_list'];
-                                }
-                                data['payment_terms_template'] =
-                                    res['payment_terms'];
-                                data['sales_partner'] =
-                                    res['default_sales_partner'];
-                                data['tax_id'] = res['tax_id'];
-                              });
-                            }
+                            setState(() {
+                              data['due_date'] = DateTime.now()
+                                  .add(Duration(
+                                      days: int.parse(
+                                          selectedCstData['credit_days']
+                                              .toString())))
+                                  .toIso8601String();
+                              data['customer'] = res['name'];
+                              data['customer_name'] = res['customer_name'];
+                              data['territory'] = res['territory'];
+                              data['customer_group'] = res['customer_group'];
+                              data['customer_address'] =
+                                  res["customer_primary_address"];
+                              data['contact_person'] =
+                                  res["customer_primary_contact"];
+                              data['currency'] = res['default_currency'];
+                              data['price_list_currency'] =
+                                  res['default_currency'];
+                              if (data['selling_price_list'] !=
+                                  res['default_price_list']) {
+                                data['selling_price_list'] =
+                                    res['default_price_list'];
+                                InheritedForm.of(context).items.clear();
+                                InheritedForm.of(context)
+                                        .data['selling_price_list'] =
+                                    res['default_price_list'];
+                              }
+                              data['payment_terms_template'] =
+                                  res['payment_terms'];
+                              data['sales_partner'] =
+                                  res['default_sales_partner'];
+                              data['tax_id'] = res['tax_id'];
+                            });
+                          }
 
-                            return id;
-                          },
+                          return id;
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      if (data['customer_name'] != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(data['customer_name']!,
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black)),
+                            )),
+                      const SizedBox(height: 4),
+                      if (data['customer_name'] != null)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                          child: Divider(
+                              color: Colors.grey, height: 1, thickness: 0.7),
                         ),
-                        if (data['customer_name'] != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(data['customer_name']!,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black)),
-                              )),
-                        if (data['customer_name'] != null)
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, left: 2, right: 2),
-                            child: Divider(
-                                color: Colors.grey, height: 1, thickness: 0.7),
-                          ),
-                        Row(children: [
-                          Flexible(
-                              child: DatePicker(
-                            'posting_date',
-                            'Date'.tr(),
-                            initialValue: data['posting_date'] ?? 'none',
-                            onChanged: (value) =>
-                                setState(() => data['posting_date'] = value),
-                            lastDate: DateTime.tryParse(data['due_date'] ??
-                                DateTime.now()
-                                    .add(Duration(
-                                        days: int.parse(
-                                            selectedCstData['credit_days']
-                                                .toString())))
-                                    .toIso8601String()),
-                          )),
-                          SizedBox(width: 10),
-                          Flexible(
-                              child: DatePicker(
-                            'due_date',
-                            'Due Date',
-                            onChanged: (value) => Future.delayed(Duration.zero,
-                                () => setState(() => data['due_date'] = value)),
-                            firstDate:
-                                DateTime.parse(data['posting_date'] ?? ''),
-                            initialValue: data['due_date'] ??
-                                ((selectedCstData['name'].toString() !=
-                                            'noName' &&
-                                        selectedCstData['credit_days']
-                                                .toString() !=
-                                            'null')
-                                    ? DateTime.now()
-                                        .add(Duration(
-                                            days: int.parse(
-                                                (selectedCstData['credit_days']
-                                                    .toString()))))
-                                        .toIso8601String()
-                                    : null),
-                          )),
-                        ]),
-                        if (data['tax_id'] != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(data['tax_id']!,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black)),
-                              )),
-                        if (data['tax_id'] != null)
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8.0, left: 2, right: 2),
-                            child: Divider(
-                                color: Colors.grey, height: 1, thickness: 0.7),
-                          ),
-                        CustomTextField('customer_group', 'Customer Group',
-                            onSave: (key, value) => data[key] = value,
-                            initialValue: data['customer_group'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => customerGroupScreen()))),
-                        CustomTextField('territory', 'Territory'.tr(),
-                            onSave: (key, value) => data[key] = value,
-                            initialValue: data['territory'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => territoryScreen()))),
-                        CustomExpandableTile(
-                          hideArrow: data['customer'] == null,
-                          title: CustomTextField(
-                              'customer_address', 'Customer Address',
-                              initialValue: data['customer_address'],
-                              disableValidation: false,
-                              clearButton: false,
-                              onSave: (key, value) => data[key] = value,
-                              liestenToInitialValue:
-                                  data['customer_address'] == null,
-                              onPressed: () async {
-                                if (data['customer'] == null)
-                                  return showSnackBar(
-                                      'Please select a customer to first',
-                                      context);
-                                final res = await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => customerAddressScreen(
-                                            data['customer'])));
-                                setState(() {
-                                  data['customer_address'] = res['name'];
-                                  selectedCstData['address_line1'] =
-                                      res['address_line1'];
-                                  selectedCstData['city'] = res['city'];
-                                  selectedCstData['country'] = res['country'];
-                                });
-                                return res['name'];
-                              }),
-                          children: (data['customer_address'] != null)
-                              ? <Widget>[
-                                  ListTile(
-                                    trailing: Icon(Icons.location_on),
-                                    title: Text(
-                                        selectedCstData['address_line1'] ?? ''),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.location_city),
-                                    title: Text(selectedCstData['city'] ?? ''),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.flag),
-                                    title:
-                                        Text(selectedCstData['country'] ?? ''),
-                                  )
-                                ]
-                              : null,
+                      Row(children: [
+                        Flexible(
+                            child: DatePickerTest(
+                          'posting_date',
+                          'Date'.tr(),
+                          initialValue: data['posting_date'] ?? 'none',
+                          onChanged: (value) =>
+                              setState(() => data['posting_date'] = value),
+                          lastDate: DateTime.tryParse(data['due_date'] ??
+                              DateTime.now()
+                                  .add(Duration(
+                                      days: int.parse(
+                                          selectedCstData['credit_days']
+                                              .toString())))
+                                  .toIso8601String()),
+                        )),
+                        const SizedBox(width: 10),
+                        Flexible(
+                            child: DatePickerTest(
+                          'due_date',
+                          'Due Date',
+                          onChanged: (value) => Future.delayed(Duration.zero,
+                              () => setState(() => data['due_date'] = value)),
+                          firstDate: DateTime.parse(data['posting_date'] ?? ''),
+                          initialValue: data['due_date'] ??
+                              ((selectedCstData['name'].toString() !=
+                                          'noName' &&
+                                      selectedCstData['credit_days']
+                                              .toString() !=
+                                          'null')
+                                  ? DateTime.now()
+                                      .add(Duration(
+                                          days: int.parse(
+                                              (selectedCstData['credit_days']
+                                                  .toString()))))
+                                      .toIso8601String()
+                                  : null),
+                        )),
+                      ]),
+                      if (data['tax_id'] != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(data['tax_id']!,
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black)),
+                            )),
+                      if (data['tax_id'] != null)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                          child: Divider(
+                              color: Colors.grey, height: 1, thickness: 0.7),
                         ),
-                        CustomExpandableTile(
-                          hideArrow: data['customer'] == null,
-                          title: CustomTextField(
-                              'contact_person', 'Contact Person',
-                              initialValue: data['contact_person'],
-                              disableValidation: true,
-                              clearButton: false,
-                              onSave: (key, value) => data[key] = value,
-                              onPressed: () async {
-                                if (data['customer'] == null) {
-                                  showSnackBar(
-                                      'Please select a customer', context);
-                                  return null;
-                                }
-                                final res = await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            contactScreen(data['customer'])));
-                                setState(() {
-                                  data['contact_person'] = res['name'];
-                                  selectedCstData['contact_display'] =
-                                      res['contact_display'];
-                                  selectedCstData['phone'] = res['phone'];
-                                  selectedCstData['mobile_no'] =
-                                      res['mobile_no'];
-                                  selectedCstData['email_id'] = res['email_id'];
-                                });
-                                return res['name'];
-                              }),
-                          children: (data['contact_person'] != null)
-                              ? <Widget>[
-                                  ListTile(
-                                    trailing: Icon(Icons.person),
-                                    title: Text('' +
-                                        (selectedCstData['contact_display'] ??
-                                            '')),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.phone_iphone),
-                                    title: Text('Mobile :  ' +
-                                        (selectedCstData['mobile_no'] ??
-                                            'none')),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.call),
-                                    title: Text('Phone :  ' +
-                                        (selectedCstData['phone'] ?? 'none')),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.alternate_email),
-                                    title: Text('' +
-                                        (selectedCstData['email_id'] ??
-                                            'none')),
-                                  )
-                                ]
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  ///
-                  /// group 2
-                  ///
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        CheckBoxWidget('is_return', 'Is Return',
-                            initialValue: data['is_return'] == 1 ? true : false,
-                            onChanged: (id, value) =>
-                                setState(() => data[id] = value ? 1 : 0)),
-                        CustomTextField('project', 'Project'.tr(),
-                            initialValue: data['project'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => projectScreen()))),
-                        CustomTextField('cost_center', 'Cost Center',
-                            initialValue: data['cost_center'],
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => costCenterScreen()))),
-                        CustomTextField('currency', 'Currency',
-                            initialValue: data['currency'],
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => currencyListScreen()))),
-                        CustomTextField(
-                          'conversion_rate',
-                          'Exchange Rate'.tr(),
-                          clearButton: true,
-                          initialValue: '${data['conversion_rate'] ?? ''}',
+                      CustomTextFieldTest('customer_group', 'Customer Group',
+                          onSave: (key, value) => data[key] = value,
+                          initialValue: data['customer_group'],
                           disableValidation: true,
+                          clearButton: true,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => customerGroupScreen()))),
+                      CustomTextFieldTest('territory', 'Territory'.tr(),
+                          onSave: (key, value) => data[key] = value,
+                          initialValue: data['territory'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => territoryScreen()))),
+                      CustomExpandableTile(
+                        hideArrow: data['customer'] == null,
+                        title: CustomTextFieldTest(
+                            'customer_address', 'Customer Address',
+                            initialValue: data['customer_address'],
+                            disableValidation: false,
+                            clearButton: false,
+                            onSave: (key, value) => data[key] = value,
+                            liestenToInitialValue:
+                                data['customer_address'] == null,
+                            onPressed: () async {
+                              if (data['customer'] == null) {
+                                return showSnackBar(
+                                    'Please select a customer to first',
+                                    context);
+                              }
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => customerAddressScreen(
+                                          data['customer'])));
+                              setState(() {
+                                data['customer_address'] = res['name'];
+                                selectedCstData['address_line1'] =
+                                    res['address_line1'];
+                                selectedCstData['city'] = res['city'];
+                                selectedCstData['country'] = res['country'];
+                              });
+                              return res['name'];
+                            }),
+                        children: (data['customer_address'] != null)
+                            ? <Widget>[
+                                ListTile(
+                                  trailing: const Icon(Icons.location_on),
+                                  title: Text(
+                                      selectedCstData['address_line1'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.location_city),
+                                  title: Text(selectedCstData['city'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.flag),
+                                  title: Text(selectedCstData['country'] ?? ''),
+                                )
+                              ]
+                            : null,
+                      ),
+                      CustomExpandableTile(
+                        hideArrow: data['customer'] == null,
+                        title: CustomTextFieldTest(
+                            'contact_person', 'Contact Person',
+                            initialValue: data['contact_person'],
+                            disableValidation: true,
+                            clearButton: false,
+                            onSave: (key, value) => data[key] = value,
+                            onPressed: () async {
+                              if (data['customer'] == null) {
+                                showSnackBar(
+                                    'Please select a customer', context);
+                                return null;
+                              }
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          contactScreen(data['customer'])));
+                              setState(() {
+                                data['contact_person'] = res['name'];
+                                selectedCstData['contact_display'] =
+                                    res['contact_display'];
+                                selectedCstData['phone'] = res['phone'];
+                                selectedCstData['mobile_no'] = res['mobile_no'];
+                                selectedCstData['email_id'] = res['email_id'];
+                              });
+                              return res['name'];
+                            }),
+                        children: (data['contact_person'] != null)
+                            ? <Widget>[
+                                ListTile(
+                                  trailing: const Icon(Icons.person),
+                                  title: Text('' +
+                                      (selectedCstData['contact_display'] ??
+                                          '')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.phone_iphone),
+                                  title: Text('Mobile :  ' +
+                                      (selectedCstData['mobile_no'] ?? 'none')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.call),
+                                  title: Text('Phone :  ' +
+                                      (selectedCstData['phone'] ?? 'none')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.alternate_email),
+                                  title: Text('' +
+                                      (selectedCstData['email_id'] ?? 'none')),
+                                )
+                              ]
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+
+                ///
+                /// group 2
+                ///
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CheckBoxWidget('is_return', 'Is Return',
+                          initialValue: data['is_return'] == 1 ? true : false,
+                          onChanged: (id, value) =>
+                              setState(() => data[id] = value ? 1 : 0)),
+                      CustomTextFieldTest(
+                        'project',
+                        'Project'.tr(),
+                        initialValue: data['project'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => projectScreen(),
+                            ),
+                          );
+                          return res['name'];
+                        },
+                      ),
+                      CustomTextFieldTest('cost_center', 'Cost Center',
+                          initialValue: data['cost_center'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => costCenterScreen()))),
+                      CustomTextFieldTest('currency', 'Currency',
+                          initialValue:
+                              data['currency'] ?? userProvider.defaultCurrency,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => currencyListScreen()))),
+                      CustomTextFieldTest(
+                        'conversion_rate',
+                        'Exchange Rate'.tr(),
+                        clearButton: true,
+                        initialValue: '${data['conversion_rate'] ?? ''}',
+                        disableValidation: true,
+                        hintText: '1',
+                        validator: (value) =>
+                            numberValidation(value, allowNull: true),
+                        keyboardType: TextInputType.number,
+                        onSave: (key, value) =>
+                            data[key] = double.tryParse(value) ?? 1,
+                      ),
+                      CustomTextFieldTest(
+                          'selling_price_list', 'Price List'.tr(),
+                          initialValue: data['selling_price_list'] ??
+                              userProvider.defaultSellingPriceList,
+                          clearButton: true, onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => priceListScreen()));
+                        if (res != null && res.isNotEmpty) {
+                          setState(() {
+                            if (data['selling_price_list'] != res['name']) {
+                              InheritedForm.of(context).items.clear();
+                              InheritedForm.of(context)
+                                  .data['selling_price_list'] = res['name'];
+                              data['selling_price_list'] = res['name'];
+                            }
+                            data['price_list_currency'] = res['currency'];
+                          });
+                          return res['name'];
+                        }
+                        return null;
+                      }),
+                      if (data['price_list_currency'] != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(tr('Price List Currency'),
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.grey)),
+                            )),
+                      if (data['price_list_currency'] != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(data['price_list_currency']!,
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black)),
+                            )),
+                      if (data['price_list_currency'] != null)
+                        const Divider(
+                            color: Colors.grey, height: 1, thickness: 0.7),
+                      CustomTextFieldTest('plc_conversion_rate',
+                          'Price List Exchange Rate'.tr(),
+                          initialValue: '${data['plc_conversion_rate'] ?? ''}',
+                          disableValidation: true,
+                          clearButton: true,
                           hintText: '1',
                           validator: (value) =>
                               numberValidation(value, allowNull: true),
                           keyboardType: TextInputType.number,
                           onSave: (key, value) =>
-                              data[key] = double.tryParse(value) ?? 1,
-                        ),
-                        CustomTextField('selling_price_list', 'Price List'.tr(),
-                            initialValue: data['selling_price_list'],
-                            clearButton: true, onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => priceListScreen()));
-                          if (res != null && res.isNotEmpty) {
-                            setState(() {
-                              if (data['selling_price_list'] != res['name']) {
-                                InheritedForm.of(context).items.clear();
-                                InheritedForm.of(context)
-                                    .data['selling_price_list'] = res['name'];
-                                data['selling_price_list'] = res['name'];
-                              }
-                              data['price_list_currency'] = res['currency'];
-                            });
-                            return res['name'];
-                          }
-                          return null;
-                        }),
-                        if (data['price_list_currency'] != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(tr('Price List Currency'),
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.grey)),
-                              )),
-                        if (data['price_list_currency'] != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(data['price_list_currency']!,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black)),
-                              )),
-                        if (data['price_list_currency'] != null)
-                          Divider(
-                              color: Colors.grey, height: 1, thickness: 0.7),
-                        CustomTextField('plc_conversion_rate',
-                            'Price List Exchange Rate'.tr(),
-                            initialValue:
-                                '${data['plc_conversion_rate'] ?? ''}',
-                            disableValidation: true,
-                            clearButton: true,
-                            hintText: '1',
-                            validator: (value) =>
-                                numberValidation(value, allowNull: true),
-                            keyboardType: TextInputType.number,
-                            onSave: (key, value) =>
-                                data[key] = double.tryParse(value) ?? 1),
-                        CheckBoxWidget('update_stock', 'Update Stock',
-                            initialValue:
-                                data['update_stock'] == 1 ? true : false,
-                            onChanged: (id, value) =>
-                                setState(() => data[id] = value ? 1 : 0)),
-                        if (data['update_stock'] == 1)
-                          CustomTextField(
-                              'set_warehouse', 'Source Warehouse'.tr(),
-                              initialValue: data['set_warehouse'],
-                              disableValidation: true,
-                              clearButton: true,
-                              onSave: (key, value) => data[key] = value,
-                              onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => warehouseScreen()))),
-                        CustomTextField('payment_terms_template',
-                            'Payment Terms Template'.tr(),
-                            initialValue: data['payment_terms_template'],
-                            clearButton: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => paymentTermsScreen()))),
-                        CustomTextField('tc_name', 'Terms & Conditions'.tr(),
-                            initialValue: data['tc_name'],
+                              data[key] = double.tryParse(value) ?? 1),
+                      CheckBoxWidget('update_stock', 'Update Stock',
+                          initialValue:
+                              data['update_stock'] == 1 ? true : false,
+                          onChanged: (id, value) =>
+                              setState(() => data[id] = value ? 1 : 0)),
+                      if (data['update_stock'] == 1)
+                        CustomTextFieldTest(
+                            'set_warehouse', 'Source Warehouse'.tr(),
+                            initialValue: data['set_warehouse'],
                             disableValidation: true,
                             clearButton: true,
                             onSave: (key, value) => data[key] = value,
                             onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (_) => termsConditionScreen()))),
-                        if (_terms != null)
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Text(_terms!,
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.black)),
-                              )),
-                        if (_terms != null)
-                          Divider(
-                              color: Colors.grey, height: 1, thickness: 0.7),
-                        CustomTextField(
-                          'sales_partner',
-                          'Sales Partner'.tr(),
-                          disableValidation: true,
+                                    builder: (_) => warehouseScreen()))),
+                      CustomTextFieldTest('payment_terms_template',
+                          'Payment Terms Template'.tr(),
+                          initialValue: data['payment_terms_template'],
                           clearButton: true,
-                          initialValue: data['sales_partner'],
                           onSave: (key, value) => data[key] = value,
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (_) => salesPartnerScreen())),
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,
-                                  color: Colors.amber, size: 22),
-                            ),
-                            Flexible(
-                                child: Text(
-                              KLocationNotifySnackBar,
-                              textAlign: TextAlign.start,
+                                  builder: (_) => paymentTermsScreen()))),
+                      CustomTextFieldTest('tc_name', 'Terms & Conditions'.tr(),
+                          initialValue: data['tc_name'],
+                          disableValidation: true,
+                          clearButton: true,
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => termsConditionScreen()))),
+                      if (_terms != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(_terms!,
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black)),
                             )),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                      ],
-                    ),
+                      if (_terms != null)
+                        const Divider(
+                            color: Colors.grey, height: 1, thickness: 0.7),
+                      CustomTextFieldTest(
+                        'sales_partner',
+                        'Sales Partner'.tr(),
+                        disableValidation: true,
+                        clearButton: true,
+                        initialValue: data['sales_partner'],
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => salesPartnerScreen())),
+                      ),
+                      const SizedBox(height: 8),
+                       Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 6),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.amber, size: 22),
+                          ),
+                          Flexible(
+                              child: Text(
+                            KLocationNotifySnackBar,
+                            textAlign: TextAlign.start,
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  SizedBox(height: 8),
-                  SelectedItemsList(),
-                ],
-              ),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 13.0,
+                    horizontal: 8,
+                  ),
+                  child: SelectedItemsList(),
+                ),
+              ],
             ),
           ),
         ),

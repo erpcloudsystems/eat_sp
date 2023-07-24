@@ -22,9 +22,6 @@ class LeadPage extends StatelessWidget {
     final Color? color = context.read<ModuleProvider>().color;
 
     final model = LeadPageModel(data);
-    print(context.read<ModuleProvider>().isCreateFromPage);
-    print(context.read<ModuleProvider>().isCreateFromPage);
-    print(context.read<ModuleProvider>().isCreateFromPage);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
@@ -42,9 +39,9 @@ class LeadPage extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
+            const Text(
               'Lead',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -58,7 +55,7 @@ class LeadPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -73,7 +70,7 @@ class LeadPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
                           child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
@@ -109,10 +106,10 @@ class LeadPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
             //border: Border.all(color: Colors.blueAccent),
           ),
-          child: Center(
+          child: const Center(
             child: Text(
               'Connections',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -126,7 +123,7 @@ class LeadPage extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -134,7 +131,7 @@ class LeadPage extends StatelessWidget {
                       imageUrl: data['conn'][index]['icon'] ?? tr('none'),
                       docTypeId: data['conn'][index]['name'] ?? tr('none'),
                       count: data['conn'][index]['count'].toString()))
-              : NothingHere(),
+              : const NothingHere(),
         ),
       ],
     );

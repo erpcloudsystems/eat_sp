@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -25,7 +27,7 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
   Map<String, dynamic> data = {
     "doctype": "Leave Application",
     "posting_date": DateTime.now().toIso8601String(),
-    'status': 'Approved',
+    'status': 'Open',
     'half_day': 0,
   };
 
@@ -58,7 +60,9 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
 
     final server = APIService();
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -68,16 +72,17 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null && res['message']['leave_application_name'] != null) {
+    } else if (res != null &&
+        res['message']['leave_application_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['leave_application_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -92,10 +97,14 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) log("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          log("➡️ $k: ${data[k]}");
+        }
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -105,6 +114,7 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
 
         setState(() {});
       });
+    }
   }
 
   @override
@@ -128,245 +138,227 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Leave Application")
-              : Text("Create Leave Application"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(
-                    Icons.check,
-                    color: FORM_SUBMIT_BTN_COLOR,
-                  ),
-                ))
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 4),
-                      CustomTextField(
-                        'employee',
-                        'Employee',
-                        initialValue: data['employee'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectEmployeeScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            await _getEmployeeData(res['name']);
+        body: Form(
+          key: _formKey,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomTextFieldTest(
+                      'employee',
+                      'Employee',
+                      initialValue: data['employee'],
+                      onPressed: () async {
+                        String? id;
+                        final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => selectEmployeeScreen()));
+                        if (res != null) {
+                          id = res['name'];
+                          await _getEmployeeData(res['name']);
 
-                            setState(() {
-                              data['name'] = res['name'];
-                              data['employee'] = res['name'];
-                              data['employee_name'] = res['employee_name'];
-                              data['department'] = res['department'];
-                              data['leaver_approver'] =
-                                  selectedEmployeeData['leave_approver'];
-                              data['leave_approver_name'] =
-                                  selectedEmployeeData['leave_approver_name'];
-                            });
-                          }
-                          return id;
+                          setState(() {
+                            data['name'] = res['name'];
+                            data['employee'] = res['name'];
+                            data['employee_name'] = res['employee_name'];
+                            data['department'] = res['department'];
+                            data['leaver_approver'] =
+                                selectedEmployeeData['leave_approver'];
+                            data['leave_approver_name'] =
+                                selectedEmployeeData['leave_approver_name'];
+                          });
+                        }
+                        return id;
+                      },
+                    ),
+                    if (data['employee_name'] != null)
+                      CustomTextFieldTest(
+                        'employee_name',
+                        'Employee Name',
+                        initialValue: data['employee_name'],
+                        enabled: false,
+                      ),
+                    if (data['department'] != null)
+                      CustomTextFieldTest(
+                        'department',
+                        'Department',
+                        initialValue: data['department'],
+                        enabled: false,
+                      ),
+                    CustomTextFieldTest(
+                      'leave_type',
+                      'Leave Type',
+                      initialValue: data['leave_type'],
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => leaveTypeListScreen()));
+                        if (res != null) data['leave_type'] = res;
+                        return res;
+                      },
+                    ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'posting_date',
+                        'Posting Date'.tr(),
+                        initialValue: data['posting_date'],
+                        onChanged: (value) =>
+                            setState(() => data['posting_date'] = value),
+                      )),
+                      const SizedBox(width: 10),
+                      // Flexible(
+                      //     child: DatePicker(
+                      //       'schedule_date',
+                      //       'Required By Date',
+                      //       onChanged: (value)  => setState(() => data['schedule_date'] = value),
+                      //       initialValue: data['schedule_date'] ??
+                      //           ((selectedSupplierData['name'].toString() !=
+                      //               'noName')?
+                      //           DateTime.now()
+                      //               .add(Duration(
+                      //               days: int.parse(selectedSupplierData["credit_days"].toString())))
+                      //               .toIso8601String():null),
+                      //     )),
+                    ]),
+
+                    CustomDropDown(
+                      'status',
+                      'Status    '.tr(),
+                      items: leaveApplicationStatus,
+                      defaultValue: data['status'] ?? leaveApplicationStatus[0],
+                      onChanged: (value) => setState(
+                        () {
+                          data['status'] = value;
                         },
                       ),
-                      if (data['employee_name'] != null)
-                        CustomTextField(
-                          'employee_name',
-                          'Employee Name',
-                          initialValue: data['employee_name'],
-                          enabled: false,
-                        ),
-                      if (data['department'] != null)
-                        CustomTextField(
-                          'department',
-                          'Department',
-                          initialValue: data['department'],
-                          enabled: false,
-                        ),
-                      CustomTextField(
-                        'leave_type',
-                        'Leave Type',
-                        initialValue: data['leave_type'],
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => leaveTypeListScreen()));
-                          if (res != null) data['leave_type'] = res;
-                          return res;
-                        },
+                    ),
+                    const Divider(
+                        color: Colors.grey, height: 1, thickness: 0.7),
+                    if (data['leaver_approver'] != null)
+                      CustomTextFieldTest(
+                        'leaver_approver',
+                        'Leave Approver',
+                        initialValue: data['leaver_approver'],
+                        disableValidation: false,
+                        clearButton: false,
+                        enabled: false,
                       ),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker(
-                          'posting_date',
-                          'Posting Date'.tr(),
-                          initialValue: data['posting_date'],
-                          onChanged: (value) =>
-                              setState(() => data['posting_date'] = value),
-                        )),
-                        SizedBox(width: 10),
-                        // Flexible(
-                        //     child: DatePicker(
-                        //       'schedule_date',
-                        //       'Required By Date',
-                        //       onChanged: (value)  => setState(() => data['schedule_date'] = value),
-                        //       initialValue: data['schedule_date'] ??
-                        //           ((selectedSupplierData['name'].toString() !=
-                        //               'noName')?
-                        //           DateTime.now()
-                        //               .add(Duration(
-                        //               days: int.parse(selectedSupplierData["credit_days"].toString())))
-                        //               .toIso8601String():null),
-                        //     )),
-                      ]),
-
-                      CustomDropDown('status', 'Status    '.tr(),
-                          items: leaveApplicationStatus,
-                          defaultValue:
-                              data['status'] ?? leaveApplicationStatus[0],
-                          onChanged: (value) => setState(() {
-                                data['status'] = value;
-                              })),
-                      Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      if (data['leaver_approver'] != null)
-                        CustomTextField(
-                          'leaver_approver',
-                          'Leave Approver',
-                          initialValue: data['leaver_approver'],
-                          disableValidation: false,
-                          clearButton: false,
-                          enabled: false,
-                        ),
-                      if (data['leave_approver_name'] != null)
-                        CustomTextField(
-                          'leave_approver_name',
-                          'Leave Approver Name',
-                          initialValue: data['leave_approver_name'],
-                          disableValidation: false,
-                          clearButton: false,
-                          enabled: false,
-                        ),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker('from_date', 'From Date'.tr(),
-                                initialValue: data['from_date'],
-                                onChanged: (value) {
-                          setState(() => data['from_date'] = value);
+                    if (data['leave_approver_name'] != null)
+                      CustomTextFieldTest(
+                        'leave_approver_name',
+                        'Leave Approver Name',
+                        initialValue: data['leave_approver_name'],
+                        disableValidation: false,
+                        clearButton: false,
+                        enabled: false,
+                      ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest('from_date', 'From Date'.tr(),
+                              initialValue: data['from_date'],
+                              onChanged: (value) {
+                        setState(() => data['from_date'] = value);
+                        if (data['half_day_date'] != null) {
+                          data.remove('half_day_date');
+                        }
+                        if (data['from_date'] == data['to_date']) {
+                          data['half_day_date'] = data['from_date'];
+                        }
+                      })),
+                      const SizedBox(width: 10),
+                      Flexible(
+                          child: DatePickerTest(
+                        'to_date',
+                        'To Date'.tr(),
+                        initialValue: data['to_date'],
+                        onChanged: (value) {
+                          setState(() => data['to_date'] = value);
                           if (data['half_day_date'] != null) {
                             data.remove('half_day_date');
                           }
                           if (data['from_date'] == data['to_date']) {
                             data['half_day_date'] = data['from_date'];
                           }
-                        })),
-                        SizedBox(width: 10),
-                        Flexible(
-                            child: DatePicker(
-                          'to_date',
-                          'To Date'.tr(),
-                          initialValue: data['to_date'],
-                          onChanged: (value) {
-                            setState(() => data['to_date'] = value);
-                            if (data['half_day_date'] != null) {
-                              data.remove('half_day_date');
-                            }
-                            if (data['from_date'] == data['to_date']) {
-                              data['half_day_date'] = data['from_date'];
-                            }
-                            data['total_leave_days'] =
-                                ((DateTime.tryParse(data['to_date'])!
-                                                .difference(DateTime.tryParse(
-                                                    data['from_date'])!)
-                                                .inDays +
-                                            1) +
-                                        ((data['half_day'] == 0) ? 0 : -0.5))
-                                    .toString();
-                          },
-                        )),
-                        SizedBox(width: 10),
-                      ]),
-                      SizedBox(height: 8),
+                          data['total_leave_days'] =
+                              ((DateTime.tryParse(data['to_date'])!
+                                              .difference(DateTime.tryParse(
+                                                  data['from_date'])!)
+                                              .inDays +
+                                          1) +
+                                      ((data['half_day'] == 0) ? 0 : -0.5))
+                                  .toString();
+                        },
+                      )),
+                      const SizedBox(width: 10),
+                    ]),
+                    const SizedBox(height: 8),
 
-                      // CustomTextField(
-                      //   'leave_balance',
-                      //   'Leave Balance Before Application',
-                      //   initialValue:
-                      //       (data['leave_balance'].toString() != 'null')
-                      //           ? data['leave_balance'].toString()
-                      //           : tr('0'),
-                      //   enabled: false,
-                      // ),
-                      CheckBoxWidget('half_day', 'Half Day',
-                          initialValue: data['half_day'] == 1 ? true : false,
-                          onChanged: (id, value) => setState(() {
-                                data[id] = value ? 1 : 0;
-                              })),
-                      if (data['from_date'] != null && data['to_date'] != null)
-                        CustomTextField(
-                          'total_leave_days',
-                          'Total Leave Days',
-                          initialValue: ((DateTime.tryParse(data['to_date'])!
-                                          .difference(DateTime.tryParse(
-                                              data['from_date'])!)
-                                          .inDays +
-                                      1) +
-                                  ((data['half_day'] == 0) ? 0 : -0.5))
-                              .toString(),
+                    // CustomTextField(
+                    //   'leave_balance',
+                    //   'Leave Balance Before Application',
+                    //   initialValue:
+                    //       (data['leave_balance'].toString() != 'null')
+                    //           ? data['leave_balance'].toString()
+                    //           : tr('0'),
+                    //   enabled: false,
+                    // ),
+                    CheckBoxWidget('half_day', 'Half Day',
+                        initialValue: data['half_day'] == 1 ? true : false,
+                        onChanged: (id, value) => setState(() {
+                              data[id] = value ? 1 : 0;
+                            })),
+                    if (data['from_date'] != null && data['to_date'] != null)
+                      CustomTextFieldTest(
+                        'total_leave_days',
+                        'Total Leave Days',
+                        initialValue: ((DateTime.tryParse(data['to_date'])!
+                                        .difference(DateTime.tryParse(
+                                            data['from_date'])!)
+                                        .inDays +
+                                    1) +
+                                ((data['half_day'] == 0) ? 0 : -0.5))
+                            .toString(),
 
-                          // data['from_date'].difference(data['to_date']).inHours,
-                          enabled: false,
-                        ),
-                      if (data['half_day'] == 1)
-                        Row(
-                          children: [
-                            Flexible(
-                                child: DatePicker(
-                              'half_day_date',
-                              'Half Day Date'.tr(),
-                              initialValue:
-                                  (data['from_date'] == data['to_date'])
-                                      ? data['from_date']
-                                      : data['half_day_date'],
-                              onChanged: (value) =>
-                                  setState(() => data['half_day_date'] = value),
-                              firstDate:
-                                  DateTime.tryParse(data['from_date'] ?? ''),
-                              lastDate:
-                                  DateTime.tryParse(data['to_date'] ?? ''),
-                              clear: true,
-                            )),
-                          ],
-                        ),
-
-                      CustomTextField(
-                        'description',
-                        'Reason',
-                        initialValue: data['description'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
+                        // data['from_date'].difference(data['to_date']).inHours,
+                        enabled: false,
+                      ),
+                    if (data['half_day'] == 1)
+                      Row(
+                        children: [
+                          Flexible(
+                              child: DatePickerTest(
+                            'half_day_date',
+                            'Half Day Date'.tr(),
+                            initialValue: (data['from_date'] == data['to_date'])
+                                ? data['from_date']
+                                : data['half_day_date'],
+                            onChanged: (value) =>
+                                setState(() => data['half_day_date'] = value),
+                            firstDate:
+                                DateTime.tryParse(data['from_date'] ?? ''),
+                            lastDate: DateTime.tryParse(data['to_date'] ?? ''),
+                            clear: true,
+                          )),
+                        ],
                       ),
 
-                      SizedBox(height: 8),
-                    ],
-                  ),
+                    CustomTextFieldTest(
+                      'description',
+                      'Reason',
+                      initialValue: data['description'],
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                    ),
+
+                    const SizedBox(height: 8),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

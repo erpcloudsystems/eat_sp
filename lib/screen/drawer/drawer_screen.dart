@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'faq_screen.dart';
+import '../../new_version/modules/faq/presentation/pages/faq_screen.dart';
 import 'aboutus_screen.dart';
 import '../other/app_settings.dart';
 import '../../provider/user/user_provider.dart';

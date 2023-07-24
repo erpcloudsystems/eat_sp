@@ -15,7 +15,7 @@ class GeneralLedgerBloc extends Bloc<GeneralLedgerEvent, GeneralLedgerState> {
   final GetGeneralLedgerUseCase _getGeneralLedgerUseCase;
 
   GeneralLedgerBloc(this._getGeneralLedgerUseCase)
-      : super(GeneralLedgerState()) {
+      : super(const GeneralLedgerState()) {
     on<GetGeneralLedgerEvent>(_getGeneralLedgerReport,
         transformer: droppable());
     on<ResetGeneralLedgerEvent>(_resetGeneralLedgerReports);

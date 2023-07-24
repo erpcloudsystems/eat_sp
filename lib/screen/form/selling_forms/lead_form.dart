@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
-import '../../../core/constants.dart';
 import '../../../service/service.dart';
+import '../../../test/test_text_field.dart';
 import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
+import '../../../test/custom_page_view_form.dart';
 import '../../../provider/user/user_provider.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
@@ -42,7 +45,9 @@ class _LeadFormState extends State<LeadForm> {
 
     final server = APIService();
 
-    for (var k in data.keys) print("$k: ${data[k]}");
+    for (var k in data.keys) {
+      log("$k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -52,12 +57,12 @@ class _LeadFormState extends State<LeadForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing)
+    if (provider.isEditing) {
       Navigator.pop(context);
-    else if (res != null && res['message']['lead'] != null) {
+    } else if (res != null && res['message']['lead'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['lead']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -70,12 +75,13 @@ class _LeadFormState extends State<LeadForm> {
       setState(() {});
     }
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
         debugPrint(data.toString());
         setState(() {});
       });
+    }
   }
 
   @override
@@ -99,153 +105,184 @@ class _LeadFormState extends State<LeadForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Lead")
-              : Text("Create Lead"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ))
-          ],
-        ),
         body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 4),
-                      CustomTextField(
-                        'lead_name',
-                        tr('Person Name'),
-                        initialValue: data['lead_name'],
-                        onSave: (key, value) => data[key] = value,
-                      ),
-                      CustomTextField(
-                        'company_name',
-                        tr('Company Name'),
-                        initialValue: data['company_name'],
-                        onSave: (key, value) => data[key] = value,
-                        enabled: true,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomTextFieldTest(
+                      'lead_name',
+                      tr('Person Name'),
+                      initialValue: data['lead_name'],
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) {
+                        setState(() {
+                          data['lead_name'] = value;
+                        });
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'company_name',
+                      tr('Company Name'),
+                      initialValue: data['company_name'],
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) {
+                        setState(() {
+                          data['company_name'] = value;
+                        });
+                      },
+                      enabled: true,
+                      disableValidation: true,
+                    ),
+                    CustomTextFieldTest(
+                      'industry',
+                      tr('Industry'),
+                      onSave: (key, value) => data[key] = value,
+                      initialValue: data['industry'],
+                      disableValidation: true,
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => industryScreen(),
+                          ),
+                        );
+                        data['industry'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'market_segment',
+                      tr('Market Segment'),
+                      initialValue: data['market_segment'],
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['market_segment'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => marketSegmentScreen(),
+                          ),
+                        );
+                        data['market_segment'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'territory',
+                      tr('Territory'),
+                      initialValue: data['territory'],
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['territory'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => territoryScreen(),
+                          ),
+                        );
+                        data['territory'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest(
+                      'city',
+                      'City',
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) => setState(() {
+                        data['city'] = value;
+                      }),
+                      initialValue: data['city'],
+                      disableValidation: true,
+                    ),
+                    CustomTextFieldTest(
+                      'country',
+                      tr('Country'),
+                      onSave: (key, value) => data[key] = value,
+                      initialValue: data['country'],
+                      disableValidation: true,
+                      onChanged: (value) => setState(() {
+                        data['country'] = value;
+                      }),
+                      onPressed: () async {
+                        final res = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => countryScreen(),
+                          ),
+                        );
+                        data['country'] = res;
+                        return res;
+                      },
+                    ),
+                    CustomTextFieldTest('mobile_no', tr('Mobile No'),
+                        initialValue: data['mobile_no'],
                         disableValidation: true,
-                      ),
-                      CustomTextField('industry', tr('Industry'),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['industry'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => industryScreen()))),
-                      CustomTextField('market_segment', tr('Market Segment'),
-                          initialValue: data['market_segment'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => marketSegmentScreen()))),
-                      CustomTextField('territory', tr('Territory'),
-                          initialValue: data['territory'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => territoryScreen()))),
-                      CustomTextField(
-                        'address_title',
-                        tr('Address Title'),
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['address_title'],
-                        disableValidation: true,
-                        onChanged: (value) => data['address_title'] = value,
-                      ),
-                      CustomTextField(
-                        'address_line1',
-                        tr('Address'),
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['address_line1'],
-                        disableValidation: true,
-                      ),
-                      CustomTextField(
-                        'city',
-                        'City',
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['city'],
-                        disableValidation: true,
-                      ),
-                      CustomTextField('country', tr('Country'),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['country'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => countryScreen()))),
-                      CustomTextField('mobile_no', tr('Mobile No'),
-                          initialValue: data['mobile_no'],
-                          disableValidation: true,
-                          keyboardType: TextInputType.phone,
-                          validator: validateMobile,
-                          onSave: (key, value) => data[key] = value),
-                      CustomTextField('email_id', tr('Email Address'),
-                          initialValue: data['email_id'],
-                          disableValidation: true,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: mailValidation,
-                          onSave: (key, value) => data[key] = value),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-
-                ///
-                /// group 2
-                ///
-                Group(
-                  child: Column(
-                    children: [
-                      CustomDropDown(
-                        'status',
-                        'Status'.tr(),
-                        items: LeadStatusList,
-                        defaultValue: data["status"] ?? LeadStatusList[0],
+                        keyboardType: TextInputType.phone,
                         onChanged: (value) => setState(() {
-                          data['status'] = value;
-                        }),
-                      ),
-                      CustomTextField('source', 'Source'.tr(),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['source'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => sourceScreen()))),
-                      CustomTextField('campaign_name', 'Campaign Name'.tr(),
-                          initialValue: data['campaign_name'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onChanged: (value) => data['campaign_name'] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => campaignScreen()))),
-                      CustomDropDown('request_type', 'Request Type'.tr(),
-                          items: requestTypeList,
-                          defaultValue: requestTypeList[0],
-                          onChanged: (value) => data['request_type'] = value),
-                      Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                    ],
-                  ),
+                              data['mobile_no'] = value;
+                            }),
+                        validator: validateMobile,
+                        onSave: (key, value) => data[key] = value),
+                    CustomTextFieldTest('email_id', tr('Email Address'),
+                        initialValue: data['email_id'],
+                        disableValidation: true,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) => setState(() {
+                              data['email_id'] = value;
+                            }),
+                        validator: mailValidation,
+                        onSave: (key, value) => data[key] = value),
+                    const SizedBox(height: 8),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              ///
+              /// group 2
+              ///
+              Group(
+                child: Column(
+                  children: [
+                    CustomDropDown(
+                      'status',
+                      'Status'.tr(),
+                      items: LeadStatusList,
+                      defaultValue: data["status"] ?? LeadStatusList[0],
+                      onChanged: (value) => setState(() {
+                        data['status'] = value;
+                      }),
+                    ),
+                    CustomTextFieldTest('source', 'Source'.tr(),
+                        onSave: (key, value) => data[key] = value,
+                        initialValue: data['source'],
+                        disableValidation: true,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => sourceScreen()))),
+                    CustomTextFieldTest('campaign_name', 'Campaign Name'.tr(),
+                        initialValue: data['campaign_name'],
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onChanged: (value) => data['campaign_name'] = value,
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => campaignScreen()))),
+                    CustomDropDown('request_type', 'Request Type'.tr(),
+                        items: requestTypeList,
+                        defaultValue: requestTypeList[0],
+                        onChanged: (value) => data['request_type'] = value),
+                    const Divider(
+                        color: Colors.grey, height: 1, thickness: 0.7),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

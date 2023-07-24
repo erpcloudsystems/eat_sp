@@ -16,7 +16,7 @@ import '../../models/list_models/accounts_list_models/account_table_model.dart';
 class InheritedAccountForm extends InheritedWidget {
   InheritedAccountForm(
       {Key? key, required Widget child, List<AccountModel>? account})
-      : this.account = account ?? [],
+      : account = account ?? [],
         super(key: key, child: child);
 
   final List<AccountModel> account;
@@ -38,7 +38,7 @@ class SelectedAccountsList extends StatefulWidget {
 }
 
 class _SelectedAccountsListState extends State<SelectedAccountsList> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   int rowNo = 0;
   bool isSlid = false;
 
@@ -46,7 +46,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
     "account": null,
     "account_type": null,
     "balance": '0.0',
-    "bank_account": null,
+    // "bank_account": null,
     "party_type": null,
     "party": null,
     "debit_in_account_currency": 0.0,
@@ -81,82 +81,80 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Card(
           elevation: 1,
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8.0,
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-              child: Column(
-                children: [
-                  _Totals(),
-                  Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Accounts',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
-                        SizedBox(
-                          width: 40,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero),
-                            onPressed: () async {
-                              setState(() {
-                                // InheritedAccountForm.of(context).account.insert(
-                                //     0, AccountModel.fromJson(initAccount));
-                                InheritedAccountForm.of(context)
-                                    .account
-                                    .add(AccountModel.fromJson(initAccount));
-                              });
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+            child: Column(
+              children: [
+                const _Totals(),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Accounts',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600)),
+                      SizedBox(
+                        width: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero),
+                          onPressed: () async {
+                            setState(() {
+                              // InheritedAccountForm.of(context).account.insert(
+                              //     0, AccountModel.fromJson(initAccount));
+                              InheritedAccountForm.of(context)
+                                  .account
+                                  .add(AccountModel.fromJson(initAccount));
+                            });
 
+                            Timer(
+                                const Duration(milliseconds: 50),
+                                () => _scrollController.animateTo(
+                                    _scrollController.position.maxScrollExtent,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut));
+                            //Dismiss Tutorial for user
+                            if (InheritedAccountForm.of(context)
+                                    .account
+                                    .length <
+                                2) {
                               Timer(
-                                  Duration(milliseconds: 50),
-                                  () => _scrollController.animateTo(
-                                      _scrollController
-                                          .position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut));
-                              //Dismiss Tutorial for user
-                              if (InheritedAccountForm.of(context)
-                                      .account
-                                      .length <
-                                  2)
-                                Timer(
-                                    Duration(milliseconds: 2500),
-                                    () => setState(() {
-                                          isSlid = true;
-                                          Timer(
-                                              Duration(milliseconds: 1000),
-                                              () => setState(() {
-                                                    isSlid = false;
-                                                  }));
-                                        }));
-                              rowNo++;
-                            },
-                            child:
-                                Icon(Icons.add, size: 25, color: Colors.white),
-                          ),
+                                  const Duration(milliseconds: 2500),
+                                  () => setState(() {
+                                        isSlid = true;
+                                        Timer(
+                                            const Duration(milliseconds: 1000),
+                                            () => setState(() {
+                                                  isSlid = false;
+                                                }));
+                                      }));
+                            }
+                            rowNo++;
+                          },
+                          child: const Icon(Icons.add,
+                              size: 25, color: Colors.white),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         (InheritedAccountForm.of(context).account.isNotEmpty)
             ? Padding(
                 padding:
@@ -174,7 +172,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                             InheritedAccountForm.of(context).account.clear();
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           'Clear All',
                           style: TextStyle(color: Colors.black87),
                         ),
@@ -184,7 +182,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                 ),
               )
             : Container(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[100],
@@ -198,10 +196,10 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
           ),
           child: ConstrainedBox(
@@ -210,13 +208,13 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                     ? MediaQuery.of(context).size.height * 0.10
                     : MediaQuery.of(context).size.height * 0.50),
             child: InheritedAccountForm.of(context).account.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text('no accounts added',
                         style: TextStyle(color: Colors.grey, fontSize: 16)))
                 : ShaderMask(
                     blendMode: BlendMode.dstOut,
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -229,7 +227,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                       ).createShader(bounds);
                     },
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         // reverse: true,
                         itemCount:
@@ -260,10 +258,10 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             color: Colors.redAccent),
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(16),
                                             child: Icon(Icons.delete_forever,
                                                 color: Colors.white, size: 30),
                                           ),
@@ -275,7 +273,8 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
                                               bottom: Radius.circular(8),
                                               top: Radius.circular(8),
                                             ),
@@ -359,13 +358,13 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                                   .of(context)
                                                               .account[index]
                                                               .accountType = Map<
-                                                                  String,
-                                                                  dynamic>.from(
-                                                              await APIService().genericGet(
-                                                                  'method/ecs_mobile.general.general_service?doctype=Account&filter2=' +
-                                                                      InheritedAccountForm.of(context)
-                                                                          .account[index]
-                                                                          .account))['message'][0]['account_type'];
+                                                                      String,
+                                                                      dynamic>.from(
+                                                                  await APIService()
+                                                                      .genericGet(
+                                                                          'method/ecs_mobile.general.general_service?doctype=Account&filter2=${InheritedAccountForm.of(context).account[index].account}'))['message']
+                                                              [
+                                                              0]['account_type'];
 
                                                           if (InheritedAccountForm
                                                                       .of(
@@ -400,42 +399,49 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                                 .partyType = '';
                                                           }
 
-                                                          setState(() {});
+                                                          setState(() {
+                                                            InheritedAccountForm.of(
+                                                                        context)
+                                                                    .account[index]
+                                                                    .accountType =
+                                                                res['account_type'];
+                                                          });
                                                           return res['name'];
                                                         }),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(
                                                     child: CustomTextField(
-                                                      'bank_account',
-                                                      'Bank Account'.tr(),
+                                                      'account_type',
+                                                      'Account Type'.tr(),
                                                       initialValue:
                                                           InheritedAccountForm
                                                                   .of(context)
                                                               .account[index]
-                                                              .bankAccount,
+                                                              .accountType,
+                                                      enabled: false,
                                                       onSave: (key, value) =>
                                                           InheritedAccountForm.of(
                                                                       context)
                                                                   .account[index]
-                                                                  .bankAccount =
+                                                                  .accountType =
                                                               value,
-                                                      onPressed: () async {
-                                                        var res = await Navigator
-                                                                .of(context)
-                                                            .push(MaterialPageRoute(
-                                                                builder: (_) =>
-                                                                    bankAccountScreen()));
-                                                        setState(() {
-                                                          InheritedAccountForm
-                                                                  .of(context)
-                                                              .account[index]
-                                                              .bankAccount = res;
-                                                        });
-                                                        return res;
-                                                      },
+                                                      // onPressed: () async {
+                                                      //   var res = await Navigator
+                                                      //           .of(context)
+                                                      //       .push(MaterialPageRoute(
+                                                      //           builder: (_) =>
+                                                      //               acco()));
+                                                      //   setState(() {
+                                                      //     InheritedAccountForm
+                                                      //             .of(context)
+                                                      //         .account[index]
+                                                      //         .bankAccount = res;
+                                                      //   });
+                                                      //   return res;
+                                                      // },
                                                       disableValidation: true,
                                                     ),
                                                   ),
@@ -446,7 +452,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   if (InheritedAccountForm.of(
@@ -617,7 +623,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                       enabled: false,
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(
@@ -662,7 +668,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                               'Credit'.tr()),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Flexible(

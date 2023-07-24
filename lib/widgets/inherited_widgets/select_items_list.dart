@@ -36,14 +36,6 @@ class SelectedItemsList extends StatefulWidget {
 
 class _SelectedItemsListState extends State<SelectedItemsList> {
   @override
-  void deactivate() {
-    InheritedForm.of(context)
-        .items
-        .clear(); // this to clear items before go new form
-    super.deactivate();
-  }
-
-  @override
   void initState() {
     final provider = context.read<ModuleProvider>();
     Future.delayed(Duration.zero, () {
@@ -59,8 +51,24 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
   }
 
   @override
+  void deactivate() {
+    final provider = context.read<ModuleProvider>();
+    if (!provider.isEditing &&
+        !provider.isCreateFromPage &&
+        !provider.isAmendingMode &&
+        !provider.duplicateMode) {
+           InheritedForm.of(context)
+        .items
+        .clear(); // this to clear items before go new form
+        }
+   
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      shrinkWrap: true,
       children: [
         Card(
           elevation: 1,
@@ -77,7 +85,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Items',
+                        const Text('Items',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600)),
                         SizedBox(
@@ -136,25 +144,25 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                               }
                             },
                             child:
-                                Icon(Icons.add, size: 25, color: Colors.white),
+                                const Icon(Icons.add, size: 25, color: Colors.white),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Divider(),
-                  _Totals()
+                  const Divider(),
+                  const _Totals()
                 ],
               ),
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         ConstrainedBox(
           constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.55),
           child: InheritedForm.of(context).items.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('no items added',
                       style: TextStyle(
                           color: Colors.grey,
@@ -163,7 +171,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
               : ShaderMask(
                   blendMode: BlendMode.dstOut,
                   shaderCallback: (Rect bounds) {
-                    return LinearGradient(
+                    return const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
@@ -176,7 +184,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                     ).createShader(bounds);
                   },
                   child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemCount: InheritedForm.of(context).items.length,
                       itemBuilder: (context, index) => Padding(
                             padding: const EdgeInsets.symmetric(
@@ -188,7 +196,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                 Container(
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.vertical(
+                                      borderRadius: const BorderRadius.vertical(
                                           bottom: Radius.circular(8)),
                                       border: Border.all(color: Colors.blue)),
                                   margin: const EdgeInsets.only(
@@ -229,11 +237,11 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                                     .items[index]
                                                     .qty = _value;
                                               Future.delayed(
-                                                  Duration(seconds: 1),
+                                                  const Duration(seconds: 1),
                                                   () => setState(() {}));
                                             },
                                           )),
-                                          SizedBox(width: 6),
+                                          const SizedBox(width: 6),
                                           Expanded(
                                               child: NumberTextField(
                                             InheritedForm.of(context)
@@ -296,12 +304,12 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                                         100;
                                               }
                                               Future.delayed(
-                                                  Duration(seconds: 1),
+                                                  const Duration(seconds: 1),
                                                   () => setState(() {}));
                                             },
                                             //onSave: (_, value) => _items[index].rate = double.parse(value),
                                           )),
-                                          SizedBox(width: 6),
+                                          const SizedBox(width: 6),
                                           Expanded(
                                             child: CustomTextField(
                                               'total',
@@ -313,7 +321,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                                       .total),
                                             ),
                                           ),
-                                          SizedBox(width: 6),
+                                          const SizedBox(width: 6),
                                           Expanded(
                                               child: CustomTextField(
                                             'uom',
@@ -356,7 +364,7 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                           )),
                                         ],
                                       ),
-                                      Row(
+                                       Row(
                                         children: [],
                                       ),
                                     ],
@@ -378,10 +386,10 @@ class _SelectedItemsListState extends State<SelectedItemsList> {
                                           borderRadius:
                                               BorderRadius.circular(12),
                                           color: Colors.red),
-                                      child: Align(
+                                      child: const Align(
                                         alignment: Alignment.centerRight,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(16),
+                                          padding: EdgeInsets.all(16),
                                           child: Icon(Icons.delete_forever,
                                               color: Colors.white, size: 30),
                                         ),

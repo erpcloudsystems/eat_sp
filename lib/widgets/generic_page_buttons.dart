@@ -3,6 +3,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../core/constants.dart';
 import '../screen/page/page_screen.dart';
 import 'assign_widget/assgin_dialog.dart';
 import '../provider/module/module_provider.dart';
@@ -15,7 +16,7 @@ class GenericPageButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return  Flexible(
       fit: FlexFit.loose,
       child: Padding(
         padding: const EdgeInsets.only(
@@ -24,7 +25,8 @@ class GenericPageButtons extends StatelessWidget {
           right: DoublesManager.d_5,
         ),
         child: ExpandableMenu(
-          backgroundColor: Color(0xFF4B5042).withOpacity(.8),
+           backgroundColor: const Color(0xFF4B5042).withOpacity(.8),
+          // backgroundColor: APPBAR_COLOR,
           itemContainerColor: Colors.transparent,
           height: DoublesManager.d_30,
           width: DoublesManager.d_50,
@@ -55,11 +57,12 @@ class AssignPageButton extends StatelessWidget {
         onPressed: () {
           AnimatedDialog.showAnimatedDialog(
             context,
-            AssignToDialog(),
+            const AssignToDialog(),
           );
         },
         icon: const Icon(
           Icons.add,
+          color: Colors.white,
         ),
         padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
         tooltip: 'Assign',
@@ -94,7 +97,7 @@ class EditPageButton extends StatelessWidget {
             ? Colors.white
             : Colors.white54,
       ),
-      padding: EdgeInsets.only(bottom: DoublesManager.d_10),
+      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Edit',
     );
   }
@@ -111,8 +114,8 @@ class DownloadPdfButton extends StatelessWidget {
           ? () => context.read<ModuleProvider>().downloadPdf(context)
           : null,
       splashRadius: DoublesManager.d_20,
-      icon: Icon(Icons.download, color: Colors.white),
-      padding: EdgeInsets.only(bottom: DoublesManager.d_10),
+      icon: const Icon(Icons.download, color: Colors.white),
+      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Download PDF',
     );
   }
@@ -129,11 +132,11 @@ class PrintPageButton extends StatelessWidget {
           ? () => context.read<ModuleProvider>().printPdf(context)
           : null,
       splashRadius: DoublesManager.d_20,
-      icon: Icon(
+      icon: const Icon(
         Icons.print_sharp,
         color: Colors.white,
       ),
-      padding: EdgeInsets.only(bottom: DoublesManager.d_10),
+      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Print',
     );
   }
@@ -144,40 +147,38 @@ class AttachmentPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: IconButton(
-        onPressed: () => showAttachments(context),
-        splashRadius: DoublesManager.d_20,
-        icon: badges.Badge(
-          badgeContent: Text(
-            '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
-            style: TextStyle(fontSize: 13, color: Colors.white, height: 1.5),
-          ),
-          stackFit: StackFit.passthrough,
-          badgeColor: Colors.redAccent,
-          elevation: 0,
-          showBadge:
-              ((context.read<ModuleProvider>().pageData['attachments'] as List?)
-                          ?.length) ==
-                      null
-                  ? false
-                  : ((context.read<ModuleProvider>().pageData['attachments']
-                                  as List?)
-                              ?.length) ==
-                          0
-                      ? false
-                      : true,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 15),
-            child: Icon(
-              Icons.attach_file,
-              color: Colors.white,
-            ),
+    return IconButton(
+      onPressed: () => showAttachments(context),
+      splashRadius: DoublesManager.d_20,
+      icon: badges.Badge(
+        badgeContent: Text(
+          '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
+          style: const TextStyle(fontSize: 13, color: Colors.white, height: 1.5),
+        ),
+        stackFit: StackFit.passthrough,
+        badgeColor: Colors.redAccent,
+        elevation: 0,
+        showBadge:
+            ((context.read<ModuleProvider>().pageData['attachments'] as List?)
+                        ?.length) ==
+                    null
+                ? false
+                : ((context.read<ModuleProvider>().pageData['attachments']
+                                as List?)
+                            ?.length) ==
+                        0
+                    ? false
+                    : true,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 15),
+          child: const Icon(
+            Icons.attach_file,
+            color: Colors.white,
           ),
         ),
-        padding: EdgeInsets.only(bottom: DoublesManager.d_10),
-        tooltip: 'Attachments',
       ),
+      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
+      tooltip: 'Attachments',
     );
   }
 }
@@ -194,8 +195,11 @@ class DuplicatePageButton extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => provider.currentModule.createForm!));
       },
-      icon: Icon(Icons.copy),
-      padding: EdgeInsets.only(bottom: DoublesManager.d_10),
+      icon: const Icon(
+        Icons.copy,
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Duplicate',
       splashRadius: DoublesManager.d_20,
     );

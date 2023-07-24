@@ -12,15 +12,35 @@ Widget getBottomNavigationBar({
     key: key,
     index: index,
     height: 55.0,
-    items: const <Widget>[
-      Icon(Icons.receipt_long_outlined, size: 25, color: Colors.white),
-      Icon(Icons.person, size: 25, color: Colors.white),
-      Icon(Icons.home, size: 25, color: Colors.white),
-      Icon(Icons.notifications_active, size: 25, color: Colors.white),
-      Icon(Icons.more_vert, size: 25, color: Colors.white),
+    items: const [
+      Icon(
+        Icons.receipt_long_outlined,
+        size: 25,
+        color: APPBAR_COLOR,
+      ),
+      Icon(
+        Icons.category_outlined,
+        size: 25,
+        color: APPBAR_COLOR,
+      ),
+      Icon(
+        Icons.home_outlined,
+        size: 25,
+        color: APPBAR_COLOR,
+      ),
+      Icon(
+        Icons.notifications_active_outlined,
+        size: 25,
+        color: APPBAR_COLOR,
+      ),
+      Icon(
+        Icons.more_vert,
+        size: 25,
+        color: APPBAR_COLOR,
+      ),
     ],
-    color: APPBAR_COLOR,
-    buttonBackgroundColor: APPBAR_COLOR,
+    color: Colors.white,
+    //buttonBackgroundColor: Colors.blue[200],
     backgroundColor: Colors.transparent,
     animationCurve: Curves.easeInOut,
     animationDuration: const Duration(milliseconds: 500),

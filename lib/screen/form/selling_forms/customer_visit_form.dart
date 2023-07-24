@@ -5,6 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
@@ -33,7 +35,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     "latitude": 0.0,
     "longitude": 0.0,
   };
-  LatLng location = LatLng(0.0, 0.0);
+  LatLng location = const LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
   Map<String, dynamic> selectedCstData = {
@@ -45,9 +47,9 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if (location == LatLng(0.0, 0.0)) {
+    if (location == const LatLng(0.0, 0.0)) {
       showSnackBar(KEnableGpsSnackBar, context);
-      Future.delayed(Duration(seconds: 1), () async {
+      Future.delayed(const Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
       });
       return;
@@ -78,7 +80,9 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Customer Visit');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -88,24 +92,26 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null &&
+    } else if (res != null &&
         res['message']['customer_visit_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['customer_visit_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
   Future<void> _getCustomerData(String customer) async {
     selectedCstData = Map<String, dynamic>.from(
         await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
-    for (var k in selectedCstData.keys) print("➡️ $k: ${selectedCstData[k]}");
+    for (var k in selectedCstData.keys) {
+      print("➡️ $k: ${selectedCstData[k]}");
+    }
   }
 
   @override
@@ -113,14 +119,18 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     final provider = context.read<ModuleProvider>();
     super.initState();
 
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          print("➡️ $k: ${data[k]}");
+        }
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
         data['time'] =
-            DateTime.now().toIso8601String().split("T")[0] + "T" + data['time'];
+            "${DateTime.now().toIso8601String().split("T")[0]}T" + data['time'];
         _getCustomerData(data['customer']).then((value) => setState(() {
               selectedCstData['address_line1'] =
                   formatDescription(data['address_line1']);
@@ -129,6 +139,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
             }));
         setState(() {});
       });
+    }
   }
 
   @override
@@ -161,164 +172,146 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Customer Visit".tr())
-                : Text("Create Customer Visit".tr()),
-            actions: [
-              Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ),
-              )
-            ],
-          ),
           body: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Group(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: 4),
-                        CustomTextField(
-                          'customer',
-                          'Customer',
-                          initialValue: data['customer'],
-                          onPressed: () async {
-                            String? id;
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CustomTextFieldTest(
+                        'customer',
+                        'Customer',
+                        initialValue: data['customer'],
+                        disableValidation: false,
+                        onPressed: () async {
+                          String? id;
 
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectCustomerScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              await _getCustomerData(res['name']);
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectCustomerScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            await _getCustomerData(res['name']);
 
+                            setState(() {
+                              data['customer'] = res['name'];
+                              data['customer_name'] = res['customer_name'];
+                              data['customer_address'] =
+                                  res["customer_primary_address"];
+                              data['contact_person'] =
+                                  res["customer_primary_contact"];
+                            });
+                          }
+
+                          return id;
+                        },
+                      ),
+                      CustomExpandableTile(
+                        hideArrow: data['customer'] == null,
+                        title: CustomTextFieldTest(
+                            'customer_address', 'Customer Address',
+                            initialValue: data['customer_address'],
+                            disableValidation: false,
+                            clearButton: false,
+                            onSave: (key, value) => data[key] = value,
+                            liestenToInitialValue:
+                                data['customer_address'] == null,
+                            onPressed: () async {
+                              if (data['customer'] == null) {
+                                return showSnackBar(
+                                    'Please select a customer to first',
+                                    context);
+                              }
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => customerAddressScreen(
+                                          data['customer'])));
                               setState(() {
-                                data['customer'] = res['name'];
-                                data['customer_name'] = res['customer_name'];
-                                data['customer_address'] =
-                                    res["customer_primary_address"];
-                                data['contact_person'] =
-                                    res["customer_primary_contact"];
+                                data['customer_address'] = res['name'];
+                                selectedCstData['address_line1'] =
+                                    res['address_line1'];
+                                selectedCstData['city'] = res['city'];
+                                selectedCstData['country'] = res['country'];
                               });
-                            }
-
-                            return id;
+                              return res['name'];
+                            }),
+                        children: (data['customer_address'] != null)
+                            ? <Widget>[
+                                ListTile(
+                                  trailing: const Icon(Icons.location_on),
+                                  title: Text(
+                                      selectedCstData['address_line1'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.location_city),
+                                  title: Text(selectedCstData['city'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.flag),
+                                  title: Text(selectedCstData['country'] ?? ''),
+                                )
+                              ]
+                            : null,
+                      ),
+                      Row(children: [
+                        Flexible(
+                            child: DatePickerTest(
+                          'posting_date',
+                          'Posting Date'.tr(),
+                          enable: false,
+                          initialValue: data['posting_date'],
+                          onChanged: (value) =>
+                              setState(() => data['posting_date'] = value),
+                        )),
+                        const SizedBox(width: 10),
+                        Flexible(
+                            child: TimePickerTest(
+                          'time',
+                          'Time'.tr(),
+                          enable: false,
+                          initialValue: data['time'],
+                          onChanged: (value) {
+                            //value on that shap: (10:01:00)
+                            setState(() {
+                              data['time'] = value;
+                            });
                           },
-                        ),
-                        CustomExpandableTile(
-                          hideArrow: data['customer'] == null,
-                          title: CustomTextField(
-                              'customer_address', 'Customer Address',
-                              initialValue: data['customer_address'],
-                              disableValidation: false,
-                              clearButton: false,
-                              onSave: (key, value) => data[key] = value,
-                              liestenToInitialValue:
-                                  data['customer_address'] == null,
-                              onPressed: () async {
-                                if (data['customer'] == null)
-                                  return showSnackBar(
-                                      'Please select a customer to first',
-                                      context);
-                                final res = await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => customerAddressScreen(
-                                            data['customer'])));
-                                setState(() {
-                                  data['customer_address'] = res['name'];
-                                  selectedCstData['address_line1'] =
-                                      res['address_line1'];
-                                  selectedCstData['city'] = res['city'];
-                                  selectedCstData['country'] = res['country'];
-                                });
-                                return res['name'];
-                              }),
-                          children: (data['customer_address'] != null)
-                              ? <Widget>[
-                                  ListTile(
-                                    trailing: Icon(Icons.location_on),
-                                    title: Text(
-                                        selectedCstData['address_line1'] ?? ''),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.location_city),
-                                    title: Text(selectedCstData['city'] ?? ''),
-                                  ),
-                                  ListTile(
-                                    trailing: Icon(Icons.flag),
-                                    title:
-                                        Text(selectedCstData['country'] ?? ''),
-                                  )
-                                ]
-                              : null,
-                        ),
-                        Row(children: [
+                        ))
+                      ]),
+                      CustomTextFieldTest(
+                        'description',
+                        'Description'.tr(),
+                        onChanged: (value) => data['description'] = value,
+                        onSave: (key, value) => data[key] = value,
+                        initialValue: data['description'],
+                        disableValidation: true,
+                      ),
+                      const SizedBox(height: 8),
+                       Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 6),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.amber, size: 22),
+                          ),
                           Flexible(
-                              child: DatePicker(
-                            'posting_date',
-                            'Posting Date'.tr(),
-                            enable: false,
-                            initialValue: data['posting_date'],
-                            onChanged: (value) =>
-                                setState(() => data['posting_date'] = value),
+                              child: Text(
+                            KLocationNotifySnackBar,
+                            textAlign: TextAlign.start,
                           )),
-                          SizedBox(width: 10),
-                          Flexible(
-                              child: TimePicker(
-                            'time',
-                            'Time'.tr(),
-                            enable: false,
-                            initialValue: data['time'],
-                            onChanged: (value) {
-                              //value on that shap: (10:01:00)
-                              setState(() {
-                                data['time'] = value;
-                              });
-                            },
-                          ))
-                        ]),
-                        CustomTextField(
-                          'description',
-                          'Description'.tr(),
-                          onChanged: (value) => data['description'] = value,
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['description'],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,
-                                  color: Colors.amber, size: 22),
-                            ),
-                            Flexible(
-                                child: Text(
-                              KLocationNotifySnackBar,
-                              textAlign: TextAlign.start,
-                            )),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                      ],
-                    ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  SizedBox(height: 100),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -39,7 +41,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
     "longitude": 0.0,
   };
 
-  LatLng location = LatLng(0.0, 0.0);
+  LatLng location = const LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
   Map<String, dynamic> selectedEmployeeData = {
@@ -54,9 +56,9 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
       return;
     }
 
-    if (location == LatLng(0.0, 0.0)) {
+    if (location == const LatLng(0.0, 0.0)) {
       showSnackBar(KEnableGpsSnackBar, context);
-      Future.delayed(Duration(seconds: 1), () async {
+      Future.delayed(const Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
       });
       return;
@@ -86,7 +88,9 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
     data.removeWhere((key, value) => key == "time_only");
     data.removeWhere((key, value) => key == "date_only");
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -96,17 +100,17 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null &&
+    } else if (res != null &&
         res['message']['employee_checkin_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['employee_checkin_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -121,7 +125,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
@@ -132,6 +136,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
         data['date_only'] = data['time'].toString().split(" ")[0];
         setState(() {});
       });
+    }
   }
 
   @override
@@ -164,129 +169,114 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Employee Checkin")
-                : Text("Create Employee Checkin"),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(
-                      Icons.check,
-                      color: FORM_SUBMIT_BTN_COLOR,
-                    ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Group(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 4),
-                        CustomTextField(
-                          'employee',
-                          'Employee',
-                          initialValue: data['employee'],
-                          onPressed: () async {
-                            String? id;
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectEmployeeScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              await _getEmployeeData(res['name']);
+          body: Form(
+            key: _formKey,
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CustomTextFieldTest(
+                        'employee',
+                        'Employee',
+                        initialValue: data['employee'],
+                        onPressed: () async {
+                          String? id;
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectEmployeeScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            await _getEmployeeData(res['name']);
 
-                              setState(() {
-                                data['name'] = res['name'];
-                                data['employee'] = res['name'];
-                                data['employee_name'] = res['employee_name'];
-                              });
-                            }
-                            return id;
+                            setState(() {
+                              data['name'] = res['name'];
+                              data['employee'] = res['name'];
+                              data['employee_name'] = res['employee_name'];
+                            });
+                          }
+                          return id;
+                        },
+                      ),
+                      Row(children: [
+                        Flexible(
+                            child: DatePickerTest(
+                          'date_only',
+                          'Date',
+                          enable: false,
+                          onChanged: (value) {
+                            setState(() {
+                              data['date_only'] = value.split("T")[0];
+                            });
+                          },
+                          initialValue: data['time'], //"2022-09-21 10:01:26",
+                        )),
+                        const SizedBox(width: 10),
+                        Flexible(
+                            child: TimePickerTest(
+                          'time',
+                          'Time'.tr(),
+                          enable: false,
+                          initialValue: data['time'],
+                          onChanged: (value) {
+                            setState(() {
+                              data['time_only'] = value;
+                            });
+                          },
+                        )),
+                      ]),
+                      CustomDropDown(
+                        'log_type',
+                        'Log Type'.tr(),
+                        items: logType,
+                        defaultValue: data['log_type'] ?? logType[0],
+                        onChanged: (value) => setState(
+                          () {
+                            data['log_type'] = value;
                           },
                         ),
-                        Row(children: [
-                          Flexible(
-                              child: DatePicker(
-                            'date_only',
-                            'Date',
-                            enable: false,
-                            onChanged: (value) {
-                              setState(() {
-                                data['date_only'] = value.split("T")[0];
-                              });
-                            },
-                            initialValue: data['time'], //"2022-09-21 10:01:26",
-                          )),
-                          SizedBox(width: 10),
-                          Flexible(
-                              child: TimePicker(
-                            'time',
-                            'Time'.tr(),
-                            enable: false,
-                            initialValue: data['time'],
-                            onChanged: (value) {
-                              setState(() {
-                                data['time_only'] = value;
-                              });
-                            },
-                          )),
-                        ]),
-                        CustomDropDown('log_type', 'Log Type'.tr(),
-                            items: logType,
-                            defaultValue: data['status'] ?? logType[0],
-                            onChanged: (value) => setState(() {
-                                  data['log_type'] = value;
-                                })),
-                        Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                        if (data['leaver_approver'] != null)
-                          CustomTextField(
-                            'device_id',
-                            'Location / Device ID',
-                            initialValue: data['device_id'],
-                            disableValidation: true,
-                            onSave: (key, value) => data[key] = value,
-                          ),
-                        CheckBoxWidget(
-                            'skip_auto_attendance', 'Skip Auto Attendance',
-                            initialValue: data['skip_auto_attendance'] == 1
-                                ? true
-                                : false,
-                            onChanged: (id, value) =>
-                                setState(() => data[id] = value ? 1 : 0)),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: Icon(Icons.warning_amber,
-                                  color: Colors.amber, size: 22),
-                            ),
-                            Flexible(
-                                child: Text(
-                              KLocationNotifySnackBar,
-                              textAlign: TextAlign.start,
-                            )),
-                          ],
+                      ),
+                      const Divider(
+                          color: Colors.grey, height: 1, thickness: 0.7),
+                      if (data['leaver_approver'] != null)
+                        CustomTextFieldTest(
+                          'device_id',
+                          'Location / Device ID',
+                          initialValue: data['device_id'],
+                          disableValidation: true,
+                          onSave: (key, value) => data[key] = value,
                         ),
-                        SizedBox(height: 8),
-                      ],
-                    ),
+                      CheckBoxWidget(
+                          'skip_auto_attendance', 'Skip Auto Attendance',
+                          initialValue:
+                              data['skip_auto_attendance'] == 1 ? true : false,
+                          onChanged: (id, value) =>
+                              setState(() => data[id] = value ? 1 : 0)),
+                      const SizedBox(height: 8),
+                       Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 6),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.amber, size: 22),
+                          ),
+                          Flexible(
+                              child: Text(
+                            KLocationNotifySnackBar,
+                            textAlign: TextAlign.start,
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

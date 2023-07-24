@@ -63,7 +63,9 @@ class OpportunityPageModel {
         tr('Next Contact Date'): reverse(data['contact_date'])
       },
       {tr('To Discuss'): formatDescription(data['to_discuss'])},
-      {tr('With Items'): data['with_items'].toString()},
+      {
+        tr('With Items'): data['with_items'].toString(),
+      },
     ];
   }
 

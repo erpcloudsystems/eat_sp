@@ -1,3 +1,8 @@
+import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
+import '../test/home_item_test.dart';
+import 'drawer/drawer_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +27,22 @@ class SubCategoryScreen extends StatefulWidget {
 }
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
-  final int _page = 2;
-  final GlobalKey _bottomNavigationKey = GlobalKey();
+  int _page = 1;
 
   @override
   Widget build(BuildContext context) {
     // final List<String> list = context.read<UserProvider>().getNames(title);
     final UserProvider userProvider = Provider.of(context, listen: false);
-    DateTime lastExitTime = DateTime.now();
 
     List<Widget?> pages = [
       const AppSettings(),
-      const UserProfileScreen(),
       GridView.count(
-        padding:
-            const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+        padding: const EdgeInsets.only(
+          top: 30,
+          right: 10,
+          left: 10,
+          bottom: 10,
+        ),
 
         // Create a grid with 2 columns. If you change the scrollDirection to
         // horizontal, this produces 2 rows.
@@ -45,7 +51,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         children: List.generate(
             userProvider.modules[widget.moduleIndex]['docs'].keys.length,
             (index) {
-          return HomeItem(
+          return HomeItemTest(
             title: userProvider.modules[widget.moduleIndex]['docs'].keys
                 .toList()[index],
             imageUrl: userProvider.modules[widget.moduleIndex]['docs'].values
@@ -60,39 +66,49 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                 // no implementation supports this module
                 return;
               }
-              Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) =>
-                    ShowCaseWidget(
-                  onFinish: () {
-                    userProvider.setShowcaseProgress('list_tut');
-                  },
-                  onComplete: (index, key) {
-                    userProvider.setShowcaseProgress('list_tut');
-                  },
-                  builder:
-                      Builder(builder: (context) => GenericListScreen.module()),
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      ShowCaseWidget(
+                    onFinish: () {
+                      userProvider.setShowcaseProgress('list_tut');
+                    },
+                    onComplete: (index, key) {
+                      userProvider.setShowcaseProgress('list_tut');
+                    },
+                    builder: Builder(
+                        builder: (context) => GenericListScreen.module()),
+                  ),
                 ),
-              ));
+              );
             },
           );
         }),
       ),
+      const DashboardScreen(),
       NotificationScreen(),
       CustomDrawer(),
     ];
 
     List<String> appBarTitles = [
       'Reports',
-      'User Profile',
       widget.title,
+      'User Profile',
       'Notification',
       ''
     ];
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 1,
-        title: Text(appBarTitles[_page]),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text(
+          appBarTitles[_page],
+          style: const TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
       ),
 

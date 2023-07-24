@@ -7,6 +7,8 @@ import '../../../core/cloud_system_widgets.dart';
 import '../../../core/constants.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
 
@@ -24,6 +26,17 @@ class ProjectPage extends StatelessWidget {
         /// Project details
         PageCard(
           header: [
+            Row(
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Project',
+                  data: data,
+                  items: fromProject,
+                  disableCreate: false,
+                  //disableCreate: data['docstatus'].toString() == "1" ?  false:true,
+                ),
+              ],
+            ),
             const Text(
               'Project',
               style: TextStyle(
@@ -85,7 +98,7 @@ class ProjectPage extends StatelessWidget {
           child: const Center(
             child: Text(
               'Connections',
-              style:  TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

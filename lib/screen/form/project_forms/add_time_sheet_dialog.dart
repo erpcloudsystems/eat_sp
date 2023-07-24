@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../list/otherLists.dart';
+import '../../../new_version/core/extensions/date_tine_extension.dart';
 
 class AddTimeSheetDialog extends StatefulWidget {
   const AddTimeSheetDialog({
@@ -17,6 +18,7 @@ class AddTimeSheetDialog extends StatefulWidget {
 
 class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
   Map<String, dynamic> timeSheet = {};
+  TextEditingController timeinput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
+                const Center(
                   child: Text(
                     'Add Time Log',
                     style: TextStyle(
@@ -58,7 +60,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                           return res;
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       CustomTextField(
@@ -70,7 +72,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                         initialValue: widget.projectName ?? '',
                         onSave: (key, value) => timeSheet['project'] = value,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       CustomTextField(
@@ -86,15 +88,31 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                         onChanged: (value) =>
                             timeSheet['hours'] = double.tryParse(value),
                       ),
-                      DatePicker('from_time', 'From Time',
-                          initialValue: timeSheet['from_time'] ?? null,
-                          onChanged: (value) {
-                        timeSheet['from_time'] = value;
-                      }),
+                      DatePicker(
+                        'from_time',
+                        'From Date',
+                        initialValue: timeSheet['from_time'],
+                        onChanged: (value) {
+                          timeSheet['from_time'] =
+                              value.formateToReadableDate();
+                        },
+                      ),
+
+                      ///TIme Picker
+                      TimePicker(
+                        'from',
+                        'From Time',
+                        onChanged: (value) {
+                          String mergedTime =
+                              timeSheet['from_time'] + 'T$value';
+
+                          timeSheet['from_time'] = mergedTime;
+                        },
+                      ),
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Center(
@@ -120,7 +138,7 @@ class _AddTimeSheetDialogState extends State<AddTimeSheetDialog> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Save Time sheet',
                         style: TextStyle(
                           fontSize: 18,

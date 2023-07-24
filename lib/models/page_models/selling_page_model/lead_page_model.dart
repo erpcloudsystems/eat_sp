@@ -1,4 +1,3 @@
-import '../model_functions.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class LeadPageModel {
@@ -22,7 +21,6 @@ class LeadPageModel {
       },
       {
         tr('Territory'): data['territory'] ?? tr('none'),
-        tr('Address'): data['address_line1'] ?? tr('none')
       },
       {
         tr('City'): data['city'] ?? tr('none'),
@@ -51,7 +49,7 @@ class LeadPageModel {
         tr('Next Contact Date'):
             (data['contact_date'] ?? tr('none')).toString().split('@')[0]
       },
-      {tr('Notes'): formatDescription(data['notes'])},
+      // {tr('Notes'): formatDescription(data['notes'])},
     ];
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
+import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
+import '../test/home_item_test.dart';
 import 'sub_category_screen.dart';
 import 'Drawer/drawer_screen.dart';
 import 'other/notification_screen.dart';
@@ -9,7 +11,6 @@ import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
 import '../widgets/dialog/loading_dialog.dart';
 import '../service/local_notification_service.dart';
-import '../new_version/modules/user_profile/presentation/pages/user_profile_screen.dart';
 import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,10 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int indexNow = 2;
 
   final GlobalKey _bottomNavigationKey = GlobalKey();
-  final _one = GlobalKey();
-  final _two = GlobalKey();
 
   String release = '';
+
 
   @override
   void initState() {
@@ -41,37 +41,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<Widget?> pages = [
       const ModulesPage(),
-      const UserProfileScreen(),
-      GridView.count(
-        padding: const EdgeInsets.only(top: 20, right: 6, left: 6, bottom: 50),
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        crossAxisCount: 2, childAspectRatio: 1.1,
-        // Generate 100 widgets that display their index in the List.
-        children: List.generate(userProvider.modules.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(4),
-            child: HomeItem(
-              title: userProvider.modules[index].keys.first,
-              imageUrl: userProvider.modules[index].values.first,
-              onPressed: () => Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) =>
-                    SubCategoryScreen(
-                        userProvider.modules[index].keys.first, index),
-              )),
+      /// Home Screen
+      Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: const Text(
+            'Modules',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Colors.black,
             ),
-          );
-        }),
+          ),
+        ),
+        body: GridView.count(
+          padding: const EdgeInsets.only(
+            top: 30,
+            right: 6,
+            left: 6,
+            bottom: 50,
+          ),
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          crossAxisCount: 2, childAspectRatio: 1.2,
+          // Generate 100 widgets that display their index in the List.
+          children: List.generate(userProvider.modules.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.all(4),
+              child: HomeItemTest(
+                title: userProvider.modules[index].keys.first,
+                imageUrl: userProvider.modules[index].values.first,
+                onPressed: () => Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      SubCategoryScreen(
+                    userProvider.modules[index].keys.first,
+                    index,
+                  ),
+                )),
+              ),
+            );
+          }),
+        ),
       ),
+      const DashboardScreen(),
       NotificationScreen(),
       CustomDrawer(),
-    ];
-    List<String> appBarTitles = [
-      'Reports',
-      'User Profile',
-      'Home',
-      'Notification',
-      ''
     ];
     void logout() async {
       final res =
@@ -84,11 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
         shouldPopScope: () => true,
       ),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitles[_page]),
-          centerTitle: true,
-          elevation: 1,
-        ),
         bottomNavigationBar: getBottomNavigationBar(
             key: _bottomNavigationKey,
             index: indexNow,

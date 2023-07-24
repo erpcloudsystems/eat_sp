@@ -2,6 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
+import '../../../widgets/dismiss_keyboard.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -30,7 +33,7 @@ class _PaymentFormState extends State<PaymentForm> {
     "source_exchange_rate": 1,
     "target_exchange_rate": 1,
   };
-
+  String? bankType;
   Map<String, dynamic> selectedCstData = {
     'name': 'noName',
   };
@@ -62,7 +65,9 @@ class _PaymentFormState extends State<PaymentForm> {
 
     final server = APIService();
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -72,24 +77,25 @@ class _PaymentFormState extends State<PaymentForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['payment_entry'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['payment_entry'] != null) {
         context
             .read<ModuleProvider>()
             .pushPage(res['message']['payment_entry']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['payment_entry'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['payment_entry']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -104,9 +110,14 @@ class _PaymentFormState extends State<PaymentForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode & Amending Mode & Duplicate Mode
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       data = context.read<ModuleProvider>().updateData;
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    }
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     if (provider.isAmendingMode) {
       data['source_exchange_rate'] = 1;
@@ -269,180 +280,179 @@ class _PaymentFormState extends State<PaymentForm> {
         }
         return Future.value(false);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Payment")
-              : Text("Create Payment"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(
-                    Icons.check,
-                    color: FORM_SUBMIT_BTN_COLOR,
-                  ),
-                ))
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Form(
+      child: DismissKeyboard(
+        child: Scaffold(
+          body: Form(
             key: _formKey,
-            child: Group(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 4),
-                  CustomDropDown('payment_type', 'Payment Type'.tr(),
-                      items: paymentType,
-                      defaultValue: data['payment_type'] ?? paymentType[0],
-                      onChanged: (value) => setState(() {
-                            data['party'] = null;
-                            data['party_name'] = null;
-                            data['payment_type'] = value;
-                            if (value == paymentType[0]) {
-                              data['party_type'] = KPaymentPartyList[0];
-                              data['mode_of_payment_2'] = null;
-                            } else if (value == paymentType[1]) {
-                              data['party_type'] = KPaymentPartyList[1];
-                              data['mode_of_payment_2'] = null;
-                            } else
-                              data['party_type'] = null;
-                          })),
-                  CustomDropDown(
-                    'party_type',
-                    'Party Type'.tr(),
-                    items: KPaymentPartyList,
-                    defaultValue: data['party_type'] ?? KPaymentPartyList[0],
-                    enable: false,
-                    onChanged: (value) => setState(() {
-                      data['party'] = null;
-                      data['party_name'] = null;
-                      data['party_type'] = value;
-                    }),
-                  ),
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 4),
+                      CustomDropDown('payment_type', 'Payment Type'.tr(),
+                          items: paymentType,
+                          defaultValue: data['payment_type'] ?? paymentType[0],
+                          onChanged: (value) => setState(() {
+                                data['party'] = null;
+                                data['party_name'] = null;
+                                data['payment_type'] = value;
+                                if (value == paymentType[0]) {
+                                  data['party_type'] = KPaymentPartyList[0];
+                                  data['mode_of_payment_2'] = null;
+                                } else if (value == paymentType[1]) {
+                                  data['party_type'] = KPaymentPartyList[1];
+                                  data['mode_of_payment_2'] = null;
+                                } else {
+                                  data['party_type'] = null;
+                                }
+                              })),
+                      CustomDropDown(
+                        'party_type',
+                        'Party Type'.tr(),
+                        items: KPaymentPartyList,
+                        defaultValue:
+                            data['party_type'] ?? KPaymentPartyList[0],
+                        enable: false,
+                        onChanged: (value) => setState(() {
+                          data['party'] = null;
+                          data['party_name'] = null;
+                          data['party_type'] = value;
+                        }),
+                      ),
+                      if (data['party_type'] != null)
+                        CustomTextFieldTest(
+                          'party',
+                          data['party_type'],
+                          initialValue: data['party'],
+                          onPressed: () async {
+                            String? id;
 
-                  // Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                  // if (data['party_type'] != null)
-                  //   Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  //     child: Row(
-                  //       children: [
-                  //         Text(
-                  //           tr('Party') + ': ' + data['party_type'],
-                  //           textAlign: TextAlign.start,
-                  //           style: TextStyle(
-                  //               fontSize: 16, color: Colors.grey.shade700),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // if (data['party_type'] != null)
-                  //   Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                  if (data['party_type'] != null)
-                    CustomTextField(
-                      'party',
-                      data['party_type'],
-                      initialValue: data['party'],
-                      onPressed: () async {
-                        String? id;
-
-                        if (data['party_type'] == KPaymentPartyList[0]) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            setState(() {
-                              data['party'] = res['name'];
-                              data['party_name'] = res['customer_name'];
-                            });
-                          }
-                        } else {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => supplierListScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            setState(() {
-                              data['party'] = res['name'];
-                              data['party_name'] = res['supplier_name'];
-                            });
-                          }
-                        }
-                        return id;
-                      },
-                    ),
-                  if (data['party_name'] != null)
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Text(data['party_name']!,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black)),
-                        )),
-                  if (data['party_name'] != null)
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.0, left: 2, right: 2),
-                      child: Divider(
-                          color: Colors.grey, height: 1, thickness: 0.7),
-                    ),
-                  Flexible(
-                      child: DatePicker('posting_date', 'Date'.tr(),
+                            if (data['party_type'] == KPaymentPartyList[0]) {
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          selectCustomerScreen()));
+                              if (res != null) {
+                                id = res['name'];
+                                setState(() {
+                                  data['party'] = res['name'];
+                                  data['party_name'] = res['customer_name'];
+                                });
+                              }
+                            } else {
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          supplierListScreen()));
+                              if (res != null) {
+                                id = res['name'];
+                                setState(() {
+                                  data['party'] = res['name'];
+                                  data['party_name'] = res['supplier_name'];
+                                });
+                              }
+                            }
+                            return id;
+                          },
+                        ),
+                      if (data['party_name'] != null)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(data['party_name']!,
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black)),
+                            )),
+                      if (data['party_name'] != null)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                          child: Divider(
+                              color: Colors.grey, height: 1, thickness: 0.7),
+                        ),
+                      DatePickerTest('posting_date', 'Date'.tr(),
                           initialValue: data['posting_date'],
-                          onChanged: (value) =>
-                              setState(() => data['posting_date'] = value))),
-                  CustomTextField(
-                    'mode_of_payment',
-                    data['payment_type'] == paymentType[2]
-                        ? 'Payment From'
-                        : 'Mode Of Payment',
-                    initialValue: data['mode_of_payment'],
-                    clearButton: true,
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => modeOfPaymentScreen(
-                                  data['mode_of_payment_2'])));
-                      if (res != null) data['mode_of_payment'] = res;
-                      return res;
-                    },
+                          onChanged: (value) {
+                        setState(() {
+                          data['posting_date'] = value;
+                        });
+                      }),
+                      CustomTextFieldTest(
+                        'mode_of_payment',
+                        data['payment_type'] == paymentType[2]
+                            ? 'Payment From'
+                            : 'Mode Of Payment',
+                        initialValue: data['mode_of_payment'],
+                        clearButton: true,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => modeOfPaymentScreen(
+                                      data['mode_of_payment_2'])));
+                          setState(() {
+                            bankType = res['type'];
+                          });
+                          if (res != null) {
+                            data['mode_of_payment'] = res['name'];
+                          }
+                          return res['name'];
+                        },
+                      ),
+                      if (bankType == 'Bank')
+                        CustomTextFieldTest(
+                          'reference_no',
+                          'Reference Number'.tr(),
+                          initialValue: data['reference_no'],
+                          onChanged: (value) {
+                            data['reference_no'] = value;
+
+                            data['reference_date'] = data['posting_date'];
+                          },
+                          onSave: (key, value) => data[key] = value,
+                          keyboardType: TextInputType.number,
+                          disableError: false,
+                          validator: (value) => numberValidationToast(
+                              value, 'Reference Number'.tr()),
+                          disableValidation: true,
+                        ),
+                      if (data['payment_type'] == paymentType[2])
+                        CustomTextFieldTest(
+                          'mode_of_payment_2',
+                          'Payment To',
+                          initialValue: data['mode_of_payment_2'],
+                          clearButton: true,
+                          onPressed: () async {
+                            final res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => modeOfPaymentScreen(
+                                        data['mode_of_payment'])));
+                            if (res != null) {
+                              data['mode_of_payment_2'] = res['name'];
+                            }
+                            return res['name'];
+                          },
+                        ),
+                      CustomTextFieldTest(
+                        'paid_amount',
+                        'Paid Amount',
+                        initialValue: '${data['paid_amount'] ?? ''}',
+                        clearButton: true,
+                        keyboardType: TextInputType.number,
+                        validator: numberValidation,
+                        onSave: (key, value) =>
+                            data[key] = double.tryParse(value) ?? 0,
+                        onChanged: (value) {
+                          data['paid_amount'] = double.tryParse(value) ?? 0;
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  if (data['payment_type'] == paymentType[2])
-                    CustomTextField(
-                      'mode_of_payment_2',
-                      'Payment To',
-                      initialValue: data['mode_of_payment_2'],
-                      clearButton: true,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => modeOfPaymentScreen(
-                                    data['mode_of_payment'])));
-                        if (res != null) data['mode_of_payment_2'] = res;
-                        return res;
-                      },
-                    ),
-                  CustomTextField(
-                    'paid_amount',
-                    'Paid Amount',
-                    initialValue: '${data['paid_amount'] ?? ''}',
-                    clearButton: true,
-                    keyboardType: TextInputType.number,
-                    validator: numberValidation,
-                    onSave: (key, value) =>
-                        data[key] = double.tryParse(value) ?? 0,
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -18,9 +18,6 @@ class IssuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
-    for (var k in data.keys) {
-      log('$k: ${data[k]}');
-    }
     final Color? color = context.read<ModuleProvider>().color;
     final model = IssuePageModel(data);
     return ListView(

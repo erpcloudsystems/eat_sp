@@ -1,22 +1,23 @@
 import 'dart:async';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/stock_ledger_entity.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/usecases/get_stock_ledger_report_use_case.dart';
-import 'package:bloc/bloc.dart';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../../../core/network/api_constance.dart';
 import '../../../../../../../core/utils/request_state.dart';
+import '../../../data/models/stock_ledger_filter.dart';
+import '../../../domain/entities/stock_ledger_entity.dart';
+import '../../../domain/usecases/get_stock_ledger_report_use_case.dart';
 
 part 'stock_ledger_event.dart';
-
 part 'stock_ledger_state.dart';
 
 class StockLedgerBloc extends Bloc<StockLedgerEvent, StockLedgerState> {
   final GetStockLedgerUseCase _getStockLedgerUseCase;
 
-  StockLedgerBloc(this._getStockLedgerUseCase) : super(StockLedgerState()) {
+  StockLedgerBloc(this._getStockLedgerUseCase) : super(const StockLedgerState()) {
     on<GetStockLedgerEvent>(_getStockLedgerReports, transformer: droppable());
     on<ResetStockLedgerEvent>(_resetStockLedgerReports);
   }

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -24,39 +26,39 @@ class AddressForm extends StatefulWidget {
 
 class _AddressFormState extends State<AddressForm> {
   Map<String, dynamic> data = {
-    "doctype": "Address List",
-    "posting_date": DateTime.now().toIso8601String(),
+    "doctype": "Address",
+    // "posting_date": DateTime.now().toIso8601String(),
     "is_primary_address": 0,
     "address_type": 'Billing',
     "links": [
       {
-        'link_name': '',
-        'link_doctype': '',
+        // 'link_name': null,
+        // 'link_doctype': null,
       }
     ],
     "latitude": 0.0,
     "longitude": 0.0,
   };
 
-  LatLng location = LatLng(0.0, 0.0);
+  LatLng location = const LatLng(0.0, 0.0);
   GPSService gpsService = GPSService();
 
   final _formKey = GlobalKey<FormState>();
 
   Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
-    if (data['links']?[0]['link_doctype'] == null) {
+    if (data['link_doctype'] == null) {
       showSnackBar('Link Document Type is Mandatory', context);
       return;
     }
-    if (data['links']?[0]['link_name'] == null) {
+    if (data['link_name'] == null) {
       showSnackBar('Link Name is Mandatory', context);
       return;
     }
 
-    if (location == LatLng(0.0, 0.0)) {
+    if (location == const LatLng(0.0, 0.0)) {
       showSnackBar(KEnableGpsSnackBar, context);
-      Future.delayed(Duration(seconds: 1), () async {
+      Future.delayed(const Duration(seconds: 1), () async {
         location = await gpsService.getCurrentLocation(context);
       });
       return;
@@ -82,11 +84,13 @@ class _AddressFormState extends State<AddressForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Address');
 
-    data['link_name'] = data['links'][0]['link_name'];
-    data['link_doctype'] = data['links'][0]['link_doctype'];
+    // data['link_name'] = data['links'][0]['link_name'];
+    // data['link_doctype'] = data['links'][0]['link_doctype'];
 
     data.remove('reference');
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -96,14 +100,14 @@ class _AddressFormState extends State<AddressForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null && res['message']['address_name'] != null) {
+    } else if (res != null && res['message']['address_name'] != null) {
       context.read<ModuleProvider>().pushPage(res['message']['address_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -113,10 +117,12 @@ class _AddressFormState extends State<AddressForm> {
 
     final provider = context.read<ModuleProvider>();
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          print("➡️ $k: ${data[k]}");
+        }
 
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
@@ -129,6 +135,7 @@ class _AddressFormState extends State<AddressForm> {
 
         setState(() {});
       });
+    }
   }
 
   @override
@@ -161,162 +168,150 @@ class _AddressFormState extends State<AddressForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
-          appBar: AppBar(
-            title: (context.read<ModuleProvider>().isEditing)
-                ? Text("Edit Address".tr())
-                : Text("Create Address".tr()),
-            actions: [
-              Material(
-                  color: Colors.transparent,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.hardEdge,
-                  child: IconButton(
-                    onPressed: submit,
-                    icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                  ))
-            ],
-          ),
           body: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Group(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: 8),
-                        CustomTextField(
-                          'address_title',
-                          'Address Title',
-                          initialValue: data['address_title'],
-                          disableValidation: true,
-                          onChanged: (value) => data['address_title'] = value,
-                          onSave: (key, value) => data[key] = value,
-                        ),
-                        // CustomDropDown('address_type', ' Address Type'.tr(),
-                        //     items: addressTypeList,
-                        //     defaultValue: addressTypeList[0],
-                        //     onChanged: (value) => data['address_type'] = value),
-                        //Divider(color: Colors.grey, height: 1, thickness: 0.9),
-                        CustomTextField(
-                          'address_line1',
-                          'Address Line 1'.tr(),
-                          initialValue: data['address_title'],
-                          onChanged: (value) => data['address_title'] = value,
-                          onSave: (key, value) => data[key] = value,
-                        ),
-                        CustomTextField(
-                          'city',
-                          'City/Town'.tr(),
-                          initialValue: data['city'],
-                          onChanged: (value) => data['city'] = value,
-                          onSave: (key, value) => data[key] = value,
-                        ),
+            child: CustomPageViewForm(
+              submit: () => submit(),
+              widgetGroup: [
+                Group(
+                  child: ListView(
+                    //mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 8),
+                      CustomTextFieldTest(
+                        'address_title',
+                        'Address Title',
+                        initialValue: data['address_title'],
+                        disableValidation: true,
+                        onChanged: (value) => data['address_title'] = value,
+                        onSave: (key, value) => data[key] = value,
+                      ),
+                      // CustomDropDown('address_type', ' Address Type'.tr(),
+                      //     items: addressTypeList,
+                      //     defaultValue: addressTypeList[0],
+                      //     onChanged: (value) => data['address_type'] = value),
+                      //Divider(color: Colors.grey, height: 1, thickness: 0.9),
+                      CustomTextFieldTest(
+                        'address_line1',
+                        'Address Line 1'.tr(),
+                        initialValue: data['address_line1'],
+                        onChanged: (value) => data['address_line1'] = value,
+                        onSave: (key, value) => data[key] = value,
+                      ),
+                      CustomTextFieldTest(
+                        'city',
+                        'City/Town'.tr(),
+                        initialValue: data['city'],
+                        onChanged: (value) => data['city'] = value,
+                        onSave: (key, value) => data[key] = value,
+                      ),
 
-                        CustomTextField('country', 'Country'.tr(),
-                            initialValue: data['country'],
-                            disableValidation: false,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => countryScreen()))),
-                        SizedBox(height: 8),
+                      CustomTextFieldTest(
+                        'country',
+                        'Country'.tr(),
+                        initialValue: data['country'],
+                        disableValidation: false,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => countryScreen(),
+                            ),
+                          );
+                          data['country'] = res;
+                          return res;
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+                Group(
+                    child: ListView(
+                  children: [
+                    const SizedBox(height: 8),
+                    CustomDropDown(
+                      'link_doctype',
+                      'Link Document Type',
+                      items: linkDocumentTypeList,
+                      defaultValue:
+                          data['link_doctype'] ?? linkDocumentTypeList[0],
+                      onChanged: (value) => setState(() {
+                        data['link_name'] = null;
+                        data['link_doctype'] = value;
+                      }),
+                    ),
+                    Divider(
+                        color: Colors.grey.shade300, height: 1, thickness: 0.9),
+                    if (data['link_doctype'] == linkDocumentTypeList[0])
+                      CustomTextFieldTest(
+                        'link_name',
+                        'Link Name'.tr(),
+                        initialValue: data['link_name'],
+                        onPressed: () async {
+                          String? id;
+
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectCustomerScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            setState(() {
+                              data['link_name'] = res['name'];
+                            });
+                          }
+
+                          return id;
+                        },
+                      ),
+                    if (data['link_doctype'] == linkDocumentTypeList[1])
+                      CustomTextFieldTest(
+                        'link_name',
+                        'Link Name',
+                        initialValue: data['link_name'],
+                        onPressed: () async {
+                          String? id;
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectSupplierScreen()));
+                          if (res != null) {
+                            id = res['name'];
+
+                            setState(() {
+                              data['link_name'] = res['name'];
+                            });
+                          }
+                          return id;
+                        },
+                      ),
+                    CheckBoxWidget('is_primary_address', 'Is Primary',
+                        initialValue:
+                            data['is_primary_address'] == 1 ? true : false,
+                        onChanged: (id, value) =>
+                            setState(() => data[id] = value ? 1 : 0)),
+                    const SizedBox(height: 8),
+                     Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 6),
+                          child: Icon(Icons.warning_amber,
+                              color: Colors.amber, size: 22),
+                        ),
+                        Flexible(
+                            child: Text(
+                          KLocationNotifySnackBar,
+                          textAlign: TextAlign.start,
+                        )),
                       ],
                     ),
-                  ),
-                  Group(
-                      child: Column(
-                    children: [
-                      SizedBox(height: 8),
-                      CustomDropDown(
-                        'link_doctype',
-                        'Link Document Type',
-                        items: linkDocumentTypeList,
-                        defaultValue: data['links']?[0]['link_doctype'],
-                        onChanged: (value) => setState(() {
-                          data['links']?[0]['link_name'] = null;
-                          data['links']?[0]['link_doctype'] = value;
-                        }),
-                      ),
-                      Divider(
-                          color: Colors.grey.shade300,
-                          height: 1,
-                          thickness: 0.9),
-                      if (data['links']?[0]['link_doctype'] ==
-                          linkDocumentTypeList[0])
-                        CustomTextField(
-                          'link_name',
-                          'Link Name'.tr(),
-                          initialValue: data['links']?[0]['link_name'],
-                          onPressed: () async {
-                            String? id;
-
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectCustomerScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              setState(() {
-                                data['links']?[0]['link_name'] = res['name'];
-                              });
-                            }
-
-                            return id;
-                          },
-                        ),
-                      if (data['links']?[0]['link_doctype'] ==
-                          linkDocumentTypeList[1])
-                        CustomTextField(
-                          'link_name',
-                          'Link Name',
-                          initialValue: data['links']?[0]['link_name'],
-                          onPressed: () async {
-                            String? id;
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectSupplierScreen()));
-                            if (res != null) {
-                              id = res['name'];
-
-                              setState(() {
-                                data['links']?[0]['link_name'] = res['name'];
-                              });
-                            }
-                            return id;
-                          },
-                        ),
-                      CheckBoxWidget('is_primary_address', 'Is Primary',
-                          initialValue:
-                              data['is_primary_address'] == 1 ? true : false,
-                          onChanged: (id, value) =>
-                              setState(() => data[id] = value ? 1 : 0)),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 6),
-                            child: Icon(Icons.warning_amber,
-                                color: Colors.amber, size: 22),
-                          ),
-                          Flexible(
-                              child: Text(
-                            KLocationNotifySnackBar,
-                            textAlign: TextAlign.start,
-                          )),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  )),
-                  SizedBox(height: 56),
-                ],
-              ),
+                    const SizedBox(height: 8),
+                  ],
+                )),
+              ],
             ),
           ),
         ),

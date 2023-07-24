@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../model_functions.dart';
-
 class ContactPageModel {
   final Map<String, dynamic> data;
   final BuildContext context;
@@ -16,8 +14,8 @@ class ContactPageModel {
         tr("User"): data['user'] ?? tr('none'),
       },
       {
-        tr("Mobile"): data['mobile_no'] ?? tr('none'),
         tr("Phone"): data['phone'] ?? tr('none'),
+        tr("Is Primary Phone"): data['is_primary_phone'].toString(),
       },
       {
         tr("Email"): data['email_id'] ?? tr('none'),

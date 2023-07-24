@@ -1,11 +1,10 @@
-import '../new_version/core/resources/strings_manager.dart';
+import 'package:NextApp/service/service.dart';
+
 import '../provider/user/user_provider.dart';
 import 'custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 import '../core/constants.dart';
-import '../core/showcase_consts.dart';
 import '../models/list_models/list_model.dart';
 import '../provider/module/module_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +32,7 @@ class PaginationList<T> extends StatefulWidget {
 }
 
 class _PaginationListState<T> extends State<PaginationList> {
+  APIService service = APIService();
   final Widget Function(T t) listItem;
   final ScrollController _scrollController = ScrollController();
   List<T> items = <T>[];
@@ -59,9 +59,6 @@ class _PaginationListState<T> extends State<PaginationList> {
     Provider.of<ModuleProvider>(context, listen: false).setLoadCount =
         newLoadCount.toString();
 
-    print(res);
-    print(res?.list);
-
     if (res != null) {
       if (res.list.isEmpty || res.list.length < PAGINATION_PAGE_LENGTH) {
         _noMoreItems = true;
@@ -84,7 +81,7 @@ class _PaginationListState<T> extends State<PaginationList> {
   bool _oldValue = false;
 
   void _reset() {
-    if (widget.reset.value != _oldValue)
+    if (widget.reset.value != _oldValue) {
       setState(() {
         pageCount = -20;
         newLoadCount = 0;
@@ -93,22 +90,12 @@ class _PaginationListState<T> extends State<PaginationList> {
         _oldValue = widget.reset.value;
         getItems();
       });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-//__________________________________________________________________________________________________________________
-    // this function starts the new version architecture.
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (context.read<ModuleProvider>().currentModule.genericListService ==
-    //       ConstantStrings.newVersion) {
-    //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-    //         builder: ((context) =>
-    //             context.read<ModuleProvider>().currentModule.pageWidget)));
-    //   }
-    // });
-//__________________________________________________________________________________________________________________
     widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
     getItems();
@@ -119,6 +106,7 @@ class _PaginationListState<T> extends State<PaginationList> {
     super.dispose();
     _scrollController.removeListener(loadMore);
     _scrollController.dispose();
+    items.clear();
   }
 
   @override
@@ -143,24 +131,28 @@ class _PaginationListState<T> extends State<PaginationList> {
                     });
                   },
                   child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     controller: _scrollController,
                     itemCount: _noMoreItems ? items.length + 1 : items.length,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                     itemBuilder: (context, i) {
                       if (i < items.length) return listItem(items[i]);
-                      return Center(
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('no more items')));
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'no more items',
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 2),
+              padding: const EdgeInsets.only(top: 2),
               child: Align(
                   alignment: Alignment.topRight,
                   child: Padding(
@@ -168,67 +160,46 @@ class _PaginationListState<T> extends State<PaginationList> {
                       right: 18,
                       top: 3,
                     ),
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 0),
-                        margin: const EdgeInsets.only(bottom: 0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '$newLoadCount of ',
+                          style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              height: 1.5),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '$newLoadCount of ',
-                              style: TextStyle(
+                        //this to avoid Duplicate GlobalKey
+                        (!context
+                                .read<UserProvider>()
+                                .showcaseProgress!
+                                .contains('list_tut'))
+                            ? Text(
+                                listCount,
+                                style: const TextStyle(
                                   color: Colors.black87,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.5),
-                            ),
-                            //this to avoid Duplicate GlobalKey
-                            (!context
-                                    .read<UserProvider>()
-                                    .showcaseProgress!
-                                    .contains('list_tut'))
-                                ? Showcase(
-                                    key: countGK,
-                                    title: 'Count',
-                                    titleTextStyle: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18),
-                                    description:
-                                        'This is the count of your documents',
-                                    shapeBorder: CircleBorder(),
-                                    radius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    overlayPadding: EdgeInsets.only(
-                                        left: 40, right: 8, top: 2, bottom: 2),
-                                    blurValue: 1,
-                                    child: Text(
-                                      '$listCount',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          height: 1.5),
-                                    ),
-                                  )
-                                : Text(
-                                    '$listCount',
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        height: 1.5),
-                                  ),
-                          ],
-                        )),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.5,
+                                ),
+                              )
+                            : Text(
+                                listCount,
+                                style: const TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.5),
+                              ),
+                      ],
+                    ),
                   )),
             ),
             if (_isLoading)
-              Align(
+              const Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
                   height: 5,
@@ -242,8 +213,8 @@ class _PaginationListState<T> extends State<PaginationList> {
         );
       }
 
-      if (_isLoading)
-        return Center(
+      if (_isLoading) {
+        return const Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -251,14 +222,18 @@ class _PaginationListState<T> extends State<PaginationList> {
             CustomLoadingWithImage(),
           ],
         ));
-      return Center(child: Text("No Data"));
+      }
+      return const Center(
+        child: Text("No Data"),
+      );
     });
   }
 }
 
 class SearchBar extends StatefulWidget {
   final Function(String value) search;
-  SearchBar({Key? key, required this.search}) : super(key: key);
+
+  const SearchBar({Key? key, required this.search}) : super(key: key);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -272,15 +247,28 @@ class _SearchBarState extends State<SearchBar> {
     String searchText = '';
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: SizedBox(
-        height: 47,
-        child: Card(
-          elevation: 1,
-          color: Colors.white,
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 4,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
           child: TextField(
             controller: controller,
             onChanged: (value) {
+              setState(() {
+                widget.search(controller.text);
+              });
               if (value.isEmpty && searchText.isNotEmpty) {
                 widget.search(value);
                 FocusScope.of(context).unfocus();
@@ -288,25 +276,32 @@ class _SearchBarState extends State<SearchBar> {
             },
             onEditingComplete: () {
               FocusScope.of(context).unfocus();
-              widget.search(controller.text);
+              setState(() {
+                widget.search(controller.text);
+              });
             },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
-                hintText: "Search",
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 7, top: 0, right: 15),
-                disabledBorder: InputBorder.none,
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    widget.search(controller.text);
-                  },
-                )),
+              hintText: "Search",
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              contentPadding: const EdgeInsets.only(
+                left: 15,
+                bottom: 7,
+                top: 0,
+                right: 15,
+              ),
+              disabledBorder: InputBorder.none,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  widget.search(controller.text);
+                },
+              ),
+            ),
           ),
         ),
       ),

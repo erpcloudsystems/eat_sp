@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
@@ -68,7 +70,9 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
 
     data['items'] = [];
 
-    _items.forEach((element) => data['items'].add(element.toJson));
+    for (var element in _items) {
+      data['items'].add(element.toJson);
+    }
 
     final server = APIService();
 
@@ -78,7 +82,9 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
             ? 'Updating ${provider.pageId}'
             : 'Creating Material Request');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -88,26 +94,27 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['material_request_name'] != null)
+    } else if (context.read<ModuleProvider>().isCreateFromPage) {
+      if (res != null && res['message']['material_request_name'] != null) {
         context
             .read<ModuleProvider>()
             .pushPage(res['message']['material_request_name']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['material_request_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['material_request_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -123,16 +130,18 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
     final provider = context.read<ModuleProvider>();
 
     //Editing Mode
-    if (provider.isEditing || provider.isAmendingMode || provider.duplicateMode)
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
         final items = MaterialRequestPageModel(context, data).items;
 
-        items.forEach((element) {
+        for (var element in items) {
           final item = ItemSelectModel.fromJson(element);
           _items.add(ItemQuantity(item, qty: item.qty));
-        });
+        }
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -141,6 +150,7 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
 
         setState(() {});
       });
+    }
 
     //DocFromPage Mode
     if (provider.isCreateFromPage) {
@@ -191,9 +201,9 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
   @override
   Widget build(BuildContext context) {
     InheritedForm.of(context).data['selling_price_list'] = '';
-    _items.forEach((item) {
+    for (var item in _items) {
       totalAmount += item.total;
-    });
+    }
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack =
@@ -208,323 +218,300 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Material Request")
-              : Text("Create Material Request"),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ))
-          ],
-        ),
         body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Group(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 4),
-                      CustomDropDown('material_request_type', 'Purpose'.tr(),
-                          items: purposeType,
-                          defaultValue:
-                              data['material_request_type'] ?? purposeType[0],
-                          onChanged: (value) => setState(() {
-                                data['material_request_type'] = value;
-                                data['set_from_warehouse'] = null;
-                                data['set_warehouse'] = null;
-                              })),
-                      Divider(color: Colors.grey, height: 1, thickness: 0.7),
-                      if (data['material_request_type'] == purposeType[4])
-                        CustomTextField(
-                          'customer',
-                          'Customer',
-                          initialValue: data['customer'],
-                          onPressed: () async {
-                            String? id;
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        selectCustomerScreen()));
-                            if (res != null) {
-                              id = res['name'];
-                              setState(() {
-                                data['customer'] = res['name'];
-                              });
-                            }
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomDropDown('material_request_type', 'Purpose'.tr(),
+                        items: purposeType,
+                        defaultValue:
+                            data['material_request_type'] ?? purposeType[0],
+                        onChanged: (value) => setState(() {
+                              data['material_request_type'] = value;
+                              data['set_from_warehouse'] = null;
+                              data['set_warehouse'] = null;
+                            })),
+                    const Divider(
+                        color: Colors.grey, height: 1, thickness: 0.7),
+                    if (data['material_request_type'] == purposeType[4])
+                      CustomTextFieldTest(
+                        'customer',
+                        'Customer',
+                        initialValue: data['customer'],
+                        onPressed: () async {
+                          String? id;
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      selectCustomerScreen()));
+                          if (res != null) {
+                            id = res['name'];
+                            setState(() {
+                              data['customer'] = res['name'];
+                            });
+                          }
 
-                            return id;
-                          },
-                        ),
-                      Row(children: [
-                        Flexible(
-                            child: DatePicker(
-                          'transaction_date',
-                          'Transaction Date'.tr(),
-                          initialValue: data['transaction_date'],
-                          onChanged: (value) =>
-                              setState(() => data['transaction_date'] = value),
-                        )),
-                        SizedBox(width: 10),
-                        Flexible(
-                            child: DatePicker(
-                          'schedule_date',
-                          'Required By Date'.tr(),
-                          onChanged: (value) =>
-                              setState(() => data['schedule_date'] = value),
-                          initialValue: data['schedule_date'],
-                          disableValidation: true,
-                        )),
-                      ]),
-                      if (data['material_request_type'] == purposeType[1])
-                        CustomTextField(
-                            'set_from_warehouse', 'Source Warehouse'.tr(),
-                            initialValue: data['set_from_warehouse'],
-                            liestenToInitialValue: true,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => warehouseScreen(
-                                          data['set_warehouse'])));
-                              if (res != null) data['set_from_warehouse'] = res;
-                              return res;
-                            }),
-                      CustomTextField('set_warehouse', 'Target Warehouse'.tr(),
-                          initialValue: data['set_warehouse'],
+                          return id;
+                        },
+                      ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'transaction_date',
+                        'Transaction Date'.tr(),
+                        initialValue: data['transaction_date'],
+                        onChanged: (value) =>
+                            setState(() => data['transaction_date'] = value),
+                      )),
+                      const SizedBox(width: 10),
+                      Flexible(
+                          child: DatePickerTest(
+                        'schedule_date',
+                        'Required By Date'.tr(),
+                        onChanged: (value) =>
+                            setState(() => data['schedule_date'] = value),
+                        initialValue: data['schedule_date'],
+                        disableValidation: false,
+                      )),
+                    ]),
+                    if (data['material_request_type'] == purposeType[1])
+                      CustomTextFieldTest(
+                          'set_from_warehouse', 'Source Warehouse'.tr(),
+                          initialValue: data['set_from_warehouse'],
                           liestenToInitialValue: true,
-                          disableValidation: true,
                           onSave: (key, value) => data[key] = value,
                           onPressed: () async {
                             final res = await Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => warehouseScreen(
-                                        data['set_from_warehouse'])));
-                            if (res != null) data['set_warehouse'] = res;
+                                        data['set_warehouse'])));
+                            if (res != null) data['set_from_warehouse'] = res;
                             return res;
                           }),
-                      SizedBox(height: 8),
-                    ],
-                  ),
+                    CustomTextFieldTest(
+                        'set_warehouse', 'Target Warehouse'.tr(),
+                        initialValue: data['set_warehouse'],
+                        liestenToInitialValue: true,
+                        disableValidation: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => warehouseScreen(
+                                      data['set_from_warehouse'])));
+                          if (res != null) data['set_warehouse'] = res;
+                          return res;
+                        }),
+                    const SizedBox(height: 8),
+                  ],
                 ),
-                //SelectedItemsList(),
-                Container(
-                    child: Column(
-                  children: [
-                    Card(
-                      elevation: 1,
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Items',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600)),
-                                    SizedBox(
-                                      width: 40,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.zero),
-                                        onPressed: () async {
-                                          final res =
-                                              await Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          itemListScreen('')));
-                                          if (res != null &&
-                                              !_items.contains(res))
-                                            setState(() =>
-                                                _items.add(ItemQuantity(res)));
-                                        },
-                                        child: Icon(Icons.add,
-                                            size: 25, color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
+              ),
+              //SelectedItemsList(),
+              ListView(
+                children: [
+                  Card(
+                    elevation: 1,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 8),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Items',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(
+                                  width: 40,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero),
+                                    onPressed: () async {
+                                      final res = await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (_) =>
+                                                  itemListScreen('')));
+                                      if (res != null &&
+                                          !_items.contains(res)) {
+                                        setState(() =>
+                                            _items.add(ItemQuantity(res)));
+                                      }
+                                    },
+                                    child: const Icon(Icons.add,
+                                        size: 25, color: Colors.white),
+                                  ),
                                 ),
-                              ),
-                              Divider(),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                          const Divider(),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.55),
-                        child: _items.isEmpty
-                            ? Center(
-                                child: Text('no items added',
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontStyle: FontStyle.italic,
-                                        fontSize: 16)))
-                            : ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                padding: const EdgeInsets.only(bottom: 12),
-                                itemCount: _items.length,
-                                itemBuilder: (context, index) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                        bottom:
-                                                            Radius.circular(8)),
-                                                border: Border.all(
-                                                    color: Colors.blue)),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 8.0,
-                                                left: 16,
-                                                right: 16),
-                                            padding: const EdgeInsets.only(
-                                                left: 16, right: 16),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Expanded(
-                                                    child: CustomTextField(
-                                                  _items[index].itemCode +
-                                                      'Quantity',
-                                                  'Quantity',
-                                                  initialValue:
-                                                      _items[index].qty == 0
-                                                          ? null
-                                                          : _items[index]
-                                                              .qty
-                                                              .toString(),
-                                                  validator: (value) =>
-                                                      numberValidationToast(
-                                                          value, 'Quantity',
-                                                          isInt: true),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  disableError: true,
-                                                  onSave: (_, value) =>
-                                                      _items[index].qty =
-                                                          int.parse(value),
-                                                  onChanged: (value) {
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.55),
+                      child: _items.isEmpty
+                          ? const Center(
+                              child: Text('no items added',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 16)))
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 12),
+                              itemCount: _items.length,
+                              itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  const BorderRadius.vertical(
+                                                      bottom:
+                                                          Radius.circular(8)),
+                                              border: Border.all(
+                                                  color: Colors.blue)),
+                                          margin: const EdgeInsets.only(
+                                              bottom: 8.0, left: 16, right: 16),
+                                          padding: const EdgeInsets.only(
+                                              left: 16, right: 16),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Expanded(
+                                                  child: CustomTextField(
+                                                '${_items[index].itemCode}Quantity',
+                                                'Quantity',
+                                                initialValue:
+                                                    _items[index].qty == 0
+                                                        ? null
+                                                        : _items[index]
+                                                            .qty
+                                                            .toString(),
+                                                validator: (value) =>
+                                                    numberValidationToast(
+                                                        value, 'Quantity',
+                                                        isInt: true),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                disableError: true,
+                                                onSave: (_, value) =>
                                                     _items[index].qty =
-                                                        int.parse(value);
-                                                    _items[index].total =
-                                                        _items[index].qty *
-                                                            _items[index].rate;
-                                                    Future.delayed(
-                                                        Duration(seconds: 1),
-                                                        () => setState(() {}));
-                                                  },
-                                                )),
-                                                SizedBox(width: 12),
-                                                Expanded(
-                                                    child: CustomTextField(
-                                                  'uom',
-                                                  'UOM',
-                                                  disableError: true,
-                                                  initialValue: _items[index]
-                                                      .stockUom
-                                                      .toString(),
-                                                  onPressed: () async {
-                                                    final res = await Navigator
-                                                            .of(context)
-                                                        .push(MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                filteredUOMListScreen(
-                                                                    _items[index]
-                                                                        .itemCode
-                                                                        .toString())));
-                                                    return res['uom'];
-                                                  },
-                                                )),
-                                                SizedBox(width: 12),
-                                              ],
-                                            ),
+                                                        int.parse(value),
+                                                onChanged: (value) {
+                                                  _items[index].qty =
+                                                      int.parse(value);
+                                                  _items[index].total =
+                                                      _items[index].qty *
+                                                          _items[index].rate;
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          seconds: 1),
+                                                      () => setState(() {}));
+                                                },
+                                              )),
+                                              const SizedBox(width: 12),
+                                              Expanded(
+                                                  child: CustomTextField(
+                                                'uom',
+                                                'UOM',
+                                                disableError: true,
+                                                initialValue: _items[index]
+                                                    .stockUom
+                                                    .toString(),
+                                                onPressed: () async {
+                                                  final res = await Navigator
+                                                          .of(context)
+                                                      .push(MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              filteredUOMListScreen(
+                                                                  _items[index]
+                                                                      .itemCode
+                                                                      .toString())));
+                                                  print(res['uom']);
+                                                  _items[index].stockUom =
+                                                      res['uom'];
+                                                  return res['uom'];
+                                                },
+                                              )),
+                                              const SizedBox(width: 12),
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 62),
-                                            child: Dismissible(
-                                              key: Key(_items[index].itemCode),
-                                              direction:
-                                                  DismissDirection.endToStart,
-                                              onDismissed: (_) => setState(
-                                                  () => _items.removeAt(index)),
-                                              background: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    color: Colors.red),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16),
-                                                    child: Icon(
-                                                      Icons.delete_forever,
-                                                      color: Colors.white,
-                                                      size: 30,
-                                                    ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 62),
+                                          child: Dismissible(
+                                            key: Key(_items[index].itemCode),
+                                            direction:
+                                                DismissDirection.endToStart,
+                                            onDismissed: (_) => setState(
+                                                () => _items.removeAt(index)),
+                                            background: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  color: Colors.red),
+                                              child: const Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(16),
+                                                  child: Icon(
+                                                    Icons.delete_forever,
+                                                    color: Colors.white,
+                                                    size: 30,
                                                   ),
                                                 ),
                                               ),
-                                              child: ItemCard(
-                                                  names: const [
-                                                    'Code',
-                                                    'Group',
-                                                    'UoM'
-                                                  ],
-                                                  values: [
-                                                    _items[index].itemName,
-                                                    _items[index].itemCode,
-                                                    _items[index].group,
-                                                    _items[index].stockUom
-                                                  ],
-                                                  imageUrl:
-                                                      _items[index].imageUrl),
                                             ),
+                                            child: ItemCard(
+                                                names: const [
+                                                  'Code',
+                                                  'Group',
+                                                  'UoM'
+                                                ],
+                                                values: [
+                                                  _items[index].itemName,
+                                                  _items[index].itemCode,
+                                                  _items[index].group,
+                                                  _items[index].stockUom
+                                                ],
+                                                imageUrl:
+                                                    _items[index].imageUrl),
                                           ),
-                                        ],
-                                      ),
-                                    )),
-                      ),
-                    )
-                  ],
-                )),
-              ],
-            ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
         ),
       ),

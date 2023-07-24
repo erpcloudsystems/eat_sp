@@ -1,4 +1,3 @@
-import '../model_functions.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class IssuePageModel {
@@ -10,19 +9,14 @@ class IssuePageModel {
     return [
       {
         tr("Status"): data['status'] ?? tr('none'),
-        tr('Priority'): data['priority'] ?? tr('none')
+        tr('Subject'): data['subject'] ?? tr('none')
       },
       {
-        tr('Issue Type'): data['issue_type'].toString(),
-        tr('Project'): data['project'].toString(),
+        tr('Issue Type'): data['issue_type'] ?? tr('none'),
       },
       {
-        tr('Creation'): data['creation'] ?? tr('none'),
-        tr('Modified'): data['modified'] ?? tr('none')
-      },
-      {
-        tr('Opening Date'): data['opening_date'] ?? tr('none'),
-        tr('Opening Time'): data['opening_time'] ?? tr('none')
+        tr('Priority'): data['priority'] ?? tr('none'),
+        tr('Project'): data['project'] ?? tr('none'),
       },
     ];
   }

@@ -238,33 +238,37 @@ class StatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            'Status',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          statusColor(status) != Colors.transparent
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.circle, color: statusColor(status), size: 12),
-                    SizedBox(width: 8),
-                    FittedBox(
-                      child: Text(status),
-                      fit: BoxFit.fitHeight,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        // Text(
+        //   'Status',
+        //   style: const TextStyle(
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+        statusColor(status) != Colors.transparent
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Icon(Icons.circle, color: statusColor(status), size: 12),
+                  // SizedBox(width: 8),
+                  FittedBox(
+                    child: Text(
+                      status,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16
+                      ),
                     ),
-                  ],
-                )
-              : Text(status),
-        ],
-      ),
+                    fit: BoxFit.fitHeight,
+                  ),
+                ],
+              )
+            : Text(status),
+      ],
     );
   }
 }

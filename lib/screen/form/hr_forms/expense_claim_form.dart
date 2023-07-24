@@ -4,9 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../test/custom_page_view_form.dart';
+import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
-import '../../../core/constants.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
@@ -71,7 +72,9 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
                 ? 'Duplicating Expense Claim ${provider.pageId}'
                 : 'Adding new Expense Claim');
 
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -81,16 +84,17 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null) {
       Navigator.pop(context);
-    else if (res != null && res['message']['expense_claim_data_name'] != null) {
+    } else if (res != null &&
+        res['message']['expense_claim_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['expense_claim_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -98,9 +102,10 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
     selectedEmployeeData = Map<String, dynamic>.from(
         await APIService().getPage(EMPLOYEE_PAGE, employee))['message'];
 
-    data['cost_center'] = Map<String, dynamic>.from(await APIService()
-        .genericGet('method/ecs_mobile.general.general_service?doctype=' +
-            APIService.COMPANY))['message'][0]['round_off_cost_center'];
+    data[
+        'cost_center'] = Map<String, dynamic>.from(await APIService().genericGet(
+            'method/ecs_mobile.general.general_service?doctype=${APIService.COMPANY}'))[
+        'message'][0]['round_off_cost_center'];
   }
 
   @override
@@ -111,20 +116,25 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
 
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    if (provider.isEditing || provider.duplicateMode)
+    if (provider.isEditing || provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
-        for (var k in data.keys) log("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          log("➡️ $k: ${data[k]}");
+        }
 
         final expenses = ExpenseClaimPageModel(context, data).expenses;
-        expenses.forEach((element) => InheritedExpenseForm.of(context)
-            .expense
-            .add(ExpenseModel.fromJson(element)));
+        for (var element in expenses) {
+          InheritedExpenseForm.of(context)
+              .expense
+              .add(ExpenseModel.fromJson(element));
+        }
         InheritedExpenseForm.of(context).taxData['rate'] =
             data['taxes'][0]['rate'].toString();
 
         setState(() {});
       });
+    }
   }
 
   @override
@@ -149,149 +159,137 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
         return Future.value(false);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text("Edit Expense Claim".tr())
-              : Text("Create Expense Claim".tr()),
-          actions: [
-            Material(
-                color: Colors.transparent,
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: IconButton(
-                  onPressed: submit,
-                  icon: Icon(Icons.check, color: FORM_SUBMIT_BTN_COLOR),
-                ))
-          ],
-        ),
         body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(height: 8),
-                Group(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CustomTextField(
-                        'employee',
-                        'Employee'.tr(),
-                        initialValue: data['employee'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectEmployeeScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            await _getEmployeeData(res['name']);
-
-                            setState(() {
-                              data['employee'] = res['name'];
-                              data['employee_name'] = res['employee_name'];
-                              data['department'] = res['department'];
-                              data['company'] = res['company'];
-                              // data['currency'] = res['currency'];
-                              // data['advance_account'] = res['advance_account'];
-                            });
-                          }
-                          return id;
-                        },
-                      ),
-                      if (data['employee_name'] != null)
-                        CustomTextField(
-                          'employee_name',
-                          'Employee Name'.tr(),
-                          initialValue: data['employee_name'],
-                          enabled: false,
-                        ),
-                      if (data['department'] != null)
-                        CustomTextField(
-                          'department',
-                          'Department'.tr(),
-                          initialValue: data['department'],
-                          enabled: false,
-                        ),
-                      CustomTextField(
-                          'expense_approver', 'Expense Approver'.tr(),
-                          initialValue: data['expense_approver'],
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            var res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => userListScreen()));
-                            return res;
-                          }),
-                      CheckBoxWidget('is_paid', 'Is Paid'.tr(),
-                          initialValue: data['is_paid'] == 1 ? true : false,
-                          onChanged: (id, value) => setState(() {
-                                data[id] = value ? 1 : 0;
-                              })),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-                Group(
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              ListView(
+                children: [
+                  Group(
                     child: Column(
-                  children: [
-                    Row(children: [
-                      Flexible(
-                          child: DatePicker(
-                        'posting_date',
-                        'Posting Date'.tr(),
-                        initialValue: data['posting_date'],
-                        onChanged: (value) =>
-                            setState(() => data['posting_date'] = value),
-                      )),
-                      SizedBox(width: 10),
-                    ]),
-                    // Mansy told me to delete From Page & Create @17/10/2022
-                    // CustomTextField('company', tr('Company'),
-                    //     initialValue: data['company'],
-                    //     onSave: (key, value) => data[key] = value,
-                    //     onPressed: () async {
-                    //       final res = await Navigator.of(context).push(
-                    //           MaterialPageRoute(
-                    //               builder: (_) => companyListScreen()));
-                    //
-                    //       return res['name'];
-                    //     }),
-                    CustomTextField('payable_account', tr('Payable Account'),
-                        initialValue: data['payable_account'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
+                      children: [
+                        CustomTextFieldTest(
+                          'employee',
+                          'Employee'.tr(),
+                          initialValue: data['employee'],
+                          onPressed: () async {
+                            String? id;
+                            final res = await Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (_) => accountListScreen(
-                                      filters: {"filter1": "Payable"})));
-                          return res['name'];
-                        }),
-                    CustomTextField('project', 'Project'.tr(),
+                                builder: (context) => selectEmployeeScreen(),
+                              ),
+                            );
+                            if (res != null) {
+                              id = res['name'];
+                              await _getEmployeeData(res['name']);
+
+                              setState(() {
+                                data['employee'] = res['name'];
+                                data['employee_name'] = res['employee_name'];
+                                data['department'] = res['department'];
+                                data['company'] = res['company'];
+                                // data['currency'] = res['currency'];
+                                data['expense_approver'] =
+                                    res['expense_approver'];
+                              });
+                            }
+                            return id;
+                          },
+                        ),
+                        if (data['employee_name'] != null)
+                          CustomTextFieldTest(
+                            'employee_name',
+                            'Employee Name'.tr(),
+                            initialValue: data['employee_name'],
+                            enabled: false,
+                          ),
+                        if (data['department'] != null)
+                          CustomTextFieldTest(
+                            'department',
+                            'Department'.tr(),
+                            initialValue: data['department'],
+                            enabled: false,
+                          ),
+                        CustomTextFieldTest(
+                            'expense_approver', 'Expense Approver'.tr(),
+                            initialValue: data['expense_approver'],
+                            onSave: (key, value) => data[key] = value,
+                            onPressed: () async {
+                              var res = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => userListScreen(),
+                                ),
+                              );
+                              return res;
+                            }),
+                        CheckBoxWidget('is_paid', 'Is Paid'.tr(),
+                            initialValue: data['is_paid'] == 1 ? true : false,
+                            onChanged: (id, value) => setState(() {
+                                  data[id] = value ? 1 : 0;
+                                })),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ),
+                  Group(
+                      child: Column(
+                    children: [
+                      Row(children: [
+                        Flexible(
+                            child: DatePickerTest(
+                          'posting_date',
+                          'Posting Date'.tr(),
+                          initialValue: data['posting_date'],
+                          onChanged: (value) =>
+                              setState(() => data['posting_date'] = value),
+                        )),
+                        const SizedBox(width: 10),
+                      ]),
+                      // CustomTextFieldTest(
+                      //     'payable_account', tr('Payable Account'),
+                      //     initialValue: data['payable_account'],
+                      //     disableValidation: true,
+                      //     onSave: (key, value) => data[key] = value,
+                      //     onPressed: () async {
+                      //       final res = await Navigator.of(context).push(
+                      //           MaterialPageRoute(
+                      //               builder: (_) => accountListScreen(
+                      //                   filters: {"filter1": "Payable"})));
+                      //       data['payable_account'] = res['name'];
+                      //       return res['name'];
+                      //     }),
+                      CustomTextFieldTest(
+                        'project',
+                        'Project'.tr(),
                         initialValue: data['project'],
                         disableValidation: true,
                         clearButton: true,
                         onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (_) => projectScreen()))),
-                    CustomTextField('cost_center', 'Cost Center',
-                        disableValidation: true,
-                        clearButton: true,
-                        initialValue: data['cost_center'] ?? '',
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => costCenterScreen()))),
-                  ],
-                )),
-                SelectedExpensesList(),
-                SizedBox(height: 30),
-              ],
-            ),
+                              builder: (_) => projectScreen(),
+                            ),
+                          );
+                          data['project'] = res['name'];
+                          return res['name'];
+                        },
+                      ),
+                      CustomTextFieldTest('cost_center', 'Cost Center',
+                          disableValidation: true,
+                          clearButton: true,
+                          initialValue: data['cost_center'] ?? '',
+                          onSave: (key, value) => data[key] = value,
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => costCenterScreen()))),
+                    ],
+                  )),
+                ],
+              ),
+              const SelectedExpensesList(),
+            ],
           ),
         ),
       ),

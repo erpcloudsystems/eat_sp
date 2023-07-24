@@ -53,7 +53,7 @@ class _PaymentEntryFilterState extends State<PaymentEntryFilter> {
           onPressed: () async {
             final res = await Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => modeOfPaymentScreen()));
-            if (res != null) _values['filter3'] = res;
+            if (res != null) _values['filter3'] = res['name'];
             return _values['filter3'];
           },
         ),

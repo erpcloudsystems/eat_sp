@@ -1,5 +1,8 @@
+import 'package:NextApp/widgets/create_from_page/create_from_page_consts.dart';
+
 import '../../../provider/module/module_provider.dart';
 import '../../../core/cloud_system_widgets.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -22,19 +25,31 @@ class SupplierQuotationPage extends StatelessWidget {
     final model = SupplierQuotationPageModel(context, data);
 
     return ListView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 12),
       children: [
         PageCard(
           color: color,
           items: model.card1Items,
           header: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CreateFromPageButton(
+                  doctype: 'Supplier Quotation',
+                  data: data,
+                  items: formSupplierQuotation,
+                  disableCreate:
+                      data['docstatus'].toString() == "1" ? false : true,
+                ),
+              ],
+            ),
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Supplier Quotation',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Supplier Quotation',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
@@ -69,10 +84,10 @@ class SupplierQuotationPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -138,9 +153,9 @@ class SupplierQuotationPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -168,9 +183,9 @@ class SupplierQuotationPage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -190,9 +205,9 @@ class SupplierQuotationPage extends StatelessWidget {
                     //
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -211,9 +226,9 @@ class SupplierQuotationPage extends StatelessWidget {
                                   values: model.paymentCardValues(index),
                                 )),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

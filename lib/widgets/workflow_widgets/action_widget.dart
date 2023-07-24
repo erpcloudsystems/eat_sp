@@ -39,7 +39,8 @@ class _ActionWidgetState extends State<ActionWidget> {
               padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: statusColor(provider.workflowStatus!).withOpacity(.8)),
+                  color: statusColor(provider.workflowStatus ?? '')
+                      .withOpacity(.8)),
               child: Text(
                 provider.workflowStatus ?? 'none'.tr(),
                 style: const TextStyle(
@@ -127,9 +128,9 @@ class _ActionWidgetState extends State<ActionWidget> {
                     borderRadius: BorderRadius.circular(12),
                     color: APPBAR_COLOR,
                   ),
-                  child: Row(
+                  child:  Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'Action',
                         style: TextStyle(

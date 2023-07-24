@@ -1,14 +1,23 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../screen/page/generic_page.dart';
 import '../provider/module/module_provider.dart';
 
 void notificationConfig(BuildContext context) async {
+  ///****** 2- For Push Notifications ******///
+
+  //Getting Notification Token and send it to DB
+  FcmToken.getDeviceTokenToSendNotification();
+
+  ///****** 2- End Push Notifications ******///
+
   ///****** 3- For Push Notifications ******///
 
   LocalNotificationService.initialize(context);
@@ -36,9 +45,9 @@ void notificationConfig(BuildContext context) async {
 
   FirebaseMessaging.onMessage.listen((message) async {
     if (message.notification != null) {
-      print(message.notification!.body);
-      print(message.notification!.title);
-      print(message.data);
+      log(message.notification!.body!);
+      log(message.notification!.title!);
+      log(message.data.toString());
     }
     LocalNotificationService.display(message);
   });
@@ -49,12 +58,18 @@ void notificationConfig(BuildContext context) async {
 // OR application open in a different tab in (web)
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     final routeFromMessage = message.data["doctype"];
-    print('Navigate to :$routeFromMessage');
+    log('Navigate to :$routeFromMessage');
     navigateFromNotification(
         context: context,
         docType: message.data['doctype'],
         docName: message.data['document_name']);
   });
+
+  /// receive msg when app is Terminated (Background Handler)
+  // Handle background message When messages are received
+  // And your application is not running.
+  FirebaseMessaging.onBackgroundMessage(
+      ((message) => firebaseMessagingBackgroundHandler(message, context)));
 
   ///****** 3- End Push Notifications ******///
 }
@@ -66,12 +81,13 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   static void initialize(BuildContext context) {
-    final messaging = FirebaseMessaging.instance;
-
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
-      iOS: IOSInitializationSettings(),
+    InitializationSettings initializationSettings = const InitializationSettings(
+      android:  AndroidInitializationSettings("@mipmap/ic_launcher"),
+      iOS: IOSInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+      ),
     );
     _notificationsPlugin.initialize(
       initializationSettings,
@@ -84,21 +100,6 @@ class LocalNotificationService {
             docType: payloadDetails[0],
             docName: payloadDetails[1],
           );
-
-          // /// IOS
-          // Future iosPermission() async {
-          //   if (Platform.isIOS) {
-          //     NotificationSettings settings = await messaging.requestPermission(
-          //       alert: true,
-          //       announcement: false,
-          //       badge: true,
-          //       carPlay: false,
-          //       criticalAlert: false,
-          //       provisional: false,
-          //       sound: true,
-          //     );
-          //   }
-          // }
         }
       },
     );
@@ -108,7 +109,7 @@ class LocalNotificationService {
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-      final NotificationDetails notificationDetails = NotificationDetails(
+      const NotificationDetails notificationDetails = NotificationDetails(
           android: AndroidNotificationDetails(
             "nextapp-notification-channel",
             "nextapp-notification-channel channel",
@@ -116,7 +117,11 @@ class LocalNotificationService {
             importance: Importance.max,
             priority: Priority.high,
           ),
-          iOS: IOSNotificationDetails());
+          iOS: IOSNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ));
 
       // Here we convert the notification details to String as Payload doesn't accept
       // any other data types in this version.
@@ -149,6 +154,46 @@ void navigateFromNotification({
   context.read<ModuleProvider>().setModule = docType;
   context.read<ModuleProvider>().pushPage(docName);
   Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => GenericPage(),
+    builder: (context) => const GenericPage(),
   ));
 }
+
+///****** 1- For Push Notifications ******///
+
+abstract class FcmToken {
+  static String deviceTokenToSendPushNotification = '';
+  static bool isTokenRefreshed = false;
+
+  // for Firebase Crashlytics
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+//Get the device token
+  static Future<void> getDeviceTokenToSendNotification() async {
+    final FirebaseMessaging fcm = FirebaseMessaging.instance;
+
+    try {
+      final token = await fcm.getToken();
+
+      if (token != null) {
+        deviceTokenToSendPushNotification = token;
+        isTokenRefreshed = true;
+      } else {
+        await fcm.requestPermission();
+        final newToken = await fcm.getToken();
+        deviceTokenToSendPushNotification = newToken!;
+        isTokenRefreshed = false;
+      }
+    } catch (e) {
+      print('❌❌ Can\'t get a Notification Token ERROR IS:$e');
+    }
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      // Note: This callback is fired at each app startup and whenever a new token is generated.
+      deviceTokenToSendPushNotification = fcmToken.toString();
+      isTokenRefreshed = true;
+    }).onError((err) {
+      print('❌❌ Can\'t get a Notification Token ERROR IS:$err');
+    });
+  }
+}
+///****** 1- End Push Notifications ******///

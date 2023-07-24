@@ -21,7 +21,7 @@ class ProjectPageModel {
         tr('Percent Complete'): data['percent_complete'].toString()
       },
       {
-        tr('Project Template'): data['project_template'] ?? tr('none'),
+        tr('Project Type'): data['project_type'] ?? tr('none'),
         tr('Task Completion'): data['percent_complete_method'] ?? tr('none'),
       },
       {

@@ -38,20 +38,17 @@ class QuotationPage extends StatelessWidget {
                   doctype: 'Quotation',
                   data: data,
                   items: fromQuotation,
-                  disableCreate: (data['status'].toString() != "Ordered" &&
-                          data['docstatus'].toString() == "1" &&
-                          data['quotation_to'].toString() == "Customer")
-                      ? false
-                      : true,
+                  disableCreate:
+                      data['docstatus'].toString() == "1" ? false : true,
                 ),
               ],
             ),
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Quotation',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Quotation',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
@@ -87,10 +84,10 @@ class QuotationPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -156,9 +153,9 @@ class QuotationPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -186,9 +183,9 @@ class QuotationPage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -208,9 +205,9 @@ class QuotationPage extends StatelessWidget {
                     //
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -229,9 +226,9 @@ class QuotationPage extends StatelessWidget {
                                   values: model.paymentCardValues(index),
                                 )),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

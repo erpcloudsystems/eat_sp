@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:NextApp/new_version/core/network/api_constance.dart';
 
+import '../models/list_models/statistics_model.dart';
 import '../models/new_version_models/check_url_validation_model.dart';
 import '../new_version/core/global/global_variables.dart';
 import '../new_version/core/resources/strings_manager.dart';
@@ -677,6 +678,39 @@ class APIService {
     });
     Navigator.pop(context);
     if (file is File) OpenFile.open(file.path);
+  }
+
+  Future<List<StatisticsModel>?> getStatisticsList({String? docType}) async {
+    try {
+      final response = await dio.get(
+        'method/ecs_mobile.doctype_statistics.doc_stats',
+        queryParameters: {
+          'doctype': docType,
+        },
+      );
+      if (response.statusCode == 200) {
+        print('-------------------$docType-------------------------');
+        print(response.data['message']);
+        return List<StatisticsModel>.from(
+          (response.data['message'] as List).map(
+            (e) => StatisticsModel.fromJson(e),
+          ),
+        );
+      }
+      throw ServerException('something went wrong :(');
+    }on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (error, stacktrace) {
+      if (error is DioError) {
+        if (error.response?.data != null) {
+          print(
+              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+        } else {
+          print(
+              "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+        }
+      }
+    }
   }
 
   /// Download file into private folder not visible to user

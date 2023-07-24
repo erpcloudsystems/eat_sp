@@ -1,4 +1,3 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import '../provider/module/module_provider.dart';
 import 'package:provider/provider.dart';

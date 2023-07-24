@@ -37,4 +37,15 @@ class ApiConstance {
 
   static const String getDashboardData =
       'method/ecs_mobile.home_dashboard.get_home_data';
+
+  static const String getFaqs = 'method/ecs_mobile.general.get_faqs';
+
+  static const String getTransactionList =
+      'method/ecs_mobile.general.get_activity_log';
+
+  static const String getTotal =
+      'method/ecs_mobile.dashboard.get_dashboard_data';
+
+  static const String generalListEndPoint =
+      'method/ecs_mobile.general.general_service';
 }

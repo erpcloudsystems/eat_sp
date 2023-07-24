@@ -33,20 +33,22 @@ class SingleValueTile extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Color(0xff1665D8),
+                  backgroundColor: const Color(0xff1665D8),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(value[0].toUpperCase(),
-                        style: TextStyle(color: Colors.white, fontSize: 18)),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18)),
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Text(value,
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
+                    style: const TextStyle(color: Colors.black, fontSize: 16)),
               ],
             ),
           ),
-          Divider(color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
+          const Divider(
+              color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
         ],
       ),
     );
@@ -72,21 +74,24 @@ class SingleValueTileReturnMap extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Color(0xff1665D8),
+                  backgroundColor: const Color(0xff1665D8),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(value['name'].toString(),
-                        style: TextStyle(color: Colors.white, fontSize: 18)),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18)),
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                     child: Text(value['name'].toString(),
-                        style: TextStyle(color: Colors.black, fontSize: 16))),
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 16))),
               ],
             ),
           ),
-          Divider(color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
+          const Divider(
+              color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
         ],
       ),
     );
@@ -116,16 +121,16 @@ class AddressTile extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: Color(0xff1665D8),
+                          color: const Color(0xff1665D8),
                           borderRadius: BorderRadius.circular(55),
                         ),
                         child: Center(
                             child: Text(data['city'] ?? tr('none'),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white, fontSize: 15))),
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Chip(
                         label: Row(
@@ -133,9 +138,9 @@ class AddressTile extends StatelessWidget {
                           children: [
                             Icon(Icons.phone,
                                 color: Colors.grey.shade800, size: 22),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(data['phone'] ?? tr('none'),
-                                style: TextStyle(color: Colors.black)),
+                                style: const TextStyle(color: Colors.black)),
                           ],
                         ),
                       ),
@@ -153,11 +158,11 @@ class AddressTile extends StatelessWidget {
                 Flexible(
                     child: Text(data['address_title'] ?? tr('none'),
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.w600))),
+                        style: const TextStyle(fontWeight: FontWeight.w600))),
               ],
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -169,7 +174,8 @@ class AddressTile extends StatelessWidget {
               ],
             ),
           ),
-          Divider(color: Colors.grey, height: 10, thickness: 0.7, indent: 60),
+          const Divider(
+              color: Colors.grey, height: 10, thickness: 0.7, indent: 60),
         ],
       ),
     );
@@ -196,18 +202,20 @@ class CurrencyTile extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Color(0xff1665D8),
+                  backgroundColor: const Color(0xff1665D8),
                   radius: 23,
                   child: Text(circleValue.toUpperCase(),
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 16)),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Text(value,
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
+                    style: const TextStyle(color: Colors.black, fontSize: 16)),
               ],
             ),
           ),
-          Divider(color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
+          const Divider(
+              color: Colors.grey, height: 1, thickness: 0.7, indent: 56),
         ],
       ),
     );
@@ -220,10 +228,11 @@ Widget territoryScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -233,10 +242,11 @@ Widget customerGroupScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -246,10 +256,11 @@ Widget supplierGroupScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -259,10 +270,11 @@ Widget marketSegmentScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -272,10 +284,11 @@ Widget industryScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -285,10 +298,11 @@ Widget opportunityTypeScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -298,10 +312,11 @@ Widget userTypeScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -311,10 +326,11 @@ Widget countryScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -326,23 +342,38 @@ Widget contactScreen(String customerId) =>
       listItem: (value) => SingleValueTileReturnMap(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
       },
     );
 
+Widget contactListScreen() => GenericListScreen<String>(
+      title: 'Select Contact',
+      service: APIService.CONTACT,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
+      },
+    );
 Widget campaignScreen() => GenericListScreen<String>(
       title: 'Select Campaign',
       service: APIService.CAMPAIGN,
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -352,10 +383,11 @@ Widget sourceScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -367,10 +399,11 @@ Widget customerAddressScreen(String customerId) =>
       listItem: (value) => AddressTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
       },
     );
 
@@ -382,10 +415,11 @@ Widget supplierAddressScreen(String supplierId) =>
       listItem: (value) => AddressTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
       },
     );
 
@@ -395,10 +429,11 @@ Widget paymentTermsScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -408,10 +443,11 @@ Widget currencyListScreen() => GenericListScreen<String>(
       listItem: (value) => CurrencyTile(value, value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message']).forEach((element) => _list
-            .add(Map<String, String?>.from(element)['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element)['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -422,10 +458,11 @@ Widget priceListScreen() => GenericListScreen<Map<String, String?>>(
           value['name'] ?? tr('none'), value['currency'] ?? '-',
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
       },
     );
 
@@ -436,10 +473,11 @@ Widget buyingPriceListScreen() => GenericListScreen<Map<String, String?>>(
           value['name'] ?? tr('none'), value['currency'] ?? '-',
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, String?>> _list = [];
-        List.from(data['message']).forEach(
-            (element) => _list.add(Map<String, String?>.from(element)));
-        return ListModel<Map<String, String?>>(_list);
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
       },
     );
 
@@ -450,10 +488,11 @@ Widget termsConditionScreen() => GenericListScreen<String>(
           onTap: (context) => Navigator.of(context).pop(value)),
       // listItem: (value) => TermsWidget(value['name'] ?? tr('none'), value['terms'] ?? tr('none'), onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name']));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name']);
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -478,10 +517,11 @@ Widget selectCustomerScreen() => Builder(builder: (context) {
               value['mobile_no'] ?? tr('none')
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -507,10 +547,11 @@ Widget selectSupplierScreen() => Builder(builder: (context) {
               value['mobile_no'] ?? tr('none')
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -536,10 +577,11 @@ Widget selectEmployeeScreen() => Builder(builder: (context) {
               value['department'] ?? tr('none'),
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -566,10 +608,11 @@ Widget selectLeadScreen() => Builder(builder: (context) {
               value['market_segment'] ?? tr('none')
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -578,21 +621,23 @@ Widget selectLeadScreen() => Builder(builder: (context) {
 Widget itemListScreen(String priceList) => Builder(builder: (context) {
       return CustomListScreen<ItemSelectModel>(
         title: 'Select Items',
-        service: GET_ITEM_LIST + '?price_list=$priceList',
+        service: '$GET_ITEM_LIST?price_list=$priceList',
         listItem: (item) => ItemCard(
           values: [item.itemName, item.itemCode, item.group, item.stockUom],
           imageUrl: item.imageUrl,
           onPressed: (_) => Navigator.pop(context, item),
         ),
         serviceParser: (data) {
-          List<ItemSelectModel> _list = [];
+          List<ItemSelectModel> list = [];
           // print(data['message']);
           //
           // print(data);
-          List.from(data['message']).forEach((element) => _list.add(
-              ItemSelectModel.fromJson(Map<String, dynamic>.from(element))));
+          for (var element in List.from(data['message'])) {
+            list.add(
+                ItemSelectModel.fromJson(Map<String, dynamic>.from(element)));
+          }
 
-          return ListModel<ItemSelectModel>(_list);
+          return ListModel<ItemSelectModel>(list);
         },
       );
     });
@@ -608,14 +653,16 @@ Widget newItemsScreen() => Builder(builder: (context) {
           onPressed: (_) => Navigator.pop(context, item),
         ),
         serviceParser: (data) {
-          List<ItemSelectModel> _list = [];
+          List<ItemSelectModel> list = [];
           // print(data['message']);
           //
           // print(data);
-          List.from(data['message']).forEach((element) => _list.add(
-              ItemSelectModel.fromJson(Map<String, dynamic>.from(element))));
+          for (var element in List.from(data['message'])) {
+            list.add(
+                ItemSelectModel.fromJson(Map<String, dynamic>.from(element)));
+          }
 
-          return ListModel<ItemSelectModel>(_list);
+          return ListModel<ItemSelectModel>(list);
         },
       );
     });
@@ -645,9 +692,11 @@ Widget warehouseScreen([String? selectedWarehouse]) =>
               value['warehouse_type'] ?? tr('none')
             ]),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -659,7 +708,7 @@ Widget projectScreen() => Builder(builder: (context) {
         listItem: (value) => ListCard(
             onPressed: (context) => Navigator.of(context).pop(value),
             id: value['name'] ?? tr('none'),
-            names: [
+            names: const [
               'Project',
               'Customer',
             ],
@@ -669,9 +718,11 @@ Widget projectScreen() => Builder(builder: (context) {
             ],
             status: value['status'] ?? tr('none')),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -683,7 +734,7 @@ Widget parentTaskScreen() => Builder(builder: (context) {
         listItem: (value) => ListCard(
             onPressed: (context) => Navigator.of(context).pop(value['name']),
             id: value['name'] ?? tr('none'),
-            names: [
+            names: const [
               'Project',
               'Subject',
             ],
@@ -693,9 +744,11 @@ Widget parentTaskScreen() => Builder(builder: (context) {
             ],
             status: value['status'] ?? tr('none')),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -710,33 +763,38 @@ Widget activityListScreen() => Builder(builder: (context) {
           ),
           id: value['name'] ?? tr('none'),
           title: value['activity_type'] ?? tr('none'),
-          names: [],
-          values: [],
+          names: const [],
+          values: const [],
         ),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
 
-Widget modeOfPaymentScreen([String? previous]) => GenericListScreen<String>(
-    title: 'Select Mode of Payment',
-    service: APIService.MODE_OF_PAYMENT,
-    listItem: (value) => SingleValueTile(value, onTap: (context) {
-          if (previous == value)
-            showSnackBar(
-                'Already selected!, please select another one', context);
-          else
-            Navigator.of(context).pop(value);
-        }),
-    serviceParser: (data) {
-      List<String> _list = [];
-      List.from(data['message'])
-          .forEach((element) => _list.add(element['name']));
-      return ListModel<String>(_list);
-    });
+Widget modeOfPaymentScreen([String? previous]) =>
+    GenericListScreen<Map<String, dynamic>>(
+        title: 'Select Mode of Payment',
+        service: APIService.MODE_OF_PAYMENT,
+        listItem: (value) => SingleValueTile(value['name'], onTap: (context) {
+              if (previous == value) {
+                showSnackBar(
+                    'Already selected!, please select another one', context);
+              } else {
+                Navigator.of(context).pop(value);
+              }
+            }),
+        serviceParser: (data) {
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
+        });
 
 Widget costCenterScreen() => Builder(builder: (context) {
       return GenericListScreen<Map<String, dynamic>>(
@@ -746,12 +804,14 @@ Widget costCenterScreen() => Builder(builder: (context) {
             onPressed: (context) => Navigator.of(context).pop(value['name']),
             id: value['name'] ?? tr('none'),
             title: value['cost_center_name'] ?? tr('none'),
-            names: ['Parent Cost Center'],
+            names: const ['Parent Cost Center'],
             values: [value['parent_cost_center'] ?? tr('none')]),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -770,12 +830,14 @@ Widget supplierListScreen() => Builder(builder: (context) {
             value['country'] ?? tr('none'),
             value['mobile_no'] ?? tr('none')
           ],
-          names: ['Group', 'Type', 'Country', 'Mobile'],
+          names: const ['Group', 'Type', 'Country', 'Mobile'],
         ),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -789,9 +851,11 @@ Widget salesPartnerScreen() => GenericListScreen<Map<String, dynamic>>(
         onTap: (context) => Navigator.of(context).pop(value['name']),
       ),
       serviceParser: (data) {
-        List<Map<String, dynamic>> _list = [];
-        List.from(data['message']).forEach((element) => _list.add(element));
-        return ListModel<Map<String, dynamic>>(_list);
+        List<Map<String, dynamic>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element);
+        }
+        return ListModel<Map<String, dynamic>>(list);
       },
     );
 
@@ -806,9 +870,11 @@ Widget userListScreen() => GenericListScreen<Map<String, dynamic>>(
         );
       },
       serviceParser: (data) {
-        List<Map<String, dynamic>> _list = [];
-        List.from(data['message']).forEach((element) => _list.add(element));
-        return ListModel<Map<String, dynamic>>(_list);
+        List<Map<String, dynamic>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element);
+        }
+        return ListModel<Map<String, dynamic>>(list);
       },
     );
 
@@ -818,10 +884,11 @@ Widget itemGroupScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -831,10 +898,11 @@ Widget uomListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -844,10 +912,11 @@ Widget statesListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -857,10 +926,11 @@ Widget workflowActionListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -870,10 +940,11 @@ Widget roleListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -886,9 +957,11 @@ Widget filteredUOMListScreen(String itemCode) =>
       listItem: (value) => SingleValueTile(value['uom'],
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<Map<String, dynamic>> _list = [];
-        List.from(data['message']).forEach((element) => _list.add(element));
-        return ListModel<Map<String, dynamic>>(_list);
+        List<Map<String, dynamic>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element);
+        }
+        return ListModel<Map<String, dynamic>>(list);
       },
     );
 
@@ -898,10 +971,11 @@ Widget brandListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -913,13 +987,15 @@ Widget assetCategoryListScreen() => Builder(builder: (context) {
             onPressed: (context) => Navigator.of(context).pop(value['name']),
             id: value['name'] ?? tr('none'),
             title: value['asset_category_name'] ?? tr('none'),
-            names: [],
-            values: [],
+            names: const [],
+            values: const [],
             status: value['status'] ?? tr('none')),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach((element) => _list.add(element));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(element);
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -930,10 +1006,11 @@ Widget departmentListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -944,10 +1021,11 @@ Widget projectTemplateListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 Widget projectTypeListScreen() => GenericListScreen<String>(
@@ -956,10 +1034,11 @@ Widget projectTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -969,10 +1048,11 @@ Widget documentTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 Widget designationListScreen() => GenericListScreen<String>(
@@ -981,10 +1061,11 @@ Widget designationListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -994,10 +1075,11 @@ Widget branchListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1007,10 +1089,11 @@ Widget employmentTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1020,10 +1103,11 @@ Widget genderListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1033,10 +1117,11 @@ Widget leaveTypeListScreen() => GenericListScreen<String>(
     listItem: (value) => SingleValueTile(value,
         onTap: (context) => Navigator.of(context).pop(value)),
     serviceParser: (data) {
-      List<String> _list = [];
-      List.from(data['message'])
-          .forEach((element) => _list.add(element['name']));
-      return ListModel<String>(_list);
+      List<String> list = [];
+      for (var element in List.from(data['message'])) {
+        list.add(element['name']);
+      }
+      return ListModel<String>(list);
     });
 
 Widget companyListScreen() => GenericListScreen<Map<String, dynamic>>(
@@ -1048,9 +1133,11 @@ Widget companyListScreen() => GenericListScreen<Map<String, dynamic>>(
         onTap: (context) => Navigator.of(context).pop(value),
       ),
       serviceParser: (data) {
-        List<Map<String, dynamic>> _list = [];
-        List.from(data['message']).forEach((element) => _list.add(element));
-        return ListModel<Map<String, dynamic>>(_list);
+        List<Map<String, dynamic>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element);
+        }
+        return ListModel<Map<String, dynamic>>(list);
       },
     );
 
@@ -1060,10 +1147,11 @@ Widget holidayListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1073,10 +1161,11 @@ Widget shiftTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1086,10 +1175,11 @@ Widget leaveApproverScreen() => GenericListScreen<String>(
     listItem: (value) => SingleValueTile(value,
         onTap: (context) => Navigator.of(context).pop(value)),
     serviceParser: (data) {
-      List<String> _list = [];
-      List.from(data['message'])
-          .forEach((element) => _list.add(element['name']));
-      return ListModel<String>(_list);
+      List<String> list = [];
+      for (var element in List.from(data['message'])) {
+        list.add(element['name']);
+      }
+      return ListModel<String>(list);
     });
 
 Widget accountListScreen({Map<String, dynamic>? filters}) =>
@@ -1113,10 +1203,11 @@ Widget accountListScreen({Map<String, dynamic>? filters}) =>
               value['parent_account'] ?? tr('none'),
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -1127,10 +1218,11 @@ Widget expenseClaimTypeScreen() => GenericListScreen<String>(
     listItem: (value) => SingleValueTile(value,
         onTap: (context) => Navigator.of(context).pop(value)),
     serviceParser: (data) {
-      List<String> _list = [];
-      List.from(data['message'])
-          .forEach((element) => _list.add(element['name']));
-      return ListModel<String>(_list);
+      List<String> list = [];
+      for (var element in List.from(data['message'])) {
+        list.add(element['name']);
+      }
+      return ListModel<String>(list);
     });
 
 Widget loanTypeListScreen() => GenericListScreen<Map<String, dynamic>>(
@@ -1142,9 +1234,11 @@ Widget loanTypeListScreen() => GenericListScreen<Map<String, dynamic>>(
         onTap: (context) => Navigator.of(context).pop(value),
       ),
       serviceParser: (data) {
-        List<Map<String, dynamic>> _list = [];
-        List.from(data['message']).forEach((element) => _list.add(element));
-        return ListModel<Map<String, dynamic>>(_list);
+        List<Map<String, dynamic>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element);
+        }
+        return ListModel<Map<String, dynamic>>(list);
       },
     );
 
@@ -1154,10 +1248,11 @@ Widget bankAccountScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1183,10 +1278,11 @@ Widget journalEntryPartyTypeListScreen(
               value['parent_account'] ?? tr('none'),
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -1198,10 +1294,11 @@ Widget partyTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1225,10 +1322,11 @@ Widget partyListScreen({String? partyType}) => Builder(builder: (context) {
               value['customer_type'] ?? tr('none'),
             ]),
         serviceParser: (data) {
-          List<Map<String, String?>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, String?>.from(element)));
-          return ListModel<Map<String, String?>>(_list);
+          List<Map<String, String?>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, String?>.from(element));
+          }
+          return ListModel<Map<String, String?>>(list);
         },
       );
     });
@@ -1258,7 +1356,7 @@ Widget getNotificationListScreen() => Builder(builder: (context) {
                 .read<ModuleProvider>()
                 .pushPage(value['document_name'].toString());
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => GenericPage(),
+              builder: (context) => const GenericPage(),
               // settings:
               // isFirstRoute(context) ? null : RouteSettings(name: CONNECTION_ROUTE),
             ));
@@ -1274,10 +1372,11 @@ Widget getNotificationListScreen() => Builder(builder: (context) {
           type: value['type'] ?? tr('none'),
         ),
         serviceParser: (data) {
-          List<Map<String, dynamic>> _list = [];
-          List.from(data['message']).forEach(
-              (element) => _list.add(Map<String, dynamic>.from(element)));
-          return ListModel<Map<String, dynamic>>(_list);
+          List<Map<String, dynamic>> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(Map<String, dynamic>.from(element));
+          }
+          return ListModel<Map<String, dynamic>>(list);
         },
       );
     });
@@ -1289,10 +1388,11 @@ Widget issueListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1302,10 +1402,11 @@ Widget issueTypeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );
 
@@ -1315,9 +1416,10 @@ Widget typeListScreen() => GenericListScreen<String>(
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
-        List<String> _list = [];
-        List.from(data['message'])
-            .forEach((element) => _list.add(element['name'] ?? tr('none')));
-        return ListModel<String>(_list);
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
       },
     );

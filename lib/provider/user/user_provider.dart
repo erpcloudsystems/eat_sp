@@ -5,18 +5,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../main.dart';
 import '../../service/service.dart';
 import '../../core/shared_pref.dart';
 import '../../service/server_exception.dart';
 import '../../service/service_constants.dart';
+import '../../service/local_notification_service.dart';
 
 class UserProvider extends ChangeNotifier {
   final APIService service = APIService();
   final SharedPref pref = SharedPref();
 
   String _username = '';
-  String _userNotificationToken = '';
+  final String _userNotificationToken = '';
 
   String get username => _username;
   String get userNotificationToken => _userNotificationToken;
@@ -29,9 +29,13 @@ class UserProvider extends ChangeNotifier {
 
   Map<String, dynamic> _companyDefaults = {};
   String _defaultCurrency = '';
+  String _defaultSellingPriceList = '';
+  String _defaultBuyingPriceList = '';
 
   Map<String, dynamic> get companyDefaults => _companyDefaults;
   String get defaultCurrency => _defaultCurrency;
+  String get defaultSellingPriceList => _defaultSellingPriceList;
+  String get defaultBuyingPriceList => _defaultBuyingPriceList;
 
   List<Map> _defaultTax = [];
 
@@ -84,13 +88,17 @@ class UserProvider extends ChangeNotifier {
         sendTokenToServer = true;
       }
 
-      if (isTokenRefreshed) {
+      if (FcmToken.isTokenRefreshed) {
         if (sendTokenToServer) {
           await APIService().sendNotificationToken(
-              deviceTokenToSendPushNotification, _userId.toString(), _platform);
+              FcmToken.deviceTokenToSendPushNotification,
+              _userId.toString(),
+              _platform);
         } else {
           await APIService().updateNotificationToken(
-              deviceTokenToSendPushNotification, _userId.toString(), _platform);
+              FcmToken.deviceTokenToSendPushNotification,
+              _userId.toString(),
+              _platform);
         }
       }
     } else {
@@ -118,8 +126,9 @@ class UserProvider extends ChangeNotifier {
       String username, String password, String url, bool rememberMe) async {
     final bool checkUrlValidation = await service.checkUrlValidation(url);
     if (checkUrlValidation == true) {
-      if (url.endsWith('/'))
+      if (url.endsWith('/')) {
         url = url.replaceRange(url.length - 1, url.length, '');
+      }
       service.changeUrl(url); // to set baseUrl for all app
       final res = await service.login(
           "method/ecs_mobile.api.login", {"usr": username, "pwd": password});
@@ -131,9 +140,13 @@ class UserProvider extends ChangeNotifier {
         _username = res['full_name'] ?? 'none';
         _userId = res['message']['user_id'] ?? 'none';
         try {
-          _defaultCurrency = ' (' +
-              res['message']['company_defaults'][0]['default_currency'] +
-              ')';
+          // ignore: prefer_interpolation_to_compose_strings
+          _defaultCurrency =
+              res['message']['company_defaults'][0]['default_currency'];
+          _defaultSellingPriceList = res['message']['company_defaults'][0]
+              ['default_selling_price_list'];
+          _defaultBuyingPriceList = res['message']['company_defaults'][0]
+              ['default_buying_price_list'];
           _companyDefaults = res['message']['company_defaults'][0];
         } catch (e) {
           _defaultCurrency = '-';
@@ -158,7 +171,7 @@ class UserProvider extends ChangeNotifier {
         if (Platform.isAndroid) {
           _platform = "Android";
         } else if (Platform.isIOS) {
-          _platform = "Ios";
+          _platform = "IOS";
         }
 
         notifyListeners();

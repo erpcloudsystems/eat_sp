@@ -21,7 +21,7 @@
     ]
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "15.0"
   },
   "swift_versions": "5.0.1",
   "swift_version": "5.0.1"

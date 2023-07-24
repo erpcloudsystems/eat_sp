@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../main.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../service/local_notification_service.dart';
 
 class UnderDevelopmentScreen extends StatelessWidget {
   UnderDevelopmentScreen({Key? key, required this.message}) : super(key: key);
@@ -29,10 +30,10 @@ class UnderDevelopmentScreen extends StatelessWidget {
                 TextButton(
                   child: Text('Send Token to WhatsApp For Testing'),
                   onPressed: () async {
-                    final box = context.findRenderObject() as RenderBox?;
-                    await Share.share(deviceTokenToSendPushNotification,
-                        sharePositionOrigin:
-                            box!.localToGlobal(Offset.zero) & box.size);
+                    // final box = context.findRenderObject() as RenderBox?;
+                    // await Share.share(deviceTokenToSendPushNotification,
+                    //     sharePositionOrigin:
+                    //         box!.localToGlobal(Offset.zero) & box.size);
                   },
                 )
               ],
