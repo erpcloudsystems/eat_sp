@@ -5094,7 +5094,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.
 
 
-## geocoding_ios
+## geocoding
 
 MIT License
 

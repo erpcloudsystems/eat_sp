@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "summary": "Google Maps for Flutter",
   "description": "A Flutter plugin that provides a Google Maps widget.\nDownloaded by pub (not CocoaPods).",
-  "homepage": "https://github.com/flutter/packages",
+  "homepage": "https://github.com/flutter/plugins",
   "license": {
     "type": "BSD",
     "file": "../LICENSE"
@@ -12,7 +12,7 @@
     "Flutter Dev Team": "flutter-dev@googlegroups.com"
   },
   "source": {
-    "http": "https://github.com/flutter/packages/tree/main/packages/google_maps_flutter/google_maps_flutter/ios"
+    "http": "https://github.com/flutter/plugins/tree/main/packages/google_maps_flutter/google_maps_flutter/ios"
   },
   "documentation_url": "https://pub.dev/packages/google_maps_flutter_ios",
   "source_files": "Classes/**/*.{h,m}",
@@ -23,12 +23,12 @@
 
     ],
     "GoogleMaps": [
-      "< 8.0"
+
     ]
   },
   "static_framework": true,
   "platforms": {
-    "ios": "11.0"
+    "ios": "9.0"
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",

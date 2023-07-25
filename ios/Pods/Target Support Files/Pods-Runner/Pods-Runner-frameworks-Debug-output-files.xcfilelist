@@ -25,7 +25,7 @@ ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/flutter_native_splash.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fluttertoast.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework
-${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/geocoding_ios.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/geocoding.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/geolocator_apple.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/image_picker_ios.framework
 ${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework

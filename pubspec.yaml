@@ -65,11 +65,11 @@ dependencies:
   upgrader: ^4.8.1
   package_info_plus: ^1.4.3+1
   equatable: ^2.0.5
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^8.1.3
   dartz: ^0.10.1
   internet_connection_checker: ^1.0.0+1
   get_it: ^7.2.0
-  bloc_concurrency: ^0.2.1
+  bloc_concurrency: ^0.2.2
   flutter_screenutil: ^5.8.4
   syncfusion_flutter_charts: ^20.4.54
   expandable_menu: ^0.0.5
