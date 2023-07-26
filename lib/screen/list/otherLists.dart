@@ -629,9 +629,6 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
         ),
         serviceParser: (data) {
           List<ItemSelectModel> list = [];
-          // print(data['message']);
-          //
-          // print(data);
           for (var element in List.from(data['message'])) {
             list.add(
                 ItemSelectModel.fromJson(Map<String, dynamic>.from(element)));
@@ -654,9 +651,7 @@ Widget newItemsScreen() => Builder(builder: (context) {
         ),
         serviceParser: (data) {
           List<ItemSelectModel> list = [];
-          // print(data['message']);
-          //
-          // print(data);
+
           for (var element in List.from(data['message'])) {
             list.add(
                 ItemSelectModel.fromJson(Map<String, dynamic>.from(element)));

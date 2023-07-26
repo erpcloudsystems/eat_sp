@@ -109,10 +109,17 @@ const List<String> AssignToPriorityList = [
   'Medium',
   'High',
 ];
+
 const List<String> TimeSheetList = [
   'Draft',
   'Cancelled',
   'Submitted',
+];
+
+const List<String> rateList = [
+  'Valuation Rate',
+  'Last Purchase Rate',
+  'Price List',
 ];
 
 const List<String> termLoan = [

@@ -118,3 +118,6 @@ const WORKFLOW_PAGE = 'method/ecs_mobile.pages.workflow';
 const UPDATE_WORKFLOW = 'method/ecs_mobile.workflow.update_workflow';
 const WORKFLOW_ACTION_LIST = 'method/ecs_mobile.workflow.get_workflow_actions';
 const WORKFLOW_STATUS = 'method/ecs_mobile.workflow.get_workflow_status';
+
+// Manufacturing
+const BOM_POST = 'method/ecs_mobile.manufacturing.addBom';

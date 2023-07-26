@@ -199,8 +199,14 @@
   "From Time": "From Time",
   "To Time": "To Time",
   "Time": "Time",
-  "Posting Date": "Posting Date"
-  
+  "Posting Date": "Posting Date",
+  "Item": "Item",
+  "Is Active": "Is Active",
+  "Is Default": "Is Default",
+  "With Operations": "With Operations",
+  "Allow Alternative Item": "Allow Alternative Item",
+  "Rate Of Materials Based On": "Rate Of Materials Based On",
+  "Set rate of sub-assembly item based on BOM": "Set rate of sub-assembly item based on BOM"  
 
 
 

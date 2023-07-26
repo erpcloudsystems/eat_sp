@@ -122,6 +122,9 @@ class APIService {
   // Reports
   static const REPORTS = 'Mobile Report';
 
+  // Manufacturing
+  static const BOM = 'BOM';
+
   final BaseOptions options = BaseOptions(
     connectTimeout: ApiConstance.connectionTimeOut,
     receiveTimeout: ApiConstance.connectionTimeOut,
@@ -698,7 +701,7 @@ class APIService {
         );
       }
       throw ServerException('something went wrong :(');
-    }on ServerException catch (e) {
+    } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
       if (error is DioError) {

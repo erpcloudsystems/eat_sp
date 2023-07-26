@@ -1,11 +1,13 @@
-import 'package:NextApp/models/list_models/project_list_models/project_list_model.dart';
-import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 
+import '../../models/list_models/manufacturing_list_model/bom_model.dart';
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
 import '../../models/list_models/project_list_models/timesheet_list_model.dart';
 import '../../models/list_models/workflow_list_model/workflow_model.dart';
+import '../../models/list_models/project_list_models/project_list_model.dart';
+import '../../new_version/core/extensions/status_converter.dart';
 import '../../new_version/core/resources/strings_manager.dart';
+import '../../screen/form/manufacturing_forms/bom_form.dart';
 import '../../screen/form/project_forms/issue_form.dart';
 import '../../screen/form/project_forms/project_form.dart';
 import '../../screen/form/project_forms/task_form.dart';
@@ -1564,6 +1566,40 @@ class ModuleType {
     pageWidget: const WorkflowPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Workflow"];
+    },
+    filter: const WorkflowFilterScreen(),
+  );
+
+  /// Manufacturing
+  static final bom = ModuleType._(
+    genericListService: DocTypesName.bom,
+    title: DocTypesName.bom,
+    listItem: (item) {
+      item as BomItemModel;
+      return ListCard(
+        id: item.name!,
+        names:  [
+          StringsManager.item.tr(),
+          StringsManager.itemName.tr(),
+          StringsManager.quantity.tr(),
+        ],
+        values: [
+          item.item ?? 'none',
+          item.itemName ?? 'none',
+          (item.quantity ?? 1).toString(),
+        ],
+        onPressed: (context) => _onListCardPressed(
+          context,
+          item.name!,
+        ),
+      );
+    },
+    serviceParser: (data) => BomListModel.fromJson(data),
+    createForm: const BomForm(),
+    pageService: WORKFLOW_PAGE,
+    pageWidget: const WorkflowPage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Bom"];
     },
     filter: const WorkflowFilterScreen(),
   );

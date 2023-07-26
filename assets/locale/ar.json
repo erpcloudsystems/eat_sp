@@ -196,5 +196,13 @@
   "From Date": "من تاريخ",
   "To Date": "الى تاريخ",
   "Time": "الوقت",
-  "Posting Date": "تاريخ النشر"
+  "Posting Date": "تاريخ النشر",
+  "Item": "صنف",
+  "Is Active": "مفعل",
+  "Is Default": "افتراضي",
+  "With Operations": "مع عمليات",
+  "Allow Alternative Item": "السماح بصنف بديل",
+  "Rate Of Materials Based On": "سعر المواد بناءً على",
+  "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع "
+
   }

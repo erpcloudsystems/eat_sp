@@ -312,6 +312,7 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.JOURNAL_ENTRY:
         _currentModule = ModuleType.journalEntry;
         break;
+
 // Project
       case APIService.TASK:
         _currentModule = ModuleType.task;
@@ -328,6 +329,11 @@ class ModuleProvider extends ChangeNotifier {
 
       case APIService.WORKFLOW:
         _currentModule = ModuleType.workflow;
+        break;
+
+// Manufacturing
+      case APIService.BOM:
+        _currentModule = ModuleType.bom;
         break;
     }
     _filter.clear();
