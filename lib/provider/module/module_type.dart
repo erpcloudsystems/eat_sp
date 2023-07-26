@@ -1581,21 +1581,16 @@ class ModuleType {
     title: DocTypesName.bom,
     listItem: (item) {
       item as BomItemModel;
-      return ListCard(
-        id: item.name!,
-        names: [
-          StringsManager.item.tr(),
-          StringsManager.itemName.tr(),
-          StringsManager.quantity.tr(),
-        ],
-        values: [
-          item.item! ,
-          item.itemName!,
-          item.quantity.toString() ,
-        ],
+      return ListCardTest(
+        id: item.name,
+        title: item.itemName,
+        leftIcon: Icons.numbers,
+        leftText: item.item,
+        rightIcon: Icons.add_shopping_cart,
+        rightText: item.uom,
         onPressed: (context) => _onListCardPressed(
           context,
-          item.name!,
+          item.name,
         ),
       );
     },

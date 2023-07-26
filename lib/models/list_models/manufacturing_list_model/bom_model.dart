@@ -21,29 +21,28 @@ class BomListModel extends ListModel<BomItemModel> {
 }
 
 class BomItemModel {
-  String? name, item, itemName, uom, project, currency;
-  int? quantity,
-      setRateOfSubAssemblyItemBasedOnBom,
-      rateOfMaterialsBasedOn,
+  final double quantity;
+  final String name, item, itemName, uom, project, rateOfMaterialsBasedOn, currency;
+  final int setRateOfSubAssemblyItemBasedOnBom,
       allowAlternativeItem,
       inspectionRequired,
       withOperations,
       isDefault;
 
   BomItemModel({
-    this.setRateOfSubAssemblyItemBasedOnBom,
-    this.rateOfMaterialsBasedOn,
-    this.allowAlternativeItem,
-    this.inspectionRequired,
-    this.withOperations,
-    this.isDefault,
-    this.itemName,
-    this.currency,
-    this.quantity,
-    this.project,
-    this.name,
-    this.item,
-    this.uom,
+    required this.setRateOfSubAssemblyItemBasedOnBom,
+    required this.rateOfMaterialsBasedOn,
+    required this.allowAlternativeItem,
+    required this.inspectionRequired,
+    required this.withOperations,
+    required this.isDefault,
+    required this.itemName,
+    required this.currency,
+    required this.quantity,
+    required this.project,
+    required this.name,
+    required this.item,
+    required this.uom,
   });
 
   factory BomItemModel.fromJson(Map<String, dynamic> json) => BomItemModel(
@@ -51,12 +50,12 @@ class BomItemModel {
             json['set_rate_of_sub_assembly_item_based_on_bom'] ?? 0,
         allowAlternativeItem: json['allow_alternative_item'] ?? 0,
         inspectionRequired: json['inspection_required'] ?? 0,
-        rateOfMaterialsBasedOn: json['rm_cost_as_per'] ?? 0,
+        rateOfMaterialsBasedOn: json['rm_cost_as_per'] ?? 'none',
         withOperations: json['with_operations'] ?? 0,
         isDefault: json['is_default'] ?? 0,
         itemName: json['item_name'] ?? 'none',
         currency: json['currency'] ?? 'EGP',
-        quantity: json['quantity'] ?? 1,
+        quantity: json['quantity'] ?? 1.0,
         project: json['project'] ?? 'none',
         name: json['name'] ?? 'none',
         item: json['item'] ?? 'none ',

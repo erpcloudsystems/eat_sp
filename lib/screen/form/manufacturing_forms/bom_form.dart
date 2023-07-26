@@ -28,7 +28,7 @@ class BomForm extends StatefulWidget {
 
 class _BomFormState extends State<BomForm> {
   final server = APIService();
-  late bool withOperations;
+  bool withOperations = false;
   Map<String, dynamic> data = {
     "doctype": DocTypesName.bom,
   };
@@ -229,9 +229,9 @@ class _BomFormState extends State<BomForm> {
                         onChanged: (id, value) => setState(
                           () {
                             if (value == true) {
-                              data['is_active'] = 1;
+                              data['is_default'] = 1;
                             } else {
-                              data['is_active'] = 0;
+                              data['is_default'] = 0;
                             }
                           },
                         ),
