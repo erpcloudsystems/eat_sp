@@ -327,6 +327,19 @@ class _BomFormState extends State<BomForm> {
                           withOperations = value;
                         }),
                       ),
+                      //_______________________________________Transfer Material Against________________________________________________
+                      if (withOperations)
+                        CustomDropDown(
+                          'transfer_material_against',
+                          StringsManager.transferMaterialAgainst.tr(),
+                          fontSize: 16,
+                          items: workOrderOrJopCard,
+                          defaultValue: data['transfer_material_against'] ??
+                              workOrderOrJopCard[0],
+                          onChanged: (value) => setState(() {
+                            data['transfer_material_against'] = value;
+                          }),
+                        ),
                     ],
                   ),
                 ),

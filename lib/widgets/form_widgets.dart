@@ -122,6 +122,11 @@ const List<String> rateList = [
   'Price List',
 ];
 
+const List<String> workOrderOrJopCard = [
+  'Work Order',
+  'Jop Card',
+];
+
 const List<String> termLoan = [
     ' ',
     'Repay Fixed Amount per Period',

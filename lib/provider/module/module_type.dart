@@ -1,4 +1,3 @@
-
 import '../../models/list_models/manufacturing_list_model/bom_model.dart';
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
@@ -198,15 +197,15 @@ class ModuleType {
     required ListModel Function(Map<String, dynamic>) serviceParser,
     required pageService,
     required pageWidget,
-  })  : this._genericListService = genericListService,
-        this._title = title,
-        this._listItem = listItem,
-        this._createForm = createForm,
-        this._editPage = editPage,
-        this._serviceParser = serviceParser,
-        this._pageService = pageService ?? '',
-        this._filter = filter,
-        this._pageWidget = pageWidget ?? const SizedBox();
+  })  : _genericListService = genericListService,
+        _title = title,
+        _listItem = listItem,
+        _createForm = createForm,
+        _editPage = editPage,
+        _serviceParser = serviceParser,
+        _pageService = pageService ?? '',
+        _filter = filter,
+        _pageWidget = pageWidget ?? const SizedBox();
 
   /// check if it's first time to push a page_models or not
   static bool isFirstRoute(BuildContext context) {
@@ -498,7 +497,7 @@ class ModuleType {
         id: item.id,
         status: item.status,
         leftIcon: Icons.type_specimen_outlined,
-        leftText:  item.paymentType,
+        leftText: item.paymentType,
 
         rightIcon: Icons.date_range,
         rightText: formatDate(item.postingDate),
@@ -965,9 +964,10 @@ class ModuleType {
         title: item.name,
         status: item.status,
         leftIcon: Icons.money,
-        leftText:  currency(item.grandTotal).toString(),
+        leftText: currency(item.grandTotal).toString(),
         rightIcon: Icons.date_range,
-        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         // names: [
         //   'Posting Date'.tr(),
         //   'Total'.tr() + ' (${item.currency})',
@@ -1016,7 +1016,8 @@ class ModuleType {
         leftIcon: Icons.money,
         leftText: currency(item.grandTotal).toString(),
         rightIcon: Icons.date_range,
-        rightText: '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
+        rightText:
+            '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
         // names: [
         //   'Transaction Date'.tr(),
         //   'Warehouse'.tr(),
@@ -1110,7 +1111,7 @@ class ModuleType {
         title: item.name,
         status: item.status,
         leftIcon: Icons.account_balance_outlined,
-        leftText:  item.department,
+        leftText: item.department,
         rightIcon: Icons.output_outlined,
         rightText: item.leaveType,
         // names: [
@@ -1258,7 +1259,8 @@ class ModuleType {
         leftIcon: Icons.perm_identity_sharp,
         leftText: item.employee,
         rightIcon: Icons.date_range,
-        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         // names: [
         //   'Employee'.tr(),
         //   'Posting Date'.tr(),
@@ -1303,7 +1305,8 @@ class ModuleType {
         leftIcon: Icons.perm_identity_sharp,
         leftText: item.employee,
         rightIcon: Icons.date_range,
-        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         // names: [
         //   'Employee'.tr(),
         //   'Posting Date'.tr(),
@@ -1348,7 +1351,8 @@ class ModuleType {
         leftIcon: Icons.attach_money,
         leftText: item.loanAmount.toString(),
         rightIcon: Icons.date_range,
-        rightText: '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         // names: [
         //   'Applicant Type'.tr(),
         //   'Posting Date'.tr(),
@@ -1388,7 +1392,8 @@ class ModuleType {
         leftIcon: Icons.money,
         leftText: item.totalDebit.toString(),
         rightIcon: Icons.date_range,
-        rightText:  '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
         // names: [
         //   'Total'.tr(),
         //   'Posting Date'.tr(),
@@ -1578,15 +1583,15 @@ class ModuleType {
       item as BomItemModel;
       return ListCard(
         id: item.name!,
-        names:  [
+        names: [
           StringsManager.item.tr(),
           StringsManager.itemName.tr(),
           StringsManager.quantity.tr(),
         ],
         values: [
-          item.item ?? 'none',
-          item.itemName ?? 'none',
-          (item.quantity ?? 1).toString(),
+          item.item! ,
+          item.itemName!,
+          item.quantity.toString() ,
         ],
         onPressed: (context) => _onListCardPressed(
           context,
@@ -1596,11 +1601,11 @@ class ModuleType {
     },
     serviceParser: (data) => BomListModel.fromJson(data),
     createForm: const BomForm(),
-    pageService: WORKFLOW_PAGE,
+    pageService: BOM_PAGE,
     pageWidget: const WorkflowPage(),
     editPage: (pageData) {
-      pageData["doctype"] = ["Bom"];
+      pageData["doctype"] = ["BOM"];
     },
-    filter: const WorkflowFilterScreen(),
+    // filter: const WorkflowFilterScreen(),
   );
 }

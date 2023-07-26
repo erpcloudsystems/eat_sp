@@ -121,3 +121,4 @@ const WORKFLOW_STATUS = 'method/ecs_mobile.workflow.get_workflow_status';
 
 // Manufacturing
 const BOM_POST = 'method/ecs_mobile.manufacturing.addBom';
+const BOM_PAGE = 'method/ecs_mobile.manufacturing.bomPage';

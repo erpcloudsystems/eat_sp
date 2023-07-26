@@ -37,13 +37,14 @@ class DocTypesName {
   static const String reports = 'Mobile Report';
   static const String materialRequest = 'Material Request';
 
-  static const String bom = 'Bom';
+  static const String bom = 'BOM';
 }
 
 class StringsManager {
   static const String setRateOfSubAssemblyItem = 'Set rate of sub-assembly item based on BOM';
   static const String userDataUpdatedSuccessfully = 'Your Data Updated Successfully';
   static const String offlineFailureMessage = 'There is no internet connection';
+  static const String transferMaterialAgainst = 'Transfer Material Against';
   static const String rateOfMaterialsBasedOn = 'Rate Of Materials Based On';
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';

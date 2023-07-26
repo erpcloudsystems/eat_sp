@@ -46,22 +46,22 @@ class BomItemModel {
     this.uom,
   });
 
-  BomItemModel.fromJson(Map<String, dynamic> json) {
-    setRateOfSubAssemblyItemBasedOnBom =
-        json['set_rate_of_sub_assembly_item_based_on_bom'];
-    allowAlternativeItem = json['allow_alternative_item'];
-    inspectionRequired = json['inspection_required'];
-    rateOfMaterialsBasedOn = json['rm_cost_as_per'];
-    withOperations = json['with_operations'];
-    isDefault = json['is_default'];
-    itemName = json['item_name'];
-    currency = json['currency'];
-    quantity = json['quantity'];
-    project = json['project'];
-    name = json['name'];
-    item = json['item'];
-    uom = json['uom'];
-  }
+  factory BomItemModel.fromJson(Map<String, dynamic> json) => BomItemModel(
+        setRateOfSubAssemblyItemBasedOnBom:
+            json['set_rate_of_sub_assembly_item_based_on_bom'] ?? 0,
+        allowAlternativeItem: json['allow_alternative_item'] ?? 0,
+        inspectionRequired: json['inspection_required'] ?? 0,
+        rateOfMaterialsBasedOn: json['rm_cost_as_per'] ?? 0,
+        withOperations: json['with_operations'] ?? 0,
+        isDefault: json['is_default'] ?? 0,
+        itemName: json['item_name'] ?? 'none',
+        currency: json['currency'] ?? 'EGP',
+        quantity: json['quantity'] ?? 1,
+        project: json['project'] ?? 'none',
+        name: json['name'] ?? 'none',
+        item: json['item'] ?? 'none ',
+        uom: json['uom'] ?? 'none',
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
