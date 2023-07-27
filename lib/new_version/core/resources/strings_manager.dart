@@ -24,7 +24,7 @@ class DocTypesName {
   static const String project = 'Project';
   static const String issue = 'Issue';
   static const String task = 'Task';
-  
+
   static const String leaveApplication = 'Leave Application';
   static const String attendanceRequest = 'Attendance Request';
   static const String employeeCheckin = 'Employee Checkin';
@@ -41,11 +41,13 @@ class DocTypesName {
 }
 
 class StringsManager {
-  static const String setRateOfSubAssemblyItem = 'Set rate of sub-assembly item based on BOM';
-  static const String userDataUpdatedSuccessfully = 'Your Data Updated Successfully';
+  static const String setRateOfSubAssemblyItem =
+      'Set rate of sub-assembly item based on BOM';
+  static const String userDataUpdatedSuccessfully =
+      'Your Data Updated Successfully';
   static const String offlineFailureMessage = 'There is no internet connection';
   static const String transferMaterialAgainst = 'Transfer Material Against';
-  static const String rateOfMaterialsBasedOn = 'Rate Of Materials Based On';
+  static const String rateOfMaterialsBasedOn = 'Rate Of Materials Based On: ';
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';
   static const String expectedStartTime = 'Expected Start Date';

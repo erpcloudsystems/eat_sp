@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/list_models/stock_list_model/item_table_model.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../provider/user/user_provider.dart';
 import '../../../service/service.dart';
@@ -185,6 +187,14 @@ class _BomFormState extends State<BomForm> {
                         clearButton: true,
                         onChanged: (value) => data['item'] = value,
                         onSave: (key, value) => data[key] = value,
+                        onPressed: () async {
+                          final ItemSelectModel res =
+                              await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => newItemsScreen()));
+                          data['item'] = res.itemCode;
+                          return res.itemName;
+                        },
                       ),
                       //_______________________________________Project_____________________________________________________
                       CustomTextFieldTest(
@@ -308,7 +318,7 @@ class _BomFormState extends State<BomForm> {
                       CustomDropDown(
                         'rm_cost_as_per',
                         StringsManager.rateOfMaterialsBasedOn.tr(),
-                        fontSize: 16,
+                        fontSize: 13.sp,
                         items: rateList,
                         defaultValue: data['rm_cost_as_per'] ?? rateList[0],
                         onChanged: (value) => setState(() {
