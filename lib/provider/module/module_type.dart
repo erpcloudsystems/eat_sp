@@ -14,6 +14,7 @@ import '../../screen/form/project_forms/timesheet_form.dart';
 import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
 import '../../screen/form/workflow_forms/workflow_form.dart';
+import '../../screen/page/manufacturing_page/bom_page.dart';
 import '../../screen/page/project_pages/issue_page.dart';
 import '../../screen/page/project_pages/project_page.dart';
 import '../../screen/page/project_pages/task_page.dart';
@@ -1597,7 +1598,7 @@ class ModuleType {
     serviceParser: (data) => BomListModel.fromJson(data),
     createForm: const BomForm(),
     pageService: BOM_PAGE,
-    pageWidget: const WorkflowPage(),
+    pageWidget: const BomPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["BOM"];
     },
