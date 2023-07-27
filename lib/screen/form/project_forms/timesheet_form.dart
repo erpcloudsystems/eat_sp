@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../test/custom_page_view_form.dart';
-import '../../../test/test_text_field.dart';
 import 'add_time_sheet_dialog.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
@@ -12,9 +10,11 @@ import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
 import '../../../widgets/page_group.dart';
+import '../../../test/test_text_field.dart';
 import '../../../widgets/form_widgets.dart';
 import '../../../widgets/dismiss_keyboard.dart';
 import '../../../service/service_constants.dart';
+import '../../../test/custom_page_view_form.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 
@@ -110,6 +110,8 @@ class _TimesheetFormState extends State<TimesheetForm> {
         }
         customerName = data['customer'];
         projectName = data['parent_project'];
+
+        
         setState(() {});
       });
     }

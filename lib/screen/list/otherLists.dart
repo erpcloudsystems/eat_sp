@@ -1,3 +1,4 @@
+import '../../new_version/core/resources/strings_manager.dart';
 import '../../provider/module/module_provider.dart';
 import '../other/notification_screen.dart';
 import '../page/generic_page.dart';
@@ -1414,6 +1415,35 @@ Widget typeListScreen() => GenericListScreen<String>(
         List<String> list = [];
         for (var element in List.from(data['message'])) {
           list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
+      },
+    );
+
+// Manufacturing lists
+Widget operationsListScreen() => GenericListScreen<String>(
+      title: StringsManager.selectOperation.tr(),
+      service: APIService.OPERATION,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
+      },
+    );
+
+Widget workstationListScreen() => GenericListScreen<String>(
+      title: StringsManager.selectWorkstation.tr(),
+      service: APIService.WORKSTATION,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['workstation_name'] ?? tr('none'));
         }
         return ListModel<String>(list);
       },

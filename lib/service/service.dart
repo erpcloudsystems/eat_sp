@@ -123,6 +123,8 @@ class APIService {
   static const REPORTS = 'Mobile Report';
 
   // Manufacturing
+  static const WORKSTATION = 'Workstation';
+  static const OPERATION = 'Operation';
   static const BOM = 'BOM';
 
   final BaseOptions options = BaseOptions(

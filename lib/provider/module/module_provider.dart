@@ -200,6 +200,21 @@ class ModuleProvider extends ChangeNotifier {
 
   List<Map<String, dynamic>> get getTimeSheetData => _timeSheetData;
 
+// BOM Operations 
+  List<Map<String, dynamic>> _bomOperations = [];
+
+  set setBomOperations(Map<String, dynamic> data) {
+    _bomOperations.add(data);
+    notifyListeners();
+  }
+
+  set clearBomOperations(List<Map<String, dynamic>> data) {
+    _bomOperations = data;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> get getBomOperations => _bomOperations;
+
   set filter(Map<String, dynamic> value) {
     _filter = value;
     notifyListeners();

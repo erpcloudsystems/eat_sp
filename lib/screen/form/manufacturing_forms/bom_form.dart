@@ -13,6 +13,7 @@ import '../../../service/service_constants.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
+import '../../../widgets/page_group.dart';
 import '../../list/otherLists.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../widgets/dismiss_keyboard.dart';
@@ -20,6 +21,7 @@ import '../../../widgets/form_widgets.dart';
 import '../../../widgets/snack_bar.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import 'operation_dialog.dart';
 
 class BomForm extends StatefulWidget {
   const BomForm({Key? key}) : super(key: key);
@@ -149,10 +151,23 @@ class _BomFormState extends State<BomForm> {
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();
+    Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<ModuleProvider>();
+    List? operations = data['operations'];
+    List operationsList = Provider.of<ModuleProvider>(context).getBomOperations;
+    data['operations'] = operationsList;
+    if (provider.isEditing ||
+        provider.isAmendingMode ||
+        provider.duplicateMode) {
+      operations?.map((e) {
+            provider.setBomOperations = e;
+          }).toList() ??
+          [];
+    }
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
@@ -349,6 +364,97 @@ class _BomFormState extends State<BomForm> {
                           onChanged: (value) => setState(() {
                             data['transfer_material_against'] = value;
                           }),
+                        ),
+                      //_______________________________________operations________________________________________________
+                      if (withOperations)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    StringsManager.addOperation.tr(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      bottomSheetBuilder(
+                                        bottomSheetView:
+                                            const OperationDialog(),
+                                        context: context,
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.add,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+
+                            // Operations list
+                            if (operationsList.isNotEmpty)
+                              SizedBox(
+                                height: 190,
+                                child: ListView.builder(
+                                  itemCount: operationsList.length,
+                                  itemBuilder: (context, index) {
+                                    return Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Expanded(
+                                          child: PageCard(
+                                            items: [
+                                              {
+                                                StringsManager.operation:
+                                                    operationsList[index]
+                                                            ['operation'] ??
+                                                        'none',
+                                                StringsManager.workstation:
+                                                    operationsList[index]
+                                                            ['workstation'] ??
+                                                        'none',
+                                                StringsManager.operationTime:
+                                                    operationsList[index]
+                                                            ['time_in_mins']
+                                                        .toString(),
+                                                StringsManager.operatingCost:
+                                                    operationsList[index]
+                                                            ['operating_cost']
+                                                        .toString(),
+                                              }
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () => setState(() =>
+                                              operationsList.removeAt(index)),
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                          ],
                         ),
                     ],
                   ),
