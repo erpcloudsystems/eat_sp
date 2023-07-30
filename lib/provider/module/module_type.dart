@@ -6,7 +6,7 @@ import '../../models/list_models/workflow_list_model/workflow_model.dart';
 import '../../models/list_models/project_list_models/project_list_model.dart';
 import '../../new_version/core/extensions/status_converter.dart';
 import '../../new_version/core/resources/strings_manager.dart';
-import '../../screen/form/manufacturing_forms/bom_form.dart';
+import '../../screen/form/manufacturing_forms/bom_form/bom_form.dart';
 import '../../screen/form/project_forms/issue_form.dart';
 import '../../screen/form/project_forms/project_form.dart';
 import '../../screen/form/project_forms/task_form.dart';

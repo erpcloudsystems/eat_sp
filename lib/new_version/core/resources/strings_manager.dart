@@ -46,8 +46,10 @@ class StringsManager {
   static const String userDataUpdatedSuccessfully =
       'Your Data Updated Successfully';
   static const String offlineFailureMessage = 'There is no internet connection';
-  static const String transferMaterialAgainst = 'Transfer Material Against';
+  static const String qualityInspectionTemplate = 'Quality Inspection Template';
+  static const String qualityInspectionRequired = 'Quality Inspection Required';
   static const String rateOfMaterialsBasedOn = 'Rate Of Materials Based On: ';
+  static const String transferMaterialAgainst = 'Transfer Material Against';
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';
   static const String expectedStartTime = 'Expected Start Date';

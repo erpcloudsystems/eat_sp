@@ -14,7 +14,7 @@ import '../snack_bar.dart';
 
 class InheritedForm extends InheritedWidget {
   InheritedForm({Key? key, required Widget child, List<ItemSelectModel>? items})
-      : this.items = items ?? [],
+      : items = items ?? [],
         super(key: key, child: child);
   final List<ItemSelectModel> items;
   final Map<String, dynamic> data = {};

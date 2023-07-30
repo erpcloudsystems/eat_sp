@@ -311,7 +311,6 @@ class _MaterialRequestFormState extends State<MaterialRequestForm> {
                   ],
                 ),
               ),
-              //SelectedItemsList(),
               ListView(
                 children: [
                   Card(

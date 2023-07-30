@@ -214,6 +214,8 @@
   "Select Workstation": "اختر ورشة",
   "Allow Alternative Item": "السماح بصنف بديل",
   "Transfer Material Against": "نقل المواد الي",
+  "Quality Inspection Template": "نموذج فحص الجودة",
+  "Quality Inspection Required": "يوجد نموذج فحص الجودة",
   "Rate Of Materials Based On: ": " :سعر المواد بناءً على",
   "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع "
 

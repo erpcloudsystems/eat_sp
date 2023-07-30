@@ -1448,3 +1448,18 @@ Widget workstationListScreen() => GenericListScreen<String>(
         return ListModel<String>(list);
       },
     );
+
+Widget qualityInspectionTemplatesListScreen() => GenericListScreen<String>(
+      title: StringsManager.qualityInspectionTemplate.tr(),
+      // TODO: Put the Endpoint key and complete the parsing. 
+      service: APIService.WORKSTATION,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['workstation_name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
+      },
+    );
