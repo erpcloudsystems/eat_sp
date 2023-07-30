@@ -74,6 +74,7 @@ class StringsManager {
   static const String lastActive = 'Last Active';
   static const String quotations = 'Quotations';
   static const String department = 'Department';
+  static const String operations = 'Operations';
   static const String priceList = 'Item Price';
   static const String fixedTime = 'Fixed Time';
   static const String lastLogin = 'Last Login';

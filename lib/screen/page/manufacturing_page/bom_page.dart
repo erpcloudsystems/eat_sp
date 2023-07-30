@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
 import '../../../models/page_models/manufacuting_model/bom_page_model.dart';
+import '../../../models/page_models/model_functions.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
@@ -81,7 +82,50 @@ class BomPage extends StatelessWidget {
           ],
         ),
 
-        /// Task description
+        /// BOM operations
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
+          ),
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          child: Center(
+            child: Text(
+              StringsManager.operations.tr(),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          child: (data['bom_perations'] != null &&
+                  data['bom_perations'].isNotEmpty)
+              ? ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  shrinkWrap: true,
+                  itemCount: data['bom_perations'].length,
+                  itemBuilder: (_, index) => PageCard(
+                    items: [
+                      {
+                        StringsManager.operation.tr(): data['bom_perations']
+                            [index]['operation'],
+                        StringsManager.operatingCost.tr(): currency(
+                            data['bom_perations'][index]['operating_cost']),
+                        StringsManager.operationTime: data['bom_perations']
+                                [index]['time_in_mins']
+                            .toString(),
+                      }
+                    ],
+                  ),
+                )
+              : const NothingHere(),
+        ),
+
+        /// BOM description
         PageCard(items: model.card2Items),
 
         /// Comment button
@@ -92,7 +136,6 @@ class BomPage extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-            //border: Border.all(color: Colors.blueAccent),
           ),
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
