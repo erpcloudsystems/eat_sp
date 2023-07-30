@@ -34,11 +34,15 @@ class _SortingScreenState extends State<SortingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut'))
+    if (!context
+        .read<UserProvider>()
+        .showcaseProgress!
+        .contains('filter_tut')) {
       Future.delayed(Duration.zero, () {
         ShowCaseWidget.of(showCaseContext)
             .startShowCase([clearFiltersGK, chooseFiltersGK, applyFiltersGK]);
       });
+    }
   }
 
   @override
@@ -63,7 +67,7 @@ class _SortingScreenState extends State<SortingScreen> {
                       description: 'Click here to clear all sorting',
                       child: IconButton(
                         splashRadius: 20,
-                        icon: Icon(Icons.clear, color: Colors.black),
+                        icon: const Icon(Icons.clear, color: Colors.black),
                         onPressed: () {
                           values.clear();
                           context.read<ModuleProvider>().filter = {'': ''};
@@ -78,7 +82,7 @@ class _SortingScreenState extends State<SortingScreen> {
                     )
                   : IconButton(
                       splashRadius: 20,
-                      icon: Icon(Icons.clear, color: Colors.black),
+                      icon: const Icon(Icons.clear, color: Colors.black),
                       onPressed: () {
                         values.clear();
                         context.read<ModuleProvider>().filter = {'': ''};
@@ -131,8 +135,7 @@ class _SortingScreenState extends State<SortingScreen> {
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    // maximumSize: Size.fromWidth(106),
-                    primary: APPBAR_COLOR,
+                    backgroundColor: APPBAR_COLOR,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         GLOBAL_BORDER_RADIUS,
@@ -151,9 +154,9 @@ class _SortingScreenState extends State<SortingScreen> {
                           globalKey: applyFiltersGK,
                           title: 'Apply',
                           description: 'Click here to get results',
-                          overlayPadding: EdgeInsets.symmetric(
+                          overlayPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -166,7 +169,7 @@ class _SortingScreenState extends State<SortingScreen> {
                             ],
                           ),
                         )
-                      : Row(
+                      : const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(

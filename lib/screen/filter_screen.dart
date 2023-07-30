@@ -34,11 +34,12 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut'))
+    if (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) {
       Future.delayed(Duration.zero, () {
         ShowCaseWidget.of(showCaseContext)
             .startShowCase([clearFiltersGK, chooseFiltersGK, applyFiltersGK]);
       });
+    }
   }
 
   @override
@@ -63,7 +64,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       description: 'Click here to clear all filters',
                       child: IconButton(
                         splashRadius: 20,
-                        icon: Icon(Icons.clear, color: Colors.black),
+                        icon: const Icon(Icons.clear, color: Colors.black),
                         onPressed: () {
                           values.clear();
                           context.read<ModuleProvider>().filter = {'': ''};
@@ -78,7 +79,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     )
                   : IconButton(
                       splashRadius: 20,
-                      icon: Icon(Icons.clear, color: Colors.black),
+                      icon: const Icon(Icons.clear, color: Colors.black),
                       onPressed: () {
                         values.clear();
                         context.read<ModuleProvider>().filter = {'': ''};
@@ -98,7 +99,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 flex: 3,
                 child: Group(
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: (!context
                             .read<UserProvider>()
                             .showcaseProgress!
@@ -107,7 +108,7 @@ class _FilterScreenState extends State<FilterScreen> {
                             globalKey: chooseFiltersGK,
                             title: 'Filter by',
                             description: 'Click here to choose your filter',
-                            overlayPadding: EdgeInsets.symmetric(
+                            overlayPadding: const EdgeInsets.symmetric(
                                 horizontal: 22, vertical: 10),
                             child: _filter)
                         : _filter,
@@ -119,7 +120,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     // maximumSize: Size.fromWidth(106),
-                    primary: APPBAR_COLOR,
+                    backgroundColor: APPBAR_COLOR,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         GLOBAL_BORDER_RADIUS,
@@ -138,9 +139,9 @@ class _FilterScreenState extends State<FilterScreen> {
                           globalKey: applyFiltersGK,
                           title: 'Apply',
                           description: 'Click here to get results',
-                          overlayPadding: EdgeInsets.symmetric(
+                          overlayPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -151,7 +152,7 @@ class _FilterScreenState extends State<FilterScreen> {
                             ],
                           ),
                         )
-                      : Row(
+                      : const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(

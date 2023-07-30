@@ -15,6 +15,7 @@ import '../../../../test/custom_page_view_form.dart';
 import '../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
+import 'group3.dart';
 
 class BomForm extends StatefulWidget {
   const BomForm({Key? key}) : super(key: key);
@@ -153,7 +154,7 @@ class _BomFormState extends State<BomForm> {
               widgetGroup: [
                 Group1(data: data),
                 Group2(data: data),
-             
+                Group3(data: data),
               ],
             ),
           ),

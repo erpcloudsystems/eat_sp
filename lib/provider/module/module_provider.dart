@@ -350,6 +350,10 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.BOM:
         _currentModule = ModuleType.bom;
         break;
+    
+      // case APIService.JOPCARD:
+      //   _currentModule = ModuleType.jopCard;
+      //   break;
     }
     _filter.clear();
     notifyListeners();
