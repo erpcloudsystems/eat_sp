@@ -69,6 +69,16 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               return res.name;
             },
           ),
+          //_______________________________________BOM No._____________________________________________________
+          if (widget.data['bom_no'] != null || workOrder != null)
+            CustomTextFieldTest(
+              'bom_no',
+              StringsManager.bomNo,
+              initialValue: widget.data['bom_no'] ?? workOrder?.bomNo,
+              enabled: false,
+              onChanged: (value) => widget.data['bom_no'] = value,
+              onSave: (key, value) => widget.data[key] = value,
+            ),
           //_______________________________________Item Name_____________________________________________________
           if (widget.data['item_name'] != null || workOrder != null)
             CustomTextFieldTest(
@@ -84,19 +94,10 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
             CustomTextFieldTest(
               'production_item',
               StringsManager.productionItem.tr(),
-              initialValue: widget.data['production_item'],
+              initialValue:
+                  widget.data['production_item'] ?? workOrder?.productionItem,
               enabled: false,
               onChanged: (value) => widget.data['production_item'] = value,
-              onSave: (key, value) => widget.data[key] = value,
-            ),
-          //_______________________________________BOM No._____________________________________________________
-          if (widget.data['bom_no'] != null || workOrder != null)
-            CustomTextFieldTest(
-              'bom_no',
-              StringsManager.bomNo,
-              initialValue: widget.data['bom_no'],
-              enabled: false,
-              onChanged: (value) => widget.data['bom_no'] = value,
               onSave: (key, value) => widget.data[key] = value,
             ),
         ],

@@ -22,16 +22,18 @@ class WorkOrderListModel extends ListModel<WorkOrderItemModel> {
 
 class WorkOrderItemModel {
   final DateTime plannedStartDate, plannedEndDate;
-  final String name, itemName, stockUom, status;
+  final String name, itemName, stockUom, status, bomNo, productionItem;
   final double quantity;
 
   WorkOrderItemModel({
     required this.plannedStartDate,
+    required this.productionItem,
     required this.plannedEndDate,
     required this.itemName,
     required this.quantity,
     required this.stockUom,
     required this.status,
+    required this.bomNo,
     required this.name,
    
    });
@@ -39,9 +41,11 @@ class WorkOrderItemModel {
   factory WorkOrderItemModel.fromJson(Map<String, dynamic> json) => WorkOrderItemModel(
         plannedStartDate: DateTime.parse(json['planned_start_date'] ?? "2001-01-01"),
         plannedEndDate: DateTime.parse(json['planned_end_date'] ?? "2001-01-01"),
+        productionItem: json['production_item'] ?? 'none',
         stockUom: json['stock_uom'] ?? 'none',
         itemName: json['item_name'] ?? 'none',
         status: json['status'] ?? 'none',
+        bomNo: json['bom_no'] ?? 'none',
         quantity: json['qty'] ?? 1.0,
         name: json['name'] ?? 'none',
       );
@@ -50,9 +54,11 @@ class WorkOrderItemModel {
     final Map<String, dynamic> data = {};
     data['planned_start_date'] = plannedStartDate;
     data['planned_end_date'] = plannedEndDate;
+    data['production_item'] = productionItem;
     data['item_name'] = itemName;
     data['stock_uom'] = stockUom;
     data['status'] = status;
+    data['bom_no'] = bomNo;
     data['qty'] = quantity;
     data['name'] = name;
     return data;
