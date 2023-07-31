@@ -37,6 +37,7 @@ class DocTypesName {
   static const String reports = 'Mobile Report';
   static const String materialRequest = 'Material Request';
 
+  static const String jobCard = 'Job Card';
   static const String bom = 'BOM';
 }
 

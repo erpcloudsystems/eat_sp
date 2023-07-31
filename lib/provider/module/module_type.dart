@@ -1,4 +1,5 @@
 import '../../models/list_models/manufacturing_list_model/bom_model.dart';
+import '../../models/list_models/manufacturing_list_model/job_card_model.dart';
 import '../../models/list_models/project_list_models/issue_list_model.dart';
 import '../../models/list_models/project_list_models/task_list_model.dart';
 import '../../models/list_models/project_list_models/timesheet_list_model.dart';
@@ -1597,6 +1598,35 @@ class ModuleType {
       );
     },
     serviceParser: (data) => BomListModel.fromJson(data),
+    createForm: const BomForm(),
+    pageService: BOM_PAGE,
+    pageWidget: const BomPage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["BOM"];
+    },
+    filter: const BomFilterScreen(),
+  );
+
+
+  static final jobCard = ModuleType._(
+    genericListService: DocTypesName.jobCard,
+    title: DocTypesName.jobCard,
+    listItem: (item) {
+      item as JobCardItemModel;
+      return ListCardTest(
+        id: item.name,
+        title: item.itemName,
+        leftIcon: Icons.numbers,
+        leftText: item.forQuantity.toString(),
+        rightIcon: Icons.work,
+        rightText: item.forOperation,
+        onPressed: (context) => _onListCardPressed(
+          context,
+          item.name,
+        ),
+      );
+    },
+    serviceParser: (data) => JobCardListModel.fromJson(data),
     createForm: const BomForm(),
     pageService: BOM_PAGE,
     pageWidget: const BomPage(),
