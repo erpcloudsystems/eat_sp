@@ -8,6 +8,7 @@ import '../../models/list_models/project_list_models/project_list_model.dart';
 import '../../new_version/core/extensions/status_converter.dart';
 import '../../new_version/core/resources/strings_manager.dart';
 import '../../screen/form/manufacturing_forms/bom_form/bom_form.dart';
+import '../../screen/form/manufacturing_forms/job_card_form/job_card_form.dart';
 import '../../screen/form/project_forms/issue_form.dart';
 import '../../screen/form/project_forms/project_form.dart';
 import '../../screen/form/project_forms/task_form.dart';
@@ -1627,7 +1628,7 @@ class ModuleType {
       );
     },
     serviceParser: (data) => JobCardListModel.fromJson(data),
-    createForm: const BomForm(),
+    createForm: const JobCardForm(),
     pageService: BOM_PAGE,
     pageWidget: const BomPage(),
     editPage: (pageData) {

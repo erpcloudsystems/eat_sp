@@ -124,6 +124,7 @@ class APIService {
 
   // Manufacturing
   static const WORKSTATION = 'Workstation';
+  static const WORK_ORDER = 'Work Order';
   static const OPERATION = 'Operation';
   static const JOBCARD = 'Job Card';
   static const BOM = 'BOM';

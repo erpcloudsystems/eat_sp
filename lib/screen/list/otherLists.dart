@@ -1,3 +1,4 @@
+import '../../models/list_models/manufacturing_list_model/work_order_model.dart';
 import '../../new_version/core/resources/strings_manager.dart';
 import '../../provider/module/module_provider.dart';
 import '../other/notification_screen.dart';
@@ -1451,7 +1452,7 @@ Widget workstationListScreen() => GenericListScreen<String>(
 
 Widget qualityInspectionTemplatesListScreen() => GenericListScreen<String>(
       title: StringsManager.qualityInspectionTemplate.tr(),
-      // TODO: Put the Endpoint key and complete the parsing. 
+      // TODO: Put the Endpoint key and complete the parsing.
       service: APIService.WORKSTATION,
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
@@ -1463,3 +1464,20 @@ Widget qualityInspectionTemplatesListScreen() => GenericListScreen<String>(
         return ListModel<String>(list);
       },
     );
+
+Widget workOrderListScreen() => Builder(builder: (context) {
+      return GenericListScreen<WorkOrderItemModel>(
+        title: '${StringsManager.select.tr()} ${StringsManager.workOrder.tr()}',
+        service: APIService.WORK_ORDER,
+        listItem: (item) => SingleValueTile(item.itemName,
+            onTap: (context) => Navigator.of(context).pop(item)),
+        serviceParser: (data) {
+          List<WorkOrderItemModel> list = [];
+          for (var element in List.from(data['message'])) {
+            list.add(WorkOrderItemModel.fromJson(
+                Map<String, dynamic>.from(element)));
+          }
+          return ListModel<WorkOrderItemModel>(list);
+        },
+      );
+    });

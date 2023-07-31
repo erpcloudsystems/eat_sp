@@ -53,6 +53,7 @@ class StringsManager {
   static const String transferMaterialAgainst = 'Transfer Material Against';
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';
+  static const String areYouSureToGoBack = 'Are you sure to go back';
   static const String expectedStartTime = 'Expected Start Date';
   static const String selectWorkstation = 'Select Workstation';
   static const String unknownError = 'Unknown error occurred';
@@ -65,12 +66,14 @@ class StringsManager {
   static const String nextContactDate = 'Next Contact Date';
   static const String selectOperation = 'Select Operation';
   static const String changeUrPhoto = 'Change your photo';
+  static const String productionItem = 'Production Item';
   static const String withOperations = 'With Operations';
   static const String saveOperation = 'Save Operation';
   static const String operationTime = 'Operation Time';
   static const String operatingCost = 'Operating Cost';
   static const String selectReport = 'Select Report';
   static const String addOperation = 'Add Operation';
+  static const String postingDate = 'Posting Date';
   static const String stockLedger = 'Stock Ledger';
   static const String userProfile = 'User Profile';
   static const String workstation = 'Workstation';
@@ -79,6 +82,7 @@ class StringsManager {
   static const String department = 'Department';
   static const String operations = 'Operations';
   static const String priceList = 'Item Price';
+  static const String workOrder = 'Work Order';
   static const String fixedTime = 'Fixed Time';
   static const String lastLogin = 'Last Login';
   static const String firstName = 'First Name';
@@ -97,9 +101,12 @@ class StringsManager {
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
   static const String returns = 'Returns';
+    static const String bomNo = 'BOM No.';
   static const String selling = 'Selling';
   static const String project = 'Project';
+  static const String company = 'Company';
   static const String noData = 'No Data';
+  static const String select = 'Select';
   static const String female = 'Female';
   static const String buying = 'Buying';
   static const String gender = 'Gender';

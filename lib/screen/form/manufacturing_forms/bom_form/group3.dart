@@ -49,7 +49,9 @@ class _Group3State extends State<Group3> {
           ),
           //_____________________________ Quality Inspection Template________________
              if(isQIT)
-             CustomTextFieldTest(
+              Padding(
+            padding: const EdgeInsets.symmetric(vertical: DoublesManager.d_5),
+            child:CustomTextFieldTest(
                         'Quality Inspection Template',
                         StringsManager.qualityInspectionTemplate.tr(),
                         initialValue: widget.data['quality_inspection_template'],
@@ -65,7 +67,7 @@ class _Group3State extends State<Group3> {
                           widget.data['quality_inspection_template'] = res.itemCode;
                           return res.itemName;
                         },
-                      ),
+                      ))
           //____________________________________ Materials______________________________
         ],
       ),
