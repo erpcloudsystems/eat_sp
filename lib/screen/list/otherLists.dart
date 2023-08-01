@@ -1422,9 +1422,10 @@ Widget typeListScreen() => GenericListScreen<String>(
     );
 
 // Manufacturing lists
-Widget operationsListScreen() => GenericListScreen<String>(
+Widget operationsListScreen({String? workOrderId}) => GenericListScreen<String>(
       title: StringsManager.selectOperation.tr(),
       service: APIService.OPERATION,
+      filters: {if (workOrderId != null) 'work_order': workOrderId},
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
@@ -1481,3 +1482,18 @@ Widget workOrderListScreen() => Builder(builder: (context) {
         },
       );
     });
+
+// TODO: Update logic after finishing backend side.
+Widget batchNoListScreen() => GenericListScreen<String>(
+      title: StringsManager.batchNo,
+      service: APIService.WORKSTATION,
+      listItem: (value) => SingleValueTile(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<String> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(element['workstation_name'] ?? tr('none'));
+        }
+        return ListModel<String>(list);
+      },
+    );

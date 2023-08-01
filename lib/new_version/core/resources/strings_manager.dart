@@ -57,6 +57,7 @@ class StringsManager {
   static const String expectedStartTime = 'Expected Start Date';
   static const String selectWorkstation = 'Select Workstation';
   static const String unknownError = 'Unknown error occurred';
+  static const String qtyToManufacture = 'Qty to manufacture';
   static const String noFaqs = 'There is no FAQs here yet!';
   static const String updatingUrData = 'Updating your data';
   static const String wareHouseReport = 'Warehouse Balance';
@@ -73,6 +74,7 @@ class StringsManager {
   static const String operatingCost = 'Operating Cost';
   static const String selectReport = 'Select Report';
   static const String addOperation = 'Add Operation';
+  static const String wipWarehouse = 'WIP Warehouse';
   static const String postingDate = 'Posting Date';
   static const String stockLedger = 'Stock Ledger';
   static const String userProfile = 'User Profile';
@@ -88,6 +90,7 @@ class StringsManager {
   static const String firstName = 'First Name';
   static const String birthDate = 'Birth Date';
   static const String isDefault = 'Is Default';
+    static const String batchNo = 'Batch No.';
   static const String operation = 'Operation';
   static const String hourRate = 'Hour Rate';
   static const String lastName = 'Last Name';
@@ -100,6 +103,7 @@ class StringsManager {
   static const String accounts = 'Accounts';
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
+  static const String employee = 'Employee';
   static const String returns = 'Returns';
     static const String bomNo = 'BOM No.';
   static const String selling = 'Selling';

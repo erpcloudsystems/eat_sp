@@ -29,15 +29,6 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
     return Group(
       child: ListView(
         children: [
-          //_______________________________________Posting Date_____________________________________________________
-          DatePickerTest(
-            'posting_date',
-            StringsManager.postingDate.tr(),
-            initialValue: widget.data['posting_date'],
-            disableValidation: true,
-            onChanged: (value) =>
-                setState(() => widget.data['posting_date'] = value),
-          ),
           //_______________________________________Company_____________________________________________________
           CustomTextFieldTest('company', StringsManager.company.tr(),
               initialValue: widget.data['company'],
@@ -99,6 +90,21 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               enabled: false,
               onChanged: (value) => widget.data['production_item'] = value,
               onSave: (key, value) => widget.data[key] = value,
+            ),
+          //_____________________Operation_____________________________________
+          if (widget.data['operation'] != null || workOrder != null)
+            CustomTextFieldTest(
+              'operation',
+              StringsManager.operation.tr(),
+              initialValue: widget.data['operation'],
+              clearButton: true,
+              onSave: (key, value) => widget.data['operation'] = value,
+              onPressed: () async {
+                final res = await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) =>
+                        operationsListScreen(workOrderId: workOrder?.name)));
+                return res;
+              },
             ),
         ],
       ),

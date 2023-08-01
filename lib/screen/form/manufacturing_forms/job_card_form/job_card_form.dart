@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'job_card_group1.dart';
+import 'jop_card_group2.dart';
+import 'jop_card_group3.dart';
 import '../../../../core/constants.dart';
 import '../../../page/generic_page.dart';
 import '../../../../service/service.dart';
@@ -15,6 +17,7 @@ import '../../../../test/custom_page_view_form.dart';
 import '../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
+
 
 class JobCardForm extends StatefulWidget {
   const JobCardForm({Key? key}) : super(key: key);
@@ -156,7 +159,11 @@ class _JobCardFormState extends State<JobCardForm> {
               key: _formKey,
               child: CustomPageViewForm(
                 submit: () => submit(),
-                widgetGroup: [JobCardGroup1(data: data)],
+                widgetGroup: [
+                  JobCardGroup1(data: data),
+                  JobCardGroup2(data: data),
+                  JobCardGroup3(data: data),
+                ],
               )),
         ),
       ),
