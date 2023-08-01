@@ -123,10 +123,12 @@ class APIService {
   static const REPORTS = 'Mobile Report';
 
   // Manufacturing
+  static const QUALITY_INSPECTION_TEMPLATE = 'Quality Inspection Template';
   static const WORKSTATION = 'Workstation';
   static const WORK_ORDER = 'Work Order';
   static const OPERATION = 'Operation';
   static const JOBCARD = 'Job Card';
+  static const BATCH = 'Batch';
   static const BOM = 'BOM';
 
   final BaseOptions options = BaseOptions(

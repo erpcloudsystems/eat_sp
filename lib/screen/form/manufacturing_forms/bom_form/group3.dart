@@ -17,8 +17,7 @@ class Group3 extends StatefulWidget {
 }
 
 class _Group3State extends State<Group3> {
-  
-  /// Refers to quality_inspection_template 
+  /// Refers to quality_inspection_template
   bool isQIT = false;
 
   @override
@@ -48,26 +47,22 @@ class _Group3State extends State<Group3> {
             ),
           ),
           //_____________________________ Quality Inspection Template________________
-             if(isQIT)
-              Padding(
-            padding: const EdgeInsets.symmetric(vertical: DoublesManager.d_5),
-            child:CustomTextFieldTest(
-                        'Quality Inspection Template',
-                        StringsManager.qualityInspectionTemplate.tr(),
-                        initialValue: widget.data['quality_inspection_template'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onChanged: (value) => widget.data['quality_inspection_template'] = value,
-                        onSave: (key, value) => widget.data[key] = value,
-                        onPressed: () async {
-                          final res =
-                              await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => qualityInspectionTemplatesListScreen()));
-                          widget.data['quality_inspection_template'] = res.itemCode;
-                          return res.itemName;
-                        },
-                      ))
+          if (isQIT)
+            Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: DoublesManager.d_5),
+                child: CustomTextFieldTest('Quality Inspection Template',
+                    StringsManager.qualityInspectionTemplate.tr(),
+                    initialValue: widget.data['quality_inspection_template'],
+                    disableValidation: true,
+                    clearButton: true,
+                    onChanged: (value) =>
+                        widget.data['quality_inspection_template'] = value,
+                    onSave: (key, value) => widget.data[key] = value,
+                    onPressed: () async => await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                qualityInspectionTemplatesListScreen()))))
           //____________________________________ Materials______________________________
         ],
       ),

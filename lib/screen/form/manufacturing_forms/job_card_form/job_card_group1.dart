@@ -97,6 +97,8 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               'operation',
               StringsManager.operation.tr(),
               initialValue: widget.data['operation'],
+              //TODO: enable validation after finishing backend side logic.
+              disableValidation: true,
               clearButton: true,
               onSave: (key, value) => widget.data['operation'] = value,
               onPressed: () async {

@@ -44,21 +44,16 @@ class JobCardGroup2 extends StatelessWidget {
                 return res;
               }),
           //_____________________________ Quality Inspection Template________________
-          CustomTextFieldTest(
-            'Quality Inspection Template',
-            StringsManager.qualityInspectionTemplate.tr(),
-            initialValue: data['quality_inspection_template'],
-            disableValidation: true,
-            clearButton: true,
-            onChanged: (value) => data['quality_inspection_template'] = value,
-            onSave: (key, value) => data[key] = value,
-            onPressed: () async {
-              final res = await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => qualityInspectionTemplatesListScreen()));
-              data['quality_inspection_template'] = res.itemCode;
-              return res.itemName;
-            },
-          ),
+          CustomTextFieldTest('Quality Inspection Template',
+              StringsManager.qualityInspectionTemplate.tr(),
+              initialValue: data['quality_inspection_template'],
+              disableValidation: true,
+              clearButton: true,
+              onChanged: (value) => data['quality_inspection_template'] = value,
+              onSave: (key, value) => data[key] = value,
+              onPressed: () async => await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) => qualityInspectionTemplatesListScreen()))),
           //_______________________________________Project_____________________________________________________
           CustomTextFieldTest(
             'project',
@@ -74,21 +69,14 @@ class JobCardGroup2 extends StatelessWidget {
             },
           ),
           //_______________________________________Batch No._____________________________________________________
-          CustomTextFieldTest(
-            'batch_no',
-            StringsManager.batchNo,
-            initialValue: data['batch_no'],
-            disableValidation: true,
-            clearButton: true,
-            onChanged: (value) => data['batch_no'] = value,
-            onSave: (key, value) => data[key] = value,
-            onPressed: () async {
-              final res = await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => qualityInspectionTemplatesListScreen()));
-              data['quality_inspection_template'] = res.itemCode;
-              return res.itemName;
-            },
-          ),
+          CustomTextFieldTest('batch_no', StringsManager.batchNo,
+              initialValue: data['batch_no'],
+              disableValidation: true,
+              clearButton: true,
+              onChanged: (value) => data['batch_no'] = value,
+              onSave: (key, value) => data[key] = value,
+              onPressed: () async => await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => batchNoListScreen()))),
         ],
       ),
     );

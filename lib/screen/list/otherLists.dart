@@ -1453,14 +1453,13 @@ Widget workstationListScreen() => GenericListScreen<String>(
 
 Widget qualityInspectionTemplatesListScreen() => GenericListScreen<String>(
       title: StringsManager.qualityInspectionTemplate.tr(),
-      // TODO: Put the Endpoint key and complete the parsing.
-      service: APIService.WORKSTATION,
+      service: APIService.QUALITY_INSPECTION_TEMPLATE,
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
         List<String> list = [];
         for (var element in List.from(data['message'])) {
-          list.add(element['workstation_name'] ?? tr('none'));
+          list.add(element['quality_inspection_template_name'] ?? tr('none'));
         }
         return ListModel<String>(list);
       },
@@ -1483,16 +1482,15 @@ Widget workOrderListScreen() => Builder(builder: (context) {
       );
     });
 
-// TODO: Update logic after finishing backend side.
 Widget batchNoListScreen() => GenericListScreen<String>(
       title: StringsManager.batchNo,
-      service: APIService.WORKSTATION,
+      service: APIService.BATCH,
       listItem: (value) => SingleValueTile(value,
           onTap: (context) => Navigator.of(context).pop(value)),
       serviceParser: (data) {
         List<String> list = [];
         for (var element in List.from(data['message'])) {
-          list.add(element['workstation_name'] ?? tr('none'));
+          list.add(element['batch_id'] ?? tr('none'));
         }
         return ListModel<String>(list);
       },
