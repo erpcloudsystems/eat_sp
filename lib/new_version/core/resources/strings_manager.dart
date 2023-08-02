@@ -56,6 +56,7 @@ class StringsManager {
   static const String areYouSureToGoBack = 'Are you sure to go back';
   static const String expectedStartTime = 'Expected Start Date';
   static const String selectWorkstation = 'Select Workstation';
+  static const String completedQuantity = 'Completed Quantity';
   static const String unknownError = 'Unknown error occurred';
   static const String qtyToManufacture = 'Qty to manufacture';
   static const String noFaqs = 'There is no FAQs here yet!';
@@ -75,9 +76,11 @@ class StringsManager {
   static const String selectReport = 'Select Report';
   static const String addOperation = 'Add Operation';
   static const String wipWarehouse = 'WIP Warehouse';
+  static const String saveTimeLog = 'Save Time Log';
   static const String postingDate = 'Posting Date';
   static const String stockLedger = 'Stock Ledger';
   static const String userProfile = 'User Profile';
+  static const String addTimeLog = 'Add Time Log';
   static const String workstation = 'Workstation';
   static const String lastActive = 'Last Active';
   static const String quotations = 'Quotations';
@@ -92,6 +95,8 @@ class StringsManager {
   static const String isDefault = 'Is Default';
     static const String batchNo = 'Batch No.';
   static const String operation = 'Operation';
+  static const String fromTime = 'From Time';
+  static const String fromDate = 'From Date';
   static const String hourRate = 'Hour Rate';
   static const String lastName = 'Last Name';
   static const String itemName = 'Item Name';
@@ -110,6 +115,8 @@ class StringsManager {
   static const String project = 'Project';
   static const String company = 'Company';
   static const String noData = 'No Data';
+  static const String toTime = 'To Time';
+  static const String toDate = 'To Date';
   static const String select = 'Select';
   static const String female = 'Female';
   static const String buying = 'Buying';
