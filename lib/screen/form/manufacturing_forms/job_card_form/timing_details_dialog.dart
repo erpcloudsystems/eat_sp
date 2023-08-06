@@ -1,4 +1,5 @@
 import '../../../../new_version/core/extensions/date_tine_extension.dart';
+import '../../../../new_version/core/resources/app_values.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../widgets/form_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,14 +40,13 @@ class TimingDetailsDialog extends StatelessWidget {
                   StringsManager.employee.tr(),
                   initialValue: timeLogs['employee'],
                   onPressed: () async {
-                    String? id;
                     final res = await Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) => selectEmployeeScreen()));
                     if (res != null) {
-                      id = res['name'];
+                      timeLogs['employee'] = res['name'];
                     }
-                    return id;
+                    return res['employee_name'];
                   },
                 ),
                 //________________________________From Time____________________________________
@@ -85,9 +85,9 @@ class TimingDetailsDialog extends StatelessWidget {
                       numberValidation(value, allowNull: false),
                   keyboardType: TextInputType.number,
                   onSave: (key, value) =>
-                      timeLogs['completed_qty'] = double.tryParse(value),
+                      timeLogs['completed_qty'] = int.tryParse(value),
                   onChanged: (value) =>
-                      timeLogs['completed_qty'] = double.tryParse(value),
+                      timeLogs['completed_qty'] = int.tryParse(value),
                 ),
               ],
             ),
@@ -106,14 +106,9 @@ class TimingDetailsDialog extends StatelessWidget {
                   }
                 },
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                  ),
-                ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(DoublesManager.d_8)))),
                 child: Text(
                   StringsManager.saveTimeLog.tr(),
                   style: const TextStyle(fontSize: 18),

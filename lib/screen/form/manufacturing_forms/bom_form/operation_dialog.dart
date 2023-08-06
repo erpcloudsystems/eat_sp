@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../new_version/core/resources/app_values.dart';
 import '../../../list/otherLists.dart';
 import '../../../../widgets/form_widgets.dart';
 import '../../../../provider/module/module_provider.dart';
@@ -150,10 +151,8 @@ class _OperationDialogState extends State<OperationDialog> {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
+                        borderRadius:
+                            BorderRadius.circular(DoublesManager.d_8)),
                   ),
                 ),
                 child: const Text(

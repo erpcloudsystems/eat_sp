@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants.dart';
+import '../../../../new_version/core/resources/app_values.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../widgets/page_group.dart';
 import 'timing_details_dialog.dart';
@@ -62,27 +63,25 @@ class _TimingDetailsFormState extends State<TimingDetailsForm> {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
+                      borderRadius: BorderRadius.circular(DoublesManager.d_8),
                     ),
                   ),
                 ),
-                child: const Icon(
-                  Icons.add,
-                ),
+                child: const Icon(Icons.add),
               )
             ],
           ),
         ),
 
         /// Time Logs list
-        if (timeSheetData.isNotEmpty)
-          SizedBox(
+
+        Consumer<ModuleProvider>(
+          builder: (context, module, child) => SizedBox(
             height: 190,
             child: ListView.builder(
-              itemCount: timeSheetData.length,
+              itemCount: module.getTimeSheetData.length,
               itemBuilder: (context, index) {
+                final timeData = module.getTimeSheetData;
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -91,29 +90,26 @@ class _TimingDetailsFormState extends State<TimingDetailsForm> {
                         items: [
                           {
                             StringsManager.employee.tr():
-                                timeSheetData[index]['employee'] ?? 'none',
-                            StringsManager.fromTime.tr(): (timeSheetData[index]['from_time'] ?? 'none').toString(),
-                            StringsManager.completedQuantity.tr(): (timeSheetData[index]['completed_qty'] ?? '0').toString(),
+                                timeData[index]['employee'] ?? 'none',
+                            StringsManager.completedQuantity.tr():
+                                (timeData[index]['completed_qty'] ?? '0')
+                                    .toString(),
                           }
                         ],
                       ),
                     ),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          timeSheetData.removeAt(index);
-                        });
+                        setState(() => timeData.removeAt(index));
                       },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                     ),
                   ],
                 );
               },
             ),
           ),
+        ),
       ],
     );
   }

@@ -20,7 +20,7 @@ class JobCardGroup2 extends StatelessWidget {
             'for_quantity',
             StringsManager.qtyToManufacture.tr(),
             disableValidation: true,
-            initialValue: data['for_quantity'],
+            initialValue: data['for_quantity']?.toString(),
             validator: (value) => numberValidation(value, allowNull: false),
             keyboardType: TextInputType.number,
             onSave: (key, value) =>

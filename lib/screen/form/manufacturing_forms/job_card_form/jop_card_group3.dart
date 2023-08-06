@@ -29,13 +29,12 @@ class JobCardGroup3 extends StatelessWidget {
             StringsManager.employee.tr(),
             initialValue: data['employee'],
             onPressed: () async {
-              String? id;
               final res = await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => selectEmployeeScreen()));
               if (res != null) {
-                id = res['name'];
+                data['employee'] = res['name'];
               }
-              return id;
+              return res['employee_name'];
             },
           ),
           //_______________________________________Timing details_____________________________________________________
