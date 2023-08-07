@@ -1629,10 +1629,10 @@ class ModuleType {
     },
     serviceParser: (data) => JobCardListModel.fromJson(data),
     createForm: const JobCardForm(),
-    pageService: BOM_PAGE,
+    pageService: JOB_CARD_PAGE,
     pageWidget: const BomPage(),
     editPage: (pageData) {
-      pageData["doctype"] = ["BOM"];
+      pageData["doctype"] = ["Job Card"];
     },
     filter: const BomFilterScreen(),
   );
