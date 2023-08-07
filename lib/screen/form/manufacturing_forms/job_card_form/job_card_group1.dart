@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/list_models/manufacturing_list_model/work_order_model.dart';
+import '../../../../service/service.dart';
 import '../../../list/otherLists.dart';
 import '../../../../widgets/form_widgets.dart';
 import '../../../../test/test_text_field.dart';
@@ -18,10 +19,24 @@ class JobCardGroup1 extends StatefulWidget {
 class _JobCardGroup1State extends State<JobCardGroup1> {
   WorkOrderItemModel? workOrder;
 
+/// This function gets the [WorkOrder] data by ID.
+  Future<void> _getWorkOrderData(String id) async {
+    final String url =
+        'method/ecs_mobile.general.general_service?search_text=$id&doctype=Work Order';
+    final response =
+        Map<String, dynamic>.from(await APIService().genericGet(url))['message']
+            [0];
+    final WorkOrderItemModel workOrderModel =
+        WorkOrderItemModel.fromJson(response);
+    setState(() => workOrder = workOrderModel);
+  }
+
   @override
   void initState() {
     super.initState();
-    workOrder = widget.data['work_order'];
+    if (widget.data['work_order'] != null) {
+      _getWorkOrderData(widget.data['work_order']);
+    }
   }
 
   @override

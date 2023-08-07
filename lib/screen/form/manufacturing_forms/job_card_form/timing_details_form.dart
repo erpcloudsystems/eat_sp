@@ -22,7 +22,10 @@ class _TimingDetailsFormState extends State<TimingDetailsForm> {
   @override
   void deactivate() {
     super.deactivate();
-    Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet = [];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      () => Provider.of<ModuleProvider>(context, listen: false).clearTimeSheet =
+          [];
+    });
   }
 
   @override

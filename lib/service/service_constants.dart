@@ -126,3 +126,6 @@ const BOM_PAGE = 'method/ecs_mobile.manufacturing.BOMPage';
 const JOB_CARD_POST = 'method/ecs_mobile.manufacturing.addJobCard';
 const JOB_CARD_PAGE = 'method/ecs_mobile.manufacturing.jobCardPage';
 
+const WORK_ORDER_POST = 'method/ecs_mobile.manufacturing.addJobCard';
+const WORK_ORDER_PAGE = 'method/ecs_mobile.manufacturing.workOrderPage';
+
