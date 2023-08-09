@@ -17,6 +17,7 @@ import '../../screen/form/stock_forms/item_form.dart';
 import '../../screen/form/stock_forms/stock_entry_form.dart';
 import '../../screen/form/workflow_forms/workflow_form.dart';
 import '../../screen/page/manufacturing_page/bom_page.dart';
+import '../../screen/page/manufacturing_page/job_card_page.dart';
 import '../../screen/page/project_pages/issue_page.dart';
 import '../../screen/page/project_pages/project_page.dart';
 import '../../screen/page/project_pages/task_page.dart';
@@ -1630,7 +1631,7 @@ class ModuleType {
     serviceParser: (data) => JobCardListModel.fromJson(data),
     createForm: const JobCardForm(),
     pageService: JOB_CARD_PAGE,
-    pageWidget: const BomPage(),
+    pageWidget: const JobCardPage(),
     editPage: (pageData) {
       pageData["doctype"] = ["Job Card"];
     },

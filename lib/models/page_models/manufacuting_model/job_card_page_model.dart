@@ -11,14 +11,26 @@ class JobCardPageModel {
     return [
       {
         tr("Status"): data['status'] ?? tr('none'),
-        tr(StringsManager.item): data['item'] ?? tr('none')
+        tr(StringsManager.project): data['project'] ?? tr('none')
       },
       {
         tr(StringsManager.itemName): data['item_name'] ?? tr('none'),
       },
       {
-        tr('Start Date'): data['start_date'] ?? tr('none'),
-        tr('End Date'): data['end_date'] ?? tr('none')
+        tr(StringsManager.qtyToManufacture):
+            (data['quantity to manufacture'] ?? tr('none')).toString(),
+      },
+      {
+        tr(StringsManager.company): data['Company'] ?? tr('none'),
+        tr(StringsManager.wipWarehouse): data['WIP Warehouse'][0] ?? tr('none')
+      },
+      {
+        tr(StringsManager.bomNo): data['BOM No'] ?? tr('none'),
+        tr(StringsManager.workOrder): data['Work Order'] ?? tr('none')
+      },
+      {
+        tr(StringsManager.operation): data['Operation'] ?? tr('none'),
+        tr(StringsManager.workstation): data['Work Station'] ?? tr('none')
       },
     ];
   }

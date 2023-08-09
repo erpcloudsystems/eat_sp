@@ -1,18 +1,19 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../new_version/core/resources/app_values.dart';
-import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/resources/app_values.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../models/page_models/manufacuting_model/job_card_page_model.dart';
 
 class JobCardPage extends StatelessWidget {
   const JobCardPage({Key? key}) : super(key: key);
@@ -31,7 +32,6 @@ class JobCardPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-
             //________________________Submitting button___________________________
             if (data['docstatus'] != null && data['amended_to'] == null)
               Align(
@@ -59,7 +59,7 @@ class JobCardPage extends StatelessWidget {
             const SizedBox(height: DoublesManager.d_4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
-            //________________________Status Section_________________________________
+          //____________________________Status Section_________________________________
           items: model.card1Items,
           swapWidgets: [
             SwapWidget(
@@ -69,10 +69,11 @@ class JobCardPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.circle,
-                            color: statusColor(data['status'] ?? 'none'),
-                            size: DoublesManager.d_12,
-                            ),
+                        Icon(
+                          Icons.circle,
+                          color: statusColor(data['status'] ?? 'none'),
+                          size: DoublesManager.d_12,
+                        ),
                         const SizedBox(width: DoublesManager.d_8),
                         FittedBox(
                           fit: BoxFit.fitHeight,
@@ -84,7 +85,7 @@ class JobCardPage extends StatelessWidget {
             ),
           ],
         ),
-            //________________________Status Section_________________________________
+        //____________________________Time Logs Section_________________________________
 
         /// TIME LOGS
         Container(
@@ -92,31 +93,35 @@ class JobCardPage extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
           ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
-          child: const Center(
+          padding: const EdgeInsets.all(DoublesManager.d_8),
+          margin: const EdgeInsets.all(DoublesManager.d_8),
+          child: Center(
             child: Text(
-              'Time Logs',
+              StringsManager.timeLogs.tr(),
               style: TextStyle(
-                fontSize: 16,
+                fontSize: DoublesManager.d_16.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
         SizedBox(
-          child: (data['time_logs'] != null && data['time_logs'].isNotEmpty)
+          child: (data['Time Logs'] != null && data['Time Logs'].isNotEmpty)
               ? ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
-                  itemCount: data['time_logs'].length,
+                  itemCount: data['Time Logs'].length,
                   itemBuilder: (_, index) => PageCard(
                     items: [
                       {
-                        'Activity': data['time_logs'][index]['activity_type'],
-                        'Project': data['time_logs'][index]['project'],
-                        'Hours': data['time_logs'][index]['hours'].toString(),
+                        StringsManager.employee.tr(): data['Time Logs'][index]
+                                ['employee'] ??
+                            StringsManager.none.tr(),
+                        StringsManager.completedQuantity.tr():
+                            (data['Time Logs'][index]['completed_qty'] ??
+                                    StringsManager.none.tr())
+                                .toString(),
                       }
                     ],
                   ),
@@ -124,10 +129,7 @@ class JobCardPage extends StatelessWidget {
               : const NothingHere(),
         ),
 
-        /// Time description
-        PageCard(
-          items: model.card2Items,
-        ),
+        //____________________________Time Logs Section_________________________________
 
         /// Comment button
         CommentsButton(color: color),
@@ -137,14 +139,13 @@ class JobCardPage extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-            //border: Border.all(color: Colors.blueAccent),
           ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
-          child: Center(
+          padding: const EdgeInsets.all(DoublesManager.d_8),
+          margin: const EdgeInsets.all(DoublesManager.d_8),
+          child: const Center(
             child: Text(
-              'Connections',
-              style: const TextStyle(
+              StringsManager.connections,
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
