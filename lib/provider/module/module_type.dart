@@ -1609,7 +1609,6 @@ class ModuleType {
     filter: const BomFilterScreen(),
   );
 
-
   static final jobCard = ModuleType._(
     genericListService: DocTypesName.jobCard,
     title: DocTypesName.jobCard,
@@ -1619,9 +1618,9 @@ class ModuleType {
         id: item.name,
         title: item.itemName,
         leftIcon: Icons.numbers,
-        leftText: item.forQuantity.toString(),
+        leftText: '${StringsManager.quantity} ${item.forQuantity.toString()}',
         rightIcon: Icons.work,
-        rightText: item.forOperation,
+        rightText: item.operation,
         onPressed: (context) => _onListCardPressed(
           context,
           item.name,

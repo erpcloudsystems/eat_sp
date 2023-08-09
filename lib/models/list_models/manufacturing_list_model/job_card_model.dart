@@ -21,12 +21,13 @@ class JobCardListModel extends ListModel<JobCardItemModel> {
 }
 
 class JobCardItemModel {
-  final String name, itemName, project, forOperation;
+  final String name, itemName, project, operation, workOrder;
   final double forQuantity;
 
   JobCardItemModel({
-    required this.forOperation,
     required this.forQuantity,
+    required this.workOrder,
+    required this.operation,
     required this.itemName,
     required this.project,
     required this.name,
@@ -34,8 +35,9 @@ class JobCardItemModel {
    });
 
   factory JobCardItemModel.fromJson(Map<String, dynamic> json) => JobCardItemModel(
-        forOperation: json['for_operation'] ?? 'none',
         forQuantity: json['for_quantity'] ?? 1.0,
+        workOrder: json['work_order'] ?? 'none',
+        operation: json['operation'] ?? 'none',
         itemName: json['item_name'] ?? 'none',
         project: json['project'] ?? 'none',
         name: json['name'] ?? 'none',
@@ -43,8 +45,9 @@ class JobCardItemModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    data['for_operation'] = forOperation;
     data['for_quantity'] = forQuantity;
+    data['work_order'] = workOrder;
+    data['operation'] = operation;
     data['item_name'] = itemName;
     data['project'] = project;
     data['name'] = name;
