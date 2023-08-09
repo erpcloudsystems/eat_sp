@@ -27,6 +27,7 @@ import '../../screen/page/selling_pages/opportunity_page.dart';
 import '../../screen/page/workflow_pages/workflow_page.dart';
 import '../../test/list_card.dart';
 import '../../widgets/filter_widgets/manufacturing_filters/bom_filters.dart';
+import '../../widgets/filter_widgets/manufacturing_filters/job_card_filters.dart';
 import '../../widgets/filter_widgets/project_filters/issue_filter.dart';
 import '../../widgets/filter_widgets/project_filters/project_filter.dart';
 import '../../widgets/filter_widgets/project_filters/task_filter.dart';
@@ -1634,6 +1635,6 @@ class ModuleType {
     editPage: (pageData) {
       pageData["doctype"] = ["Job Card"];
     },
-    filter: const BomFilterScreen(),
+    filter: const JobCardFilterScreen(),
   );
 }
