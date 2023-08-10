@@ -22,7 +22,9 @@ class JobCardPageModel {
       },
       {
         tr(StringsManager.company): data['Company'] ?? tr('none'),
-        tr(StringsManager.wipWarehouse): data['WIP Warehouse'][0] ?? tr('none')
+        tr(StringsManager.wipWarehouse): data['WIP Warehouse'] != null
+            ? data['WIP Warehouse'][0]
+            : tr('none')
       },
       {
         tr(StringsManager.bomNo): data['BOM No'] ?? tr('none'),

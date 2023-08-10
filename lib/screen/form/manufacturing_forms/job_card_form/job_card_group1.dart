@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/list_models/manufacturing_list_model/work_order_model.dart';
 import '../../../../service/service.dart';
 import '../../../list/otherLists.dart';
 import '../../../../widgets/form_widgets.dart';
 import '../../../../test/test_text_field.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
+import '../../../../models/list_models/manufacturing_list_model/work_order_model.dart';
 
 class JobCardGroup1 extends StatefulWidget {
   const JobCardGroup1({super.key, required this.data});
@@ -19,7 +19,7 @@ class JobCardGroup1 extends StatefulWidget {
 class _JobCardGroup1State extends State<JobCardGroup1> {
   WorkOrderItemModel? workOrder;
 
-/// This function gets the [WorkOrder] data by ID.
+  /// This function gets the [WorkOrder] data by ID.
   Future<void> _getWorkOrderData(String id) async {
     final String url =
         'method/ecs_mobile.general.general_service?search_text=$id&doctype=Work Order';
@@ -71,7 +71,12 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               final WorkOrderItemModel res = await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => workOrderListScreen()));
               widget.data['work_order'] = res.name;
-              setState(() => workOrder = res);
+              setState(() {
+                workOrder = res;
+                widget.data['bom_no'] = workOrder?.bomNo;
+                widget.data['item_name'] = workOrder?.itemName;
+                widget.data['production_item'] = workOrder?.productionItem;
+              });
               return res.name;
             },
           ),
@@ -82,7 +87,9 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               StringsManager.bomNo,
               initialValue: widget.data['bom_no'] ?? workOrder?.bomNo,
               enabled: false,
-              onChanged: (value) => widget.data['bom_no'] = value,
+              onChanged: (value) => setState(
+                () => widget.data['bom_no'] = value,
+              ),
               onSave: (key, value) => widget.data[key] = value,
             ),
           //_______________________________________Item Name_____________________________________________________
@@ -115,10 +122,13 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
               disableValidation: false,
               clearButton: true,
               onSave: (key, value) => widget.data['operation'] = value,
+              onChanged: (value) =>
+                  setState(() => widget.data['operation'] = value),
               onPressed: () async {
                 final res = await Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) =>
                         operationsListScreen(workOrderId: workOrder?.name)));
+                if (res != null) widget.data['operation'] = res;
                 return res;
               },
             ),

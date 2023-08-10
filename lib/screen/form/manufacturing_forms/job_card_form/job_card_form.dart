@@ -18,7 +18,6 @@ import '../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
 
-
 class JobCardForm extends StatefulWidget {
   const JobCardForm({Key? key}) : super(key: key);
 
@@ -73,16 +72,14 @@ class _JobCardFormState extends State<JobCardForm> {
       } else if (provider.isEditing && result == null) {
         Navigator.pop(context);
       } else if (context.read<ModuleProvider>().isCreateFromPage) {
-        if (result != null && result['message']['job_card'] != null) {
-          context
-              .read<ModuleProvider>()
-              .pushPage(result['message']['job_card']);
+        if (result != null && result['message']['job'] != null) {
+          context.read<ModuleProvider>().pushPage(result['message']['job']);
         }
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const GenericPage()))
             .then((value) => Navigator.pop(context));
-      } else if (result != null && result['message']['job_card'] != null) {
-        provider.pushPage(result['message']['job_card']);
+      } else if (result != null && result['message']['job'] != null) {
+        provider.pushPage(result['message']['job']);
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const GenericPage()));
       }

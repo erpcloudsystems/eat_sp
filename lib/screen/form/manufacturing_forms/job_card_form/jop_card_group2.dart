@@ -19,7 +19,7 @@ class JobCardGroup2 extends StatelessWidget {
           CustomTextFieldTest(
             'for_quantity',
             StringsManager.qtyToManufacture.tr(),
-            disableValidation: true,
+            disableValidation: false,
             initialValue: data['for_quantity']?.toString(),
             validator: (value) => numberValidation(value, allowNull: false),
             keyboardType: TextInputType.number,
@@ -44,16 +44,21 @@ class JobCardGroup2 extends StatelessWidget {
                 return res;
               }),
           //_____________________________ Quality Inspection Template________________
-          CustomTextFieldTest('Quality Inspection Template',
-              StringsManager.qualityInspectionTemplate.tr(),
-              initialValue: data['quality_inspection_template'],
-              disableValidation: true,
-              clearButton: true,
-              onChanged: (value) => data['quality_inspection_template'] = value,
-              onSave: (key, value) => data[key] = value,
-              onPressed: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => qualityInspectionTemplatesListScreen()))),
+          CustomTextFieldTest(
+            'quality_inspection_template',
+            StringsManager.qualityInspectionTemplate.tr(),
+            initialValue: data['quality_inspection_template'],
+            disableValidation: true,
+            clearButton: true,
+            onChanged: (value) => data['quality_inspection_template'] = value,
+            onSave: (key, value) => data[key] = value,
+            onPressed: () async {
+              final res = await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => qualityInspectionTemplatesListScreen()));
+              if (res != null) data['quality_inspection_template'] = res;
+              return res;
+            },
+          ),
           //_______________________________________Project_____________________________________________________
           CustomTextFieldTest(
             'project',
@@ -65,6 +70,7 @@ class JobCardGroup2 extends StatelessWidget {
             onPressed: () async {
               final res = await Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => projectScreen()));
+              if (res != null) data['project'] = res['name'];
               return res['name'];
             },
           ),
@@ -75,8 +81,12 @@ class JobCardGroup2 extends StatelessWidget {
               clearButton: true,
               onChanged: (value) => data['batch_no'] = value,
               onSave: (key, value) => data[key] = value,
-              onPressed: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => batchNoListScreen()))),
+              onPressed: () async {
+                final res = await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => batchNoListScreen()));
+                if (res != null) data['batch_no'] = res;
+                return res;
+              }),
         ],
       ),
     );

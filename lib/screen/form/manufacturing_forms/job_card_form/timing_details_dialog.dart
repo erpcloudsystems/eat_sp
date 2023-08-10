@@ -85,9 +85,9 @@ class TimingDetailsDialog extends StatelessWidget {
                       numberValidation(value, allowNull: false),
                   keyboardType: TextInputType.number,
                   onSave: (key, value) =>
-                      timeLogs['completed_qty'] = int.tryParse(value),
+                      timeLogs['completed_qty'] = double.tryParse(value),
                   onChanged: (value) =>
-                      timeLogs['completed_qty'] = int.tryParse(value),
+                      timeLogs['completed_qty'] = double.tryParse(value),
                 ),
               ],
             ),
