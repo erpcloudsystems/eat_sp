@@ -23,22 +23,6 @@ class JobCardGroup3 extends StatelessWidget {
               onSave: (key, value) => data['workstation'] = value,
               onPressed: () async => await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => workstationListScreen()))),
-          //_________________________________Employee________________________________________
-          // // TODO: Duplicated key with child table (TimeLogs), Change the key.
-          CustomTextFieldTest(
-            'employee',
-            StringsManager.employee.tr(),
-            initialValue: data['employee'],
-            disableValidation: true,
-            onPressed: () async {
-              final res = await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => selectEmployeeScreen()));
-              if (res != null) {
-                data['employee'] = res['name'];
-              }
-              return res['employee_name'];
-            },
-          ),
           //________________________________Timing details___________________________________
           TimingDetailsForm(data: data),
         ],

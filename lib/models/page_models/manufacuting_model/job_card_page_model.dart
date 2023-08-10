@@ -18,21 +18,21 @@ class JobCardPageModel {
       },
       {
         tr(StringsManager.qtyToManufacture):
-            (data['quantity to manufacture'] ?? tr('none')).toString(),
+            (data['for_quantity'] ?? tr('none')).toString(),
       },
       {
-        tr(StringsManager.company): data['Company'] ?? tr('none'),
-        tr(StringsManager.wipWarehouse): data['WIP Warehouse'] != null
-            ? data['WIP Warehouse'][0]
+        tr(StringsManager.company): data['company'] ?? tr('none'),
+        tr(StringsManager.wipWarehouse): data['wip_warehouse'] != null
+            ? data['wip_warehouse'][0]
             : tr('none')
       },
       {
-        tr(StringsManager.bomNo): data['BOM No'] ?? tr('none'),
-        tr(StringsManager.workOrder): data['Work Order'] ?? tr('none')
+        tr(StringsManager.bomNo): data['bom_no'] ?? tr('none'),
+        tr(StringsManager.workOrder): data['work_order'] ?? tr('none')
       },
       {
-        tr(StringsManager.operation): data['Operation'] ?? tr('none'),
-        tr(StringsManager.workstation): data['Work Station'] ?? tr('none')
+        tr(StringsManager.operation): data['operation'] ?? tr('none'),
+        tr(StringsManager.workstation): data['workstation'] ?? tr('none')
       },
     ];
   }

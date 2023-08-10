@@ -72,14 +72,16 @@ class _JobCardFormState extends State<JobCardForm> {
       } else if (provider.isEditing && result == null) {
         Navigator.pop(context);
       } else if (context.read<ModuleProvider>().isCreateFromPage) {
-        if (result != null && result['message']['job'] != null) {
-          context.read<ModuleProvider>().pushPage(result['message']['job']);
+        if (result != null && result['message']['job_card'] != null) {
+          context
+              .read<ModuleProvider>()
+              .pushPage(result['message']['job_card']);
         }
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const GenericPage()))
             .then((value) => Navigator.pop(context));
-      } else if (result != null && result['message']['job'] != null) {
-        provider.pushPage(result['message']['job']);
+      } else if (result != null && result['message']['job_card'] != null) {
+        provider.pushPage(result['message']['job_card']);
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const GenericPage()));
       }

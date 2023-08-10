@@ -106,20 +106,20 @@ class JobCardPage extends StatelessWidget {
           ),
         ),
         SizedBox(
-          child: (data['Time Logs'] != null && data['Time Logs'].isNotEmpty)
+          child: (data['time_logs'] != null && data['time_logs'].isNotEmpty)
               ? ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
-                  itemCount: data['Time Logs'].length,
+                  itemCount: data['time_logs'].length,
                   itemBuilder: (_, index) => PageCard(
                     items: [
                       {
-                        StringsManager.employee.tr(): data['Time Logs'][index]
+                        StringsManager.employee.tr(): data['time_logs'][index]
                                 ['employee'] ??
                             StringsManager.none.tr(),
                         StringsManager.completedQuantity.tr():
-                            (data['Time Logs'][index]['completed_qty'] ??
+                            (data['time_logs'][index]['completed_qty'] ??
                                     StringsManager.none.tr())
                                 .toString(),
                       }
