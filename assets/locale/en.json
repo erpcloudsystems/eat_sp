@@ -14,7 +14,6 @@
   "Contact Email": "Contact Email",
   "Valid Till": "Valid Till",
   "Status": "Status",
-
   "Order Type": "Order Type",
   "Currency": "Currency",
   "Exchange Rate": "Exchange Rate",
@@ -51,6 +50,7 @@
   "Brand": "Brand",
   "Image": "Image",
   "Quantity": "Quantity",
+  "QTY": "QTY",
   "Stock UOM": "Stock UOM",
   "UOM": "UOM",
   "UOM Conversion Factor": "UOM Conversion Factor",
@@ -67,7 +67,7 @@
   "Net Rate": "Net Rate",
   "Amount": "Amount",
   "Net Amount": "Net Amount",
-  "Rate ": "Rate ",
+  "Rate: ": "Rate: ",
   "Net Rate ": "Net Rate ",
   "Amount ": "Amount ",
   "Net Amount ": "Net Amount ",
@@ -230,46 +230,12 @@
   "Quality Inspection Required": "Quality Inspection Required",
   "Quality Inspection Template": "Quality Inspection Template",
   "Rate Of Materials Based On: ": "Rate Of Materials Based On: ",
-  "Set rate of sub-assembly item based on BOM": "Set rate of sub-assembly item based on BOM"  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "Set rate of sub-assembly item based on BOM": "Set rate of sub-assembly item based on BOM",
+  "Let's go back to work.":"Let's go back to work.",
+  "Profile":"Profile",
+  "Apply":"Apply",
+  "Filter":"Filter",
+  "Search":"Search",
+  "Finish":"Finish",
+  "This Item added":"This Item added"
 }

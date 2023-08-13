@@ -54,9 +54,9 @@ class _PaginationListState<T> extends State<PaginationList> {
 
     pageCount += PAGINATION_PAGE_LENGTH;
 
-    final res = await widget.future(pageCount) as ListModel<T>?;
-
     listCount = await widget.listCount();
+
+    final res = await widget.future(pageCount) as ListModel<T>?;
 
     newLoadCount += res?.list.length ?? 0;
     Provider.of<ModuleProvider>(context, listen: false).setLoadCount =
@@ -192,10 +192,11 @@ class _PaginationListState<T> extends State<PaginationList> {
                             : Text(
                                 listCount,
                                 style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.5),
+                                  color: Colors.black87,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.5,
+                                ),
                               ),
                       ],
                     ),

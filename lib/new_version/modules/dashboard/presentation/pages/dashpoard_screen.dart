@@ -2,6 +2,7 @@ import 'package:NextApp/core/constants.dart';
 import 'package:NextApp/new_version/core/extensions.dart/date_tine_extension.dart';
 import 'package:NextApp/new_version/modules/dashboard/presentation/bloc/dasboard_bloc.dart';
 import 'package:NextApp/new_version/modules/dashboard/presentation/bloc/transaction_bloc/transaction_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -117,9 +118,9 @@ class DashboardScreen extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              const Text(
-                                "Let's go back to work.",
-                                style: TextStyle(
+                              Text(
+                                "Let's go back to work.".tr(),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white70,
                                 ),
@@ -145,9 +146,9 @@ class DashboardScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(25),
                                 color: Colors.amberAccent,
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  'Profile',
+                                  'Profile'.tr(),
                                 ),
                               ),
                             ),
@@ -156,7 +157,6 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListView(
-                          
                           shrinkWrap: true,
                           children: [
                             const GetTotalWidget(),

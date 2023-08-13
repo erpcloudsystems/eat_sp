@@ -3,6 +3,7 @@ import 'package:NextApp/new_version/modules/new_item/domain/entities/item_entity
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_state.dart';
 import 'package:NextApp/widgets/nothing_here.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -196,10 +197,10 @@ class _ItemListScreenState extends State<ItemListScreen> {
               borderRadius: BorderRadius.circular(12),
               color: APPBAR_COLOR,
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Finish',
-                style: TextStyle(
+                'Finish'.tr(),
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

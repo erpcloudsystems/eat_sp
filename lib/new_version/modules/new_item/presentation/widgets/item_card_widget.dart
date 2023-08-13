@@ -2,6 +2,7 @@ import 'package:NextApp/core/constants.dart';
 import 'package:NextApp/new_version/modules/new_item/data/models/item_model.dart';
 import 'package:NextApp/provider/module/module_provider.dart';
 import 'package:NextApp/widgets/snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -103,10 +104,10 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Flexible(
+                Flexible(
                   child: Text(
-                    'Rate: ',
-                    style: TextStyle(
+                    'Rate: '.tr(),
+                    style: const TextStyle(
                       fontSize: 18,
                     ),
                   ),
@@ -127,7 +128,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                 Flexible(
                   child: CustomTextFieldTest(
                     'qty',
-                    'QTY',
+                    'QTY'.tr(),
                     initialValue: QTY.toString(),
                     keyboardType: TextInputType.number,
                     disableError: true,
@@ -146,9 +147,10 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Uom',
-                        style: TextStyle(
+                      Text(
+                        'UOM'.tr(),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),
@@ -239,7 +241,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                     "rate": widget.rate,
                   });
                   showSnackBar(
-                    'Item ${widget.itemName} Added',
+                    '${"This Item added".tr()}\n${widget.itemName}',
                     context,
                     color: Colors.green,
                   );

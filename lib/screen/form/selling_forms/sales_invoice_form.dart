@@ -93,6 +93,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     //   data['items'].add(element.toJson);
     // });
     for (var element in provider.newItemList) {
+      if (data['is_return'] == 1) element['qty'] = element['qty'] * -1;
       data['items'].add(element);
     }
 

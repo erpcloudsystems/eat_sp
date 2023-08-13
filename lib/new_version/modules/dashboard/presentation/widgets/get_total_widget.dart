@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -106,10 +107,10 @@ class GetTotalWidget extends StatelessWidget {
 
                               Navigator.pop(context);
                             },
-                            child: const Text(
-                              'Apply',
+                            child: Text(
+                              'Apply'.tr(),
                               textAlign: TextAlign.end,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 22,
                               ),
                             ),
@@ -122,22 +123,23 @@ class GetTotalWidget extends StatelessWidget {
               },
               child: Container(
                 width: 90,
-                padding: const EdgeInsets.symmetric(horizontal: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 margin: const EdgeInsets.only(bottom: 8, right: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(color: Colors.white)),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Filter ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                      'Filter'.tr(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.filter_alt_outlined,
                       size: 20,
                       color: Colors.white,

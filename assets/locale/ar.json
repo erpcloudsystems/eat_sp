@@ -51,6 +51,7 @@
   "Brand": "الماركة",
   "Image": "الصورة",
   "Quantity": "الكمية",
+  "QTY": "الكمية",
   "Stock UOM": "وحدة القياس المخزنية",
   "UOM": "وحدة القياس",
   "UOM Conversion Factor": "معامل التحويل",
@@ -64,6 +65,7 @@
   "Discount Amount": "إجمالي الخصم",
   "Rate With Margin ": "السعر بالخصم ",
   "Rate": "السعر",
+  "Rate: ": "السعر: ",
   "Net Rate": "السعر الصافي",
   "Amount": "الإجمالي",
   "Net Amount": "صافي الإجمالي",
@@ -228,5 +230,13 @@
   "Quality Inspection Required": "يوجد نموذج فحص الجودة",
   "Rate Of Materials Based On: ": " :سعر المواد بناءً على",
   "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع "
+,
 
+  "Let's go back to work.":"لنعد إلى العمل.",
+  "Profile": "الملف الشخصي",
+  "Apply":"تطبيق",
+  "Filter":"فلتر",
+  "Search":"بحث",
+  "Finish":"انهاء",
+  "This Item added":"تمت إضافة هذا العنصر"
   }
