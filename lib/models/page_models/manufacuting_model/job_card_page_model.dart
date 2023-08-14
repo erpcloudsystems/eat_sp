@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 
 import '../../../new_version/core/resources/strings_manager.dart';
 
@@ -10,11 +9,6 @@ class JobCardPageModel {
   JobCardPageModel(this.data)
       : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
           ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
-
-  final List<Tab> tabs = const [
-    Tab(text: 'Items'),
-    Tab(text: 'Connections'),
-  ];
 
   List<Map<String, String>> get card1Items {
     return [

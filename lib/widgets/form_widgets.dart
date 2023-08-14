@@ -128,10 +128,10 @@ const List<String> workOrderOrJopCard = [
 ];
 
 const List<String> termLoan = [
-    ' ',
-    'Repay Fixed Amount per Period',
-    'Repay Over Numbers of Periods',
-  ];
+  ' ',
+  'Repay Fixed Amount per Period',
+  'Repay Over Numbers of Periods',
+];
 
 const List<String> KQuotationToList = ['Lead', 'Customer'];
 const List<String> KPaymentPartyList = ['Customer', 'Supplier'];
@@ -174,6 +174,8 @@ const List<String> journalEntryTypeStatus = [
   'Deferred Revenue',
   'Deferred Expense',
 ];
+
+List<Tab> manufacturingPagesTabs = const [Tab(text: 'Items'), Tab(text: 'Connections')];
 
 const List<String> journalEntryTypePartyType1 = ['Customer'];
 const List<String> journalEntryTypePartyType2 = ['Supplier', 'Employee'];

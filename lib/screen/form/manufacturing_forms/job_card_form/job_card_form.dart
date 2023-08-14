@@ -97,8 +97,8 @@ class _JobCardFormState extends State<JobCardForm> {
 
   @override
   void initState() {
-    final provider = context.read<ModuleProvider>();
     super.initState();
+    final provider = context.read<ModuleProvider>();
 
     //Editing Mode & Duplicate &  Amending
     if (provider.isEditing ||

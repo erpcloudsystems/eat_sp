@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
+import 'connections_items.dart';
 import '../../../core/constants.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
@@ -130,39 +131,10 @@ class BomPage extends StatelessWidget {
 
         /// Comment button
         CommentsButton(color: color),
+ 
+      /// Connections & Items
+        ManufacturingConnectionsAndItemsPageSection(data: data, model: model),
 
-        /// Connections
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-          ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
-          child: const Center(
-            child: Text(
-              'Connections',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.45,
-          child: (data['conn'] != null && data['conn'].isNotEmpty)
-              ? ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  shrinkWrap: true,
-                  itemCount: data['conn'].length,
-                  itemBuilder: (_, index) => ConnectionCard(
-                      imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-                      docTypeId: data['conn'][index]['name'] ?? tr('none'),
-                      count: data['conn'][index]['count'].toString()))
-              : const NothingHere(),
-        ),
       ],
     );
   }

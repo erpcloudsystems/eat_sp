@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'connections_items.dart';
 import '../../../core/constants.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
@@ -140,83 +139,7 @@ class JobCardPage extends StatelessWidget {
         CommentsButton(color: color),
 
         /// Connections & Items
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.70,
-          child: DefaultTabController(
-            length: model.tabs.length,
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(DoublesManager.d_8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(DoublesManager.d_10),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(DoublesManager.d_10),
-                    child: TabBar(
-                      labelStyle: GoogleFonts.cairo(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: GoogleFonts.cairo(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                      unselectedLabelColor: Colors.grey.shade600,
-                      indicatorPadding: EdgeInsets.zero,
-                      isScrollable: false,
-                      labelPadding: const EdgeInsets.symmetric(horizontal: 4),
-                      padding: EdgeInsets.zero,
-                      tabs: model.tabs,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(children: [
-                    data['items'] == null || data['items'].isEmpty
-                        ? const NothingHere()
-                        : ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: model.items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                ItemWithImageCard(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return PageDetailsDialog(
-                                          title: model.items[index]['name'] ??
-                                              'none',
-                                          names: model.subList1Names,
-                                          values: model.subList1Item(index));
-                                    });
-                              },
-                              id: model.items[index]['idx'].toString(),
-                              imageUrl: model.items[index]['image'].toString(),
-                              itemName: model.items[index]['item_name'],
-                              names: model.getItemCard(index),
-                            ),
-                          ),
-                    data['conn'] == null || data['conn'].isEmpty
-                        ? const NothingHere()
-                        : ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            itemCount: data['conn'].length,
-                            itemBuilder: (_, index) => ConnectionCard(
-                                imageUrl:
-                                    data['conn'][index]['icon'] ?? tr('none'),
-                                docTypeId:
-                                    data['conn'][index]['name'] ?? tr('none'),
-                                count:
-                                    data['conn'][index]['count'].toString())),
-                  ]),
-                )
-              ],
-            ),
-          ),
-        ),
+       ManufacturingConnectionsAndItemsPageSection(data: data, model: model),
       ],
     );
   }
