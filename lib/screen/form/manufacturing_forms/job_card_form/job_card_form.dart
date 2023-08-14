@@ -14,9 +14,12 @@ import '../../../../widgets/snack_bar.dart';
 import '../../../../widgets/dismiss_keyboard.dart';
 import '../../../../service/service_constants.dart';
 import '../../../../test/custom_page_view_form.dart';
+import '../../../../provider/user/user_provider.dart';
 import '../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
+import '../../../../models/page_models/manufacuting_model/job_card_page_model.dart';
+import '../../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 
 class JobCardForm extends StatefulWidget {
   const JobCardForm({Key? key}) : super(key: key);
@@ -47,7 +50,11 @@ class _JobCardFormState extends State<JobCardForm> {
 
     _formKey.currentState!.save();
 
+    data['items'] = [];
     data['docstatus'] = 0;
+    for (var element in provider.newItemList) {
+      data['items'].add(element);
+    }
 
     showLoadingDialog(
         context,
@@ -99,9 +106,19 @@ class _JobCardFormState extends State<JobCardForm> {
         provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
+        final items = JobCardPageModel(data).items;
+        for (var element in items) {
+          provider.setItemToList(element);
+        }
         for (var k in data.keys) {
           log("➡️ $k: ${data[k]}");
         }
+
+        if (provider.isAmendingMode) {
+          data.remove('amended_to');
+          data['docstatus'] = 0;
+        }
+
         setState(() {});
       });
     }
@@ -110,8 +127,10 @@ class _JobCardFormState extends State<JobCardForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
+        data['items'].forEach((element) {
+          provider.newItemList.add(element);
+        });
         data['doctype'] = "job_card";
-
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');
@@ -162,6 +181,11 @@ class _JobCardFormState extends State<JobCardForm> {
                   JobCardGroup1(data: data),
                   JobCardGroup2(data: data),
                   JobCardGroup3(data: data),
+                  AddItemsWidget(
+                    haveRate: false,
+                    priceList:
+                        context.read<UserProvider>().defaultSellingPriceList,
+                  ),
                 ],
               )),
         ),

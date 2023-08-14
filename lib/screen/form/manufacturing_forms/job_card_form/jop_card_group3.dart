@@ -21,8 +21,11 @@ class JobCardGroup3 extends StatelessWidget {
               initialValue: data['workstation'],
               clearButton: true,
               onSave: (key, value) => data['workstation'] = value,
-              onPressed: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => workstationListScreen()))),
+              onPressed: () async  { final res = await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => workstationListScreen()));
+                     if (res != null) data['workstation'] = res;
+                return res;
+                  }),
           //________________________________Timing details___________________________________
           TimingDetailsForm(data: data),
         ],
