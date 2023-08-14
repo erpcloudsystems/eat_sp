@@ -135,10 +135,10 @@ class TimesheetPage extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
-          child: Center(
+          child: const Center(
             child: Text(
               'Connections',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

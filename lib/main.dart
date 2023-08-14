@@ -16,6 +16,7 @@ import 'new_version/core/resources/routes.dart';
 import 'new_version/core/resources/app_theme.dart';
 import 'new_version/core/global/bloc_observer.dart';
 import 'new_version/core/global/state_managment.dart';
+import 'new_version/core/resources/strings_manager.dart';
 import 'new_version/core/global/dependency_container.dart' as di;
 
 class MyHttpOverrides extends HttpOverrides {
@@ -36,10 +37,6 @@ GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log('Background message occurred! ${message.data.toString()}');
-// navigateFromNotification(
-//       context: context,
-//       docType: message.data['doctype'],
-//       docName: message.data['document_name']);
 }
 
 void main() async {
@@ -70,7 +67,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) => MaterialApp(
-        title: 'NextApp',
+        title: ConstantStrings.appName,
         scaffoldMessengerKey: scaffoldMessengerKey,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: context.localizationDelegates,

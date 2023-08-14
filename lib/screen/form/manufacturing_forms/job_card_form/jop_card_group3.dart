@@ -21,11 +21,25 @@ class JobCardGroup3 extends StatelessWidget {
               initialValue: data['workstation'],
               clearButton: true,
               onSave: (key, value) => data['workstation'] = value,
-              onPressed: () async  { final res = await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => workstationListScreen()));
-                     if (res != null) data['workstation'] = res;
+              onPressed: () async {
+                final res = await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => workstationListScreen()));
+                if (res != null) data['workstation'] = res;
                 return res;
-                  }),
+              }),
+          //________________________________ Remarks ___________________________________
+          CustomTextFieldTest(
+            'remarks',
+            StringsManager.remarks.tr(),
+            minLines: 3,
+            maxLines: null,
+            removeUnderLine: true,
+            initialValue: data['remarks'],
+            disableValidation: true,
+            clearButton: true,
+            onSave: (key, value) => data[key] = value,
+            onChanged: (value) => data['remarks'] = value,
+          ),
           //________________________________Timing details___________________________________
           TimingDetailsForm(data: data),
         ],

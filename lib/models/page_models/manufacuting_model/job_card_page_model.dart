@@ -11,11 +11,11 @@ class JobCardPageModel {
       : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
           ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
-   final List<Tab> tabs = const [
+  final List<Tab> tabs = const [
     Tab(text: 'Items'),
     Tab(text: 'Connections'),
   ];
-  
+
   List<Map<String, String>> get card1Items {
     return [
       {
@@ -49,11 +49,10 @@ class JobCardPageModel {
   List<Map<String, String>> get card2Items {
     return [
       {
-        tr('Note'): data['note'] ?? tr('none'),
+        StringsManager.remarks.tr(): data['remarks'] ?? tr('none'),
       },
     ];
   }
-
 
   List<MapEntry<String, String>> getItemCard(int index) {
     int qty = items[index]['qty'].toInt();

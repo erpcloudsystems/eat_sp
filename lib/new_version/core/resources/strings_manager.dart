@@ -1,12 +1,13 @@
 class ConstantStrings {
   static const String newVersion = 'newVersion';
+  static const String appName = 'NextApp';
 }
 
 class DocTypesName {
+  static const String supplierQuotation = 'Supplier Quotation';
   static const String purchaseReceipt = 'Purchase Receipt';
   static const String purchaseInvoice = 'Purchase Invoice';
   static const String purchaseOrder = 'Purchase Order';
-  static const String supplierQuotation = 'Supplier Quotation';
   static const String buying = 'Buying';
 
   static const String customerVisit = 'Customer Visit';
@@ -25,8 +26,8 @@ class DocTypesName {
   static const String issue = 'Issue';
   static const String task = 'Task';
 
-  static const String leaveApplication = 'Leave Application';
   static const String attendanceRequest = 'Attendance Request';
+  static const String leaveApplication = 'Leave Application';
   static const String employeeCheckin = 'Employee Checkin';
 
   static const String deliveryNote = 'Delivery Note';
@@ -34,8 +35,8 @@ class DocTypesName {
 
   static const String workflow = 'Workflow';
 
-  static const String reports = 'Mobile Report';
   static const String materialRequest = 'Material Request';
+  static const String reports = 'Mobile Report';
 
   static const String jobCard = 'Job Card';
   static const String bom = 'BOM';
@@ -116,6 +117,7 @@ class StringsManager {
   static const String selling = 'Selling';
   static const String project = 'Project';
   static const String company = 'Company';
+  static const String remarks = 'Remarks';
   static const String noData = 'No Data';
   static const String toTime = 'To Time';
   static const String toDate = 'To Date';

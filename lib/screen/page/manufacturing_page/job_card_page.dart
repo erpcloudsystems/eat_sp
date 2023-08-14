@@ -133,6 +133,9 @@ class JobCardPage extends StatelessWidget {
 
         //____________________________Time Logs Section_________________________________
 
+        /// Remarks
+        PageCard(items: model.card2Items),
+
         /// Comment button
         CommentsButton(color: color),
 
