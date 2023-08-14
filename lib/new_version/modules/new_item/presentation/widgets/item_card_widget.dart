@@ -186,14 +186,16 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(12),
-                                            color: Colors.black,
+                                            border: Border.all(
+                                              color: APPBAR_COLOR,
+                                            ),
                                           ),
                                           child: Center(
                                             child: Text(
                                               widget.uomList[index].uom,
                                               style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white,
+                                                fontSize: 18,
+                                                color: Colors.black,
                                               ),
                                             ),
                                           ),

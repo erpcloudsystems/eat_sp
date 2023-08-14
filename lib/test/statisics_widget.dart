@@ -16,7 +16,6 @@ class StatisticsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height: 60,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -36,7 +35,7 @@ class StatisticsWidget extends StatelessWidget {
               number,
               overflow: TextOverflow.visible,
               style: const TextStyle(
-                fontSize: 30,
+                fontSize: 25,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -46,7 +45,7 @@ class StatisticsWidget extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),

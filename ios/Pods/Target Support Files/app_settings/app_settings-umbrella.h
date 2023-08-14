@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "AppSettingsPlugin.h"
 
 FOUNDATION_EXPORT double app_settingsVersionNumber;
 FOUNDATION_EXPORT const unsigned char app_settingsVersionString[];

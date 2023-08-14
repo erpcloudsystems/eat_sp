@@ -14,6 +14,7 @@ class TransactionCard extends StatelessWidget {
     required this.image,
     required this.docType,
     required this.name,
+    this.type,
   }) : super(key: key);
   final String docType;
   final String title;
@@ -21,6 +22,7 @@ class TransactionCard extends StatelessWidget {
   final String status;
   final String image;
   final String name;
+  final String? type;
 
   @override
   Widget build(BuildContext context) {
@@ -68,24 +70,38 @@ class TransactionCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(subTitle),
-          trailing: Container(
-            width: 85,
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: statusColor(status),
-            ),
-            child: Center(
-              child: Text(
-                status,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: 85,
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: statusColor(status),
+                ),
+                child: Center(
+                  child: Text(
+                    status,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              if (type != null)
+                Flexible(
+                  child: Text(
+                    type!,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

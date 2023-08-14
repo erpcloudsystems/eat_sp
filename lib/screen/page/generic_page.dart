@@ -1,7 +1,9 @@
 import 'package:NextApp/service/service.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
+import '../../test/floating_button_widget.dart';
 import '../../widgets/nothing_here.dart';
 import '../../provider/module/module_provider.dart';
 import '../../widgets/generic_page_buttons.dart';
@@ -18,73 +20,90 @@ class GenericPage extends StatefulWidget {
 class _GenericPageState extends State<GenericPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: AppBar(
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              onPressed: () {
-                final provider = context.read<ModuleProvider>();
-                // We use this method to navigate back to "List Screen", and only in "Amended Mode".
-
-                if (provider.isAmended) {
-                  provider.pushPage(provider.previousPageId);
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => const GenericPage(),
-                    ),
-                  );
-                  provider.NotifyAmended = false;
-                }
-
-                setState(() {
-                  context.read<ModuleProvider>().getWorkflow = false;
-                });
-
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
+    return ColorfulSafeArea(
+      color: APPBAR_COLOR,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(AppBar().preferredSize.height),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: AppBar(
+              iconTheme: const IconThemeData(
+                color: Colors.black,
               ),
-            ),
-            title: Padding(
-              padding: const EdgeInsets.only(
-                top: 3,
-                left: 50,
-              ),
-              child: Text(
-                context.watch<ModuleProvider>().currentModule.title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  overflow: TextOverflow.visible,
-                  height: 1,
-                ),
-              ),
-            ),
-            actions: [
-              const GenericPageButtons(),
-              IconButton(
+              backgroundColor: Colors.white,
+              leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return const HomeScreen();
-                  }));
+                  final provider = context.read<ModuleProvider>();
+                  // We use this method to navigate back to "List Screen", and only in "Amended Mode".
+
+                  if (provider.isAmended) {
+                    provider.pushPage(provider.previousPageId);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => const GenericPage(),
+                      ),
+                    );
+                    provider.NotifyAmended = false;
+                  }
+
+                  setState(() {
+                    context.read<ModuleProvider>().getWorkflow = false;
+                  });
+
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(
-                  Icons.home_outlined,
+                  Icons.arrow_back_ios_new,
                 ),
               ),
+              title: Padding(
+                padding: const EdgeInsets.only(
+                  top: 3,
+                  left: 50,
+                ),
+                child: Text(
+                  context.watch<ModuleProvider>().currentModule.title,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    overflow: TextOverflow.visible,
+                    height: 1,
+                  ),
+                ),
+              ),
+              actions: [
+                const EditPageButton(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const HomeScreen();
+                    }));
+                  },
+                  icon: const Icon(
+                    Icons.home_outlined,
+                    size: 30,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: const _GenericPageBody(),
+        floatingActionButton: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
+          child: ExpandableFab(
+            distance: 112,
+            children: [
+              AssignPageButton(),
+              DownloadPdfButton(),
+              PrintPageButton(),
+              AttachmentPageButton(),
+              DuplicatePageButton(),
             ],
           ),
         ),
       ),
-      body: const _GenericPageBody(),
     );
   }
 }

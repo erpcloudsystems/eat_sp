@@ -130,6 +130,7 @@ class DashboardTapView extends StatelessWidget {
                 subTitle: listData[index].subtitle,
                 name: listData[index].name,
                 status: listData[index].status,
+                type: listData[index].type,
                 image: 'assets/$title.png',
               );
             },

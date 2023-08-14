@@ -101,7 +101,6 @@ const List<String> ProjectPriorityList = [
   'Low',
   'Medium',
   'High',
-  'Urgent',
 ];
 
 const List<String> AssignToPriorityList = [
@@ -1198,9 +1197,9 @@ class _SelectImageState extends State<SelectImage> {
                     onPressed: () {
                       setState(() => _image = null);
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(Icons.delete, color: Colors.red, size: 25),
                         Text(
                           'Remove Image',

@@ -1,4 +1,5 @@
 import 'package:NextApp/core/constants.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
 import '../test/home_item_test.dart';
@@ -95,25 +96,28 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       ''
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: APPBAR_COLOR,
-        elevation: 1,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        title: Text(
-          appBarTitles[_page],
-          style: const TextStyle(
-            color: Colors.white,
+    return ColorfulSafeArea(
+      color: APPBAR_COLOR,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          iconTheme: const IconThemeData(
+            color: Colors.black,
           ),
+          title: Text(
+            appBarTitles[_page],
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
 
-      extendBody: true,
-      body: Container(child: pages[_page]),
-      // This trailing comma makes auto-formatting nicer for build methods.
+        extendBody: true,
+        body: Container(child: pages[_page]),
+        // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

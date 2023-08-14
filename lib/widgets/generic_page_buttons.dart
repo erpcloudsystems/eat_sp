@@ -1,3 +1,4 @@
+import 'package:NextApp/core/constants.dart';
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class AssignPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
+        color: APPBAR_COLOR,
         onPressed: () {
           AnimatedDialog.showAnimatedDialog(
             context,
@@ -62,7 +64,8 @@ class AssignPageButton extends StatelessWidget {
         },
         icon: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.black,
+          size: 40,
         ),
         padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
         tooltip: 'Assign',
@@ -94,8 +97,8 @@ class EditPageButton extends StatelessWidget {
       icon: Icon(
         Icons.edit,
         color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
-            ? Colors.white
-            : Colors.white54,
+            ? Colors.black
+            : Colors.black54,
       ),
       padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Edit',
@@ -114,7 +117,11 @@ class DownloadPdfButton extends StatelessWidget {
           ? () => context.read<ModuleProvider>().downloadPdf(context)
           : null,
       splashRadius: DoublesManager.d_20,
-      icon: const Icon(Icons.download, color: Colors.white),
+      icon: const Icon(
+        Icons.download,
+        color: Colors.black,
+        size: 40,
+      ),
       padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Download PDF',
     );
@@ -134,7 +141,8 @@ class PrintPageButton extends StatelessWidget {
       splashRadius: DoublesManager.d_20,
       icon: const Icon(
         Icons.print_sharp,
-        color: Colors.white,
+        color: Colors.black,
+        size: 40,
       ),
       padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Print',
@@ -154,7 +162,7 @@ class AttachmentPageButton extends StatelessWidget {
         badgeContent: Text(
           '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
           style:
-              const TextStyle(fontSize: 13, color: Colors.white, height: 1.5),
+              const TextStyle(fontSize: 13, color: Colors.black, height: 1.5),
         ),
         stackFit: StackFit.passthrough,
         badgeColor: Colors.redAccent,
@@ -173,7 +181,8 @@ class AttachmentPageButton extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 15),
           child: const Icon(
             Icons.attach_file,
-            color: Colors.white,
+            color: Colors.black,
+            size: 40,
           ),
         ),
       ),
@@ -197,7 +206,8 @@ class DuplicatePageButton extends StatelessWidget {
       },
       icon: const Icon(
         Icons.copy,
-        color: Colors.white,
+        color: Colors.black,
+        size: 40,
       ),
       padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Duplicate',

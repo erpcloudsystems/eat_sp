@@ -1,3 +1,5 @@
+import 'package:NextApp/core/constants.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
@@ -46,10 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           elevation: 1,
           centerTitle: true,
+          backgroundColor: Colors.white,
           title: const Text(
             'Modules',
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              color: Colors.black,
               fontSize: 22,
             ),
           ),
@@ -97,18 +101,21 @@ class _HomeScreenState extends State<HomeScreen> {
       upgrader: Upgrader(
         shouldPopScope: () => true,
       ),
-      child: Scaffold(
-        bottomNavigationBar: getBottomNavigationBar(
-            key: _bottomNavigationKey,
-            index: indexNow,
-            onTap: (index) {
-              setState(() {
-                _page = index;
-              });
-            }),
-        extendBody: true,
-        body: Container(
-            padding: const EdgeInsets.only(bottom: 50), child: pages[_page]),
+      child: ColorfulSafeArea(
+        color: APPBAR_COLOR,
+        child: Scaffold(
+          bottomNavigationBar: getBottomNavigationBar(
+              key: _bottomNavigationKey,
+              index: indexNow,
+              onTap: (index) {
+                setState(() {
+                  _page = index;
+                });
+              }),
+          extendBody: true,
+          body: Container(
+              padding: const EdgeInsets.only(bottom: 50), child: pages[_page]),
+        ),
       ),
     );
   }

@@ -28,8 +28,8 @@ class DashboardScreen extends StatelessWidget {
 
     dashboardBloc.add(GetDashboardDataEvent(
       dateFilter: TotalFilters(
-        fromDate:
-            DateTime.now().subtract(const Duration(days: 30)).formatDateYMD(),
+        fromDate: DateTime.now().formatDateYMD(),
+        //DateTime.now().subtract(const Duration(days: 30)).formatDateYMD(),
         toDate: DateTime.now().formatDateYMD(),
       ),
     ));

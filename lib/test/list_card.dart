@@ -78,6 +78,7 @@ class ListCardTest extends StatelessWidget {
                                 id,
                                 maxLines: 1,
                                 textAlign: TextAlign.start,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -119,8 +120,8 @@ class ListCardTest extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: 10.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,4 +1,5 @@
 import 'package:NextApp/widgets/custom-button.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,119 +69,122 @@ class _CustomPageViewFormState extends State<CustomPageViewForm> {
   @override
   Widget build(BuildContext context) {
     String currentModule = context.read<ModuleProvider>().currentModule.title;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
-        title: (context.read<ModuleProvider>().isEditing)
-            ? Text(
-                "Edit $currentModule",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              )
-            : Text(
-                "Create $currentModule",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 40.0, top: 10),
-            child: PageView.builder(
-              allowImplicitScrolling: true,
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              itemCount: widget.widgetGroup.length,
-              itemBuilder: (context, index) {
-                return Form(
-                  key: _formKeys[index],
-                  child: widget.widgetGroup[index],
-                );
-              },
-            ),
+    return ColorfulSafeArea(
+      color: APPBAR_COLOR,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(
+            color: Colors.black,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  if (_currentPage > 0)
-                    IconButton(
-                      onPressed: () {
-                        goToPreviousPage();
-                        setState(() {});
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: APPBAR_COLOR,
-                        size: 25,
-                      ),
-                    ),
-                  if (_currentPage < widget.widgetGroup.length - 1)
-                    Expanded(
-                      child: CustomButton(
-                        text: "Next",
-                        color: APPBAR_COLOR,
+          title: (context.read<ModuleProvider>().isEditing)
+              ? Text(
+                  "Edit $currentModule",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                )
+              : Text(
+                  "Create $currentModule",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40.0, top: 10),
+              child: PageView.builder(
+                allowImplicitScrolling: true,
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                itemCount: widget.widgetGroup.length,
+                itemBuilder: (context, index) {
+                  return Form(
+                    key: _formKeys[index],
+                    child: widget.widgetGroup[index],
+                  );
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    if (_currentPage > 0)
+                      IconButton(
                         onPressed: () {
-                          if (_currentPage < widget.widgetGroup.length - 1) {
+                          goToPreviousPage();
+                          setState(() {});
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          color: APPBAR_COLOR,
+                          size: 25,
+                        ),
+                      ),
+                    if (_currentPage < widget.widgetGroup.length - 1)
+                      Expanded(
+                        child: CustomButton(
+                          text: "Next",
+                          color: APPBAR_COLOR,
+                          onPressed: () {
+                            if (_currentPage < widget.widgetGroup.length - 1) {
+                              if (_formKeys[_currentPage]
+                                  .currentState!
+                                  .validate()) {
+                                goToNextPage();
+                                setState(() {});
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    if (_currentPage == widget.widgetGroup.length - 1)
+                      Expanded(
+                        child: CustomButton(
+                          text: "Save",
+                          color: APPBAR_COLOR,
+                          onPressed: () {
                             if (_formKeys[_currentPage]
                                 .currentState!
                                 .validate()) {
-                              goToNextPage();
-                              setState(() {});
+                              _formKeys[_currentPage].currentState!.save();
+                              widget.submit();
                             }
-                          }
-                        },
+                          },
+                        ),
                       ),
-                    ),
-                  if (_currentPage == widget.widgetGroup.length - 1)
-                    Expanded(
-                      child: CustomButton(
-                        text: "Save",
-                        color: APPBAR_COLOR,
-                        onPressed: () {
-                          if (_formKeys[_currentPage]
-                              .currentState!
-                              .validate()) {
-                            _formKeys[_currentPage].currentState!.save();
-                            widget.submit();
-                          }
-                        },
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: DotsIndicator(
-              dotsCount: widget.widgetGroup.length,
-              position: _currentPage,
-              mainAxisSize: MainAxisSize.max,
-              decorator: DotsDecorator(
-                spacing: const EdgeInsets.all(9),
-                activeColor: APPBAR_COLOR,
-                color: Colors.black54,
-                size: const Size.square(9.0),
-                activeSize: Size(60.w, 9.0),
-                activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.topCenter,
+              child: DotsIndicator(
+                dotsCount: widget.widgetGroup.length,
+                position: _currentPage,
+                mainAxisSize: MainAxisSize.max,
+                decorator: DotsDecorator(
+                  spacing: const EdgeInsets.all(9),
+                  activeColor: APPBAR_COLOR,
+                  color: Colors.black54,
+                  size: const Size.square(9.0),
+                  activeSize: Size(60.w, 9.0),
+                  activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

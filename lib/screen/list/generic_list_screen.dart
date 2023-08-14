@@ -1,4 +1,5 @@
 import 'package:NextApp/screen/sorting_screen.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -137,146 +138,149 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: widget.disableAppBar
-          ? null
-          : AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              iconTheme: const IconThemeData(
-                color: Colors.black,
-              ),
-              titleTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 18),
-              title: Text(
-                moduleProvider.currentModule.title,
-              ),
-              actions: [
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SortingScreen(),
-                    ),
-                  ),
-                  icon: const Icon(
-                    Icons.sort,
-                    color: Colors.black,
-                  ),
+    return ColorfulSafeArea(
+      color: APPBAR_COLOR,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: widget.disableAppBar
+            ? null
+            : AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                iconTheme: const IconThemeData(
+                  color: Colors.black,
                 ),
-                if (moduleProvider.currentModule.filterWidget != null)
+                titleTextStyle:
+                    const TextStyle(color: Colors.black, fontSize: 18),
+                title: Text(
+                  moduleProvider.currentModule.title,
+                ),
+                actions: [
                   IconButton(
                     splashRadius: 20,
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const FilterScreen(),
+                        builder: (context) => const SortingScreen(),
                       ),
                     ),
                     icon: const Icon(
-                      Icons.filter_list_alt,
+                      Icons.sort,
                       color: Colors.black,
                     ),
                   ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const HomeScreen();
-                        },
+                  if (moduleProvider.currentModule.filterWidget != null)
+                    IconButton(
+                      splashRadius: 20,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FilterScreen(),
+                        ),
                       ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.home_outlined,
+                      icon: const Icon(
+                        Icons.filter_list_alt,
+                        color: Colors.black,
+                      ),
+                    ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const HomeScreen();
+                          },
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.home_outlined,
+                    ),
+                  ),
+                ],
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(SEARCH_BAR_HEIGHT),
+                  child: Column(
+                    children: [
+                      pagination.SearchBar(search: _search),
+                    ],
                   ),
                 ),
-              ],
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(SEARCH_BAR_HEIGHT),
-                child: Column(
-                  children: [
-                    pagination.SearchBar(search: _search),
-                  ],
+              ),
+        body: Column(
+          children: [
+            if (statistics.isNotEmpty)
+              SizedBox(
+                height: 98,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: statistics.length,
+                  itemBuilder: (context, index) {
+                    return StatisticsWidget(
+                      text: statistics[index].title!,
+                      color: statusColor(statistics[index].title!),
+                      number: statistics[index].count.toString(),
+                    );
+                  },
                 ),
               ),
-            ),
-      body: Column(
-        children: [
-          if (statistics.isNotEmpty)
-            SizedBox(
-              height: 98,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: statistics.length,
-                itemBuilder: (context, index) {
-                  return StatisticsWidget(
-                    text: statistics[index].title!,
-                    color: statusColor(statistics[index].title!),
-                    number: statistics[index].count.toString(),
+            Expanded(
+              flex: 4,
+              child: Selector<ModuleProvider, Map<String, dynamic>>(
+                selector: (_, provider) => provider.filter,
+                builder: (context, _, __) {
+                  reset.value = !reset.value;
+                  return pagination.PaginationList(
+                    future: (page) => moduleProvider.listService(
+                        page: page, search: searchText.trim()),
+                    listCount: () => moduleProvider.listCount(
+                      search: searchText.trim(),
+                    ),
+                    reset: reset,
+                    listItem: moduleProvider.currentModule.listItem,
+                    search: searchText,
                   );
                 },
               ),
             ),
-          Expanded(
-            flex: 4,
-            child: Selector<ModuleProvider, Map<String, dynamic>>(
-              selector: (_, provider) => provider.filter,
-              builder: (context, _, __) {
-                reset.value = !reset.value;
-                return pagination.PaginationList(
-                  future: (page) => moduleProvider.listService(
-                      page: page, search: searchText.trim()),
-                  listCount: () => moduleProvider.listCount(
-                    search: searchText.trim(),
+          ],
+        ),
+        floatingActionButton: moduleProvider.currentModule.createForm != null
+            ? InkWell(
+                onTap: () {
+                  // Notifying the provider to disable page update
+                  moduleProvider.iAmCreatingAForm();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          moduleProvider.currentModule.createForm!,
+                    ),
+                  ).then((value) {
+                    // to auto reload List after new create
+                    reset.value = !reset.value;
+                  });
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: APPBAR_COLOR,
+                    borderRadius: BorderRadius.circular(
+                      30,
+                    ),
                   ),
-                  reset: reset,
-                  listItem: moduleProvider.currentModule.listItem,
-                  search: searchText,
-                );
-              },
-            ),
-          ),
-        ],
+                  child: const Center(
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
-      floatingActionButton: moduleProvider.currentModule.createForm != null
-          ? InkWell(
-              onTap: () {
-                // Notifying the provider to disable page update
-                moduleProvider.iAmCreatingAForm();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        moduleProvider.currentModule.createForm!,
-                  ),
-                ).then((value) {
-                  // to auto reload List after new create
-                  reset.value = !reset.value;
-                });
-              },
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: APPBAR_COLOR,
-                  borderRadius: BorderRadius.circular(
-                    30,
-                  ),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
-          : null,
     );
   }
 }
