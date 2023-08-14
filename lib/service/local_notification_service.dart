@@ -68,8 +68,7 @@ void notificationConfig(BuildContext context) async {
   /// receive msg when app is Terminated (Background Handler)
   // Handle background message When messages are received
   // And your application is not running.
-  FirebaseMessaging.onBackgroundMessage(
-      ((message) => firebaseMessagingBackgroundHandler(message, context)));
+  FirebaseMessaging.onBackgroundMessage((firebaseMessagingBackgroundHandler));
 
   ///****** 3- End Push Notifications ******///
 }
@@ -81,8 +80,9 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   static void initialize(BuildContext context) {
-    InitializationSettings initializationSettings = const InitializationSettings(
-      android:  AndroidInitializationSettings("@mipmap/ic_launcher"),
+    InitializationSettings initializationSettings =
+        const InitializationSettings(
+      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
       iOS: IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,

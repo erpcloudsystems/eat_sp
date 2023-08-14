@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'core/app_local.dart';
 import 'screen/other/splash_screen.dart';
 import 'new_version/core/resources/routes.dart';
-import 'service/local_notification_service.dart';
 import 'new_version/core/resources/app_theme.dart';
 import 'new_version/core/global/bloc_observer.dart';
 import 'new_version/core/global/state_managment.dart';
@@ -34,13 +34,12 @@ GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 // It must be annotated with @pragma('vm:entry-point') right above the function declaration
 // (otherwise it may be removed during tree shaking for release mode).
 @pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(
-    RemoteMessage message, BuildContext context) async {
-  
-navigateFromNotification(
-      context: context,
-      docType: message.data['doctype'],
-      docName: message.data['document_name']);
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  log('Background message occurred! ${message.data.toString()}');
+// navigateFromNotification(
+//       context: context,
+//       docType: message.data['doctype'],
+//       docName: message.data['document_name']);
 }
 
 void main() async {
