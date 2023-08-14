@@ -20,9 +20,10 @@ class ItemCardWidget extends StatefulWidget {
     required this.itemCode,
     required this.uomList,
     required this.itemGroup,
+    required this.priceListRate,
   }) : super(key: key);
   final String itemName, imageUrl, itemCode, itemGroup;
-  final double rate;
+  final double rate, priceListRate;
   String uom;
   final List<UomModel> uomList;
 
@@ -32,6 +33,7 @@ class ItemCardWidget extends StatefulWidget {
 
 class _ItemCardWidgetState extends State<ItemCardWidget> {
   final formKey = GlobalKey<FormState>();
+  double? newRate;
   String? UOM;
   int QTY = 1;
   @override
@@ -114,7 +116,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                 ),
                 Flexible(
                   child: Text(
-                    widget.rate.toStringAsFixed(2),
+                    (newRate ?? widget.rate).toStringAsFixed(2),
                     //widget.rate.toString(),
                     style: const TextStyle(
                       fontSize: 16,
@@ -166,7 +168,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                                       MediaQuery.of(context).size.height * 0.1,
                                 ),
                                 content: SizedBox(
-                                  height: widget.uomList.length > 2 ? 100 : 80,
+                                  height: widget.uomList.length > 2 ? 120 : 100,
                                   width: 20,
                                   child: ListView.builder(
                                     itemCount: widget.uomList.length,
@@ -175,8 +177,10 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                                         onTap: () async {
                                           setState(() {
                                             UOM = widget.uomList[index].uom;
-                                            widget.uom =
-                                                widget.uomList[index].uom;
+
+                                            newRate = widget.uomList[index]
+                                                    .conversionFactor *
+                                                widget.priceListRate;
                                           });
 
                                           Navigator.pop(context);
@@ -240,7 +244,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                     "item_group": widget.itemGroup,
                     "qty": QTY,
                     "uom": UOM ?? widget.uom,
-                    "rate": widget.rate,
+                    "rate": newRate ?? widget.rate,
                   });
                   showSnackBar(
                     '${"This Item added".tr()}\n${widget.itemName}',

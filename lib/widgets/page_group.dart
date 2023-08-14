@@ -70,30 +70,30 @@ class PageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _columnChildren = [...header];
-    List<Widget> _rowChildren = [];
-    List<String> _keys;
+    List<Widget> columnChildren = [...header];
+    List<Widget> rowChildren = [];
+    List<String> keys;
 
     //for each row
     for (int i = 0; i < items.length; i++) {
-      _rowChildren = [];
+      rowChildren = [];
 
       //row keys list
-      _keys = items[i].keys.toList();
+      keys = items[i].keys.toList();
 
       //initialize row children
       // for each item in the row
-      for (int j = 0; j < _keys.length; j++) {
-        _rowChildren.add(
+      for (int j = 0; j < keys.length; j++) {
+        rowChildren.add(
           ListTitle(
-            title: _keys[j],
-            value: items[i][_keys[j]]!,
+            title: keys[j],
+            value: items[i][keys[j]]!,
           ),
         );
 
         //vertical separator between items
-        if (j < _keys.length - 1) {
-          _rowChildren.add(
+        if (j < keys.length - 1) {
+          rowChildren.add(
             Container(
               width: 1,
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -103,14 +103,14 @@ class PageCard extends StatelessWidget {
         }
       }
       // add the initialized row to the column children
-      _columnChildren.add(Row(
+      columnChildren.add(Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: _rowChildren));
+          children: rowChildren));
 
       //separator if the item is not last item
       // if (i < items.length - 1 ) _columnChildren.add(Divider(color: Colors.grey.shade400, thickness: 1));
       if (i < items.length - 1 && items[i].isNotEmpty) {
-        _columnChildren.add(Divider(color: Colors.grey.shade300, thickness: 1));
+        columnChildren.add(Divider(color: Colors.grey.shade300, thickness: 1));
       }
     }
 
@@ -118,21 +118,22 @@ class PageCard extends StatelessWidget {
     // if (statusIndex > 0) (_columnChildren[header.length - 2 + (statusIndex * 2)] as Row).children.last = StatusWidget(items[statusIndex - 1]['Status']!);
 
     if (swapWidgets.isNotEmpty) {
-      swapWidgets.forEach((element) =>
-          (_columnChildren[header.length - 2 + (element.rowNumber * 2)] as Row)
-                  .children[element.widgetIndex] =
-              ListTitle(
-                  title: items[element.rowNumber - 1]
-                      .entries
-                      .toList()[element.widgetNumber - 1]
-                      .key,
-                  child: element.widget));
+      for (var element in swapWidgets) {
+        (columnChildren[header.length - 2 + (element.rowNumber * 2)] as Row)
+                .children[element.widgetIndex] =
+            ListTitle(
+                title: items[element.rowNumber - 1]
+                    .entries
+                    .toList()[element.widgetNumber - 1]
+                    .key,
+                child: element.widget);
+      }
     }
 
     return PageGroup(
       color: color,
       child: Column(
-        children: _columnChildren,
+        children: columnChildren,
       ),
     );
   }
@@ -162,22 +163,22 @@ class PageExpandableCardItem extends StatefulWidget {
 class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> _columnChildren = [];
-    List<String> _keys;
+    List<Widget> columnChildren = [];
+    List<String> keys;
 
     for (int i = 0; i < widget.items.length; i++) {
-      _keys = widget.items[i].keys.toList();
-      for (int j = 0; j < _keys.length; j++) {
-        _columnChildren.add(
 
+      keys = widget.items[i].keys.toList();
+      for (int j = 0; j < keys.length; j++) {
+        columnChildren.add(
           ListTile(
             horizontalTitleGap: 2,
             contentPadding: EdgeInsets.zero,
-            title: Text(_keys[j], maxLines: 1),
+            title: Text(keys[j], maxLines: 1),
             trailing: SizedBox(
               width: 200,
               child: Text(
-                widget.items[i][_keys[j]],
+                widget.items[i][keys[j]],
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   overflow: TextOverflow.visible,
@@ -218,7 +219,7 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
             style: const TextStyle(fontWeight: FontWeight.w600),
             maxLines: 1,
           ),
-          children: _columnChildren,
+          children: columnChildren,
         ),
       ),
     );
@@ -236,7 +237,7 @@ class SwapWidget {
 
       //to get the correct widget index in the row
       // the row contains widgets and between each widget there is a divider widget
-      : this.widgetIndex = widgetNumber == 1 ? 0 : (widgetNumber * 2) - 2;
+      : widgetIndex = widgetNumber == 1 ? 0 : (widgetNumber * 2) - 2;
 }
 
 class ConnectionCard extends StatelessWidget {
@@ -258,34 +259,24 @@ class ConnectionCard extends StatelessWidget {
       if (moduleProvider.isSecondModule) {
         // change current module and use connection
         moduleProvider.pushConnection(docTypeId);
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (_) => WillPopScope(
-                    child: GenericListScreen.module(),
-                    onWillPop: () async {
-                      // return to first route module and remove connection
-                      moduleProvider.removeConnection();
-                      return true;
-                    },
-                  ),
-              settings: const RouteSettings(name: CONNECTION_ROUTE)),
-          (route) => route.settings.name == null,
-        );
+        Navigator.of(context)
+            .pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (_) => GenericListScreen.module(),
+                  settings: const RouteSettings(name: CONNECTION_ROUTE)),
+              (route) => route.settings.name == null,
+            )
+            .then((value) => moduleProvider.removeConnection());
       } else {
         // change current module and use connection
         moduleProvider.pushConnection(docTypeId);
         Navigator.of(context)
             .push(MaterialPageRoute(
-                builder: (_) => WillPopScope(
-                      child: GenericListScreen.module(),
-                      onWillPop: () async {
-                        // return to first route module and remove connection
-                        moduleProvider.removeConnection();
-                        return true;
-                      },
-                    ),
+                builder: (_) => GenericListScreen.module(),
                 settings: const RouteSettings(name: CONNECTION_ROUTE)))
-            .then((value) {});
+            .then((value) {
+          moduleProvider.removeConnection();
+        });
       }
     }
 
@@ -308,9 +299,9 @@ class ConnectionCard extends StatelessWidget {
         child: ElevatedButton(
           onPressed: pushConnectionRoute,
           style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.blueAccent.shade100,
+            backgroundColor: Colors.white,
             elevation: 0,
-            primary: Colors.white,
-            onPrimary: Colors.blueAccent.shade100,
             padding: const EdgeInsets.symmetric(vertical: 8),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
@@ -490,8 +481,8 @@ class ItemWithImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> secondRow = [];
-    int _start = names.length > 5 ? 3 : 2;
-    for (int i = _start; i < names.length; i++) {
+    int start = names.length > 5 ? 3 : 2;
+    for (int i = start; i < names.length; i++) {
       secondRow.add(ListTitle(
           title: names[i].key,
           child: Text(names[i].value,
@@ -589,13 +580,13 @@ class ItemWithImageCard extends StatelessWidget {
                                       child: Text(names[1].value,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis)),
-                                  if (_start > 2)
+                                  if (start > 2)
                                     Container(
                                         width: 1,
                                         color: Colors.grey.shade400,
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 25)),
-                                  if (_start > 2)
+                                  if (start > 2)
                                     ListTitle(
                                         title: names[2].key,
                                         child: Text(names[2].value,

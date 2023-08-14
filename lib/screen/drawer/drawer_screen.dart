@@ -1,22 +1,29 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/app_local.dart';
 import '../../new_version/modules/faq/presentation/pages/faq_screen.dart';
 import 'aboutus_screen.dart';
 import '../other/app_settings.dart';
 import '../../provider/user/user_provider.dart';
 import '../../widgets/dialog/loading_dialog.dart';
 
-class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
 
-  final drawerNames = ['App Setting', 'About Us', 'FAQ', 'Logout'];
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   final drawerPages = [const AppSettings(), const AboutUs(), const FAQ(), null];
+
   final drawerIcons = [
     Icons.settings,
     Icons.info,
     Icons.question_answer,
-    Icons.logout
+    Icons.logout,
   ];
 
   void logout(BuildContext context) async {
@@ -26,38 +33,111 @@ class CustomDrawer extends StatelessWidget {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (context.locale.languageCode == 'en') {
+      AppLocal.isEnglish = true;
+    } else {
+      AppLocal.isEnglish = false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<String> drawerNames = [
+      'App Settings'.tr(),
+      'About Us'.tr(),
+      'FAQ'.tr(),
+      'Logout'.tr()
+    ];
     return SafeArea(
         child: Scaffold(
-      body: Center(
-        child: ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(top: 10),
-          itemCount: drawerNames.length,
-          separatorBuilder: (BuildContext context, int index) => const Divider(
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 240,
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(top: 10),
+              itemCount: drawerNames.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(
+                height: 0,
+                color: Colors.grey,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(
+                    drawerNames[index],
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  trailing: Icon(drawerIcons[index]),
+                  onTap: () async {
+                    if (drawerNames[index] == 'Logout'.tr()) {
+                      logout(context);
+                      return;
+                    }
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => drawerPages[index]!));
+                  },
+                );
+              },
+            ),
+          ),
+          const Divider(
             height: 0,
             color: Colors.grey,
           ),
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(
-                drawerNames[index],
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: ListTile(
+                  title: const Text(
+                    'English',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  leading: Radio<bool>(
+                    value: true,
+                    groupValue: AppLocal.isEnglish,
+                    onChanged: (bool? value) {
+                      AppLocal.isEnglish = value!;
+
+                      AppLocal.toggleBetweenLocales(context);
+                      setState(() {});
+                    },
+                  ),
+                ),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-              trailing: Icon(drawerIcons[index]),
-              onTap: () async {
-                if (drawerNames[index] == 'Logout') {
-                  logout(context);
-                  return;
-                }
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (c) => drawerPages[index]!));
-              },
-            );
-          },
-        ),
+              Flexible(
+                child: ListTile(
+                  title: const Text(
+                    'عربي',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  leading: Radio<bool>(
+                    value: false,
+                    groupValue: AppLocal.isEnglish,
+                    onChanged: (bool? value) {
+                      AppLocal.isEnglish = value!;
+
+                      AppLocal.toggleBetweenLocales(context);
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ));
   }

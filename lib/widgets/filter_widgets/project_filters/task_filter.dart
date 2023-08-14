@@ -60,7 +60,7 @@ class _TaskFilterScreenState extends State<TaskFilterScreen> {
                 builder: (context) => projectScreen(),
               ),
             );
-            if (res != null) _values['filter1'] = res;
+            if (res != null) _values['filter1'] = res['name'];
             return _values['filter1'];
           },
         ),

@@ -193,6 +193,7 @@ class _GenericPageBodyState extends State<_GenericPageBody> {
               Expanded(
                 child: provider.currentModule.pageWidget,
               ),
+              
             ],
           ),
         );

@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import '../inherited_widgets/select_items_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/module/module_provider.dart';
-import '../../screen/form/selling_forms/customer_form.dart';
 
 class CreateFromPageButton extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -45,7 +42,6 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
-    bool isOpend = false;
     widget.data['doctype'] = widget.doctype;
     return Container(
       height: 30,

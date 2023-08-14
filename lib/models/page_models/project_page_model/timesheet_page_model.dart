@@ -13,7 +13,7 @@ class TimesheetPageModel {
       },
       {
         tr('Customer'): data['customer'].toString(),
-        tr('Employee Name'): data['employee_name'].toString(),
+        tr('Employee'): data['employee_name'].toString(),
       },
       {
         tr('Start Date'): data['start_date'] ?? tr('none'),

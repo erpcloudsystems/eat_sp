@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -207,7 +208,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                       //___________________________________Project_____________________________________________________
                       CustomTextFieldTest(
                         'parent_project',
-                        'Project',
+                        'Project'.tr(),
                         clearButton: true,
                         initialValue: data['parent_project'],
                         onSave: (key, value) {
@@ -232,7 +233,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                       //_______________________________________Customer_____________________________________________________
                       CustomTextFieldTest(
                         'customer',
-                        'Customer',
+                        'Customer'.tr(),
                         initialValue: data['customer'] ?? '',
                         disableValidation: true,
                         clearButton: true,
@@ -243,7 +244,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                       //_______________________________________Employee___________________________________________________
                       CustomTextFieldTest(
                         'employee',
-                        'Employee',
+                        'Employee'.tr(),
                         initialValue: data['employee'],
                         disableValidation: true,
                         clearButton: true,
@@ -266,7 +267,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                           Flexible(
                             child: DatePickerTest(
                               'start_date',
-                              'Start Date',
+                              'Start Date'.tr(),
                               initialValue: data['start_date'],
                               onChanged: (value) => setState(
                                 () => data['start_date'] = value,
@@ -278,7 +279,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                           Flexible(
                             child: DatePickerTest(
                               'end_date',
-                              'End Date',
+                              'End Date'.tr(),
                               onChanged: (value) => Future.delayed(
                                 Duration.zero,
                                 () => setState(
@@ -305,9 +306,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  "Add State",
-                                  style: TextStyle(
+                                Text(
+                                  "Time Sheets".tr(),
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                   ),
@@ -386,7 +387,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                     Group(
                       child: CustomTextFieldTest(
                         'note',
-                        'Note',
+                        'Description'.tr(),
                         minLines: 6,
                         maxLines: null,
                         removeUnderLine: true,

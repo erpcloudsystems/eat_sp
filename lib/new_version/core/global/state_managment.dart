@@ -1,5 +1,6 @@
 import 'package:NextApp/bloc/custom_form_bloc/cubit/custom_from_cubit_cubit.dart';
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
+import 'package:NextApp/provider/new_controller/home_provider.dart';
 
 import '../../modules/dashboard/presentation/bloc/dasboard_bloc.dart';
 import '../../modules/dashboard/presentation/bloc/total_bloc/total_bloc.dart';
@@ -26,6 +27,7 @@ class StateManagement {
       create: (_) => ModuleProvider(),
     ),
     ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+    ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
     BlocProvider(create: (_) => di.sl<GeneralReportsBloc>()),
     BlocProvider(create: (_) => di.sl<GeneralLedgerBloc>()),
     BlocProvider(create: (_) => di.sl<StockReportsBloc>()),

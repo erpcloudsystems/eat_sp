@@ -171,7 +171,7 @@ class _IssueFormState extends State<IssueForm> {
                       //_______________________________________Subject_____________________________________________________
                       CustomTextFieldTest(
                         'subject',
-                        'Subject',
+                        'Subject'.tr(),
                         initialValue: data['subject'],
                         disableValidation: false,
                         clearButton: true,
@@ -199,7 +199,7 @@ class _IssueFormState extends State<IssueForm> {
                       //___________________________________Project_____________________________________________________
                       CustomTextFieldTest(
                         'project',
-                        'Project',
+                        'Project'.tr(),
                         clearButton: true,
                         initialValue: data['project'],
                         onSave: (key, value) {
@@ -228,7 +228,7 @@ class _IssueFormState extends State<IssueForm> {
                       //_______________________________________Priority___________________________________________________
                       CustomDropDown(
                         'priority',
-                        'Priority',
+                        'Priority'.tr(),
                         items: IssuePriorityList,
                         defaultValue: data['priority'] ?? IssuePriorityList[0],
                         onChanged: (value) => setState(() {
@@ -249,7 +249,7 @@ class _IssueFormState extends State<IssueForm> {
                       //_______________________________________ Description ________________________________________________
                       CustomTextFieldTest(
                         'description',
-                        'Description',
+                        'Description'.tr(),
                         minLines: 6,
                         maxLines: null,
                         removeUnderLine: true,

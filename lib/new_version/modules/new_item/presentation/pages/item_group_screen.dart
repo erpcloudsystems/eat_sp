@@ -2,6 +2,7 @@ import 'package:NextApp/core/constants.dart';
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_state.dart';
 import 'package:NextApp/widgets/nothing_here.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -23,6 +24,8 @@ class ItemGroupScreen extends StatefulWidget {
 
 class _ItemGroupScreenState extends State<ItemGroupScreen> {
   String searchText = '';
+  String? parentGroup;
+  String? previousParentGroup;
   @override
   void didChangeDependencies() {
     final bloc = BlocProvider.of<NewItemBloc>(context);
@@ -38,8 +41,7 @@ class _ItemGroupScreenState extends State<ItemGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? parentGroup;
-    String? previousParentGroup;
+    
     final bloc = BlocProvider.of<NewItemBloc>(context);
     return BlocConsumer<NewItemBloc, ItemState>(
       // listenWhen: (previous, current) {
@@ -119,7 +121,7 @@ class _ItemGroupScreenState extends State<ItemGroupScreen> {
                                   ),
                                   Text(
                                     previousParentGroup == ''
-                                        ? "Back"
+                                        ? "Back".tr()
                                         : previousParentGroup!,
                                     style: const TextStyle(
                                       fontSize: 22,
@@ -254,9 +256,10 @@ class _ItemGroupScreenState extends State<ItemGroupScreen> {
                                                             Icons.arrow_right,
                                                             size: 30,
                                                           )
-                                                        : const Text(
-                                                            'Go',
-                                                            style: TextStyle(
+                                                        : Text(
+                                                            'Go'.tr(),
+                                                            style:
+                                                                const TextStyle(
                                                               color:
                                                                   APPBAR_COLOR,
                                                               fontSize: 20,

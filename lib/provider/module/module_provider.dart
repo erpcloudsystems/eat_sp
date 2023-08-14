@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import '../../models/list_models/list_model.dart';
@@ -125,7 +124,7 @@ class ModuleProvider extends ChangeNotifier {
   void setItemToList(Map<String, dynamic> item) {
     newItemList.add(item);
     item['amount'] = item['qty'] * item['rate'];
-    
+
     notifyListeners();
   }
 
@@ -226,7 +225,7 @@ class ModuleProvider extends ChangeNotifier {
 
   List<Map<String, dynamic>> get getTimeSheetData => _timeSheetData;
 
-// BOM Operations 
+// BOM Operations
   List<Map<String, dynamic>> _bomOperations = [];
 
   set setBomOperations(Map<String, dynamic> data) {
@@ -376,7 +375,7 @@ class ModuleProvider extends ChangeNotifier {
       case APIService.BOM:
         _currentModule = ModuleType.bom;
         break;
-    
+
       case APIService.JOBCARD:
         _currentModule = ModuleType.jobCard;
         break;
@@ -393,7 +392,7 @@ class ModuleProvider extends ChangeNotifier {
         await APIService().getPage(_currentModule!.pageService, _pageId);
     if (data['message'] != null && data['message'] is Map) {
       _pageData = Map<String, dynamic>.from(data['message']);
-      _pageSubmitStatus = data['message']?['docstatus'];
+      _pageSubmitStatus = data['message']['docstatus'];
       _availablePdfFormat = (_pageData['print_formats'] ?? []).isNotEmpty;
     }
     _isLoading = false;

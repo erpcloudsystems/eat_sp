@@ -1,4 +1,5 @@
 import 'package:NextApp/models/page_models/project_page_model/project_page_model.dart';
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,9 +38,9 @@ class ProjectPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Text(
-              'Project',
-              style: TextStyle(
+            Text(
+              StringsManager.project.tr(),
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -95,10 +96,10 @@ class ProjectPage extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Connections',
-              style: TextStyle(
+              'Connections'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

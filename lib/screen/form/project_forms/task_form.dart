@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -180,7 +181,7 @@ class _TaskFormState extends State<TaskForm> {
                       //_______________________________________Subject_____________________________________________________
                       CustomTextFieldTest(
                         'subject',
-                        'Subject',
+                        'Subject'.tr(),
                         initialValue: data['subject'],
                         disableValidation: false,
                         clearButton: true,
@@ -190,7 +191,7 @@ class _TaskFormState extends State<TaskForm> {
                       //_______________________________________Project_____________________________________________________
                       CustomTextFieldTest(
                         'project',
-                        'Project'.tr(),
+                        StringsManager.project.tr(),
                         initialValue: data['project'],
                         disableValidation: true,
                         clearButton: true,
@@ -232,7 +233,7 @@ class _TaskFormState extends State<TaskForm> {
                         },
                       ),
                       //_______________________________________Issue_____________________________________________________
-                      CustomTextFieldTest('issue', 'Issue',
+                      CustomTextFieldTest('issue', 'Issue'.tr(),
                           initialValue: data['issue'],
                           disableValidation: true,
                           clearButton: true,
@@ -250,7 +251,7 @@ class _TaskFormState extends State<TaskForm> {
                             return res;
                           }),
                       //_______________________________________Type_____________________________________________________
-                      CustomTextFieldTest('type', 'Type',
+                      CustomTextFieldTest('type', 'Type'.tr(),
                           initialValue: data['type'],
                           disableValidation: true,
                           clearButton: true,
@@ -270,7 +271,7 @@ class _TaskFormState extends State<TaskForm> {
                       //_______________________________________Department_____________________________________________________
                       CustomTextFieldTest(
                         'department',
-                        'Department',
+                        'Department'.tr(),
                         initialValue: data['department'],
                         disableValidation: true,
                         clearButton: true,
@@ -299,7 +300,7 @@ class _TaskFormState extends State<TaskForm> {
                       //_______________________________________Priority___________________________________________________
                       CustomDropDownTest(
                         'priority',
-                        'Priority',
+                        'Priority'.tr(),
                         fontSize: 16,
                         items: ProjectPriorityList,
                         defaultValue:
@@ -322,7 +323,7 @@ class _TaskFormState extends State<TaskForm> {
                       //_______________________________________Is Group_____________________________________________________
                       CheckBoxWidget(
                         'is_group',
-                        'Is Group',
+                        'Is Group'.tr(),
                         fontSize: 16,
                         initialValue: data['is_group'] == 1 ? true : false,
                         onChanged: (id, value) => setState(
@@ -332,7 +333,7 @@ class _TaskFormState extends State<TaskForm> {
                       //____________________________________Is Template_____________________________________________________
                       CheckBoxWidget(
                         'is_template',
-                        'Is Template',
+                        'Is Template'.tr(),
                         fontSize: 16,
                         initialValue: data['is_template'] == 1 ? true : false,
                         onChanged: (id, value) => setState(
@@ -345,7 +346,7 @@ class _TaskFormState extends State<TaskForm> {
                           Flexible(
                               child: DatePickerTest(
                             'exp_start_date',
-                            'Expected Start Date',
+                            'Start Date'.tr(),
                             initialValue: data['exp_start_date'],
                             onChanged: (value) =>
                                 setState(() => data['exp_start_date'] = value),
@@ -355,7 +356,7 @@ class _TaskFormState extends State<TaskForm> {
                           Flexible(
                             child: DatePickerTest(
                               'exp_end_date',
-                              'Expected End Date',
+                              'End Date'.tr(),
                               onChanged: (value) => Future.delayed(
                                   Duration.zero,
                                   () => setState(
@@ -371,7 +372,7 @@ class _TaskFormState extends State<TaskForm> {
                           Flexible(
                             child: CustomTextFieldTest(
                               'expected_time',
-                              'Expected Time',
+                              'Expected Time'.tr(),
                               initialValue: data['expected_time'].toString(),
                               disableValidation: false,
                               clearButton: true,
@@ -392,7 +393,7 @@ class _TaskFormState extends State<TaskForm> {
                           Flexible(
                             child: CustomTextFieldTest(
                               'progress',
-                              'Progress',
+                              'Progress'.tr(),
                               initialValue: data['progress'].toString(),
                               disableValidation: false,
                               clearButton: true,
@@ -415,7 +416,7 @@ class _TaskFormState extends State<TaskForm> {
                 Group(
                   child: CustomTextFieldTest(
                     'description',
-                    'Description',
+                    'Description'.tr(),
                     minLines: 6,
                     maxLines: null,
                     removeUnderLine: true,

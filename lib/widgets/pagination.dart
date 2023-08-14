@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:NextApp/service/service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../provider/user/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -282,7 +283,7 @@ class _SearchBarState extends State<SearchBar> {
             },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
-              hintText: "Search",
+              hintText: "Search".tr(),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

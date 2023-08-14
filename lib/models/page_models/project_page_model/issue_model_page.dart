@@ -9,7 +9,7 @@ class IssuePageModel {
     return [
       {
         tr("Status"): data['status'] ?? tr('none'),
-        tr('Subject'): data['subject'] ?? tr('none')
+        'Subject'.tr(): data['subject'] ?? tr('none')
       },
       {
         tr('Issue Type'): data['issue_type'] ?? tr('none'),

@@ -1,3 +1,4 @@
+import 'package:NextApp/core/constants.dart';
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:NextApp/core/constants.dart';
 import 'package:badges/badges.dart' as badges;
@@ -5,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screen/page/page_screen.dart';
-import 'assign_widget/assgin_dialog.dart';
 import '../provider/module/module_provider.dart';
 import '../new_version/core/resources/app_values.dart';
 import '../new_version/core/utils/animated_dialog.dart';
+import 'genric_page_widget/assgin_dialog.dart';
+import 'genric_page_widget/share_doc_widget.dart';
 
 /// This is the Buttons in the [AppBar] of any page.
 class GenericPageButtons extends StatelessWidget {
@@ -65,7 +67,7 @@ class AssignPageButton extends StatelessWidget {
         icon: const Icon(
           Icons.add,
           color: Colors.black,
-          size: 40,
+          size: 35,
         ),
         padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
         tooltip: 'Assign',
@@ -88,11 +90,12 @@ class EditPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moduleProvider = context.read<ModuleProvider>();
     return IconButton(
-      onPressed: context.read<ModuleProvider>().pageSubmitStatus == 0 &&
-              context.read<ModuleProvider>().currentModule.createForm != null
+      onPressed: moduleProvider.pageSubmitStatus == 0 &&
+              moduleProvider.currentModule.createForm != null
           ? () => editPage(context)
-          : null,
+          : () {},
       splashRadius: DoublesManager.d_20,
       icon: Icon(
         Icons.edit,
@@ -100,7 +103,6 @@ class EditPageButton extends StatelessWidget {
             ? Colors.black
             : Colors.black54,
       ),
-      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Edit',
     );
   }
@@ -120,9 +122,8 @@ class DownloadPdfButton extends StatelessWidget {
       icon: const Icon(
         Icons.download,
         color: Colors.black,
-        size: 40,
+        size: 35,
       ),
-      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Download PDF',
     );
   }
@@ -142,9 +143,8 @@ class PrintPageButton extends StatelessWidget {
       icon: const Icon(
         Icons.print_sharp,
         color: Colors.black,
-        size: 40,
+        size: 35,
       ),
-      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Print',
     );
   }
@@ -155,26 +155,22 @@ class AttachmentPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moduleProvider = context.read<ModuleProvider>();
     return IconButton(
       onPressed: () => showAttachments(context),
       splashRadius: DoublesManager.d_20,
       icon: badges.Badge(
         badgeContent: Text(
-          '${((context.read<ModuleProvider>().pageData['attachments'] as List?)?.length)}',
+          '${moduleProvider.pageData['attachments']?.length}',
           style:
               const TextStyle(fontSize: 13, color: Colors.black, height: 1.5),
         ),
         stackFit: StackFit.passthrough,
         badgeColor: Colors.redAccent,
         elevation: 0,
-        showBadge: ((context.read<ModuleProvider>().pageData['attachments']
-                        as List?)
-                    ?.length) ==
-                null
+        showBadge: moduleProvider.pageData['attachments']?.length == null
             ? false
-            : ((context.read<ModuleProvider>().pageData['attachments'] as List?)
-                        ?.length) ==
-                    0
+            : moduleProvider.pageData['attachments']?.length == 0
                 ? false
                 : true,
         child: Container(
@@ -182,11 +178,10 @@ class AttachmentPageButton extends StatelessWidget {
           child: const Icon(
             Icons.attach_file,
             color: Colors.black,
-            size: 40,
+            size: 35,
           ),
         ),
       ),
-      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Attachments',
     );
   }
@@ -207,11 +202,37 @@ class DuplicatePageButton extends StatelessWidget {
       icon: const Icon(
         Icons.copy,
         color: Colors.black,
-        size: 40,
+        size: 35,
       ),
-      padding: const EdgeInsets.only(bottom: DoublesManager.d_10),
       tooltip: 'Duplicate',
       splashRadius: DoublesManager.d_20,
+    );
+  }
+}
+
+class ShareDocIcon extends StatelessWidget {
+  const ShareDocIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: IconButton(
+        color: APPBAR_COLOR,
+        onPressed: () {
+          AnimatedDialog.showAnimatedDialog(
+            context,
+            const ShareDocWidget(),
+          );
+        },
+        icon: const Icon(
+          Icons.ios_share_outlined,
+          color: Colors.black,
+          size: 35,
+        ),
+        tooltip: 'Share Doc',
+        iconSize: DoublesManager.d_25,
+        splashRadius: DoublesManager.d_20,
+      ),
     );
   }
 }

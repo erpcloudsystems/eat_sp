@@ -8,11 +8,11 @@ class AppLocal {
     Locale('ar'),
   ];
 
-  static bool isEnglish = false;
+  static bool? isEnglish;
 
   ///switch locals
   static Future<void> toggleBetweenLocales(BuildContext context) async {
-    if (isEnglish) {
+    if (isEnglish!) {
       await context.setLocale(supportLocals[0]);
     } else {
       await context.setLocale(supportLocals[1]);

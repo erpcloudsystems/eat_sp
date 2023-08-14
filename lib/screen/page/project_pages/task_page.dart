@@ -44,9 +44,9 @@ class TaskPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Text(
-              'Task',
-              style: TextStyle(
+            Text(
+              'Task'.tr(),
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -108,10 +108,10 @@ class TaskPage extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Connections',
-              style: TextStyle(
+              'Connections'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

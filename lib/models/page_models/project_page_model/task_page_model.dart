@@ -1,4 +1,3 @@
-import '../model_functions.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class TaskPageModel {
@@ -18,7 +17,7 @@ class TaskPageModel {
       },
       {
         tr('Project'): data['project'] ?? tr('none'),
-        tr('Subject'): data['subject'] ?? tr('none')
+        'Subject'.tr(): data['subject'] ?? tr('none')
       },
       {
         tr('Progress'): data['progress'].toString(),

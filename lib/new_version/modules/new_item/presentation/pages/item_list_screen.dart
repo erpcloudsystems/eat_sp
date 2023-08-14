@@ -175,6 +175,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                         uom: filteredData[index].uom,
                                         imageUrl: filteredData[index].imageUrl,
                                         uomList: filteredData[index].uomList,
+                                        priceListRate: filteredData[index].priceListRate,
                                       ),
                                     ),
                                   ),

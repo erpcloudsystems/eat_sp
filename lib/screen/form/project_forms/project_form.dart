@@ -154,7 +154,7 @@ class _ProjectFormState extends State<ProjectForm> {
                       //_______________________________________Project Name_____________________________________________________
                       CustomTextFieldTest(
                         'project_name',
-                        'Project Name',
+                        'Project Name'.tr(),
                         initialValue: data['project_name'],
                         disableValidation: false,
                         clearButton: true,
@@ -185,7 +185,7 @@ class _ProjectFormState extends State<ProjectForm> {
                       //_______________________________________Customer_____________________________________________________
                       CustomTextFieldTest(
                         'customer',
-                        'Customer',
+                        'Customer'.tr(),
                         initialValue: data['customer'],
                         disableValidation: true,
                         clearButton: true,
@@ -294,7 +294,7 @@ class _ProjectFormState extends State<ProjectForm> {
                       //_______________________________________Is Group_____________________________________________________
                       CheckBoxWidget(
                         'is_active',
-                        'Is Active',
+                        'Is Active'.tr(),
                         initialValue: data['is_active'] == 'Yes' ? true : false,
                         onChanged: (id, value) => setState(
                           () {
@@ -312,7 +312,7 @@ class _ProjectFormState extends State<ProjectForm> {
                           Flexible(
                               child: DatePickerTest(
                             'expected_start_date',
-                            'Expected Start Date',
+                            'Start Date'.tr(),
                             initialValue: data['expected_start_date'],
                             onChanged: (value) => setState(
                                 () => data['expected_start_date'] = value),
@@ -321,7 +321,7 @@ class _ProjectFormState extends State<ProjectForm> {
                           //____________________________________Expected End Date______________________________________________
                           Flexible(
                               child: DatePickerTest(
-                                  'expected_end_date', 'Expected End Date',
+                                  'expected_end_date', 'End Date'.tr(),
                                   onChanged: (value) => Future.delayed(
                                       Duration.zero,
                                       () => setState(() =>
@@ -336,7 +336,7 @@ class _ProjectFormState extends State<ProjectForm> {
                 Group(
                   child: CustomTextFieldTest(
                     'notes',
-                    'Description',
+                    'Description'.tr(),
                     minLines: 6,
                     maxLines: null,
                     removeUnderLine: true,

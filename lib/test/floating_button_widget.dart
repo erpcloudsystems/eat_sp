@@ -129,7 +129,11 @@ class _ExpandableFabState extends State<ExpandableFab>
           1.2,
         ),
         duration: const Duration(milliseconds: 250),
-        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+        curve: const Interval(
+          0.0,
+          0.5,
+          curve: Curves.easeOut,
+        ),
         child: AnimatedOpacity(
           opacity: _open ? 0.0 : 1.0,
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
@@ -168,12 +172,12 @@ class _ExpandingActionButton extends StatelessWidget {
       animation: progress,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees * (math.pi / 140.0),
+          directionInDegrees * (math.pi / 135.0),
           progress.value * maxDistance,
         );
         return Positioned(
-          right: 30.0 + offset.dx,
-          bottom: 4.0 + offset.dy,
+          right: 40.0 + offset.dx,
+          bottom: 10.0 + offset.dy,
           child: Transform.rotate(
             angle: (1.0 - progress.value) * math.pi / 2,
             child: child!,

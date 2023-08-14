@@ -266,6 +266,7 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
+    final provider = context.read<ModuleProvider>();
     return WillPopScope(
       onWillPop: () async {
         InheritedForm.of(context).data['selling_price_list'] = null;
@@ -573,7 +574,7 @@ class _PurchaseOrderFormState extends State<PurchaseOrderForm> {
                       if (res != null && res.isNotEmpty) {
                         setState(() {
                           if (data['buying_price_list'] != res['name']) {
-                            InheritedForm.of(context).items.clear();
+                            provider.newItemList.clear();
                             InheritedForm.of(context)
                                 .data['buying_price_list'] = res['name'];
                             data['buying_price_list'] = res['name'];

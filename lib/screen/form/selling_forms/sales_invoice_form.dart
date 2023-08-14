@@ -303,6 +303,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
+    final provider = context.read<ModuleProvider>();
     return WillPopScope(
       onWillPop: () async {
         bool? isGoBack =
@@ -643,7 +644,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         if (res != null && res.isNotEmpty) {
                           setState(() {
                             if (data['selling_price_list'] != res['name']) {
-                              InheritedForm.of(context).items.clear();
+                              provider.newItemList.clear();
                               InheritedForm.of(context)
                                   .data['selling_price_list'] = res['name'];
                               data['selling_price_list'] = res['name'];

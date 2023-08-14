@@ -21,8 +21,8 @@ class CustomButton extends StatelessWidget {
       },
       child: Container(
         height: 40,
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
@@ -30,8 +30,8 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 18,
+            style: const TextStyle(
+              fontSize: 16,
               color: Colors.white,
             ),
           ),

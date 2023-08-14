@@ -240,7 +240,8 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<UserProvider>();
+    final userProvider = context.read<UserProvider>();
+    final provider = context.read<ModuleProvider>();
     InheritedForm.of(context).data['selling_price_list'] = '';
     return WillPopScope(
       onWillPop: () async {
@@ -466,7 +467,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                       'currency',
                       'Currency',
                       initialValue:
-                          data['currency'] ?? provider.defaultCurrency,
+                          data['currency'] ?? userProvider.defaultCurrency,
                       onSave: (key, value) => data[key] = value,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -500,7 +501,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                     ),
                     CustomTextFieldTest('buying_price_list', 'Price List'.tr(),
                         initialValue: data['buying_price_list'] ??
-                            provider.defaultBuyingPriceList,
+                            userProvider.defaultBuyingPriceList,
                         disableValidation: true, onPressed: () async {
                       final res = await Navigator.of(context).push(
                         MaterialPageRoute(
@@ -510,7 +511,7 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                       if (res != null && res.isNotEmpty) {
                         setState(() {
                           if (data['buying_price_list'] != res['name']) {
-                            InheritedForm.of(context).items.clear();
+                            provider.newItemList.clear();
                             InheritedForm.of(context)
                                 .data['buying_price_list'] = res['name'];
                             data['buying_price_list'] = res['name'];

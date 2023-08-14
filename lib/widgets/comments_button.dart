@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,10 +41,10 @@ class CommentsButton extends StatelessWidget {
                       Icons.message,
                       color: Colors.grey,
                     )),
-                const Text(
-                  'Comments',
-                  style:
-                      TextStyle(fontSize: 16, color: Colors.black, height: 1.2),
+                Text(
+                  'Comments'.tr(),
+                  style: const TextStyle(
+                      fontSize: 16, color: Colors.black, height: 1.2),
                 ),
                 const SizedBox(width: 10),
                 Container(
