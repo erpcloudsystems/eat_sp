@@ -12,7 +12,7 @@ class BomPageModel {
   List<Map<String, String>> get card1Items {
     return [
       {
-        tr("name"): data['name'] ?? tr('none'),
+        tr("Status"): data['status'] ?? tr('none'),
         tr('Item'): data['item'] ?? tr('none')
       },
       {
@@ -47,7 +47,6 @@ class BomPageModel {
       },
     ];
   }
-
 
   List<MapEntry<String, String>> getItemCard(int index) {
     int qty = items[index]['qty'].toInt();

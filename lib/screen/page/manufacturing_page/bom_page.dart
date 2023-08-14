@@ -9,8 +9,10 @@ import '../../../core/constants.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
+import '../../../new_version/core/resources/app_values.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../models/page_models/manufacuting_model/bom_page_model.dart';
 
@@ -28,9 +30,16 @@ class BomPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
-        /// Task details
         PageCard(
           header: [
+              if (data['docstatus'] != null && data['amended_to'] == null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: DoublesManager.d_12),
+                  child: context.read<ModuleProvider>().submitDocumentWidget(),
+                ),
+              ),
             const Text(
               DocTypesName.bom,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -49,6 +58,27 @@ class BomPage extends StatelessWidget {
           ],
           items: model.card1Items,
           swapWidgets: [
+            SwapWidget(
+              1,
+              statusColor(data['status'] ?? 'none') != Colors.transparent
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: statusColor(data['status'] ?? 'none'),
+                          size: DoublesManager.d_12,
+                        ),
+                        const SizedBox(width: DoublesManager.d_8),
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
+                        ),
+                      ],
+                    )
+                  : Text(data['status'] ?? 'none'),
+            ),
             SwapWidget(
               5,
               SizedBox(

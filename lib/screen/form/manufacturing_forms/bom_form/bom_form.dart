@@ -17,8 +17,8 @@ import '../../../../provider/user/user_provider.dart';
 import '../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
-import '../../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../../models/page_models/manufacuting_model/bom_page_model.dart';
+import '../../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 
 class BomForm extends StatefulWidget {
   const BomForm({Key? key}) : super(key: key);
