@@ -51,9 +51,8 @@ class JobCardPageModel {
   List<MapEntry<String, String>> getItemCard(int index) {
     return [
       MapEntry(tr("Item Code"), items[index]['item_code'] ?? tr('none')),
-      MapEntry(tr("item_name"), items[index]['item_name'] ?? tr('none')),
-      MapEntry(tr("Item Group"), items[index]['item_group'] ?? tr('none')),
       MapEntry(tr("UOM"), items[index]['uom'] ?? tr('none')),
+      MapEntry(tr("Item Group"), items[index]['item_group'] ?? tr('none')),
     ];
   }
 
