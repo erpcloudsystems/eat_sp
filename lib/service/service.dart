@@ -297,21 +297,20 @@ class APIService {
         if (search != null && search.isNotEmpty) 'search_text': '%$search%',
         if (filters != null) ...filters
       });
-      print("getListCount request " + response.realUri.toString());
-      print(response.data);
+     print("getListCount request ${response.realUri}");
+     print(response.data);
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-        print("getList response" + response.toString());
-
+       print("getList response$response");
         return myMap['message']['count'].toString();
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
-          print(
+         print(
               "getListCount Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
         } else {
-          print(
+         print(
               "getListCount Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
       }

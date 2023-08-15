@@ -87,8 +87,6 @@ class JobCardPage extends StatelessWidget {
           ],
         ),
         //____________________________Time Logs Section_________________________________
-
-        /// TIME LOGS
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -129,7 +127,6 @@ class JobCardPage extends StatelessWidget {
                 )
               : const NothingHere(),
         ),
-
         //____________________________Time Logs Section_________________________________
 
         /// Remarks

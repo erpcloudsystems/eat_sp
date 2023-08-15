@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:NextApp/service/service.dart';
 
 import '../provider/user/user_provider.dart';
-import 'custom_loading.dart';
 import 'package:flutter/material.dart';
+import 'custom_loading.dart';
 
 import '../core/constants.dart';
+import 'package:provider/provider.dart';
 import '../models/list_models/list_model.dart';
 import '../provider/module/module_provider.dart';
-import 'package:provider/provider.dart';
 
 class PaginationList<T> extends StatefulWidget {
   final Future<ListModel<T>?> Function(int pageCount) future;
@@ -99,7 +99,8 @@ class _PaginationListState<T> extends State<PaginationList> {
   @override
   void initState() {
     super.initState();
-    widget.reset.addListener(_reset);
+    _reset();
+    // widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
     getItems();
   }
@@ -279,12 +280,6 @@ class _SearchBarState extends State<SearchBar> {
                 });
               });
             },
-            // onEditingComplete: () {
-            //   FocusScope.of(context).unfocus();
-            //   // setState(() {
-            //   //   widget.search(controller.text);
-            //   // });
-            // },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
               hintText: "Search",

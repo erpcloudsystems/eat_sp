@@ -124,16 +124,6 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
     userProvider = Provider.of<UserProvider>(context, listen: false);
     super.didChangeDependencies();
     getStatistics();
-    if (!userProvider.showcaseProgress!.contains('list_tut')) {
-      Future.delayed(Duration.zero, () {
-        // ShowCaseWidget.of(context).startShowCase([
-        //   createGK,
-        //   filterGK,
-        //   listSearchGK,
-        //   countGK,
-        // ]);
-      });
-    }
   }
 
   @override
@@ -305,19 +295,6 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    userProvider = Provider.of<UserProvider>(context, listen: false);
-    if (!userProvider.showcaseProgress!.contains('list_tut')) {
-      Future.delayed(Duration.zero, () {
-        // ShowCaseWidget.of(context)
-        //     .startShowCase([createGK, filterGK, listSearchGK, countGK]);
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final moduleProvider = Provider.of<ModuleProvider>(context);
     return Scaffold(
@@ -343,7 +320,6 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
                     },
                     icon: const Icon(Icons.add, color: APPBAR_ICONS_COLOR),
                   ),
-                // SizedBox(width: 8 )
               ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(SEARCH_BAR_HEIGHT),
