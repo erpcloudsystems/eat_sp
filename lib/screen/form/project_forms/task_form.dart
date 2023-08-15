@@ -4,24 +4,25 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../service/service.dart';
-import '../../../service/service_constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../test/custom_page_view_form.dart';
-import '../../../test/test_text_field.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
 import '../../list/otherLists.dart';
-import '../../../widgets/dialog/loading_dialog.dart';
-import '../../../widgets/dismiss_keyboard.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/snack_bar.dart';
-import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../widgets/snack_bar.dart';
+import '../../../test/test_text_field.dart';
+import '../../../widgets/form_widgets.dart';
+import '../../../widgets/dismiss_keyboard.dart';
+import '../../../service/service_constants.dart';
+import '../../../test/custom_page_view_form.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/loading_dialog.dart';
 
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
 
   @override
-  _TaskFormState createState() => _TaskFormState();
+  State<TaskForm> createState() => _TaskFormState();
 }
 
 class _TaskFormState extends State<TaskForm> {
@@ -56,31 +57,34 @@ class _TaskFormState extends State<TaskForm> {
       log("➡️ $k: ${data[k]}");
     }
     data['docstatus'] = 0;
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(TASK_POST, {'data': data}),
-        context);
-    Navigator.pop(context);
 
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(TASK_POST, {'data': data}),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['task'] != null) {
-        context.read<ModuleProvider>().pushPage(res['message']['task']);
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['task'] != null) {
+          context.read<ModuleProvider>().pushPage(res['message']['task']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['task'] != null) {
+        provider.pushPage(res['message']['task']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
       }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['task'] != null) {
-      provider.pushPage(res['message']['task']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+    });
   }
 
   @override
@@ -93,7 +97,6 @@ class _TaskFormState extends State<TaskForm> {
         provider.isAmendingMode ||
         provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
-        print('---Update--');
         data = context.read<ModuleProvider>().updateData;
         setState(() {});
       });
@@ -102,17 +105,24 @@ class _TaskFormState extends State<TaskForm> {
     //DocFromPage Mode
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
-        print('---Create--');
         data = context.read<ModuleProvider>().createFromPageData;
+
+        // Create from Project
+        if (data['doctype'] == DocTypesName.project) {
+          data['project'] = data['name'];
+          data['department'] = data['department'];
+          data['expected_start_date'] = data['exp_start_date'];
+          data['expected_end_date'] = data['exp_end_date'];
+          data['progress'] = 0.0;
+          data['expected_time'] = 0.0;
+        }
+
+        // Create from Issue
+        if (data['doctype'] == DocTypesName.issue) {
+          data['issue'] = data['name'];
+        }
+
         data['doctype'] = "Task";
-
-        data['project'] = data['name'];
-        data['department'] = data['department'];
-        data['expected_start_date'] = data['exp_start_date'];
-        data['expected_end_date'] = data['exp_end_date'];
-        data['progress'] = 0.0;
-        data['expected_time'] = 0.0;
-
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');

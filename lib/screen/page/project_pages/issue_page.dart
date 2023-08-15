@@ -1,10 +1,11 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
@@ -26,9 +27,19 @@ class IssuePage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-            Text(
+            Row(
+              children: [
+                CreateFromPageButton(
+                  doctype: DocTypesName.issue,
+                  data: data,
+                  items: fromIssue,
+                  disableCreate: false,
+                ),
+              ],
+            ),
+            const Text(
               'Issue',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -42,7 +53,7 @@ class IssuePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -57,10 +68,10 @@ class IssuePage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -84,23 +95,23 @@ class IssuePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
             //border: Border.all(color: Colors.blueAccent),
           ),
-          child: Center(
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          child: const Center(
             child: Text(
               'Connections',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -108,7 +119,7 @@ class IssuePage extends StatelessWidget {
                       imageUrl: data['conn'][index]['icon'] ?? tr('none'),
                       docTypeId: data['conn'][index]['name'] ?? tr('none'),
                       count: data['conn'][index]['count'].toString()))
-              : NothingHere(),
+              : const NothingHere(),
         ),
       ],
     );

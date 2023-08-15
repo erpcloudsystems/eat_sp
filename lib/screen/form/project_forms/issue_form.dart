@@ -21,7 +21,7 @@ class IssueForm extends StatefulWidget {
   const IssueForm({Key? key}) : super(key: key);
 
   @override
-  _IssueFormState createState() => _IssueFormState();
+  State<IssueForm> createState() => _IssueFormState();
 }
 
 class _IssueFormState extends State<IssueForm> {
@@ -55,38 +55,39 @@ class _IssueFormState extends State<IssueForm> {
       log("➡️ $k: ${data[k]}");
     }
 
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(
-                ISSUE_POST,
-                {'data': data},
-              ),
-        context);
-
-    Navigator.pop(context);
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(
+                    ISSUE_POST,
+                    {'data': data},
+                  ),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['issue'] != null) {
-        context.read<ModuleProvider>().pushPage(res['message']['issue']);
-      }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['issue'] != null) {
+          context.read<ModuleProvider>().pushPage(res['message']['issue']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['issue'] != null) {
+        provider.pushPage(res['message']['issue']);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
             builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['issue'] != null) {
-      provider.pushPage(res['message']['issue']);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const GenericPage(),
-        ),
-      );
-    }
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -217,24 +218,6 @@ class _IssueFormState extends State<IssueForm> {
                           return res['name'];
                         },
                       ),
-                      //_______________________________________Department_____________________________________________________
-                      // CustomTextFieldTest(
-                      //   'department',
-                      //   'Department',
-                      //   initialValue: data['department'],
-                      //   disableValidation: true,
-                      //   clearButton: true,
-                      //   onSave: (key, value) => data[key] = value,
-                      //   onPressed: () async {
-                      //     final res = await Navigator.of(context).push(
-                      //       MaterialPageRoute(
-                      //         builder: (_) => departmentListScreen(),
-                      //       ),
-                      //     );
-                      //     data['department'] = res;
-                      //     return res;
-                      //   },
-                      // ),
                     ],
                   ),
                 ),
@@ -263,6 +246,7 @@ class _IssueFormState extends State<IssueForm> {
                         }),
                       ),
 
+                      //_______________________________________ Description ________________________________________________
                       CustomTextFieldTest(
                         'description',
                         'Description',

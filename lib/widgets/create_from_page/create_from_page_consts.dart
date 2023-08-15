@@ -79,6 +79,10 @@ Map<String, Widget> fromProject = {
   DocTypesName.timesheet: InheritedForm(child: const TimesheetForm()),
   DocTypesName.issue: InheritedForm(child: const IssueForm()),
 };
+// Issue
+Map<String, Widget> fromIssue = {
+  DocTypesName.task: const TaskForm(),
+};
 
 // Buying Modules:
 

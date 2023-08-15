@@ -49,11 +49,11 @@ class SalesOrderPage extends StatelessWidget {
                   ),
               ],
             ),
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Sales Order',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
