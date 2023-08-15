@@ -1,6 +1,8 @@
 import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../model_functions.dart';
+
 class BomPageModel {
   final Map<String, dynamic> data;
   final List<Map<String, dynamic>> items;
@@ -53,6 +55,11 @@ class BomPageModel {
       MapEntry(tr("Item Code"), items[index]['item_code'] ?? tr('none')),
       MapEntry(tr("UOM"), items[index]['uom'] ?? tr('none')),
       MapEntry(tr("Item Group"), items[index]['item_group'] ?? tr('none')),
+         MapEntry(
+          tr('Quantity'),
+          items[index]['qty'] == null
+              ? tr('none')
+              : (items[index]['qty'] as double).toStringAsFixed(0)),
     ];
   }
 
@@ -60,15 +67,12 @@ class BomPageModel {
     return [
       tr('Item Code'),
       tr('Item Name'),
-      tr('Description'),
       tr('Item Group'),
-      tr('Brand'),
       tr('Quantity'),
+      tr('Brand'),
       tr('Stock UOM'),
       tr('UOM'),
-      tr('Min Order Quantity'),
-      tr('Last Purchase Rate'),
-      tr('Valuation Rate'),
+      tr('Rate'),
     ];
   }
 
@@ -76,15 +80,12 @@ class BomPageModel {
     return [
       items[index]['item_code'] ?? tr('none'),
       items[index]['item_name'] ?? tr('none'),
-      items[index]['description'] ?? tr('none'),
       items[index]['item_group'] ?? tr('none'),
+      (items[index]['qty'] ?? 0).toString(),
       items[index]['brand'] ?? tr('none'),
-      (items[index]['required_qty'] ?? tr('none')).toString(),
       items[index]['stock_uom'] ?? tr('none'),
       items[index]['uom'] ?? tr('none'),
-      (items[index]['min_order_qty'] ?? tr('none')).toString(),
-      (items[index]['last_purchase_rate'] ?? tr('none')).toString(),
-      (items[index]['valuation_rate'] ?? tr('none')).toString(),
+      currency(items[index]['rate']),
     ];
   }
 }

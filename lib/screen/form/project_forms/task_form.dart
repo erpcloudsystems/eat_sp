@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../new_version/core/resources/strings_manager.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
@@ -15,8 +14,9 @@ import '../../../widgets/form_widgets.dart';
 import '../../../widgets/dismiss_keyboard.dart';
 import '../../../service/service_constants.dart';
 import '../../../test/custom_page_view_form.dart';
-import '../../../provider/module/module_provider.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
 
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
@@ -123,6 +123,7 @@ class _TaskFormState extends State<TaskForm> {
         }
 
         data['doctype'] = "Task";
+
         data.remove('print_formats');
         data.remove('conn');
         data.remove('comments');
