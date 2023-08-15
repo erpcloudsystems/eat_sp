@@ -73,15 +73,23 @@ Map<String, Widget> fromCustomerVisit = {
   DocTypesName.paymentEntry: const PaymentForm(),
 };
 
+/// Project Module: 
+
 // Project:
 Map<String, Widget> fromProject = {
   DocTypesName.task: const TaskForm(),
   DocTypesName.timesheet: InheritedForm(child: const TimesheetForm()),
   DocTypesName.issue: InheritedForm(child: const IssueForm()),
 };
+
 // Issue
 Map<String, Widget> fromIssue = {
   DocTypesName.task: const TaskForm(),
+};
+
+// Task
+Map<String, Widget> fromTask = {
+  DocTypesName.timesheet:  InheritedForm(child: const TimesheetForm()),
 };
 
 // Buying Modules:

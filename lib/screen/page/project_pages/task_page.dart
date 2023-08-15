@@ -10,6 +10,9 @@ import '../../../widgets/nothing_here.dart';
 import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
 
 class TaskPage extends StatelessWidget {
@@ -29,6 +32,16 @@ class TaskPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
+              Row(
+              children: [
+                CreateFromPageButton(
+                  doctype: DocTypesName.task,
+                  data: data,
+                  items: fromTask,
+                  disableCreate: false,
+                ),
+              ],
+            ),
             const Text(
               'Task',
               style: TextStyle(

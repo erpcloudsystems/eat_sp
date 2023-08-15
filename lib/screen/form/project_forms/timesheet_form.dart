@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/resources/strings_manager.dart';
 import 'add_time_sheet_dialog.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
@@ -22,7 +23,7 @@ class TimesheetForm extends StatefulWidget {
   const TimesheetForm({Key? key}) : super(key: key);
 
   @override
-  _TimesheetFormState createState() => _TimesheetFormState();
+  State<TimesheetForm> createState() => _TimesheetFormState();
 }
 
 class _TimesheetFormState extends State<TimesheetForm> {
@@ -61,37 +62,38 @@ class _TimesheetFormState extends State<TimesheetForm> {
       log("➡️ $k: ${data[k]}");
     }
 
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(
-                TIMESHEET_POST,
-                {
-                  'data': data,
-                },
-              ),
-        context);
-
-    Navigator.pop(context);
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(
+                    TIMESHEET_POST,
+                    {
+                      'data': data,
+                    },
+                  ),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['timesheet'] != null) {
-        context.read<ModuleProvider>().pushPage(res['message']['timesheet']);
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['timesheet'] != null) {
+          context.read<ModuleProvider>().pushPage(res['message']['timesheet']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['timesheet'] != null) {
+        provider.pushPage(res['message']['timesheet']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
       }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['timesheet'] != null) {
-      provider.pushPage(res['message']['timesheet']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+    });
   }
 
   @override
@@ -113,7 +115,6 @@ class _TimesheetFormState extends State<TimesheetForm> {
         customerName = data['customer'];
         projectName = data['parent_project'];
 
-        
         setState(() {});
       });
     }
@@ -123,10 +124,21 @@ class _TimesheetFormState extends State<TimesheetForm> {
     if (context.read<ModuleProvider>().isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
+
+        if (data['doctype'] == DocTypesName.project) {
+          data['parent_project'] = data['name'];
+          projectName = data['name'];
+          customerName = data['customer'];
+        }
+
+        if (data['doctype'] == DocTypesName.task) {
+          data['parent_project'] = data['project'];
+          data['start_date'] = data['exp_start_date'];
+          data['end_date'] = data['exp_end_date'];
+          data['note'] = data['description'];
+        }
+
         data['doctype'] = "Timesheet";
-        data['parent_project'] = data['name'];
-        projectName = data['name'];
-        customerName = data['customer'];
 
         data.remove('print_formats');
         data.remove('conn');
