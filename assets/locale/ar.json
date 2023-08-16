@@ -204,6 +204,7 @@
   "Operation": "عملية",
   "To Date": "الى تاريخ",
   "From Date": "من تاريخ",
+  "Comments": "التعليقات",
   "Is Default": "افتراضي",
   "Workstation": "الورشة",
   "Operations": "العمليات",
@@ -215,6 +216,7 @@
   "Save Operation": "حفظ عملية",
   "With Operations": "مع عمليات",
   "Add Operation": "اضافة عملية",
+  "No comments": "لا توجد تعليقات",
   "Operating Cost": "تكلفة عملية",
   "Operation Time": "وقت العملية",
   "Select Operation": "اختر عملية",
@@ -230,9 +232,7 @@
   "Quality Inspection Template": "نموذج فحص الجودة",
   "Quality Inspection Required": "يوجد نموذج فحص الجودة",
   "Rate Of Materials Based On: ": " :سعر المواد بناءً على",
-  "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع "
-,
-
+  "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع ",
   "Let's go back to work.":"لنعد إلى العمل.",
   "Profile": "الملف الشخصي",
   "Apply":"تطبيق",

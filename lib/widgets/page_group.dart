@@ -1,13 +1,13 @@
-import '../core/constants.dart';
-import '../provider/module/module_provider.dart';
-import '../provider/user/user_provider.dart';
-import '../screen/list/generic_list_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../service/service.dart';
 import 'list_card.dart';
+import '../core/constants.dart';
+import '../service/service.dart';
+import 'package:provider/provider.dart';
+import '../provider/user/user_provider.dart';
+import '../screen/list/generic_list_screen.dart';
+import '../provider/module/module_provider.dart';
 
 class PageGroup extends StatelessWidget {
   final Widget child;
@@ -156,7 +156,7 @@ class PageExpandableCardItem extends StatefulWidget {
   bool isOpened = false;
 
   @override
-  _PageExpandableCardItemState createState() => _PageExpandableCardItemState();
+  State<PageExpandableCardItem> createState() => _PageExpandableCardItemState();
 }
 
 class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
@@ -169,12 +169,6 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
       _keys = widget.items[i].keys.toList();
       for (int j = 0; j < _keys.length; j++) {
         _columnChildren.add(
-          // Row(
-          //   children: [
-          //     Text(_keys[j],maxLines: 1),
-          //     Text(widget.items[i][_keys[j]],maxLines: 2)
-          //   ],
-          // ),
 
           ListTile(
             horizontalTitleGap: 2,

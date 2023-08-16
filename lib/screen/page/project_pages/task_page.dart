@@ -4,10 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants.dart';
+import '../../../widgets/comments.dart';
+import '../../../widgets/page_common_button.dart';
 import '../../../widgets/page_group.dart';
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
@@ -32,7 +31,7 @@ class TaskPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-              Row(
+            Row(
               children: [
                 CreateFromPageButton(
                   doctype: DocTypesName.task,
@@ -98,42 +97,101 @@ class TaskPage extends StatelessWidget {
         /// Task description
         PageCard(items: model.card2Items),
 
-        /// Comment button
-        CommentsButton(color: color),
+        // /// Connections
+        // Container(
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
+        //   ),
+        //   padding: const EdgeInsets.all(8),
+        //   margin: const EdgeInsets.all(8),
+        //   child: const Center(
+        //     child: Text(
+        //       'Connections',
+        //       style: TextStyle(
+        //         fontSize: 16,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 0.20,
+        //   child: (data['conn'] != null && data['conn'].isNotEmpty)
+        //       ? ListView.builder(
+        //           physics: const BouncingScrollPhysics(),
+        //           padding: const EdgeInsets.symmetric(horizontal: 12),
+        //           shrinkWrap: true,
+        //           itemCount: data['conn'].length,
+        //           itemBuilder: (_, index) => ConnectionCard(
+        //               imageUrl: data['conn'][index]['icon'] ?? tr('none'),
+        //               docTypeId: data['conn'][index]['name'] ?? tr('none'),
+        //               count: data['conn'][index]['count'].toString()))
+        //       : const NothingHere(),
+        // ),
 
-        /// Connections
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-            //border: Border.all(color: Colors.blueAccent),
-          ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
-          child: const Center(
-            child: Text(
-              'Connections',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+        /// Comment button
+        GridView.count(
+          crossAxisCount: 2,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          childAspectRatio: 2.8,
+          children: [
+            PageCommonButton(
+              sheetFunction: showCommentsSheet,
+              buttonText: StringsManager.comments.tr(),
+              dataKey: 'comments',
+              buttonIcon: Icons.message,
             ),
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.45,
-          child: (data['conn'] != null && data['conn'].isNotEmpty)
-              ? ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  shrinkWrap: true,
-                  itemCount: data['conn'].length,
-                  itemBuilder: (_, index) => ConnectionCard(
-                      imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-                      docTypeId: data['conn'][index]['name'] ?? tr('none'),
-                      count: data['conn'][index]['count'].toString()))
-              : const NothingHere(),
-        ),
+            // TODO: sheetFunction isn't ready
+            PageCommonButton(
+              sheetFunction: showCommentsSheet,
+              buttonText: StringsManager.assignedTo.tr(),
+              dataKey: '_assign',
+              buttonIcon: Icons.person,
+            ),
+            // TODO: sheetFunction & database Key
+            PageCommonButton(
+              sheetFunction: showCommentsSheet,
+              buttonText: StringsManager.logs.tr(),
+              dataKey: 'comments',
+              buttonIcon: Icons.history,
+            ),
+            // TODO: sheetFunction & database Key
+            PageCommonButton(
+              sheetFunction: showCommentsSheet,
+              buttonText: StringsManager.sharedWith.tr(),
+              dataKey: '_assign',
+              buttonIcon: Icons.share,
+            ),
+          ],
+        )
+        // Row(
+        //   children: [
+        //     PageCommonButton(
+        //       sheetFunction: showCommentsSheet,
+        //       buttonText: StringsManager.comments.tr(),
+        //       dataKey: 'comments',
+        //       buttonIcon: Icons.message,
+        //     ),
+        //     PageCommonButton(
+        //       sheetFunction: showCommentsSheet,
+        //       buttonText: StringsManager.assigns.tr(),
+        //       dataKey: '_assign',
+        //       buttonIcon: Icons.person,
+        //     ),
+        //   ],
+        // ),
+        // Row(
+        //   children: [
+        //     CommentsButton(color: color),
+        //     CommentsButton(color: color),
+        //   ],
+        // ),
+        ,
+        const SizedBox(
+          height: 100,
+        )
       ],
     );
   }

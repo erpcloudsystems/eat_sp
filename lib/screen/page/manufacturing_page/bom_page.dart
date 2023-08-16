@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
+
 import 'connections_items.dart';
 import '../../../core/constants.dart';
 import '../../../widgets/page_group.dart';
@@ -32,7 +33,7 @@ class BomPage extends StatelessWidget {
       children: [
         PageCard(
           header: [
-              if (data['docstatus'] != null && data['amended_to'] == null)
+            if (data['docstatus'] != null && data['amended_to'] == null)
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
@@ -161,10 +162,9 @@ class BomPage extends StatelessWidget {
 
         /// Comment button
         CommentsButton(color: color),
- 
-      /// Connections & Items
-        ManufacturingConnectionsAndItemsPageSection(data: data, model: model),
 
+        /// Connections & Items
+        ManufacturingConnectionsAndItemsPageSection(data: data, model: model),
       ],
     );
   }

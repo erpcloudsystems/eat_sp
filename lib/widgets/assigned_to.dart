@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../new_version/core/resources/app_values.dart';
 import '../provider/module/module_provider.dart';
 import '../models/page_models/model_functions.dart';
 
@@ -10,27 +11,27 @@ import '../provider/user/user_provider.dart';
 
 const KBorderRadius = 18.0;
 
-showCommentsSheet(BuildContext context) {
+showAssignedTOSheet(BuildContext context) {
   return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(0))),
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       context: context,
-      builder: (_) => CommentsSheet(scaffoldContext: context));
+      builder: (_) => AssignedToSheet(scaffoldContext: context));
 }
 
-class CommentsSheet extends StatefulWidget {
+class AssignedToSheet extends StatefulWidget {
   final BuildContext scaffoldContext;
 
-  const CommentsSheet({Key? key, required this.scaffoldContext})
+  const AssignedToSheet({Key? key, required this.scaffoldContext})
       : super(key: key);
 
   @override
-  State<CommentsSheet> createState() => _CommentsSheetState();
+  State<AssignedToSheet> createState() => _AssignedToSheetState();
 }
 
-class _CommentsSheetState extends State<CommentsSheet> {
+class _AssignedToSheetState extends State<AssignedToSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,13 +46,14 @@ class _CommentsSheetState extends State<CommentsSheet> {
           child: Column(
             children: [
               Container(
-                height: 50,
+                height: DoublesManager.d_50,
                 color: Colors.grey.shade200, //APPBAR_COLOR,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    //_____________________ Navigation back Button______________________
                     Padding(
-                      padding: const EdgeInsets.only(left: 16),
+                      padding: const EdgeInsets.only(left: DoublesManager.d_16),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: InkWell(
@@ -62,8 +64,9 @@ class _CommentsSheetState extends State<CommentsSheet> {
                                 size: 25,
                               ))),
                     ),
+                    //___________________________ Header text______________________________________
                     Text(
-                        "${(context.read<ModuleProvider>().pageData['comments'] as List?)?.length} comments",
+                        "${(context.read<ModuleProvider>().pageData['_assign'] as List?)?.length} Assigns",
                         style: const TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.w700,
@@ -71,6 +74,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                   ],
                 ),
               ),
+              //___________________________ Header text______________________________________
               Expanded(
                 child: ColoredBox(
                   color: Colors.transparent, //APPBAR_COLOR,
@@ -82,11 +86,11 @@ class _CommentsSheetState extends State<CommentsSheet> {
                       borderRadius: BorderRadius.circular(KBorderRadius),
                       child: ((context
                                       .read<ModuleProvider>()
-                                      .pageData['comments'] as List?) ??
+                                      .pageData['_assign'] as List?) ??
                                   [])
                               .isEmpty
                           ? const Center(
-                              child: Text('No comments',
+                              child: Text('No Assigns',
                                   style: TextStyle(color: Colors.grey)))
                           : ListView.builder(
                               physics: const BouncingScrollPhysics(),
@@ -94,26 +98,19 @@ class _CommentsSheetState extends State<CommentsSheet> {
                                   horizontal: 6, vertical: 0),
                               itemCount: (context
                                           .read<ModuleProvider>()
-                                          .pageData['comments'] as List?)
+                                          .pageData['_assign'] as List?)
                                       ?.length ??
                                   0,
-                              itemBuilder: (_, index) => MessageBubble(
+                              itemBuilder: (_, index) => AssignedBubble(
                                 context
                                     .read<ModuleProvider>()
-                                    .pageData['comments'][index],
+                                    .pageData['_assign'][index],
                               ),
                             ),
                     ),
                   ),
                 ),
               ),
-              MessageField(onSend: (comment) async {
-                final success = await context
-                    .read<ModuleProvider>()
-                    .addComment(context, comment);
-                setState(() {});
-                return success;
-              })
             ],
           ),
         ),
@@ -122,127 +119,10 @@ class _CommentsSheetState extends State<CommentsSheet> {
   }
 }
 
-class MessageField extends StatefulWidget {
-  final Future<bool> Function(String message) onSend;
+class AssignedBubble extends StatelessWidget {
+  final Map<String, dynamic> assignObject;
 
-  const MessageField({Key? key, required this.onSend}) : super(key: key);
-
-  @override
-  State<MessageField> createState() => _MessageFieldState();
-}
-
-class _MessageFieldState extends State<MessageField> {
-  final controller = TextEditingController();
-  String lastValue = '';
-
-  void update() {
-    if ((controller.text.trim().isEmpty && lastValue.isNotEmpty) ||
-        (controller.text.trim().isNotEmpty && lastValue.isEmpty)) {
-      setState(() {});
-    }
-    lastValue = controller.text.trim();
-  }
-
-  @override
-  void initState() {
-    controller.addListener(update);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(update);
-    controller.dispose();
-    super.dispose();
-  }
-
-  void send() async {
-    final message = controller.text.trim();
-    controller.clear();
-    await widget.onSend(message).then((success) {
-      if (!success) {
-        setState(() => controller.text = message);
-      } else {
-        FocusScope.of(context).unfocus();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LimitedBox(
-      maxHeight: 125,
-      child: ColoredBox(
-        color: Colors.grey.shade100,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                child: Text(
-                  context.read<UserProvider>().username.toString()[0],
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w400),
-                ),
-              ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  textInputAction: TextInputAction.newline,
-                  autofocus: false,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    hintText: "Add Comment...",
-                    contentPadding: const EdgeInsets.only(
-                        left: 15, right: 15, bottom: 3, top: 3),
-                    isDense: true,
-                    filled: true,
-                    fillColor: Colors.grey.shade300,
-                    labelStyle: const TextStyle(height: 0.5),
-                    hintStyle: TextStyle(color: Colors.grey[700]),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: controller.text.trim().isEmpty ? null : send,
-                child: CircleAvatar(
-                  radius: 17,
-                  backgroundColor: controller.text.trim().isEmpty
-                      ? Colors.black45
-                      : APPBAR_COLOR,
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 21,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  final Map<String, dynamic> comment;
-
-  const MessageBubble(this.comment, {Key? key}) : super(key: key);
+  const AssignedBubble(this.assignObject, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -264,10 +144,12 @@ class MessageBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //____________________ First Letter Circle ______________________________
           CircleAvatar(
             radius: 24,
             child: Text(
-              comment['owner']!.toString()[0],
+              //TODO: Data base Key
+              assignObject['owner']!.toString()[0],
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
             ),
           ),
@@ -281,17 +163,21 @@ class MessageBubble extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      //____________________ Name Or Header ______________________________
                       Text(
-                        comment['owner']!.toString(),
+                        // TODO: Database Key.
+                        assignObject['owner']!.toString(),
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           height: 1.6,
                         ),
                       ),
+                      //____________________ Right Text ______________________________
                       Text(
-                          DateFormat("d/M/y  h:mm a").format(
-                              DateTime.parse(comment['creation']!.toString())),
+                          // TODO: Database Key.
+                          DateFormat("d/M/y  h:mm a").format(DateTime.parse(
+                              assignObject['creation']!.toString())),
                           style: const TextStyle(
                               fontSize: 12,
                               height: 1.6,
@@ -299,6 +185,7 @@ class MessageBubble extends StatelessWidget {
                     ],
                   ),
                 ),
+                //____________________ Subtitle ______________________________
                 Container(
                   alignment: Alignment.topLeft,
                   width: double.infinity,
@@ -307,7 +194,7 @@ class MessageBubble extends StatelessWidget {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(6)),
                   child: Text(
-                    formatDescription(comment['content'].toString()),
+                    formatDescription(assignObject['content'].toString()),
                     style: const TextStyle(
                         height: 1.5, fontWeight: FontWeight.w300),
                   ),

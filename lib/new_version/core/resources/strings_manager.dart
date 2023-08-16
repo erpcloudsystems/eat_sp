@@ -84,7 +84,10 @@ class StringsManager {
   static const String addTimeLog = 'Add Time Log';
   static const String workstation = 'Workstation';
   static const String connections = 'Connections';
+  static const String noComments = 'No comments';
   static const String lastActive = 'Last Active';
+  static const String sharedWith = 'Shared With';
+  static const String assignedTo = 'Assigned to';
   static const String quotations = 'Quotations';
   static const String department = 'Department';
   static const String operations = 'Operations';
@@ -105,6 +108,7 @@ class StringsManager {
   static const String userType = 'User Type';
   static const String userName = 'User Name';
   static const String isActive = 'Is Active';
+  static const String comments = 'Comments';
   static const String projects = 'Projects';
   static const String batchNo = 'Batch No.';
   static const String priority = 'Priority';
@@ -130,6 +134,7 @@ class StringsManager {
   static const String sales = 'Sales';
   static const String okay = 'Okay';
   static const String item = 'Item';
+  static const String logs = 'Logs';
   static const String none = 'none';
   static const String save = 'Save';
   static const String male = 'Male';
