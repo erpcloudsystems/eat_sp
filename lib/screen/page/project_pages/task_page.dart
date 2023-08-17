@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/comments.dart';
-import '../../../widgets/page_common_button.dart';
 import '../../../widgets/page_group.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
@@ -13,6 +12,8 @@ import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
+import '../common_page_widgets/assigned_to.dart';
+import '../common_page_widgets/page_common_button.dart';
 
 class TaskPage extends StatelessWidget {
   const TaskPage({Key? key}) : super(key: key);
@@ -143,17 +144,16 @@ class TaskPage extends StatelessWidget {
               dataKey: 'comments',
               buttonIcon: Icons.message,
             ),
-            // TODO: sheetFunction isn't ready
             PageCommonButton(
-              sheetFunction: showCommentsSheet,
+              sheetFunction: showAssignedTOSheet,
               buttonText: StringsManager.assignedTo.tr(),
-              dataKey: '_assign',
+              dataKey: 'assignments',
               buttonIcon: Icons.person,
             ),
             // TODO: sheetFunction & database Key
             PageCommonButton(
               sheetFunction: showCommentsSheet,
-              buttonText: StringsManager.logs.tr(),
+              buttonText: '${StringsManager.logs.tr()}         ',
               dataKey: 'comments',
               buttonIcon: Icons.history,
             ),

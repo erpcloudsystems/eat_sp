@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../core/constants.dart';
-import '../new_version/core/resources/app_values.dart';
-import '../provider/module/module_provider.dart';
+import '../../../core/constants.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../new_version/core/resources/app_values.dart';
 
 class PageCommonButton extends StatelessWidget {
   final Color? color;
@@ -22,6 +22,8 @@ class PageCommonButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List? data =
+        (context.read<ModuleProvider>().pageData[dataKey] as List?);
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: DoublesManager.d_8, vertical: DoublesManager.d_8),
@@ -53,15 +55,15 @@ class PageCommonButton extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 16, color: Colors.black, height: 1.2),
                 ),
-                Container(
-                    alignment: Alignment.center,
-                    width: 20,
-                    decoration: const BoxDecoration(
-                        color: Colors.redAccent, shape: BoxShape.circle),
-                    child: Text(
-                        '${(context.read<ModuleProvider>().pageData[dataKey] as List?)?.length}',
-                        style: const TextStyle(
-                            fontSize: 14, color: Colors.white, height: 1.5))),
+                if (data?.length != null && data!.isNotEmpty)
+                  Container(
+                      alignment: Alignment.center,
+                      width: 20,
+                      decoration: const BoxDecoration(
+                          color: Colors.redAccent, shape: BoxShape.circle),
+                      child: Text('${data.length}',
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.white, height: 1.5))),
               ],
             ),
           ),

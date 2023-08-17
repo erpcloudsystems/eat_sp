@@ -84,6 +84,7 @@ class StringsManager {
   static const String addTimeLog = 'Add Time Log';
   static const String workstation = 'Workstation';
   static const String connections = 'Connections';
+  static const String assignments = 'Assignments';
   static const String noComments = 'No comments';
   static const String lastActive = 'Last Active';
   static const String sharedWith = 'Shared With';

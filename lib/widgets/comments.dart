@@ -2,22 +2,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../new_version/core/resources/app_values.dart';
 import '../provider/module/module_provider.dart';
 import '../models/page_models/model_functions.dart';
 
 import '../core/constants.dart';
 import '../provider/user/user_provider.dart';
-
-const KBorderRadius = 18.0;
+import '../screen/page/common_page_widgets/common_methods.dart';
 
 showCommentsSheet(BuildContext context) {
-  return showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(0))),
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      context: context,
-      builder: (_) => CommentsSheet(scaffoldContext: context));
+  return CommonPageMethods.commonBottomSheet(
+      context: context, builderWidget: CommentsSheet(scaffoldContext: context));
 }
 
 class CommentsSheet extends StatefulWidget {
@@ -35,17 +30,17 @@ class _CommentsSheetState extends State<CommentsSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: MediaQuery.of(widget.scaffoldContext).padding.top,
+          top: MediaQuery.of(widget.scaffoldContext).padding.top + DoublesManager.d_100,
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: ClipRRect(
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(KBorderRadius)),
+        borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(CommonPageMethods.bottomSheetBorderRadius)),
         child: ColoredBox(
           color: Colors.transparent,
           child: Column(
             children: [
               Container(
-                height: 50,
+                height: DoublesManager.d_50,
                 color: Colors.grey.shade200, //APPBAR_COLOR,
                 child: Stack(
                   alignment: Alignment.center,
@@ -79,7 +74,8 @@ class _CommentsSheetState extends State<CommentsSheet> {
                         const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
                     decoration: BoxDecoration(color: Colors.grey.shade200),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(KBorderRadius),
+                      borderRadius: BorderRadius.circular(
+                          CommonPageMethods.bottomSheetBorderRadius),
                       child: ((context
                                       .read<ModuleProvider>()
                                       .pageData['comments'] as List?) ??
