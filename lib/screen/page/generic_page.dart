@@ -95,7 +95,6 @@ class _GenericPageState extends State<GenericPage> {
           child: ExpandableFab(
             distance: 112,
             children: [
-              AssignPageButton(),
               DownloadPdfButton(),
               PrintPageButton(),
               AttachmentPageButton(),

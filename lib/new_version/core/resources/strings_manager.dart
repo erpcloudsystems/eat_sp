@@ -88,7 +88,7 @@ class StringsManager {
   static const String noComments = 'No comments';
   static const String lastActive = 'Last Active';
   static const String sharedWith = 'Shared With';
-  static const String assignedTo = 'Assigned to';
+  static const String assignedTo = 'Assigned To';
   static const String quotations = 'Quotations';
   static const String department = 'Department';
   static const String operations = 'Operations';

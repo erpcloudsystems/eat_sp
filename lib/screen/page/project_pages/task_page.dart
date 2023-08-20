@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/comments.dart';
 import '../../../widgets/page_group.dart';
+import '../common_page_widgets/assigned_to.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
+import '../common_page_widgets/page_common_button.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
-import '../common_page_widgets/assigned_to.dart';
-import '../common_page_widgets/page_common_button.dart';
 
 class TaskPage extends StatelessWidget {
   const TaskPage({Key? key}) : super(key: key);

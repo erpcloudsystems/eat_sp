@@ -8,10 +8,10 @@ import '../models/page_models/model_functions.dart';
 
 import '../core/constants.dart';
 import '../provider/user/user_provider.dart';
-import '../screen/page/common_page_widgets/common_methods.dart';
+import '../screen/page/common_page_widgets/common_utils.dart';
 
 showCommentsSheet(BuildContext context) {
-  return CommonPageMethods.commonBottomSheet(
+  return CommonPageUtils.commonBottomSheet(
       context: context, builderWidget: CommentsSheet(scaffoldContext: context));
 }
 
@@ -30,11 +30,12 @@ class _CommentsSheetState extends State<CommentsSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: MediaQuery.of(widget.scaffoldContext).padding.top + DoublesManager.d_100,
+          top: MediaQuery.of(widget.scaffoldContext).padding.top +
+              DoublesManager.d_100,
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(CommonPageMethods.bottomSheetBorderRadius)),
+            top: Radius.circular(CommonPageUtils.bottomSheetBorderRadius)),
         child: ColoredBox(
           color: Colors.transparent,
           child: Column(
@@ -75,7 +76,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                     decoration: BoxDecoration(color: Colors.grey.shade200),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(
-                          CommonPageMethods.bottomSheetBorderRadius),
+                          CommonPageUtils.bottomSheetBorderRadius),
                       child: ((context
                                       .read<ModuleProvider>()
                                       .pageData['comments'] as List?) ??

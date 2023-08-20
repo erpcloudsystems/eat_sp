@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'common_methods.dart';
+import '../../../new_version/core/utils/animated_dialog.dart';
+import '../../../widgets/assign_widget/assgin_dialog.dart';
+import 'common_utils.dart';
 import 'common_page_sheet_body.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
@@ -10,12 +12,18 @@ import '../../../new_version/core/resources/app_values.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 
 showAssignedTOSheet(BuildContext context) {
-  return CommonPageMethods.commonBottomSheet(
+  return CommonPageUtils.commonBottomSheet(
       context: context,
       builderWidget: CommonPageSheetBody(
         scaffoldContext: context,
         databaseKey: 'assignments',
         appBarHeader: StringsManager.assignments,
+        isThereBottomWidget: true,
+        bottomWidget: BottomPageAddButton(
+            onPressed: () => AnimatedDialog.showAnimatedDialog(
+                  context,
+                  const AssignToDialog(),
+                )),
         bubbleWidgetFun: (_, index) => AssignedBubble(
           context.read<ModuleProvider>().pageData['assignments'][index],
         ),

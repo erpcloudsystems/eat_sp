@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
+import '../dialog/loading_dialog.dart';
 import '../form_widgets.dart';
 import '../custom-button.dart';
 import '../../core/constants.dart';
@@ -46,7 +47,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Add ToDo',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -59,7 +60,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Assign To',
                         style: TextStyle(
                           fontSize: 20,
@@ -87,7 +88,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                             ),
                           ),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.add,
                         ),
                       )
@@ -97,8 +98,8 @@ class _AssignToDialogState extends State<AssignToDialog> {
                   Container(
                     width: double.infinity,
                     height: 150.h,
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    padding: EdgeInsets.all(8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
@@ -109,8 +110,8 @@ class _AssignToDialogState extends State<AssignToDialog> {
                       itemCount: assignToList.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          padding: EdgeInsets.all(7),
-                          margin: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(7),
+                          margin: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
@@ -122,7 +123,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                             children: [
                               Text(
                                 assignToList[index],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
@@ -132,7 +133,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                                     assignToList.removeAt(index);
                                   });
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.close,
                                   color: Colors.red,
                                 ),
@@ -177,7 +178,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                   DatePicker(
                     'date',
                     'Complete By',
-                    initialValue: data['date'] ?? null,
+                    initialValue: data['date'],
                     onChanged: (value) => setState(
                       () => data['date'] = value,
                     ),
@@ -209,7 +210,7 @@ class _AssignToDialogState extends State<AssignToDialog> {
                           },
                           text: 'Back',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         CustomButton(
@@ -219,13 +220,22 @@ class _AssignToDialogState extends State<AssignToDialog> {
                               setState(() {
                                 data['assign_to'] = assignToList;
                               });
+                            showLoadingDialog(context, 'Assigning');
                               await handleRequest(
-                                  () async => await server.postRequest(
-                                        ASSIGN_TO,
-                                        {'data': data},
-                                      ),
-                                  context);
-                              Navigator.pop(context);
+                                      () async => await server.postRequest(
+                                            ASSIGN_TO,
+                                            {'data': data},
+                                          ),
+                                      context)
+                                  .whenComplete(() async {
+                                await context
+                                    .read<ModuleProvider>()
+                                    .loadPage()
+                                    .whenComplete(() {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                });
+                              });
                             }
                           },
                           text: 'Add',

@@ -1,5 +1,5 @@
-import 'package:NextApp/core/constants.dart';
 import 'package:expandable_menu/expandable_menu.dart';
+import 'package:NextApp/core/constants.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

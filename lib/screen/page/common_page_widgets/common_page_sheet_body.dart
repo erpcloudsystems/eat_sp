@@ -2,14 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'common_methods.dart';
+import 'common_utils.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../new_version/core/resources/app_values.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 
-
 class CommonPageSheetBody extends StatelessWidget {
   final String databaseKey, appBarHeader;
+  final bool isThereBottomWidget;
+  final Widget? bottomWidget;
   final BuildContext scaffoldContext;
   final Widget Function(BuildContext context, int index) bubbleWidgetFun;
 
@@ -19,6 +20,8 @@ class CommonPageSheetBody extends StatelessWidget {
     required this.databaseKey,
     required this.appBarHeader,
     required this.bubbleWidgetFun,
+    this.isThereBottomWidget = false,
+    this.bottomWidget,
   }) : super(key: key);
 
   @override
@@ -29,7 +32,7 @@ class CommonPageSheetBody extends StatelessWidget {
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(CommonPageMethods.bottomSheetBorderRadius)),
+            top: Radius.circular(CommonPageUtils.bottomSheetBorderRadius)),
         child: ColoredBox(
           color: Colors.transparent,
           child: Column(
@@ -72,28 +75,33 @@ class CommonPageSheetBody extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
                     decoration: BoxDecoration(color: Colors.grey.shade200),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          CommonPageMethods.bottomSheetBorderRadius),
-                      child: ((context
-                                      .read<ModuleProvider>()
-                                      .pageData[databaseKey] as List?) ??
-                                  [])
-                              .isEmpty
-                          ? Center(
-                              child: Text(StringsManager.noData.tr(),
-                                  style: const TextStyle(color: Colors.grey)))
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 0),
-                              itemCount: (context
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              CommonPageUtils.bottomSheetBorderRadius),
+                          child: ((context
+                                          .read<ModuleProvider>()
+                                          .pageData[databaseKey] as List?) ??
+                                      [])
+                                  .isEmpty
+                              ? Center(
+                                  child: Text(StringsManager.noData.tr(),
+                                      style:
+                                          const TextStyle(color: Colors.grey)))
+                              : ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 0),
+                                  itemCount: (context
                                               .read<ModuleProvider>()
-                                              .pageData[databaseKey]
-                                          as List?)
-                                      ?.length ??
-                                  0,
-                              itemBuilder: bubbleWidgetFun),
+                                              .pageData[databaseKey] as List?)
+                                          ?.length ??
+                                      0,
+                                  itemBuilder: bubbleWidgetFun),
+                        ),
+                        if (isThereBottomWidget) bottomWidget!,
+                      ],
                     ),
                   ),
                 ),

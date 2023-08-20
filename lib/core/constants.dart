@@ -5,6 +5,7 @@ const double SEARCH_BAR_HEIGHT = 50;
 
 ///*** COLORS ***///
 const APPBAR_COLOR = Color(0xff0099ff);
+const APP_MAIN_COLOR = Color(0xff0066ff);
 const APPBAR_ICONS_COLOR = Colors.white;
 const FORM_SUBMIT_BTN_COLOR = Colors.white;
 const LOADING_PROGRESS_COLOR = Color(0xff0066ff);

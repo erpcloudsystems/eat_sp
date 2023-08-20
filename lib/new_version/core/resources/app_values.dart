@@ -21,6 +21,7 @@ class DoublesManager {
   static const double d_50 = 50;
   static const double d_52 = 52;
   static const double d_56 = 56;
+  static const double d_60 = 60;
   static const double d_70 = 70;
   static const double d_90 = 90;
   static const double d_100 = 100;
