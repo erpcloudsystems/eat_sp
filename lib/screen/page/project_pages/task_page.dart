@@ -14,6 +14,7 @@ import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
+import '../common_page_widgets/shared_with.dart';
 
 class TaskPage extends StatelessWidget {
   const TaskPage({Key? key}) : super(key: key);
@@ -157,9 +158,8 @@ class TaskPage extends StatelessWidget {
               dataKey: 'comments',
               buttonIcon: Icons.history,
             ),
-            // TODO: sheetFunction & database Key
             PageCommonButton(
-              sheetFunction: showCommentsSheet,
+              sheetFunction: showSharedWithSheet,
               buttonText: StringsManager.sharedWith.tr(),
               dataKey: 'shared_with',
               buttonIcon: Icons.share,

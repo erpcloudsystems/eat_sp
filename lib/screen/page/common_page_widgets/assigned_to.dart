@@ -38,10 +38,15 @@ class AssignedBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.fromLTRB(
+        DoublesManager.d_12,
+        DoublesManager.d_8,
+        DoublesManager.d_12,
+        DoublesManager.d_8,
+      ),
+      margin: const EdgeInsets.symmetric(vertical: DoublesManager.d_8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(DoublesManager.d_14),
         color: Colors.white,
         boxShadow: [
           BoxShadow(
