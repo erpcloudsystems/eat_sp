@@ -41,7 +41,7 @@ class CommonPageSheetBody extends StatelessWidget {
                 height: DoublesManager.d_50,
                 color: Colors.grey.shade200, //APPBAR_COLOR,
                 child: Stack(
-                  alignment: Alignment.center,
+                  alignment: Alignment.bottomCenter,
                   children: [
                     //_____________________ Navigation back Button______________________
                     Padding(

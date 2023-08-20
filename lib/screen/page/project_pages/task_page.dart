@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../../../widgets/comments.dart';
+import '../common_page_widgets/comments.dart';
 import '../../../widgets/page_group.dart';
 import '../common_page_widgets/assigned_to.dart';
 import '../../../core/cloud_system_widgets.dart';
@@ -161,34 +161,11 @@ class TaskPage extends StatelessWidget {
             PageCommonButton(
               sheetFunction: showCommentsSheet,
               buttonText: StringsManager.sharedWith.tr(),
-              dataKey: '_assign',
+              dataKey: 'shared_with',
               buttonIcon: Icons.share,
             ),
           ],
-        )
-        // Row(
-        //   children: [
-        //     PageCommonButton(
-        //       sheetFunction: showCommentsSheet,
-        //       buttonText: StringsManager.comments.tr(),
-        //       dataKey: 'comments',
-        //       buttonIcon: Icons.message,
-        //     ),
-        //     PageCommonButton(
-        //       sheetFunction: showCommentsSheet,
-        //       buttonText: StringsManager.assigns.tr(),
-        //       dataKey: '_assign',
-        //       buttonIcon: Icons.person,
-        //     ),
-        //   ],
-        // ),
-        // Row(
-        //   children: [
-        //     CommentsButton(color: color),
-        //     CommentsButton(color: color),
-        //   ],
-        // ),
-        ,
+        ),
         const SizedBox(
           height: 100,
         )

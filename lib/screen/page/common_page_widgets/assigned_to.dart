@@ -2,13 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../new_version/core/utils/animated_dialog.dart';
-import '../../../widgets/assign_widget/assgin_dialog.dart';
 import 'common_utils.dart';
 import 'common_page_sheet_body.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
+import '../../../widgets/assign_widget/assgin_dialog.dart';
 import '../../../new_version/core/resources/app_values.dart';
+import '../../../new_version/core/utils/animated_dialog.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 
 showAssignedTOSheet(BuildContext context) {

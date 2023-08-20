@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../main.dart';
 import '../screen/home_screen.dart';
-import 'comments.dart';
+import '../screen/page/common_page_widgets/comments.dart';
 
 showSnackBar(String message, BuildContext context, {Color? color}) {
   ScaffoldMessenger.of(context).clearSnackBars();

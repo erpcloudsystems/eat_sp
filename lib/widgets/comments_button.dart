@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'comments.dart';
+import '../screen/page/common_page_widgets/comments.dart';
 import '../core/constants.dart';
 import '../provider/module/module_provider.dart';
 
