@@ -29,7 +29,6 @@ class _PaymentFormState extends State<PaymentForm> {
     'payment_type': paymentType[0],
     'party_type': KPaymentPartyList[0],
     "posting_date": DateTime.now().toIso8601String(),
-    "reference_date": "posting_date",
     "source_exchange_rate": 1,
     "target_exchange_rate": 1,
   };
@@ -145,7 +144,7 @@ class _PaymentFormState extends State<PaymentForm> {
         data['payment_type'] = paymentType[0];
         data['party_type'] = KPaymentPartyList[0];
         data['posting_date'] = DateTime.now().toIso8601String();
-        data['reference_date'] = "posting_date";
+
 
         // from Sales Order
         if (data['doctype'] == 'Sales Order') {
@@ -408,8 +407,6 @@ class _PaymentFormState extends State<PaymentForm> {
                           initialValue: data['reference_no'],
                           onChanged: (value) {
                             data['reference_no'] = value;
-
-                            data['reference_date'] = data['posting_date'];
                           },
                           onSave: (key, value) => data[key] = value,
                           keyboardType: TextInputType.number,

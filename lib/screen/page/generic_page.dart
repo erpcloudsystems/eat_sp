@@ -1,14 +1,15 @@
-import 'package:NextApp/service/service.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import '../../core/constants.dart';
-import '../../test/floating_button_widget.dart';
-import '../../widgets/nothing_here.dart';
-import '../../provider/module/module_provider.dart';
-import '../../widgets/generic_page_buttons.dart';
-import '../../widgets/workflow_widgets/action_widget.dart';
+import 'package:provider/provider.dart';
+
 import '../home_screen.dart';
+import '../../core/constants.dart';
+import '../../service/service.dart';
+import '../../widgets/nothing_here.dart';
+import '../../test/floating_button_widget.dart';
+import '../../widgets/generic_page_buttons.dart';
+import '../../provider/module/module_provider.dart';
+import '../../widgets/workflow_widgets/action_widget.dart';
 
 class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -85,6 +86,42 @@ class _GenericPageState extends State<GenericPage> {
                     size: 30,
                   ),
                 ),
+                PopupMenuButton(
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.message,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  'Comments',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      height: 1.2),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 20,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.redAccent,
+                                      shape: BoxShape.circle),
+                                  child: const Text(
+                                    '1',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        height: 1.5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ])
               ],
             ),
           ),

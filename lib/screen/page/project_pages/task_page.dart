@@ -1,20 +1,21 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../common_page_widgets/comments.dart';
+import '../../../core/constants.dart';
+import '../../../new_version/core/resources/app_values.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
-import '../common_page_widgets/assigned_to.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
-import '../common_page_widgets/page_common_button.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
-import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
-import '../common_page_widgets/shared_with.dart';
+import '../common_page_widgets/page_shared_buttons.dart';
 
 class TaskPage extends StatelessWidget {
   const TaskPage({Key? key}) : super(key: key);
@@ -99,76 +100,42 @@ class TaskPage extends StatelessWidget {
         /// Task description
         PageCard(items: model.card2Items),
 
-        // /// Connections
-        // Container(
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
-        //   ),
-        //   padding: const EdgeInsets.all(8),
-        //   margin: const EdgeInsets.all(8),
-        //   child: const Center(
-        //     child: Text(
-        //       'Connections',
-        //       style: TextStyle(
-        //         fontSize: 16,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: MediaQuery.of(context).size.height * 0.20,
-        //   child: (data['conn'] != null && data['conn'].isNotEmpty)
-        //       ? ListView.builder(
-        //           physics: const BouncingScrollPhysics(),
-        //           padding: const EdgeInsets.symmetric(horizontal: 12),
-        //           shrinkWrap: true,
-        //           itemCount: data['conn'].length,
-        //           itemBuilder: (_, index) => ConnectionCard(
-        //               imageUrl: data['conn'][index]['icon'] ?? tr('none'),
-        //               docTypeId: data['conn'][index]['name'] ?? tr('none'),
-        //               count: data['conn'][index]['count'].toString()))
-        //       : const NothingHere(),
-        // ),
-
-        /// Comment button
-        GridView.count(
-          crossAxisCount: 2,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          childAspectRatio: 2.8,
-          children: [
-            PageCommonButton(
-              sheetFunction: showCommentsSheet,
-              buttonText: StringsManager.comments.tr(),
-              dataKey: 'comments',
-              buttonIcon: Icons.message,
+        /// Connections
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
+          ),
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          child: const Center(
+            child: Text(
+              'Connections',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            PageCommonButton(
-              sheetFunction: showAssignedTOSheet,
-              buttonText: StringsManager.assignedTo.tr(),
-              dataKey: 'assignments',
-              buttonIcon: Icons.person,
-            ),
-            // TODO: sheetFunction & database Key
-            PageCommonButton(
-              sheetFunction: showCommentsSheet,
-              buttonText: '${StringsManager.logs.tr()}         ',
-              dataKey: 'comments',
-              buttonIcon: Icons.history,
-            ),
-            PageCommonButton(
-              sheetFunction: showSharedWithSheet,
-              buttonText: StringsManager.sharedWith.tr(),
-              dataKey: 'shared_with',
-              buttonIcon: Icons.share,
-            ),
-          ],
+          ),
         ),
-        const SizedBox(
-          height: 100,
-        )
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.20,
+          child: (data['conn'] != null && data['conn'].isNotEmpty)
+              ? ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  shrinkWrap: true,
+                  itemCount: data['conn'].length,
+                  itemBuilder: (_, index) => ConnectionCard(
+                      imageUrl: data['conn'][index]['icon'] ?? tr('none'),
+                      docTypeId: data['conn'][index]['name'] ?? tr('none'),
+                      count: data['conn'][index]['count'].toString()))
+              : const NothingHere(),
+        ),
+
+        //  Page buttons
+        // const PageSharedButtons(),
+        // SizedBox(height: DoublesManager.d_70.h)
       ],
     );
   }
