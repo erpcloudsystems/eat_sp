@@ -1,21 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../test/custom_page_view_form.dart';
-import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
 import '../../../widgets/form_widgets.dart';
+import '../../../test/test_text_field.dart';
 import '../../../service/gps_services.dart';
 import '../../../widgets/dismiss_keyboard.dart';
 import '../../../service/service_constants.dart';
+import '../../../test/custom_page_view_form.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
@@ -24,7 +25,7 @@ class CustomerVisitForm extends StatefulWidget {
   const CustomerVisitForm({Key? key}) : super(key: key);
 
   @override
-  _CustomerVisitFormState createState() => _CustomerVisitFormState();
+  State<CustomerVisitForm> createState() => _CustomerVisitFormState();
 }
 
 class _CustomerVisitFormState extends State<CustomerVisitForm> {
@@ -69,7 +70,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
     data['docstatus'] = 0;
     data['latitude'] = location.latitude;
     data['longitude'] = location.longitude;
-    data['location'] = gpsService.placeman[0].subAdministrativeArea;
+    data['location'] = gpsService.placeman[0].street;
     if (data['time'].toString().contains('T')) {
       data['time'] = data['time'].toString().split('T')[1].split('.')[0];
     }
@@ -81,36 +82,37 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
             : 'Adding new Customer Visit');
 
     for (var k in data.keys) {
-      print("➡️ $k: ${data[k]}");
+      log("➡️ $k: ${data[k]}");
     }
 
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(CUSTOMER_VISIT_POST, {'data': data}),
-        context);
-
-    Navigator.pop(context);
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(CUSTOMER_VISIT_POST, {'data': data}),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (res != null &&
-        res['message']['customer_visit_data_name'] != null) {
-      context
-          .read<ModuleProvider>()
-          .pushPage(res['message']['customer_visit_data_name']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (res != null &&
+          res['message']['customer_visit_data_name'] != null) {
+        context
+            .read<ModuleProvider>()
+            .pushPage(res['message']['customer_visit_data_name']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
+      }
+    });
   }
 
   Future<void> _getCustomerData(String customer) async {
     selectedCstData = Map<String, dynamic>.from(
         await APIService().getPage(CUSTOMER_PAGE, customer))['message'];
     for (var k in selectedCstData.keys) {
-      print("➡️ $k: ${selectedCstData[k]}");
+      log("➡️ $k: ${selectedCstData[k]}");
     }
   }
 
@@ -125,7 +127,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
         for (var k in data.keys) {
-          print("➡️ $k: ${data[k]}");
+          log("➡️ $k: ${data[k]}");
         }
         data['latitude'] = 0.0;
         data['longitude'] = 0.0;
@@ -291,7 +293,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                         disableValidation: true,
                       ),
                       const SizedBox(height: 8),
-                       Row(
+                      const Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
