@@ -10,6 +10,7 @@ import '../../test/floating_button_widget.dart';
 import '../../widgets/generic_page_buttons.dart';
 import '../../provider/module/module_provider.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
+import 'common_page_widgets/page_shared_buttons.dart';
 
 class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -193,7 +194,8 @@ class _GenericPageBodyState extends State<_GenericPageBody> {
               Expanded(
                 child: provider.currentModule.pageWidget,
               ),
-              
+              const PageSharedButtons(),
+              const SizedBox(height: 100)
             ],
           ),
         );
