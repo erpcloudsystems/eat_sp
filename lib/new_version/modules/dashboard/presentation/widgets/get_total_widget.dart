@@ -160,7 +160,7 @@ class GetTotalWidget extends StatelessWidget {
                   IncomeWidget(
                     docType: DocTypesName.customerVisit,
                     isCounted: true,
-                    title: DocTypesName.customerVisit,
+                    title: 'DocType.${DocTypesName.customerVisit}'.tr(),
                     arrowIcon: Icons.person_outline_rounded,
                     color: APPBAR_COLOR,
                     total: state.totalEntity.customerVisitEntity['count']
@@ -168,7 +168,7 @@ class GetTotalWidget extends StatelessWidget {
                   ),
                   IncomeWidget(
                     docType: DocTypesName.salesInvoice,
-                    title: StringsManager.sales,
+                    title: StringsManager.sales.tr(),
                     count: state.totalEntity.paidSalesInvoiceEntity['count']
                         .toString(),
                     arrowIcon: Icons.arrow_upward,
@@ -178,7 +178,7 @@ class GetTotalWidget extends StatelessWidget {
                   ),
                   IncomeWidget(
                     docType: DocTypesName.quotation,
-                    title: StringsManager.quotations,
+                    title: 'DocType.${StringsManager.quotation}'.tr(),
                     arrowIcon: Icons.money,
                     color: Colors.green,
                     total:
@@ -191,7 +191,7 @@ class GetTotalWidget extends StatelessWidget {
                     filters: const {
                       'filter1': 'Return',
                     },
-                    title: StringsManager.returns,
+                    title: StringsManager.returns.tr(),
                     total: state.totalEntity.returnedSalesInvoiceEntity['total']
                         .toString(),
                     count: state.totalEntity.returnedSalesInvoiceEntity['count']
@@ -201,7 +201,7 @@ class GetTotalWidget extends StatelessWidget {
                   ),
                   IncomeWidget(
                     docType: DocTypesName.salesOrder,
-                    title: DocTypesName.salesOrder,
+                    title: 'DocType.${DocTypesName.salesOrder}'.tr(),
                     total:
                         state.totalEntity.salesOrderEntity['total'].toString(),
                     count:
@@ -211,7 +211,7 @@ class GetTotalWidget extends StatelessWidget {
                   ),
                   IncomeWidget(
                     docType: DocTypesName.paymentEntry,
-                    title: DocTypesName.paymentEntry,
+                    title: 'DocType.${DocTypesName.paymentEntry}'.tr(),
                     count: state.totalEntity.paymentEntriesEntity['count']
                         .toString(),
                     arrowIcon: Icons.arrow_upward,
@@ -222,14 +222,14 @@ class GetTotalWidget extends StatelessWidget {
                   IncomeWidget(
                     docType: DocTypesName.stockEntry,
                     isCounted: true,
-                    title: DocTypesName.stockEntry,
+                    title: 'DocType.${DocTypesName.stockEntry}'.tr(),
                     arrowIcon: Icons.input,
                     color: APPBAR_COLOR,
                     total: state.totalEntity.stockEntries['count'].toString(),
                   ),
                   IncomeWidget(
                     docType: DocTypesName.deliveryNote,
-                    title: DocTypesName.deliveryNote,
+                    title: 'DocType.${DocTypesName.deliveryNote}'.tr(),
                     arrowIcon: Icons.money,
                     color: Colors.green,
                     total: state.totalEntity.deliveryNotes['total'].toString(),

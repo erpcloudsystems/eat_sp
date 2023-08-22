@@ -90,6 +90,7 @@ class StringsManager {
   static const String sharedWith = 'Shared With';
   static const String assignedTo = 'Assigned To';
   static const String quotations = 'Quotations';
+  static const String quotation = 'Quotation';
   static const String department = 'Department';
   static const String operations = 'Operations';
   static const String priceList = 'Item Price';

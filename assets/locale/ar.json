@@ -282,6 +282,9 @@
   "Link Name": "اسم الرابط",
   "Is Primary": "أساسي",
   "Payment": "الدفع",
+  "Sales":"مشتريات",
+  "Return":"مرتجع",
+
   "Modules": {
     "Modules": "المستندات",
     "Selling": "المبيعات",

@@ -291,6 +291,8 @@
   "Link Name":"Link Name",
   "Is Primary":"Is Primary",
   "Payment":"Payment",
+  "Sales":"Sales",
+  "Return":"Return",
   "Modules":{
     "Modules":"Modules",
     "Selling":"Selling",
