@@ -7,6 +7,8 @@ import 'shared_with.dart';
 import 'page_common_button.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 
+// TODO: Remove if the pop menu buttons used.
+
 class PageSharedButtons extends StatelessWidget {
   const PageSharedButtons({
     super.key,

@@ -1,9 +1,7 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
-import 'package:easy_localization/easy_localization.dart' as local;
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../new_version/core/resources/strings_manager.dart';
 import '../home_screen.dart';
 import '../../core/constants.dart';
 import '../../service/service.dart';
@@ -11,12 +9,8 @@ import '../../widgets/nothing_here.dart';
 import '../../test/floating_button_widget.dart';
 import '../../widgets/generic_page_buttons.dart';
 import '../../provider/module/module_provider.dart';
+import 'common_page_widgets/page_actions_pop_menu.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
-import 'common_page_widgets/assigned_to.dart';
-import 'common_page_widgets/comments.dart';
-import 'common_page_widgets/page_pop_item.dart';
-import 'common_page_widgets/shared_with.dart';
-
 class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
 
@@ -91,37 +85,7 @@ class _GenericPageState extends State<GenericPage> {
                     size: 30,
                   ),
                 ),
-                PopupMenuButton(
-                    itemBuilder: (context) => [
-                          PopupMenuItem(
-                              child: PagePopItem(
-                            sheetFunction: showCommentsSheet,
-                            buttonText: StringsManager.comments.tr(),
-                            dataKey: 'comments',
-                            buttonIcon: Icons.message,
-                          )),
-                          PopupMenuItem(
-                              child: PagePopItem(
-                            sheetFunction: showAssignedTOSheet,
-                            buttonText: StringsManager.assignedTo.tr(),
-                            dataKey: 'assignments',
-                            buttonIcon: Icons.person,
-                          )),
-                          PopupMenuItem(
-                              child: PagePopItem(
-                            sheetFunction: showSharedWithSheet,
-                            buttonText: StringsManager.sharedWith.tr(),
-                            dataKey: 'shared_with',
-                            buttonIcon: Icons.share,
-                          )),
-                          PopupMenuItem(
-                              child: PagePopItem(
-                            sheetFunction: showCommentsSheet,
-                            buttonText: '${StringsManager.logs.tr()}         ',
-                            dataKey: 'comments',
-                            buttonIcon: Icons.history,
-                          )),
-                        ])
+                const PageActionPopMenu(),
               ],
             ),
           ),
