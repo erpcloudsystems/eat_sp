@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/core/utils/animated_dialog.dart';
+import '../../../widgets/genric_page_widget/share_doc_widget.dart';
 import 'common_utils.dart';
 import 'common_page_sheet_body.dart';
 import '../../../provider/module/module_provider.dart';
@@ -17,6 +19,10 @@ showSharedWithSheet(BuildContext context) {
         scaffoldContext: context,
         databaseKey: 'shared_with',
         appBarHeader: StringsManager.sharedWith,
+        isThereBottomWidget: true,
+        bottomWidget: BottomPageAddButton(
+            onPressed: () => AnimatedDialog.showAnimatedDialog(
+                context, const ShareDocWidget())),
         bubbleWidgetFun: (_, index) => SharedWithBubble(
           context.read<ModuleProvider>().pageData['shared_with'][index],
         ),

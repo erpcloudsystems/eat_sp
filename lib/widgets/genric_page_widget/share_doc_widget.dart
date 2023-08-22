@@ -1,9 +1,9 @@
-import 'package:NextApp/provider/module/module_provider.dart';
-import 'package:NextApp/provider/new_controller/home_provider.dart';
-import 'package:NextApp/screen/list/otherLists.dart';
-import 'package:NextApp/service/service.dart';
-import 'package:NextApp/test/test_text_field.dart';
-import 'package:NextApp/widgets/snack_bar.dart';
+import '../../provider/module/module_provider.dart';
+import '../../provider/new_controller/home_provider.dart';
+import '../../screen/list/otherLists.dart';
+import '../../service/service.dart';
+import '../../test/test_text_field.dart';
+import '../snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
