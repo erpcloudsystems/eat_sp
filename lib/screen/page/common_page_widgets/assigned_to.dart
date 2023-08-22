@@ -104,14 +104,37 @@ class AssignedBubble extends StatelessWidget {
                   ),
                 ),
                 //________________________________ Subtitle ______________________________
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  spacing: 4.0,
+                  alignment: WrapAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Text(
+                          'Priority: ',
+                          style: TextStyle(
+                            fontSize: DoublesManager.d_14,
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            color: Colors.black,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        Text(
+                          assignObject['priority'],
+                          style: const TextStyle(
+                            height: 1.5,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
-                      alignment: Alignment.topLeft,
-                      padding: const EdgeInsets.only(
-                        left: DoublesManager.d_4,
-                        right: DoublesManager.d_4,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: DoublesManager.d_4,
+                        vertical: DoublesManager.d_2,
                       ),
                       decoration: BoxDecoration(
                           color: Colors.transparent,
@@ -126,29 +149,9 @@ class AssignedBubble extends StatelessWidget {
                         ),
                       ),
                     ),
-                    RichText(
-                      text: TextSpan(children: [
-                        const TextSpan(
-                          text: 'Priority: ',
-                          style: TextStyle(
-                              fontSize: DoublesManager.d_14,
-                              fontWeight: FontWeight.bold,
-                              height: 1.5,
-                              color: Colors.black,
-                              letterSpacing: 1),
-                        ),
-                        TextSpan(
-                          text: assignObject['priority'],
-                          style: const TextStyle(
-                              height: 1.5,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.black),
-                        ),
-                      ]),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: DoublesManager.d_2),
               ],
             ),
           ),
