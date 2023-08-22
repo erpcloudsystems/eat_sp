@@ -1,7 +1,9 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:easy_localization/easy_localization.dart' as local;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../new_version/core/resources/strings_manager.dart';
 import '../home_screen.dart';
 import '../../core/constants.dart';
 import '../../service/service.dart';
@@ -10,7 +12,10 @@ import '../../test/floating_button_widget.dart';
 import '../../widgets/generic_page_buttons.dart';
 import '../../provider/module/module_provider.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
-import 'common_page_widgets/page_shared_buttons.dart';
+import 'common_page_widgets/assigned_to.dart';
+import 'common_page_widgets/comments.dart';
+import 'common_page_widgets/page_pop_item.dart';
+import 'common_page_widgets/shared_with.dart';
 
 class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
@@ -49,9 +54,8 @@ class _GenericPageState extends State<GenericPage> {
                     provider.NotifyAmended = false;
                   }
 
-                  setState(() {
-                    context.read<ModuleProvider>().getWorkflow = false;
-                  });
+                  setState(
+                      () => context.read<ModuleProvider>().getWorkflow = false);
 
                   Navigator.of(context).pop();
                 },
@@ -90,38 +94,33 @@ class _GenericPageState extends State<GenericPage> {
                 PopupMenuButton(
                     itemBuilder: (context) => [
                           PopupMenuItem(
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.message,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(width: 8),
-                                const Text(
-                                  'Comments',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      height: 1.2),
-                                ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: 20,
-                                  decoration: const BoxDecoration(
-                                      color: Colors.redAccent,
-                                      shape: BoxShape.circle),
-                                  child: const Text(
-                                    '1',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        height: 1.5),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              child: PagePopItem(
+                            sheetFunction: showCommentsSheet,
+                            buttonText: StringsManager.comments.tr(),
+                            dataKey: 'comments',
+                            buttonIcon: Icons.message,
+                          )),
+                          PopupMenuItem(
+                              child: PagePopItem(
+                            sheetFunction: showAssignedTOSheet,
+                            buttonText: StringsManager.assignedTo.tr(),
+                            dataKey: 'assignments',
+                            buttonIcon: Icons.person,
+                          )),
+                          PopupMenuItem(
+                              child: PagePopItem(
+                            sheetFunction: showSharedWithSheet,
+                            buttonText: StringsManager.sharedWith.tr(),
+                            dataKey: 'shared_with',
+                            buttonIcon: Icons.share,
+                          )),
+                          PopupMenuItem(
+                              child: PagePopItem(
+                            sheetFunction: showCommentsSheet,
+                            buttonText: '${StringsManager.logs.tr()}         ',
+                            dataKey: 'comments',
+                            buttonIcon: Icons.history,
+                          )),
                         ])
               ],
             ),
@@ -191,11 +190,7 @@ class _GenericPageBodyState extends State<_GenericPageBody> {
             children: [
               if (context.read<ModuleProvider>().getWorkflow)
                 const ActionWidget(),
-              Expanded(
-                child: provider.currentModule.pageWidget,
-              ),
-              const PageSharedButtons(),
-              const SizedBox(height: 100)
+              Expanded(child: provider.currentModule.pageWidget),
             ],
           ),
         );
