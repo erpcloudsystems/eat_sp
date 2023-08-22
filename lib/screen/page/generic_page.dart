@@ -57,18 +57,12 @@ class _GenericPageState extends State<GenericPage> {
                   Icons.arrow_back_ios_new,
                 ),
               ),
-              title: Padding(
-                padding: const EdgeInsets.only(
-                  top: 3,
-                  left: 50,
-                ),
-                child: Text(
-                  context.watch<ModuleProvider>().currentModule.title,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    overflow: TextOverflow.visible,
-                    height: 1,
-                  ),
+              title: Text(
+                context.watch<ModuleProvider>().currentModule.title,
+                style: const TextStyle(
+                  color: Colors.black,
+                  overflow: TextOverflow.visible,
+                  height: 1,
                 ),
               ),
               actions: [
@@ -97,6 +91,7 @@ class _GenericPageState extends State<GenericPage> {
             distance: 112,
             children: [
               DownloadPdfButton(),
+              ShareDocIcon(),
               PrintPageButton(),
               AttachmentPageButton(),
               DuplicatePageButton(),

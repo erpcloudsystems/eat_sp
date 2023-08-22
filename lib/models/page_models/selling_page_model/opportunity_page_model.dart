@@ -15,9 +15,9 @@ class OpportunityPageModel {
 
   List<Map<String, dynamic>> get items => _items;
 
-  final List<Tab> tabs = const [
-    Tab(text: 'Items'),
-    Tab(text: 'Connections'),
+  final List<Tab> tabs = [
+    Tab(text: 'Items'.tr()),
+    Tab(text: 'Connections'.tr()),
   ];
 
   List<Map<String, String>> get card1Items {

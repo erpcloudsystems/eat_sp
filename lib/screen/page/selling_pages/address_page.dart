@@ -1,26 +1,14 @@
 import '../../../provider/module/module_provider.dart';
 import '../../../widgets/map_view.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
 
-import '../../../core/constants.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/attendance_request_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_advance_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_checkin_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
 import '../../../models/page_models/selling_page_model/address_page_model.dart';
-import '../../../models/page_models/selling_page_model/customer_visit_page_model.dart';
-import '../../../service/service.dart';
 import '../../../widgets/comments_button.dart';
 
 class AddressPage extends StatelessWidget {
@@ -40,12 +28,12 @@ class AddressPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Address',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
             Padding(
@@ -58,7 +46,7 @@ class AddressPage extends StatelessWidget {
             //   child: Text(data['employee_name'] ?? 'none'),
             // ),
             //SizedBox(height: 4),
-            Divider(color: Colors.white, thickness: 1),
+            const Divider(color: Colors.white, thickness: 1),
           ],
           items: model.card1Items,
         ),
@@ -92,13 +80,13 @@ class AddressPage extends StatelessWidget {
               MapsLauncher.launchCoordinates(
                   data['latitude'], data['longitude']);
             },
-            child: Text(
+            child: const Text(
               "Open in Maps",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         CommentsButton(color: color),
@@ -130,7 +118,7 @@ class AddressPage extends StatelessWidget {
         //       })
         //       : NothingHere(),
         // ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

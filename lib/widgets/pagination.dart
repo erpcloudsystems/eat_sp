@@ -170,7 +170,7 @@ class _PaginationListState<T> extends State<PaginationList> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '$newLoadCount of ',
+                          '$newLoadCount ${'of'.tr()} ',
                           style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
@@ -229,8 +229,8 @@ class _PaginationListState<T> extends State<PaginationList> {
           ],
         ));
       }
-      return const Center(
-        child: Text("No Data"),
+      return Center(
+        child: Text("No Data".tr()),
       );
     });
   }

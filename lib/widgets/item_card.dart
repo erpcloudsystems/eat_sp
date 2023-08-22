@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,7 @@ class ItemCard extends StatelessWidget {
 
   const ItemCard(
       {Key? key,
-      this.names = const ['Code', 'Group', 'UoM'],
+      this.names = const ['Code', 'Group', 'UOM'],
       required this.values,
       required this.imageUrl,
       this.onPressed})
@@ -116,7 +117,7 @@ class _CardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('$title:  '),
+        Text('${title.tr()}:  '),
         Flexible(
           child: Text(
             value,

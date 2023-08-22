@@ -1,5 +1,6 @@
 import 'package:NextApp/core/constants.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
 import '../test/home_item_test.dart';
@@ -50,8 +51,9 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             userProvider.modules[widget.moduleIndex]['docs'].keys.length,
             (index) {
           return HomeItemTest(
-            title: userProvider.modules[widget.moduleIndex]['docs'].keys
-                .toList()[index],
+            title:
+                'DocType.${userProvider.modules[widget.moduleIndex]['docs'].keys.toList()[index]}'
+                    .tr(),
             imageUrl: userProvider.modules[widget.moduleIndex]['docs'].values
                 .toList()[index],
             onPressed: () {
@@ -84,8 +86,8 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         }),
       ),
       const DashboardScreen(),
-      NotificationScreen(),
-      CustomDrawer(),
+      const NotificationScreen(),
+      const CustomDrawer(),
     ];
 
     List<String> appBarTitles = [
@@ -106,7 +108,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             color: Colors.black,
           ),
           title: Text(
-            appBarTitles[_page],
+            'Modules.${appBarTitles[_page]}'.tr(),
             style: const TextStyle(
               color: Colors.black,
             ),

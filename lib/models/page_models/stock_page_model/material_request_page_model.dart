@@ -12,9 +12,9 @@ class MaterialRequestPageModel {
       : items = List<Map<String, dynamic>>.from(data['items'] ?? [])
           ..sort((a, b) => ((a['idx'] ?? 0) as int).compareTo(b['idx'] ?? 0));
 
-  final List<Tab> tabs = const [
-    Tab(text: 'Items'),
-    Tab(text: 'Connections'),
+  final List<Tab> tabs = [
+    Tab(text: 'Items'.tr()),
+    Tab(text: 'Connections'.tr()),
   ];
 
   List<Map<String, String>> get card1Items {

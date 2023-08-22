@@ -15,11 +15,11 @@ class DeliveryNotePageModel {
 
   final List<Map<String, dynamic>> items;
 
-  final List<Tab> tabs = const [
-    Tab(text: 'Items'),
-    Tab(text: 'Taxes'),
+  final List<Tab> tabs = [
+    Tab(text: 'Items'.tr()),
+    Tab(text: 'Taxes'.tr()),
     // Tab(text: 'Payment'),
-    Tab(text: 'Connections'),
+    Tab(text: 'Connections'.tr()),
   ];
 
   List<Map<String, String>> get card1Items {

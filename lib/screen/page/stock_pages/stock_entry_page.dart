@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../../models/page_models/stock_page_model/stock_entry_page_model.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../core/cloud_system_widgets.dart';
@@ -29,9 +31,9 @@ class StockEntryPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Stock Entry',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Stock Entry',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
@@ -61,10 +63,10 @@ class StockEntryPage extends StatelessWidget {
                           Icon(Icons.circle,
                               color: statusColor(data['status'] ?? 'none'),
                               size: 12),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           FittedBox(
-                            child: Text(data['status'] ?? 'none'),
                             fit: BoxFit.fitHeight,
+                            child: Text(data['status'] ?? 'none'),
                           ),
                         ],
                       )
@@ -85,15 +87,15 @@ class StockEntryPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                    child: Text('Items',
+                    child: Text('Items'.tr(),
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold))),
               ),
               Expanded(
                 child: data['items'] == null || data['items'].isEmpty
-                    ? NothingHere()
+                    ? const NothingHere()
                     : ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         //shrinkWrap: true,
                         itemCount: model.items.length,

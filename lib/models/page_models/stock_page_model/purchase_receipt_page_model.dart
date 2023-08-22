@@ -17,10 +17,10 @@ class PurchaseReceiptPageModel {
 
   List<Map<String, dynamic>> get items => _items;
 
-  final List<Tab> tabs = const [
-    Tab(text: 'Items'),
-    Tab(text: 'Taxes'),
-    Tab(child: FittedBox(child: Text('Connections'))),
+  final List<Tab> tabs = [
+    Tab(text: 'Items'.tr()),
+    Tab(text: 'Taxes'.tr()),
+    Tab(child: FittedBox(child: Text('Connections'.tr()))),
   ];
 
   List<Map<String, String>> get card1Items {
@@ -104,8 +104,8 @@ class PurchaseReceiptPageModel {
       (data['base_total'] == data['total'])
           ? {}
           : {
-              tr("Total  ") + "(${data['currency']})": currency(data['total']),
-              tr("Net Total  ") + "(${data['currency']})":
+              "${tr("Total  ")}(${data['currency']})": currency(data['total']),
+              "${tr("Net Total  ")}(${data['currency']})":
                   currency(data['net_total'])
             },
       {
@@ -116,7 +116,7 @@ class PurchaseReceiptPageModel {
       (data['base_total_taxes_and_charges'] == data['total_taxes_and_charges'])
           ? {}
           : {
-              tr("Total Taxes and Charges  ") + "(${data['currency']})":
+              "${tr("Total Taxes and Charges  ")}(${data['currency']})":
                   currency(data['total_taxes_and_charges']),
             },
       {
@@ -129,7 +129,7 @@ class PurchaseReceiptPageModel {
       (data['base_discount_amount'] == data['discount_amount'])
           ? {}
           : {
-              tr("Discount Amount  ") + "(${data['currency']})":
+              "${tr("Discount Amount  ")}(${data['currency']})":
                   currency(data['discount_amount'])
             },
       {
@@ -147,13 +147,13 @@ class PurchaseReceiptPageModel {
       (data['base_grand_total'] == data['grand_total'])
           ? {}
           : {
-              tr("Grand Total ") + "(${data['currency']})":
+              "${tr("Grand Total ")}(${data['currency']})":
                   currency(data['grand_total'])
             },
       (data['base_grand_total'] == data['grand_total'])
           ? {}
           : {
-              tr("In Words  ") + "(${data['currency']})":
+              "${tr("In Words  ")}(${data['currency']})":
                   data['in_words'] ?? tr('none')
             },
     ];

@@ -51,24 +51,23 @@ class DeliveryNotePage extends StatelessWidget {
                   ),
               ],
             ),
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
-                Text('Delivery Note',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
-                // if (data['docstatus'] != null)
-                // Align(
-                //   alignment: Alignment.centerRight,
-                //   child: Padding(padding: const EdgeInsets.only(right: 12.0), child: context.read<ModuleProvider>().submitDocumentWidget()),
-                // )
+                Text(
+                  'Delivery Note',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
             Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            Text('Customer: ' + (data['customer'] ?? 'none')),
+            Text('${'Customer'.tr()}: ' + (data['customer'] ?? 'none')),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['customer_name'] ?? 'none'),
@@ -86,10 +85,10 @@ class DeliveryNotePage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -169,9 +168,9 @@ class DeliveryNotePage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -199,9 +198,9 @@ class DeliveryNotePage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -235,9 +234,9 @@ class DeliveryNotePage extends StatelessWidget {
                     //               values: model.getPaymentCard(index),
                     //             )),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

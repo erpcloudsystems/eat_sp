@@ -1,5 +1,6 @@
 import 'package:NextApp/core/constants.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
@@ -49,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 1,
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: const Text(
-            'Modules',
-            style: TextStyle(
+          title: Text(
+            'Modules.Modules'.tr(),
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
               fontSize: 22,
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Padding(
               padding: const EdgeInsets.all(4),
               child: HomeItemTest(
-                title: userProvider.modules[index].keys.first,
+                title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
                 imageUrl: userProvider.modules[index].values.first,
                 onPressed: () => Navigator.of(context).push(PageRouteBuilder(
                   pageBuilder: (context, animation1, animation2) =>
@@ -88,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       const DashboardScreen(),
-      NotificationScreen(),
-      CustomDrawer(),
+      const NotificationScreen(),
+      const CustomDrawer(),
     ];
     void logout() async {
       final res =

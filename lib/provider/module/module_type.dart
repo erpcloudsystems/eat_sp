@@ -677,7 +677,12 @@ class ModuleType {
       item as ItemModel;
       return ItemCard(
         imageUrl: item.imageUrl,
-        values: [item.itemName, item.itemCode, item.group, item.stockUom],
+        values: [
+          item.itemName,
+          item.itemCode,
+          item.group,
+          item.stockUom
+        ],
         onPressed: (context) => _onListCardPressed(context, item.itemCode),
       );
     },

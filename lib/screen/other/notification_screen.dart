@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../core/constants.dart';
 import '../list/otherLists.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {
-  NotificationScreen({Key? key}) : super(key: key);
+  const NotificationScreen({Key? key}) : super(key: key);
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -15,9 +17,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          'Notification',
-          style: TextStyle(
+        title: Text(
+          'Notification'.tr(),
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 22,

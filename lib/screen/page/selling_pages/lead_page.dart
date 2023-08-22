@@ -72,8 +72,8 @@ class LeadPage extends StatelessWidget {
                             size: 12),
                         const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -106,17 +106,17 @@ class LeadPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
             //border: Border.all(color: Colors.blueAccent),
           ),
-          child: const Center(
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          child: Center(
             child: Text(
-              'Connections',
-              style: TextStyle(
+              'Connections'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
         ),
 
         SizedBox(

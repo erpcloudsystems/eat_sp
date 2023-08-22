@@ -32,9 +32,9 @@ class PurchaseReceiptPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text(
+                const Text(
                   'Purchase Receipt',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -54,7 +54,7 @@ class PurchaseReceiptPage extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            Text('Supplier: ' + (data['supplier_name'] ?? 'none')),
+            Text('${'Supplier'.tr()}: ' + (data['supplier_name'] ?? 'none')),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['supplier_name'] ?? 'none'),
@@ -72,7 +72,7 @@ class PurchaseReceiptPage extends StatelessWidget {
                           Icon(Icons.circle,
                               color: statusColor(data['status'] ?? 'none'),
                               size: 12),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           FittedBox(
                             child: Text(data['status'] ?? 'none'),
                             fit: BoxFit.fitHeight,
@@ -150,9 +150,9 @@ class PurchaseReceiptPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             //shrinkWrap: true,
                             itemCount: model.items.length,
@@ -180,9 +180,9 @@ class PurchaseReceiptPage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -200,9 +200,9 @@ class PurchaseReceiptPage extends StatelessWidget {
                                 )),
 
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

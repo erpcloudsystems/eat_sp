@@ -53,20 +53,20 @@ class SalesOrderPage extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Text('Sales Order',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
             Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            Text('Customer: ' + (data['customer'] ?? 'none')),
+            Text('${'Customer'.tr()}: ' + (data['customer'] ?? 'none')),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['customer_name'] ?? 'none'),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -81,10 +81,10 @@ class SalesOrderPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -147,9 +147,9 @@ class SalesOrderPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['items'] == null || data['items'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: model.items.length,
                             itemBuilder: (BuildContext context, int index) =>
@@ -174,9 +174,9 @@ class SalesOrderPage extends StatelessWidget {
 
                     //
                     data['taxes'] == null || data['taxes'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['taxes'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -195,9 +195,9 @@ class SalesOrderPage extends StatelessWidget {
 
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['payment_schedule'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -217,9 +217,9 @@ class SalesOrderPage extends StatelessWidget {
                                 )),
 
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(

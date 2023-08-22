@@ -1,6 +1,6 @@
 import 'package:NextApp/new_version/core/resources/strings_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../../../../../../../screen/sub_category_screen.dart';
 import '../../../../../../../test/home_item_test.dart';
 import '../../../../../../core/resources/routes.dart';
 import '../../data/models/module_model.dart';
@@ -34,9 +34,9 @@ class ModulesPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          'Reports',
-          style: TextStyle(
+        title: Text(
+          'Reports'.tr(),
+          style: const TextStyle(
             color: Colors.black87,
               fontWeight: FontWeight.bold,
               fontSize: 22
