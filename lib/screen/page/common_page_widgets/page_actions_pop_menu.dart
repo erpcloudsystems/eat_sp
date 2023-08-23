@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'logs.dart';
 import 'comments.dart';
 import 'shared_with.dart';
+import 'attachments.dart';
 import 'assigned_to.dart';
 import 'page_pop_item.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
@@ -42,6 +43,13 @@ class PageActionPopMenu extends StatelessWidget {
                 buttonText: StringsManager.logs.tr(),
                 dataKey: 'logs',
                 buttonIcon: Icons.history,
+              )),
+              PopupMenuItem(
+                  child: PagePopItem(
+                sheetFunction: showAttachments,
+                buttonText: StringsManager.attachments.tr(),
+                dataKey: 'attachments',
+                buttonIcon: Icons.attach_file,
               )),
             ]);
   }

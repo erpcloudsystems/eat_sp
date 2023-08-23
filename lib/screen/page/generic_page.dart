@@ -11,6 +11,7 @@ import '../../widgets/generic_page_buttons.dart';
 import '../../provider/module/module_provider.dart';
 import 'common_page_widgets/page_actions_pop_menu.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
+
 class GenericPage extends StatefulWidget {
   const GenericPage({Key? key}) : super(key: key);
 
@@ -36,8 +37,8 @@ class _GenericPageState extends State<GenericPage> {
               leading: IconButton(
                 onPressed: () {
                   final provider = context.read<ModuleProvider>();
-                  // We use this method to navigate back to "List Screen", and only in "Amended Mode".
-
+                  // We use this method to navigate back to "List Screen",
+                  //and only in "Amended Mode".
                   if (provider.isAmended) {
                     provider.pushPage(provider.previousPageId);
                     Navigator.of(context).pushReplacement(
@@ -47,10 +48,8 @@ class _GenericPageState extends State<GenericPage> {
                     );
                     provider.NotifyAmended = false;
                   }
-
                   setState(
                       () => context.read<ModuleProvider>().getWorkflow = false);
-
                   Navigator.of(context).pop();
                 },
                 icon: const Icon(
@@ -91,9 +90,7 @@ class _GenericPageState extends State<GenericPage> {
             distance: 112,
             children: [
               DownloadPdfButton(),
-              ShareDocIcon(),
               PrintPageButton(),
-              AttachmentPageButton(),
               DuplicatePageButton(),
             ],
           ),

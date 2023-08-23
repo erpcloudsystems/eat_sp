@@ -85,12 +85,12 @@ class StringsManager {
   static const String workstation = 'Workstation';
   static const String connections = 'Connections';
   static const String assignments = 'Assignments';
+  static const String attachments = 'Attachments';
   static const String noComments = 'No comments';
   static const String lastActive = 'Last Active';
   static const String sharedWith = 'Shared With';
   static const String assignedTo = 'Assigned To';
   static const String quotations = 'Quotations';
-  static const String quotation = 'Quotation';
   static const String department = 'Department';
   static const String operations = 'Operations';
   static const String priceList = 'Item Price';
@@ -101,6 +101,7 @@ class StringsManager {
   static const String birthDate = 'Birth Date';
   static const String isDefault = 'Is Default';
   static const String operation = 'Operation';
+  static const String quotation = 'Quotation';
   static const String timeLogs = 'Time Logs';
   static const String fromTime = 'From Time';
   static const String fromDate = 'From Date';

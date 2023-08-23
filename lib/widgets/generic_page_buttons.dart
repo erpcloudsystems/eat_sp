@@ -1,15 +1,15 @@
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:NextApp/core/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../screen/page/page_screen.dart';
+import 'genric_page_widget/assgin_dialog.dart';
 import '../provider/module/module_provider.dart';
+import 'genric_page_widget/share_doc_widget.dart';
 import '../new_version/core/resources/app_values.dart';
 import '../new_version/core/utils/animated_dialog.dart';
-import 'genric_page_widget/assgin_dialog.dart';
-import 'genric_page_widget/share_doc_widget.dart';
+import '../screen/page/common_page_widgets/attachments.dart';
 
 /// This is the Buttons in the [AppBar] of any page.
 class GenericPageButtons extends StatelessWidget {
