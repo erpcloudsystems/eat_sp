@@ -1,16 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+
+import '../form_widgets.dart';
+import '../custom-button.dart';
+import '../../service/service.dart';
+import '../dialog/loading_dialog.dart';
+import '../../test/test_text_field.dart';
+import '../../screen/list/otherLists.dart';
 import '../../provider/module/module_provider.dart';
 import '../../provider/new_controller/home_provider.dart';
-import '../../screen/list/otherLists.dart';
-import '../../service/service.dart';
-import '../../test/test_text_field.dart';
-import '../snack_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../custom-button.dart';
-import '../form_widgets.dart';
 
 class ShareDocWidget extends StatefulWidget {
   const ShareDocWidget({super.key});
@@ -146,26 +146,28 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
                             shareData['docType'] =
                                 modeuleProvider.currentModule.title;
                             shareData['docId'] = modeuleProvider.pageId;
-                            handleRequest(
-                                    () =>
-                                        homeProvider.sharedDoc(data: shareData),
+                            showLoadingDialog(context, 'Sharing');
+                            await handleRequest(
+                                    () async => {
+                                          await homeProvider.sharedDoc(
+                                              data: shareData),
+                                          await context
+                                              .read<ModuleProvider>()
+                                              .loadPage()
+                                        },
                                     context)
-                                .then((value) {
-                              if (value != null) {
-                                showSnackBar(
-                                  'This Doc Shred with ${shareData['user']}',
-                                  context,
-                                );
-                              } else {
-                                showErrorSnackBar(
-                                  'Error sharing the document',
-                                  'Error',
-                                  context,
-                                  color: Colors.red,
-                                );
-                              }
+                                .whenComplete(() {
+                              setState(() {
+                                modeuleProvider.pageData['shared_with'] =
+                                    modeuleProvider.pageData['shared_with'];
+                              });
+                              // we do this permanently because of a bug that prevent the bottom
+                              //sheet list from getting new data unless there is hot reload.
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             });
-                            Navigator.pop(context);
                           }
                         },
                         text: 'Add',
