@@ -1,17 +1,16 @@
-import 'package:NextApp/widgets/create_from_page/create_from_page_consts.dart';
-
-import '../../../provider/module/module_provider.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/create_from_page/create_from_page_button.dart';
-import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../../models/page_models/buying_page_model/supplier_quotation_page_model.dart';
-import '../../../widgets/comments_button.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
+
+import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../models/page_models/buying_page_model/supplier_quotation_page_model.dart';
 
 class SupplierQuotationPage extends StatelessWidget {
   const SupplierQuotationPage({Key? key}) : super(key: key);
@@ -116,8 +115,6 @@ class SupplierQuotationPage extends StatelessWidget {
 
         ///third card
         PageCard(color: color, items: model.card3Items),
-
-        CommentsButton(color: color),
 
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,

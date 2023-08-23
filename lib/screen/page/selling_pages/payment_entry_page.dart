@@ -1,11 +1,10 @@
-import '../../../models/page_models/selling_page_model/payment_entry_page_model.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/page_group.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../widgets/comments_button.dart';
+import '../../../widgets/page_group.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/selling_page_model/payment_entry_page_model.dart';
 
 class PaymentEntryPage extends StatelessWidget {
   const PaymentEntryPage({Key? key}) : super(key: key);
@@ -13,7 +12,6 @@ class PaymentEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
 
     final model = PaymentEntryPageModel(data);
 
@@ -29,8 +27,8 @@ class PaymentEntryPage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  Text('Payment Entry',
-                      style: const TextStyle(
+                  const Text('Payment Entry',
+                      style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16)),
                   if (data['docstatus'] != null && data['amended_to'] == null)
                     Align(
@@ -61,17 +59,16 @@ class PaymentEntryPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ]),
                   widgetNumber: 2)
             ],
           ),
         ),
-        CommentsButton(color: color),
       ],
     );
   }

@@ -1,18 +1,14 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../models/page_models/selling_page_model/customer_page_model.dart';
-import '../../../widgets/form_widgets.dart';
-import '../../../widgets/map_view.dart';
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
+import '../../../widgets/map_view.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
+import '../../../models/page_models/selling_page_model/customer_page_model.dart';
 
 class CustomerPage extends StatelessWidget {
   CustomerPage({Key? key}) : super(key: key);
@@ -22,7 +18,6 @@ class CustomerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
 
     final model = CustomerPageModel(data);
     return ListView(
@@ -104,7 +99,6 @@ class CustomerPage extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        CommentsButton(color: color),
         if (data['conn'] != null || data['conn'].isNotEmpty)
           Container(
             decoration: BoxDecoration(

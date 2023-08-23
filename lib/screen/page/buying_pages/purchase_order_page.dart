@@ -3,15 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../new_version/core/resources/strings_manager.dart';
-import '../../../widgets/create_from_page/create_from_page_button.dart';
-import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../widgets/dialog/page_details_dialog.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/create_from_page/create_from_page_consts.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
 
 class PurchaseOrderPage extends StatelessWidget {
@@ -114,8 +113,6 @@ class PurchaseOrderPage extends StatelessWidget {
         /// card 3
         ///
         PageCard(color: color, items: model.card3Items),
-
-        CommentsButton(color: color),
 
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,

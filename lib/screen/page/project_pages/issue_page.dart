@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
-import '../../../widgets/page_group.dart';
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/comments_button.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/project_page_model/issue_model_page.dart';
 
 class IssuePage extends StatelessWidget {
@@ -19,7 +18,6 @@ class IssuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
     final model = IssuePageModel(data);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -84,9 +82,6 @@ class IssuePage extends StatelessWidget {
         PageCard(
           items: model.card2Items,
         ),
-
-        /// Comment button
-        CommentsButton(color: color),
 
         /// Connections
         Container(

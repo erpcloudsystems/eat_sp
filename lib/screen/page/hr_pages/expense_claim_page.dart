@@ -1,24 +1,13 @@
-import '../../../provider/module/module_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/page_models/selling_page_model/sales_order_model.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../widgets/dialog/page_details_dialog.dart';
-import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
-
-import '../../../core/constants.dart';
-import '../../../models/page_models/buying_page_model/purchase_order_page_model.dart';
-import '../../../models/page_models/hr_page_model/attendance_request_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_advance_page_model.dart';
-import '../../../models/page_models/hr_page_model/employee_checkin_page_model.dart';
+import '../../../widgets/nothing_here.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../models/page_models/hr_page_model/expense_claim_page_model.dart';
-import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
-import '../../../service/service.dart';
-import '../../../widgets/comments_button.dart';
 
 class ExpenseClaimPage extends StatelessWidget {
   const ExpenseClaimPage({Key? key}) : super(key: key);
@@ -37,11 +26,11 @@ class ExpenseClaimPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Expense Claim',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
@@ -54,7 +43,7 @@ class ExpenseClaimPage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['employee_name'] ?? 'none'),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -75,7 +64,6 @@ class ExpenseClaimPage extends StatelessWidget {
           color: color,
           items: model.card3Items,
         ),
-        CommentsButton(color: color),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: DefaultTabController(
@@ -110,9 +98,9 @@ class ExpenseClaimPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['expenses'] == null || data['expenses'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['expenses'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -130,9 +118,9 @@ class ExpenseClaimPage extends StatelessWidget {
                                   values: model.expenseCardValues(index),
                                 )),
                     data['conn'] == null || data['conn'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['conn'].length,
                             itemBuilder: (_, index) => ConnectionCard(
@@ -148,7 +136,7 @@ class ExpenseClaimPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         )
       ],

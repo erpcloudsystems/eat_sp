@@ -1,11 +1,9 @@
 import '../../../provider/module/module_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../widgets/page_group.dart';
-
 import '../../../models/page_models/hr_page_model/loan_application_page_model.dart';
-import '../../../widgets/comments_button.dart';
 
 class LoanApplicationPage extends StatelessWidget {
   const LoanApplicationPage({Key? key}) : super(key: key);
@@ -24,11 +22,11 @@ class LoanApplicationPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Employee Advance',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
@@ -41,7 +39,7 @@ class LoanApplicationPage extends StatelessWidget {
             //   padding: const EdgeInsets.only(bottom: 4),
             //   child: Text(data['employee_name'] ?? 'none'),
             // ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -66,7 +64,6 @@ class LoanApplicationPage extends StatelessWidget {
           ],
         ),
 
-        CommentsButton(color: color),
 
         // if (data['conn'] != null || data['conn'].isNotEmpty)
         //   Container(
@@ -95,7 +92,7 @@ class LoanApplicationPage extends StatelessWidget {
         //       })
         //       : NothingHere(),
         // ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

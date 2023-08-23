@@ -1,12 +1,10 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../new_version/core/resources/app_values.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../widgets/page_group.dart';
 import '../../../core/cloud_system_widgets.dart';
@@ -15,7 +13,6 @@ import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../models/page_models/project_page_model/task_page_model.dart';
-import '../common_page_widgets/page_shared_buttons.dart';
 
 class TaskPage extends StatelessWidget {
   const TaskPage({Key? key}) : super(key: key);
@@ -26,7 +23,6 @@ class TaskPage extends StatelessWidget {
     for (var k in data.keys) {
       log("$k : ${data[k]}");
     }
-    final Color? color = context.read<ModuleProvider>().color;
     final model = TaskPageModel(data);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -133,9 +129,6 @@ class TaskPage extends StatelessWidget {
               : const NothingHere(),
         ),
 
-        //  Page buttons
-        // const PageSharedButtons(),
-        // SizedBox(height: DoublesManager.d_70.h)
       ],
     );
   }

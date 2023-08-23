@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/page_models/hr_page_model/employee_checkin_page_model.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/hr_page_model/employee_checkin_page_model.dart';
 
 class EmployeeCheckinPage extends StatelessWidget {
   const EmployeeCheckinPage({Key? key}) : super(key: key);
@@ -25,11 +24,11 @@ class EmployeeCheckinPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Employee Checkin',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
@@ -42,7 +41,7 @@ class EmployeeCheckinPage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['employee_name'] ?? 'none'),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -70,17 +69,13 @@ class EmployeeCheckinPage extends StatelessWidget {
               MapsLauncher.launchCoordinates(
                   data['latitude'], data['longitude']);
             },
-            child: Text(
+            child: const Text(
               "Open in Maps",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        SizedBox(
-          height: 8,
-        ),
-        CommentsButton(color: color),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

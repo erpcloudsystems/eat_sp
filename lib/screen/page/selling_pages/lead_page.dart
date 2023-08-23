@@ -1,17 +1,15 @@
-import '../../../core/constants.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../form/selling_forms/customer_form.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/page_models/selling_page_model/lead_page_model.dart';
-import '../../../widgets/comments_button.dart';
+import '/widgets/page_group.dart';
+import '/widgets/nothing_here.dart';
+import '../../../core/constants.dart';
 import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
 import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
-import '/widgets/nothing_here.dart';
-import '/widgets/page_group.dart';
+import '../../../models/page_models/selling_page_model/lead_page_model.dart';
 
 class LeadPage extends StatelessWidget {
   const LeadPage({Key? key}) : super(key: key);
@@ -19,7 +17,6 @@ class LeadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
 
     final model = LeadPageModel(data);
     return ListView(
@@ -96,8 +93,6 @@ class LeadPage extends StatelessWidget {
         /// card 2
         ///
         PageCard(items: model.card2Items),
-
-        CommentsButton(color: color),
 
         //    if(data['conn'] != null || data['conn'].isNotEmpty)
         Container(

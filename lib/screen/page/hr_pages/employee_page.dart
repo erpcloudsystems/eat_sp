@@ -1,13 +1,12 @@
-import '../../../widgets/nothing_here.dart';
-import '../../../widgets/page_group.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../models/page_models/hr_page_model/employee_page_model.dart';
+import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
+import '../../../models/page_models/hr_page_model/employee_page_model.dart';
 
 class EmployeePage extends StatelessWidget {
   EmployeePage({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class EmployeePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
 
     final model = EmployeePageModel(data);
 
@@ -27,7 +25,7 @@ class EmployeePage extends StatelessWidget {
         PageCard(
           header: [
             Text(
-              tr('') + ' ${data['employee_name'] ?? tr('none')}',
+              '${tr('')} ${data['employee_name'] ?? tr('none')}',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               textAlign: TextAlign.center,
             ),
@@ -35,7 +33,7 @@ class EmployeePage extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -64,7 +62,6 @@ class EmployeePage extends StatelessWidget {
                 widgetNumber: 1),
           ],
         ),
-        CommentsButton(color: color),
         if (data['conn'] != null || data['conn'].isNotEmpty)
           Container(
             decoration: BoxDecoration(
@@ -72,18 +69,18 @@ class EmployeePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
               //border: Border.all(color: Colors.blueAccent),
             ),
-            child: Center(
-                child: Text('Connections',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold))),
             padding: const EdgeInsets.all(8),
             margin: const EdgeInsets.all(8),
+            child: const Center(
+                child: Text('Connections',
+                    style: TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold))),
           ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.45,
           child: (data['conn'] != null && data['conn'].isNotEmpty)
               ? ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   shrinkWrap: true,
                   itemCount: data['conn'].length,
@@ -94,7 +91,7 @@ class EmployeePage extends StatelessWidget {
                         docTypeId: data['conn'][index]['name'] ?? tr('none'),
                         count: data['conn'][index]['count'].toString());
                   })
-              : NothingHere(),
+              : const NothingHere(),
         ),
       ],
     );

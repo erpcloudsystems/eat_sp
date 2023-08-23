@@ -1,14 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../core/cloud_system_widgets.dart';
-import '../../../core/constants.dart';
-import '../../../models/page_models/workflow_page_model/workflow_page_model.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
-import '../../../widgets/nothing_here.dart';
+import 'package:flutter/material.dart';
+
 import '../../../widgets/page_group.dart';
+import '../../../widgets/nothing_here.dart';
+import '../../../core/cloud_system_widgets.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/workflow_page_model/workflow_page_model.dart';
 
 class WorkflowPage extends StatelessWidget {
   const WorkflowPage({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class WorkflowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
-    final Color? color = context.read<ModuleProvider>().color;
     final model = WorkflowPageModel(data);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -24,9 +22,9 @@ class WorkflowPage extends StatelessWidget {
         /// Task details
         PageCard(
           header: [
-            Text(
+            const Text(
               'Workflow',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -40,7 +38,7 @@ class WorkflowPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(
               color: Colors.grey.shade400,
               thickness: 1,
@@ -58,10 +56,10 @@ class WorkflowPage extends StatelessWidget {
                         Icon(Icons.circle,
                             color: statusColor(data['status'] ?? 'none'),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
-                          child: Text(data['status'] ?? 'none'),
                           fit: BoxFit.fitHeight,
+                          child: Text(data['status'] ?? 'none'),
                         ),
                       ],
                     )
@@ -69,9 +67,6 @@ class WorkflowPage extends StatelessWidget {
             ),
           ],
         ),
-
-        /// Comment button
-        CommentsButton(color: color),
 
         /// States and Transactions
         SizedBox(
@@ -113,7 +108,7 @@ class WorkflowPage extends StatelessWidget {
                         child: (data['states'] != null &&
                                 data['states'].isNotEmpty)
                             ? ListView.builder(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 shrinkWrap: true,
@@ -133,14 +128,14 @@ class WorkflowPage extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : NothingHere(),
+                            : const NothingHere(),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.45,
                         child: (data['transitions'] != null &&
                                 data['transitions'].isNotEmpty)
                             ? ListView.builder(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 shrinkWrap: true,
@@ -161,7 +156,7 @@ class WorkflowPage extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : NothingHere(),
+                            : const NothingHere(),
                       ),
                     ],
                   ),

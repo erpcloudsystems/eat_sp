@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../widgets/page_group.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/hr_page_model/leave_application_page_model.dart';
@@ -27,8 +26,8 @@ class LeaveApplicationPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Leave Application     ',
-                    style: const TextStyle(
+                const Text('Leave Application     ',
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
@@ -50,7 +49,7 @@ class LeaveApplicationPage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(data['employee_name'] ?? 'none'),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -65,10 +64,10 @@ class LeaveApplicationPage extends StatelessWidget {
                           Icon(Icons.circle,
                               color: statusColor(data['status'] ?? 'none'),
                               size: 12),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           FittedBox(
-                            child: Text(data['status'] ?? 'none'),
                             fit: BoxFit.fitHeight,
+                            child: Text(data['status'] ?? 'none'),
                           ),
                         ],
                       )
@@ -89,7 +88,6 @@ class LeaveApplicationPage extends StatelessWidget {
               widgetNumber: 1)
         ]),
 
-        CommentsButton(color: color),
 
         // if (data['conn'] != null || data['conn'].isNotEmpty)
         //   Container(
@@ -118,7 +116,7 @@ class LeaveApplicationPage extends StatelessWidget {
         //       })
         //       : NothingHere(),
         // ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

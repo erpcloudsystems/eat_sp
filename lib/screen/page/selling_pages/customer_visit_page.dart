@@ -1,16 +1,15 @@
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../new_version/core/extensions/status_converter.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
-import '../../../widgets/create_from_page/create_from_page_button.dart';
+import '../../../new_version/core/extensions/status_converter.dart';
 import '../../../widgets/create_from_page/create_from_page_consts.dart';
+import '../../../widgets/create_from_page/create_from_page_button.dart';
 import '../../../models/page_models/selling_page_model/customer_visit_page_model.dart';
 
 class CustomerVisitPage extends StatelessWidget {
@@ -51,11 +50,11 @@ class CustomerVisitPage extends StatelessWidget {
                   ),
               ],
             ),
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
                 Text('Customer Visit',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
@@ -86,11 +85,11 @@ class CustomerVisitPage extends StatelessWidget {
                                 int.parse(data['docstatus'].toString())
                                     .convertStatusToString()),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
+                          fit: BoxFit.fitHeight,
                           child: Text(int.parse(data['docstatus'].toString())
                               .convertStatusToString()),
-                          fit: BoxFit.fitHeight,
                         ),
                       ],
                     )
@@ -117,17 +116,13 @@ class CustomerVisitPage extends StatelessWidget {
               MapsLauncher.launchCoordinates(
                   data['latitude'], data['longitude']);
             },
-            child: Text(
+            child: const Text(
               "Open in Maps",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        SizedBox(
-          height: 8,
-        ),
-        CommentsButton(color: color),
-        SizedBox(
+        const SizedBox(
           height: 25,
         ),
       ],

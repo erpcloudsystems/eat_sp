@@ -9,7 +9,6 @@ import 'connections_items.dart';
 import '../../../core/constants.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
@@ -26,7 +25,6 @@ class BomPage extends StatelessWidget {
     for (var k in data.keys) {
       log("$k : ${data[k]}");
     }
-    final Color? color = context.read<ModuleProvider>().color;
     final model = BomPageModel(data);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -159,9 +157,6 @@ class BomPage extends StatelessWidget {
 
         /// BOM description
         PageCard(items: model.card2Items),
-
-        /// Comment button
-        CommentsButton(color: color),
 
         /// Connections & Items
         ManufacturingConnectionsAndItemsPageSection(data: data, model: model),

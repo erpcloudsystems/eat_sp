@@ -1,11 +1,10 @@
-import '../../../provider/module/module_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+
 
 import '../../../widgets/page_group.dart';
-
+import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/selling_page_model/contact_page_model.dart';
-import '../../../widgets/comments_button.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -78,7 +77,6 @@ class ContactPage extends StatelessWidget {
             color: color,
             items: model.card2Items,
           ),
-        CommentsButton(color: color),
         const SizedBox(
           height: 25,
         )

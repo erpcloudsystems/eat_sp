@@ -1,15 +1,11 @@
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/map_view.dart';
-
-import 'package:flutter/material.dart';
-
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
+import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
-
+import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/selling_page_model/address_page_model.dart';
-import '../../../widgets/comments_button.dart';
 
 class AddressPage extends StatelessWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -89,7 +85,6 @@ class AddressPage extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        CommentsButton(color: color),
 
         // if (data['conn'] != null || data['conn'].isNotEmpty)
         //   Container(

@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../models/page_models/hr_page_model/attendance_request_page_model.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../widgets/comments_button.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/hr_page_model/attendance_request_page_model.dart';
 
 class AttendanceRequestPage extends StatelessWidget {
   const AttendanceRequestPage({Key? key}) : super(key: key);
@@ -90,10 +89,6 @@ class AttendanceRequestPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: 8,
-        ),
-        CommentsButton(color: color),
         SizedBox(
           height: 50,
         )

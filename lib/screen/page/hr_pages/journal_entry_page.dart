@@ -4,10 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/cloud_system_widgets.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
-import '../../../widgets/comments_button.dart';
+import '../../../core/cloud_system_widgets.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../models/page_models/hr_page_model/journal_entry_page_model.dart';
@@ -24,7 +23,7 @@ class JournalEntryPage extends StatelessWidget {
     final model = JournalEntryPageModel(context, data);
 
     return ListView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       children: [
         PageCard(
@@ -33,8 +32,8 @@ class JournalEntryPage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Text('Journal Entry',
-                    style: const TextStyle(
+                const Text('Journal Entry',
+                    style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16)),
                 if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
@@ -51,7 +50,7 @@ class JournalEntryPage extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,
@@ -70,11 +69,11 @@ class JournalEntryPage extends StatelessWidget {
                                 int.parse(data['docstatus'].toString())
                                     .convertStatusToString()),
                             size: 12),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         FittedBox(
+                          fit: BoxFit.fitHeight,
                           child: Text(int.parse(data['docstatus'].toString())
                               .convertStatusToString()),
-                          fit: BoxFit.fitHeight,
                         ),
                       ],
                     )
@@ -117,9 +116,9 @@ class JournalEntryPage extends StatelessWidget {
                 Expanded(
                   child: TabBarView(children: [
                     data['accounts'] == null || data['accounts'].isEmpty
-                        ? NothingHere()
+                        ? const NothingHere()
                         : ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             itemCount: data['accounts'].length,
                             itemBuilder: (_, index) => ItemCard3(
@@ -146,8 +145,7 @@ class JournalEntryPage extends StatelessWidget {
           color: color,
           items: model.card2Items,
         ),
-        CommentsButton(color: color),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ],

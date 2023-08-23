@@ -1,17 +1,16 @@
 import 'dart:developer';
 
-import '../../../core/constants.dart';
-import '../../../models/page_models/stock_page_model/item_page_model.dart';
-import '../../../service/service.dart';
-import '../../../provider/module/module_provider.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../table_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../widgets/comments_button.dart';
+import '../../table_screen.dart';
 import '/widgets/page_group.dart';
+import '../../../core/constants.dart';
+import '../../../service/service.dart';
+import '../../../provider/user/user_provider.dart';
+import '../../../provider/module/module_provider.dart';
+import '../../../models/page_models/stock_page_model/item_page_model.dart';
 
 class ItemPage extends StatelessWidget {
   const ItemPage({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class ItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, dynamic> data = context.read<ModuleProvider>().pageData;
     log(data.toString());
-    final Color? color = context.read<ModuleProvider>().color;
 
     final model = ItemPageModel(data);
 
@@ -80,7 +78,6 @@ class ItemPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        // mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(data['item_name'] ?? tr('none'),
                               style:
@@ -157,8 +154,6 @@ class ItemPage extends StatelessWidget {
                         onChanged: null))),
           ],
         ),
-
-        CommentsButton(color: color),
 
         ///
         /// table buttons
