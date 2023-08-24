@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter/material.dart';
 
 /// List Tutorials Keys
 final createGK = GlobalKey();
@@ -14,7 +13,7 @@ final chooseFiltersGK = GlobalKey();
 final applyFiltersGK = GlobalKey();
 
 class CustomShowCase extends StatelessWidget {
-  CustomShowCase(
+  const CustomShowCase(
       {Key? key,
       required this.child,
       required this.title,
@@ -34,10 +33,10 @@ class CustomShowCase extends StatelessWidget {
     return Showcase(
       key: globalKey,
       title: title,
-      titleTextStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+      titleTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
       description: description,
-      shapeBorder: CircleBorder(),
-      radius: BorderRadius.all(Radius.circular(8)),
+      shapeBorder: const CircleBorder(),
+      radius: const BorderRadius.all(Radius.circular(8)),
       overlayPadding: overlayPadding ?? EdgeInsets.zero,
       blurValue: 1,
       // showArrow: false,

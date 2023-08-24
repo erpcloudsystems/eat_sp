@@ -29,7 +29,7 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final modeuleProvider = context.read<ModuleProvider>();
+    final moduleProvider = context.read<ModuleProvider>();
     final homeProvider = context.read<HomeProvider>();
 
     return Material(
@@ -43,7 +43,7 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  '${'Share'.tr()}  ${modeuleProvider.pageId}',
+                  '${'Share'.tr()}  ${moduleProvider.pageId}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20,
@@ -144,8 +144,8 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
                             shareData['docType'] =
-                                modeuleProvider.currentModule.title;
-                            shareData['docId'] = modeuleProvider.pageId;
+                                moduleProvider.currentModule.title;
+                            shareData['docId'] = moduleProvider.pageId;
                             showLoadingDialog(context, 'Sharing');
                             await handleRequest(
                                     () async => {
@@ -158,8 +158,8 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
                                     context)
                                 .whenComplete(() {
                               setState(() {
-                                modeuleProvider.pageData['shared_with'] =
-                                    modeuleProvider.pageData['shared_with'];
+                                moduleProvider.pageData['shared_with'] =
+                                    moduleProvider.pageData['shared_with'];
                               });
                               // we do this permanently because of a bug that prevent the bottom
                               //sheet list from getting new data unless there is hot reload.
