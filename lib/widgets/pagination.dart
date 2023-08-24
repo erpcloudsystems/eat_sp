@@ -1,16 +1,15 @@
 import 'dart:async';
 
 import 'package:NextApp/service/service.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../provider/user/user_provider.dart';
-import 'package:flutter/material.dart';
 import 'custom_loading.dart';
+import 'package:flutter/material.dart';
 
 import '../core/constants.dart';
-import 'package:provider/provider.dart';
 import '../models/list_models/list_model.dart';
 import '../provider/module/module_provider.dart';
+import 'package:provider/provider.dart';
 
 class PaginationList<T> extends StatefulWidget {
   final Future<ListModel<T>?> Function(int pageCount) future;
@@ -101,7 +100,7 @@ class _PaginationListState<T> extends State<PaginationList> {
   void initState() {
     super.initState();
     _reset();
-    // widget.reset.addListener(_reset);
+    widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
     getItems();
   }
@@ -109,6 +108,7 @@ class _PaginationListState<T> extends State<PaginationList> {
   @override
   void dispose() {
     super.dispose();
+
     _scrollController.removeListener(loadMore);
     _scrollController.dispose();
     items.clear();
@@ -170,7 +170,7 @@ class _PaginationListState<T> extends State<PaginationList> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '$newLoadCount ${'of'.tr()} ',
+                          '${items.length} of ',
                           style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
@@ -229,8 +229,8 @@ class _PaginationListState<T> extends State<PaginationList> {
           ],
         ));
       }
-      return Center(
-        child: Text("No Data".tr()),
+      return const Center(
+        child: Text("No Data"),
       );
     });
   }
@@ -283,7 +283,7 @@ class _SearchBarState extends State<SearchBar> {
             },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
-              hintText: "Search".tr(),
+              hintText: "Search",
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
