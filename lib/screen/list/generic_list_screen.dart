@@ -115,7 +115,7 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
   @override
   void didChangeDependencies() {
     context.read<ModuleProvider>().filter.addAll({
-      'sort_field': 'creation',
+      'sort_field': 'modified',
       'sort_type': 'desc',
     });
     if (!_isInit) {
