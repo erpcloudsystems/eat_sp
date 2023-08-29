@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:NextApp/service/service.dart';
-
-import '../provider/user/user_provider.dart';
-import 'custom_loading.dart';
 import 'package:flutter/material.dart';
 
+import 'custom_loading.dart';
 import '../core/constants.dart';
+import '../service/service.dart';
+import 'package:provider/provider.dart';
 import '../models/list_models/list_model.dart';
 import '../provider/module/module_provider.dart';
-import 'package:provider/provider.dart';
 
 class PaginationList<T> extends StatefulWidget {
   final Future<ListModel<T>?> Function(int pageCount) future;
@@ -48,7 +46,7 @@ class _PaginationListState<T> extends State<PaginationList> {
   _PaginationListState(this.listItem);
 
   Future<void> getItems() async {
-    if (!mounted) return;
+    // if (!mounted) return;
 
     setState(() => _isLoading = true);
 
@@ -72,18 +70,18 @@ class _PaginationListState<T> extends State<PaginationList> {
     setState(() => _isLoading = false);
   }
 
-  void loadMore() {
+  void loadMore() async {
     if (_noMoreItems) return;
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent - 600 &&
         !_isLoading) {
-      getItems();
+      await getItems();
     }
   }
 
   bool _oldValue = false;
 
-  void _reset() {
+  void _reset() async {
     if (widget.reset.value != _oldValue) {
       setState(() {
         pageCount = -20;
@@ -91,8 +89,8 @@ class _PaginationListState<T> extends State<PaginationList> {
         _noMoreItems = false;
         items = <T>[];
         _oldValue = widget.reset.value;
-        getItems();
       });
+      await getItems();
     }
   }
 
@@ -102,13 +100,11 @@ class _PaginationListState<T> extends State<PaginationList> {
     _reset();
     widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
-    getItems();
   }
 
   @override
   void dispose() {
     super.dispose();
-
     _scrollController.removeListener(loadMore);
     _scrollController.dispose();
     items.clear();
@@ -177,29 +173,15 @@ class _PaginationListState<T> extends State<PaginationList> {
                               fontWeight: FontWeight.w500,
                               height: 1.5),
                         ),
-                        //this to avoid Duplicate GlobalKey
-                        (!context
-                                .read<UserProvider>()
-                                .showcaseProgress!
-                                .contains('list_tut'))
-                            ? Text(
-                                listCount,
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.5,
-                                ),
-                              )
-                            : Text(
-                                listCount,
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.5,
-                                ),
-                              ),
+                        Text(
+                          listCount,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            height: 1.5,
+                          ),
+                        ),
                       ],
                     ),
                   )),
@@ -230,7 +212,9 @@ class _PaginationListState<T> extends State<PaginationList> {
         ));
       }
       return const Center(
-        child: Text("No Data"),
+        // It was 'no data' text widget in the old code exchange it with this
+        // to handle no data in the init state for 1 sec.
+        child: CustomLoadingWithImage(),
       );
     });
   }
