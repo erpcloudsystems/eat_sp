@@ -120,8 +120,7 @@ class StringsManager {
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
   static const String employee = 'Employee';
-  static const String returns = 'Returns';
-    static const String bomNo = 'BOM No.';
+  static const String returns = 'Return';
   static const String selling = 'Selling';
   static const String project = 'Project';
   static const String company = 'Company';
@@ -131,6 +130,7 @@ class StringsManager {
   static const String toTime = 'To Time';
   static const String toDate = 'To Date';
   static const String select = 'Select';
+  static const String bomNo = 'BOM No.';
   static const String female = 'Female';
   static const String buying = 'Buying';
   static const String gender = 'Gender';
