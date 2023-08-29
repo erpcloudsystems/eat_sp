@@ -125,6 +125,7 @@ class StringsManager {
   static const String selling = 'Selling';
   static const String project = 'Project';
   static const String company = 'Company';
+  static const String reports = 'Reports';
   static const String remarks = 'Remarks';
   static const String noData = 'No Data';
   static const String toTime = 'To Time';
@@ -143,5 +144,5 @@ class StringsManager {
   static const String save = 'Save';
   static const String male = 'Male';
   static const String faq = 'FAQ';
-  static const String hr = 'Hr';
+  static const String hr = 'HR';
 }

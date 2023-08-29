@@ -37,10 +37,7 @@ class ModulesPage extends StatelessWidget {
         title: Text(
           'Reports'.tr(),
           style: const TextStyle(
-            color: Colors.black87,
-              fontWeight: FontWeight.bold,
-              fontSize: 22
-          ),
+              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 22),
         ),
       ),
       body: GridView.count(
@@ -53,7 +50,7 @@ class ModulesPage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(4),
             child: HomeItemTest(
-              title: '${modules[index].name} Reports',
+              title: 'Modules.${modules[index].name}'.tr(),
               imageUrl: modules[index].image,
               onPressed: () => Navigator.of(context).pushNamed(
                   Routes.reportsScreen,
