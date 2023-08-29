@@ -727,7 +727,7 @@ class APIService {
     print(url);
 
     try {
-      if (path == null) path = (await getApplicationDocumentsDirectory()).path;
+      path ??= (await getApplicationDocumentsDirectory()).path;
 
       final file = File('$path/$name');
       final response = await dio.get(
