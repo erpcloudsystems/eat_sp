@@ -68,6 +68,7 @@ class StringsManager {
   static const String employeeCheckIn = 'Employee Check In';
   static const String nextContactDate = 'Next Contact Date';
   static const String selectOperation = 'Select Operation';
+  static const String customerBalance = 'Customer Balance';
   static const String changeUrPhoto = 'Change your photo';
   static const String productionItem = 'Production Item';
   static const String withOperations = 'With Operations';
