@@ -499,64 +499,6 @@ class APIService {
     }
   }
 
-  Future patchRequest(String url, Map<String, dynamic> data) async {
-    print('⚠️ Post this data: $data');
-    try {
-      final response = await dio.patch(url, data: data);
-      print(response.requestOptions.uri);
-      print("request${response.realUri.path}");
-      print("response$response");
-      print(response.data);
-      print('${response.statusCode}');
-
-      if (response.statusCode == 200) return response.data;
-
-      throw ServerException('something went wrong!!$response');
-    } on ServerException catch (e) {
-      throw ServerException(e.message);
-    } catch (error, stacktrace) {
-      if (error is DioError) {
-        if (error.response?.data != null) {
-          print(
-              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
-        }
-        print(
-            "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw ServerException('something went wrong :(');
-      }
-    }
-  }
-
-  ///Check doc type has workflow
-  Future hasWorkflow({String? docTypeName}) async {
-    try {
-      final response = await dio.post(
-        'method/ecs_mobile.workflow.has_workflow',
-        data: {
-          'doctype': docTypeName,
-        },
-      );
-      print('_____________________AAAAAAAAA_____________________');
-      print(response.data);
-      print('_____________________AAAAAAAAA_____________________');
-      if (response.statusCode == 200) return response.data['message'];
-
-      throw ServerException('something went wrong!!$response');
-    } on ServerException catch (e) {
-      throw ServerException(e.message);
-    } catch (error, stacktrace) {
-      if (error is DioError) {
-        if (error.response?.data != null) {
-          print(
-              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
-        }
-        print(
-            "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw const ServerException('something went wrong :(');
-      }
-    }
-  }
-
   Future updatePage(String moduleId, Map<String, dynamic> data) async {
     try {
       final response = await dio.put('resource/$moduleId', data: data);
