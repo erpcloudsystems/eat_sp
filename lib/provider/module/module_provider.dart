@@ -714,7 +714,7 @@ class ModuleProvider extends ChangeNotifier {
       }
       Navigator.pop(context);
       if (file is File) {
-          if (await Permission.manageExternalStorage.request().isGranted) {
+          if (await Permission.storage.request().isGranted) {
         log(file.path);
         final res = await OpenFile.open(file.path);
         debugPrint('${res.message}  ${res.type}');}
