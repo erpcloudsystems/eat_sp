@@ -68,6 +68,7 @@ class StringsManager {
   static const String employeeCheckIn = 'Employee Check In';
   static const String nextContactDate = 'Next Contact Date';
   static const String selectOperation = 'Select Operation';
+  static const String customerBalance = 'Customer Balance';
   static const String changeUrPhoto = 'Change your photo';
   static const String productionItem = 'Production Item';
   static const String withOperations = 'With Operations';
@@ -119,16 +120,17 @@ class StringsManager {
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
   static const String employee = 'Employee';
-  static const String returns = 'Returns';
-    static const String bomNo = 'BOM No.';
+  static const String returns = 'Return';
   static const String selling = 'Selling';
   static const String project = 'Project';
   static const String company = 'Company';
+  static const String reports = 'Reports';
   static const String remarks = 'Remarks';
   static const String noData = 'No Data';
   static const String toTime = 'To Time';
   static const String toDate = 'To Date';
   static const String select = 'Select';
+  static const String bomNo = 'BOM No.';
   static const String female = 'Female';
   static const String buying = 'Buying';
   static const String gender = 'Gender';
@@ -142,5 +144,5 @@ class StringsManager {
   static const String save = 'Save';
   static const String male = 'Male';
   static const String faq = 'FAQ';
-  static const String hr = 'Hr';
+  static const String hr = 'HR';
 }

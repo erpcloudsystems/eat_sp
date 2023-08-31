@@ -153,12 +153,12 @@ class APIService {
   }
 
   void changeUrl(String url) {
-    _instance.dio.options.baseUrl = url + '/api/';
+    _instance.dio.options.baseUrl = '$url/api/';
     print('☕️ ${dio.options.baseUrl}');
 
     // Here we set the Base url for the new version services.
-    final _globalVariables = GlobalVariables();
-    _globalVariables.setBaseUrl = url + '/api/';
+    final globalVariables = GlobalVariables();
+    globalVariables.setBaseUrl = '$url/api/';
   }
 
   Map<String, String> get getHeaders => _cookie;
@@ -202,8 +202,8 @@ class APIService {
       print(response.headers);
 
       //get cooking from response
-      final _cok = response.headers.map['set-cookie']?.first;
-      _cookie = {'Cookie': _cok ?? ''};
+      final cok = response.headers.map['set-cookie']?.first;
+      _cookie = {'Cookie': cok ?? ''};
 
       print('☕️### cookies: $_cookie');
       //   print(response?.headers.toString());
@@ -217,13 +217,14 @@ class APIService {
         throw ServerException((response.data['message']).toString());
       }
     } on ServerException catch (e) {
-      throw e;
+      rethrow;
     } on DioError catch (ex) {
       print(ex.type);
       if (ex.type == DioErrorType.connectionTimeout) {
-        throw ServerException("Connection Timeout");
-      } else if (ex.type == DioErrorType.unknown)
-        throw ServerException("Connection Timeout");
+        throw const ServerException("Connection Timeout");
+      } else if (ex.type == DioErrorType.unknown) {
+        throw const ServerException("Connection Timeout");
+      }
 
       print(ex.message);
       throw Exception(ex.message);
@@ -247,9 +248,7 @@ class APIService {
     if (search != null && search.isNotEmpty) print('search: $search');
     try {
       var response = await dio.get(
-          customServiceURL == null
-              ? 'method/ecs_mobile.general.general_service'
-              : customServiceURL,
+          customServiceURL ?? 'method/ecs_mobile.general.general_service',
           queryParameters: {
             if (customServiceURL == null) 'doctype': service,
             if (filterById != null) "cur_nam": filterById,
@@ -261,11 +260,11 @@ class APIService {
           });
       print('getList filters:');
       print(filters);
-      print("getList request " + response.realUri.toString());
+      print("getList request ${response.realUri}");
       print(response.data);
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-        print("getList response" + response.toString());
+        print("getList response$response");
         if (myMap['message'] is String) {
           return ListModel<T>(<T>[]);
         }
@@ -321,19 +320,19 @@ class APIService {
   Future<Map<String, dynamic>> getPage(String url, String id) async {
     try {
       var response = await dio.get(url, queryParameters: {"name": id});
-      print("request" + response.realUri.path.toString());
+      print("request${response.realUri.path}");
       print(response.realUri);
       print(response.requestOptions.uri);
 
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-        print("request" + response.realUri.path.toString());
-        print("response" + response.toString());
+        print("request${response.realUri.path}");
+        print("response$response");
 
         print(myMap);
         return response.data;
       } else {
-        print("response" + response.toString());
+        print("response$response");
         return {};
       }
     } catch (error, stacktrace) {
@@ -359,11 +358,11 @@ class APIService {
         "start": pageCount,
         "page_length": PAGINATION_PAGE_LENGTH
       });
-      print("getCustomList request" + response.realUri.toString());
+      print("getCustomList request${response.realUri}");
       print(response.data);
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-        print("getCustomList response" + response.toString());
+        print("getCustomList response$response");
 
         if (myMap['message'] is String) return null;
         return dataParser(myMap);
@@ -386,14 +385,14 @@ class APIService {
     try {
       var response = await dio.get(url,
           queryParameters: (queryParameters != null) ? queryParameters : {});
-      print("genericGet request" + response.realUri.path.toString());
-      print("genericGet request " + response.realUri.toString());
+      print("genericGet request${response.realUri.path}");
+      print("genericGet request ${response.realUri}");
 
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-        print("genericGet request" + response.realUri.path.toString());
-        print("genericGet request " + response.realUri.toString());
-        print("genericGet response" + response.toString());
+        print("genericGet request${response.realUri.path}");
+        print("genericGet request ${response.realUri}");
+        print("genericGet response$response");
 
         print(myMap);
         return response.data;
@@ -437,7 +436,7 @@ class APIService {
         }
         print(
             "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw ServerException('something went wrong :(');
+        throw const ServerException('something went wrong :(');
       }
     }
   }
@@ -465,7 +464,7 @@ class APIService {
         }
         print(
             "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw ServerException('something went wrong :(');
+        throw const ServerException('something went wrong :(');
       }
     }
   }
@@ -502,12 +501,12 @@ class APIService {
 
   Future updatePage(String moduleId, Map<String, dynamic> data) async {
     try {
-      final response = await dio.put('resource/' + moduleId, data: data);
+      final response = await dio.put('resource/$moduleId', data: data);
       print('request data: ');
       print(data);
       print(response.requestOptions.uri);
-      print("request" + response.realUri.path.toString());
-      print("response" + response.toString());
+      print("request${response.realUri.path}");
+      print("response$response");
       print(response.data);
       print(response.statusCode);
 
@@ -523,7 +522,7 @@ class APIService {
         }
         print(
             "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw ServerException('something went wrong :(');
+        throw const ServerException('something went wrong :(');
       }
     }
   }
@@ -545,15 +544,15 @@ class APIService {
         'decode_base64': 1
       });
       print(dio.options.baseUrl);
-      print("PostFile Request" + response.realUri.toString());
+      print("PostFile Request${response.realUri}");
       print(response.requestOptions.uri);
-      print("PostFile Response " + response.toString());
+      print("PostFile Response $response");
       print(response.data);
       print(response.statusCode);
 
       if (response.statusCode == 200) return response.data;
 
-      throw ServerException('something went wrong :(');
+      throw const ServerException('something went wrong :(');
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
@@ -564,7 +563,7 @@ class APIService {
         }
         print(
             "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
-        throw ServerException('something went wrong :(');
+        throw const ServerException('something went wrong :(');
       }
     }
   }
@@ -606,18 +605,18 @@ class APIService {
       var response = await dio
           .put(CANCEL_DOC, queryParameters: {'doctype': docType, 'name': id});
 
-      print("request " + response.realUri.path.toString());
+      print("request ${response.realUri.path}");
       print(response.statusCode);
-      print("response" + response.toString());
+      print("response$response");
 
       if (response.statusCode == 200) {
-        print("request" + response.realUri.path.toString());
+        print("request${response.realUri.path}");
 
         final data = Map<String, dynamic>.from(response.data);
 
         if (data['message']['success_key'] == true) return true;
       }
-      throw ServerException('something went wrong :(');
+      throw const ServerException('something went wrong :(');
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
@@ -666,10 +665,11 @@ class APIService {
       if (e is DioError &&
           (e.type == DioErrorType.receiveTimeout ||
               e.type == DioErrorType.connectionTimeout ||
-              e.type == DioErrorType.sendTimeout))
+              e.type == DioErrorType.sendTimeout)) {
         Fluttertoast.showToast(msg: 'connection time out');
-      else
+      } else {
         Fluttertoast.showToast(msg: 'something went wrong :(');
+      }
     }
   }
 
@@ -680,10 +680,17 @@ class APIService {
       Map<String, dynamic>? queryParameters}) async {
     showLoadingDialog(context, 'Opening $fileName');
     final file = await handleRequest(
-        () => downloadFile(url, fileName, queryParameters: queryParameters),
-        context, () {
-      Fluttertoast.showToast(msg: 'something went wrong :(');
-    });
+        () async {
+          debugPrint('open file method: ');
+          debugPrint(url);
+          debugPrint(fileName);
+          debugPrint(queryParameters.toString());
+          await downloadFile(url, fileName, queryParameters: queryParameters);
+        },
+        context,
+        () {
+          Fluttertoast.showToast(msg: 'something went wrong :(');
+        });
     Navigator.pop(context);
     if (file is File) OpenFile.open(file.path);
   }
@@ -727,7 +734,12 @@ class APIService {
     print(url);
 
     try {
-      if (path == null) path = (await getApplicationDocumentsDirectory()).path;
+      path ??= (await getApplicationDocumentsDirectory()).path;
+
+      debugPrint(url);
+      debugPrint(path);
+      debugPrint(name);
+      debugPrint(queryParameters.toString());
 
       final file = File('$path/$name');
       final response = await dio.get(
@@ -744,7 +756,7 @@ class APIService {
         ),
       );
 
-      print("request " + response.realUri.path.toString());
+      print("request ${response.realUri.path}");
       print(response.statusCode);
 
       final raf = file.openSync(mode: FileMode.write);
@@ -754,12 +766,13 @@ class APIService {
     } on DioError catch (e) {
       print(e);
       if (e.type == DioErrorType.connectionTimeout) {
-        throw ServerException('connection time out');
-      } else
-        throw ServerException('something went wrong :(');
+        throw const ServerException('connection time out');
+      } else {
+        throw const ServerException('something went wrong :(');
+      }
     } catch (e) {
       print(e);
-      throw ServerException('something went wrong :(');
+      throw const ServerException('something went wrong :(');
     }
   }
 
@@ -777,19 +790,20 @@ class APIService {
         }
       });
 
-      print("request " + response.realUri.path.toString());
+      print("request ${response.realUri.path}");
       print(response.statusCode);
       print(response.data);
-      print("response" + response.toString());
+      print("response$response");
 
       if (response.statusCode == 200) {
-        print("request" + response.realUri.path.toString());
+        print("request${response.realUri.path}");
 
         final data = Map<String, dynamic>.from(response.data);
 
         if (data['message']['success_key'] == true) return true;
-      } else
-        throw ServerException('something went wrong :(');
+      } else {
+        throw const ServerException('something went wrong :(');
+      }
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
@@ -819,15 +833,13 @@ class APIService {
         }
       });
 
-      print("Send Notification Token request " +
-          response.realUri.path.toString());
+      print("Send Notification Token request ${response.realUri.path}");
       print(response.statusCode);
       print(response.data);
-      print("Send Notification Token request " + response.toString());
+      print("Send Notification Token request $response");
 
       if (response.statusCode == 200) {
-        print("Send Notification Token request " +
-            response.realUri.path.toString());
+        print("Send Notification Token request ${response.realUri.path}");
 
         final data = Map<String, dynamic>.from(response.data);
 
@@ -864,15 +876,13 @@ class APIService {
             UPDATE_NOTIFICATION_TOKEN + name.toString(),
             data: {"device_token": token});
 
-        print("Updating Notification Token request " +
-            response.realUri.path.toString());
+        print("Updating Notification Token request ${response.realUri.path}");
         print(response.statusCode);
         print(response.data);
-        print("Updating Notification Token request " + response.toString());
+        print("Updating Notification Token request $response");
 
         if (response.statusCode == 200) {
-          print("Updating Notification Token request " +
-              response.realUri.path.toString());
+          print("Updating Notification Token request ${response.realUri.path}");
           return Map<String, dynamic>.from(response.data);
         }
       } on ServerException catch (e) {
@@ -888,8 +898,9 @@ class APIService {
           }
         }
       }
-    } else
+    } else {
       return {};
+    }
   }
 
   Future getImage(String image) async {
@@ -906,17 +917,17 @@ class APIService {
           },
         ),
       );
-      print("request" + response.realUri.path.toString());
+      print("request${response.realUri.path}");
       print(response.realUri);
       print(response.requestOptions.uri);
 
       if (response.statusCode == 200) {
-        print("request" + response.realUri.path.toString());
-        print("response" + response.toString());
+        print("request${response.realUri.path}");
+        print("response$response");
 
         return response.data;
       } else {
-        print("response" + response.toString());
+        print("response$response");
         return [];
       }
     } catch (error, stacktrace) {

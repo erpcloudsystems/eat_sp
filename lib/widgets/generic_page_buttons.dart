@@ -27,8 +27,6 @@ class GenericPageButtons extends StatelessWidget {
         ),
         child: ExpandableMenu(
           backgroundColor: const Color(0xFF4B5042).withOpacity(.8),
-          // backgroundColor: APPBAR_COLOR,
-
           itemContainerColor: Colors.transparent,
           height: DoublesManager.d_30,
           width: DoublesManager.d_50,

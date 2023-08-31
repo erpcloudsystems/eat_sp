@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/core/resources/strings_manager.dart';
 import '../model_functions.dart';
 import '../../../new_version/core/extensions/status_converter.dart';
 
@@ -15,6 +16,9 @@ class CustomerVisitPageModel {
       {
         tr("Customer Address"): data['customer_address'] ?? tr('none'),
       },
+      {
+        StringsManager.customerBalance.tr(): currency(data['customer_balance']),
+      }
     ];
   }
 

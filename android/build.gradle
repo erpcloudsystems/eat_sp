@@ -11,6 +11,16 @@ buildscript {
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
     }
+    subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "27.1.1"
+            }
+        }
+    }
+}
 }
 
 allprojects {

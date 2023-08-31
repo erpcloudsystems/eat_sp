@@ -1,4 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
+
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -710,7 +713,13 @@ class ModuleProvider extends ChangeNotifier {
         );
       }
       Navigator.pop(context);
-      if (file is File) OpenFile.open(file.path);
+      if (file is File) {
+          if (await Permission.manageExternalStorage.request().isGranted) {
+        log(file.path);
+        final res = await OpenFile.open(file.path);
+        debugPrint('${res.message}  ${res.type}');}
+      }
+      
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);

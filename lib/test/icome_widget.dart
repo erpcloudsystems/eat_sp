@@ -69,12 +69,15 @@ class IncomeWidget extends StatelessWidget {
             Flex(
               direction: Axis.horizontal,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+                Flexible(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        overflow: TextOverflow.ellipsis,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(
                   width: 10,
