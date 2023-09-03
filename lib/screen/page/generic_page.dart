@@ -65,7 +65,8 @@ class _GenericPageState extends State<GenericPage> {
                 ),
               ),
               actions: [
-                const EditPageButton(),
+                 // ignore: prefer_const_constructors
+                 EditPageButton(),
                 IconButton(
                   onPressed: () {
                     Navigator.pushReplacement(context,
