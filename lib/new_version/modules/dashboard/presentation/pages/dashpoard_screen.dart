@@ -1,21 +1,22 @@
-import 'package:NextApp/core/constants.dart';
-import 'package:NextApp/new_version/core/extensions.dart/date_tine_extension.dart';
-import 'package:NextApp/new_version/modules/dashboard/presentation/bloc/dasboard_bloc.dart';
-import 'package:NextApp/new_version/modules/dashboard/presentation/bloc/transaction_bloc/transaction_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../provider/user/user_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+
+import '../bloc/dasboard_bloc.dart';
+import '../widgets/get_total_widget.dart';
+import '../widgets/dashboard_tap_view.dart';
+import '../bloc/total_bloc/total_bloc.dart';
+import '../../../../../core/constants.dart';
 import '../../../../core/resources/routes.dart';
+import '../widgets/chart_dashboard_widget.dart';
 import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
-import '../../../user_profile/presentation/pages/user_profile_screen.dart';
+import '../bloc/transaction_bloc/transaction_bloc.dart';
+import '../../../../../provider/user/user_provider.dart';
 import '../../data/models/get_total_sales_invoice_filters.dart';
-import '../bloc/total_bloc/total_bloc.dart';
-import '../widgets/chart_dashboard_widget.dart';
-import '../widgets/dashboard_tap_view.dart';
-import '../widgets/get_total_widget.dart';
+import '../../../../core/extensions/date_time_extension.dart';
+import '../../../user_profile/presentation/pages/user_profile_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -29,7 +30,6 @@ class DashboardScreen extends StatelessWidget {
     dashboardBloc.add(GetDashboardDataEvent(
       dateFilter: TotalFilters(
         fromDate: DateTime.now().formatDateYMD(),
-        //DateTime.now().subtract(const Duration(days: 30)).formatDateYMD(),
         toDate: DateTime.now().formatDateYMD(),
       ),
     ));
@@ -57,9 +57,6 @@ class DashboardScreen extends StatelessWidget {
       },
       child: Scaffold(
         body: BlocConsumer<DashboardBloc, DashboardState>(
-          // listenWhen: (previous, current) {
-          //   return previous.dashboardEntity != current.dashboardEntity;
-          // },
           listener: (context, state) {
             if (state.getDashboardState == RequestState.error) {
               Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
@@ -160,12 +157,9 @@ class DashboardScreen extends StatelessWidget {
                           shrinkWrap: true,
                           children: [
                             const GetTotalWidget(),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             ChartDashboardWidget(
-                              data: state.dashboardEntity.barChart!,
-                            ),
+                                data: state.dashboardEntity.barChart!,),
                             const SizedBox(
                               height: 700,
                               child: DashboardTapView(),

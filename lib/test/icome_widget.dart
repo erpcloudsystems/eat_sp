@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +98,7 @@ class IncomeWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    !isCounted ? 'EGP  ' : 'Count  ',
+                    !isCounted ? 'EGP  ' : tr('Count  '),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
