@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
+import '../../test/test_pdf.dart';
 import 'module_type.dart';
 import '../../service/service.dart';
 import '../user/user_provider.dart';
@@ -668,12 +669,13 @@ class ModuleProvider extends ChangeNotifier {
   }
 
   void downloadPdf(BuildContext context) async {
+    final userProvider = context.read<UserProvider>();
     //make sure for storage permission
-    if (!context.read<UserProvider>().storageAccess) {
-      await context.read<UserProvider>().checkPermission();
+    if (!userProvider.storageAccess) {
+      await userProvider.checkPermission();
 
       //return if it's not guaranteed
-      if (!context.read<UserProvider>().storageAccess) {
+      if (!userProvider.storageAccess) {
         showSnackBar('Storage Access Required!', context, color: Colors.red);
         return;
       }
@@ -685,7 +687,7 @@ class ModuleProvider extends ChangeNotifier {
       if (pdfFormats.length == 1) {
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '${userProvider.url}/api/$PRINT_INVOICE',
           '$_pageId.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
@@ -702,7 +704,7 @@ class ModuleProvider extends ChangeNotifier {
         if (format == null) return;
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '${userProvider.url}/api/$PRINT_INVOICE',
           '$_pageId-$format' '.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
@@ -714,12 +716,15 @@ class ModuleProvider extends ChangeNotifier {
       }
       Navigator.pop(context);
       if (file is File) {
-          if (await Permission.storage.request().isGranted) {
-        log(file.path);
-        final res = await OpenFile.open(file.path);
-        debugPrint('${res.message}  ${res.type}');}
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => PDFScreen(path: file!.path),)
+        // );
+        if (await Permission.manageExternalStorage.request().isGranted) {
+          log(file.path);
+          final res = await OpenFile.open(file.path);
+          debugPrint('${res.message}  ${res.type}');
+        }
       }
-      
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);

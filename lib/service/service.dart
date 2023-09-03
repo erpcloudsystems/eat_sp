@@ -679,7 +679,7 @@ class APIService {
       required BuildContext context,
       Map<String, dynamic>? queryParameters}) async {
     showLoadingDialog(context, 'Opening $fileName');
-    final file = await handleRequest(
+     await handleRequest(
         () async {
           debugPrint('open file method: ');
           debugPrint(url);
@@ -690,9 +690,11 @@ class APIService {
         context,
         () {
           Fluttertoast.showToast(msg: 'something went wrong :(');
-        });
+        }).then((file) {
+
     Navigator.pop(context);
     if (file is File) OpenFile.open(file.path);
+        });
   }
 
   Future<List<StatisticsModel>?> getStatisticsList({String? docType}) async {
@@ -731,7 +733,7 @@ class APIService {
   /// Download file into private folder not visible to user
   Future<File?> downloadFile(String url, String name,
       {Map<String, dynamic>? queryParameters, String? path}) async {
-    print(url);
+    debugPrint(url);
 
     try {
       path ??= (await getApplicationDocumentsDirectory()).path;
@@ -756,22 +758,22 @@ class APIService {
         ),
       );
 
-      print("request ${response.realUri.path}");
-      print(response.statusCode);
+      debugPrint("request ${response.realUri.path}");
+      debugPrint(response.statusCode.toString());
 
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       raf.closeSync();
       return file;
-    } on DioError catch (e) {
-      print(e);
-      if (e.type == DioErrorType.connectionTimeout) {
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      if (e.type == DioExceptionType.connectionTimeout) {
         throw const ServerException('connection time out');
       } else {
         throw const ServerException('something went wrong :(');
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       throw const ServerException('something went wrong :(');
     }
   }
