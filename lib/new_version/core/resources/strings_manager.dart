@@ -98,12 +98,13 @@ class StringsManager {
   static const String workOrder = 'Work Order';
   static const String fixedTime = 'Fixed Time';
   static const String lastLogin = 'Last Login';
+  static const String theLatest = 'The latest';
   static const String firstName = 'First Name';
   static const String birthDate = 'Birth Date';
   static const String isDefault = 'Is Default';
   static const String operation = 'Operation';
-  static const String cancelled = 'Canceled';
   static const String quotation = 'Quotation';
+  static const String cancelled = 'Canceled';
   static const String timeLogs = 'Time Logs';
   static const String fromTime = 'From Time';
   static const String fromDate = 'From Date';

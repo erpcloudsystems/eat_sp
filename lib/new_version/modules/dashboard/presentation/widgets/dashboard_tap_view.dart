@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -43,19 +45,22 @@ class DashboardTapView extends StatelessWidget {
                   isScrollable: true,
                   tabs: [
                     Tab(
-                      icon: Text(tr('DocType.${DocTypesName.task}')),
+                      icon: Text(tr('DocType.${DocTypesName.task}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon:
-                          Text(tr('DocType.${DocTypesName.leaveApplication}')),
+                      icon: Text(tr('DocType.${DocTypesName.leaveApplication}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon:
-                          Text(tr('DocType.${StringsManager.employeeCheckIn}')),
+                      icon: Text(
+                          tr('DocType.${StringsManager.employeeCheckIn}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon:
-                          Text(tr('DocType.${DocTypesName.attendanceRequest}')),
+                      icon: Text(
+                          tr('DocType.${DocTypesName.attendanceRequest}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                   ],
                 ),

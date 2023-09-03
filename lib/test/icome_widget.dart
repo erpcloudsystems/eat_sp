@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../new_version/core/resources/strings_manager.dart';
 import '../provider/module/module_provider.dart';
 import '../screen/list/generic_list_screen.dart';
 
@@ -129,7 +130,7 @@ class IncomeWidget extends StatelessWidget {
               ),
             ),
             Text(
-              'The latest $title',
+              '${tr(StringsManager.theLatest)} $title',
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 14,
