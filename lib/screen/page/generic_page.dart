@@ -65,6 +65,8 @@ class _GenericPageState extends State<GenericPage> {
                 ),
               ),
               actions: [
+                  // if we put "const" it will make a bug when entering the page
+                  // for the first time in editing.
                  // ignore: prefer_const_constructors
                  EditPageButton(),
                 IconButton(

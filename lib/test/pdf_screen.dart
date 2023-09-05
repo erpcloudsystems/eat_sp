@@ -21,7 +21,7 @@ class _PDFScreenState extends State<PDFScreen> {
         title: const Text('PDF Viewer'),
       ),
       body: PDFView(
-        filePath: widget.path, // Replace with actual file path
+        filePath: widget.path, 
         onPageChanged: (int? page, int? total) {
           setState(() {
             _currentPage = page;

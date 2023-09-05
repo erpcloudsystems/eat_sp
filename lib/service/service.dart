@@ -27,6 +27,9 @@ import '../../widgets/dialog/loading_dialog.dart';
 import '../../core/constants.dart';
 import '../models/list_models/list_model.dart';
 
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
 class APIService {
   //Selling model
   static const LEAD = 'Lead';
@@ -296,20 +299,20 @@ class APIService {
         if (search != null && search.isNotEmpty) 'search_text': '%$search%',
         if (filters != null) ...filters
       });
-     print("getListCount request ${response.realUri}");
-     print(response.data);
+      print("getListCount request ${response.realUri}");
+      print(response.data);
       if (response.statusCode == 200) {
         Map<String, dynamic> myMap = Map<String, dynamic>.from(response.data);
-       print("getList response$response");
+        print("getList response$response");
         return myMap['message']['count'].toString();
       }
     } catch (error, stacktrace) {
       if (error is DioException) {
         if (error.response?.data != null) {
-         print(
+          print(
               "getListCount Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
         } else {
-         print(
+          print(
               "getListCount Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
       }
@@ -632,11 +635,12 @@ class APIService {
     }
   }
 
-  void printInvoice(
-      {required BuildContext context,
-      required String docType,
-      required String id,
-      required String format}) async {
+  void printInvoice({
+    required BuildContext context,
+    required String docType,
+    required String id,
+    required String format,
+  }) async {
     showLoadingDialog(context, 'Printing ...');
 
     try {
@@ -654,18 +658,20 @@ class APIService {
         ),
       );
       Navigator.pop(context);
-      print(response.realUri.origin);
-      print(response.realUri.path);
-      print({'doctype': docType, 'name': id, 'format': format});
+
+      debugPrint(response.realUri.origin);
+      debugPrint(response.realUri.path);
+      debugPrint({'doctype': docType, 'name': id, 'format': format}.toString());
+
       await Printing.layoutPdf(
           onLayout: (format) async => response.data, format: PdfPageFormat.a4);
     } catch (e) {
       Navigator.pop(context);
-      print(e);
-      if (e is DioError &&
-          (e.type == DioErrorType.receiveTimeout ||
-              e.type == DioErrorType.connectionTimeout ||
-              e.type == DioErrorType.sendTimeout)) {
+      debugPrint(e.toString());
+      if (e is DioException &&
+          (e.type == DioExceptionType.receiveTimeout ||
+              e.type == DioExceptionType.connectionTimeout ||
+              e.type == DioExceptionType.sendTimeout)) {
         Fluttertoast.showToast(msg: 'connection time out');
       } else {
         Fluttertoast.showToast(msg: 'something went wrong :(');
@@ -679,22 +685,22 @@ class APIService {
       required BuildContext context,
       Map<String, dynamic>? queryParameters}) async {
     showLoadingDialog(context, 'Opening $fileName');
-     await handleRequest(
+    await handleRequest(
         () async {
           debugPrint('open file method: ');
           debugPrint(url);
           debugPrint(fileName);
           debugPrint(queryParameters.toString());
+
           await downloadFile(url, fileName, queryParameters: queryParameters);
         },
         context,
         () {
           Fluttertoast.showToast(msg: 'something went wrong :(');
         }).then((file) {
-
-    Navigator.pop(context);
-    if (file is File) OpenFile.open(file.path);
-        });
+      Navigator.pop(context);
+      if (file is File) OpenFile.open(file.path);
+    });
   }
 
   Future<List<StatisticsModel>?> getStatisticsList({String? docType}) async {
@@ -760,11 +766,12 @@ class APIService {
 
       debugPrint("request ${response.realUri.path}");
       debugPrint(response.statusCode.toString());
-
+ 
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       raf.closeSync();
       return file;
+      
     } on DioException catch (e) {
       debugPrint(e.message);
       if (e.type == DioExceptionType.connectionTimeout) {

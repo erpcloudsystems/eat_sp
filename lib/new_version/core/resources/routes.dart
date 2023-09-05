@@ -26,6 +26,7 @@ class Routes {
   static const String modulesScreen = '/modules';
   static const String reportsScreen = '/reports';
   static const String noDataScreen = '/no_data';
+  static const String pdfScreen = '/pdf_screen';
 
 
   static Map<String, WidgetBuilder> get routes {

@@ -1,18 +1,14 @@
-import 'dart:developer';
 import 'dart:io';
-
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../core/cloud_system_widgets.dart';
-import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
-import '../../test/test_pdf.dart';
+import '../../test/pdf_screen.dart';
 import 'module_type.dart';
 import '../../service/service.dart';
 import '../user/user_provider.dart';
@@ -655,16 +651,18 @@ class ModuleProvider extends ChangeNotifier {
           id: _pageId,
           format: pdfFormats[0]);
     } else {
-      final format = await showDialog(
+      await showDialog(
           context: context,
           builder: (_) => SelectFormatDialog(
-              formats: pdfFormats, title: 'Select Print Format'));
-      if (format == null) return;
-      APIService().printInvoice(
-          context: context,
-          docType: _currentModule!.genericListService,
-          id: _pageId,
-          format: format);
+              formats: pdfFormats,
+              title: 'Select Print Format')).then((format) {
+        if (format == null) return;
+        APIService().printInvoice(
+            context: context,
+            docType: _currentModule!.genericListService,
+            id: _pageId,
+            format: format);
+      });
     }
   }
 
@@ -714,17 +712,8 @@ class ModuleProvider extends ChangeNotifier {
           path: null,
         );
       }
-      Navigator.pop(context);
-      if (file is File) {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //   builder: (context) => PDFScreen(path: file!.path),)
-        // );
-        if (await Permission.manageExternalStorage.request().isGranted) {
-          log(file.path);
-          final res = await OpenFile.open(file.path);
-          debugPrint('${res.message}  ${res.type}');
-        }
-      }
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => PDFScreen(path: file!.path)));
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);
