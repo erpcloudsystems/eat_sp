@@ -8,7 +8,6 @@ import '../widgets/get_total_widget.dart';
 import '../widgets/dashboard_tap_view.dart';
 import '../bloc/total_bloc/total_bloc.dart';
 import '../../../../../core/constants.dart';
-import '../../../../core/resources/routes.dart';
 import '../widgets/chart_dashboard_widget.dart';
 import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
@@ -59,7 +58,7 @@ class DashboardScreen extends StatelessWidget {
         body: BlocConsumer<DashboardBloc, DashboardState>(
           listener: (context, state) {
             if (state.getDashboardState == RequestState.error) {
-              Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
+
               showDialog(
                 context: context,
                 builder: (context) => ErrorDialog(
