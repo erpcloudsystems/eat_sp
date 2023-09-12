@@ -90,8 +90,8 @@ class _PaginationListState<T> extends State<PaginationList> {
         items = <T>[];
         _oldValue = widget.reset.value;
       });
-      await getItems();
     }
+    await getItems();
   }
 
   @override
@@ -211,11 +211,7 @@ class _PaginationListState<T> extends State<PaginationList> {
           ],
         ));
       }
-      return const Center(
-        // It was 'no data' text widget in the old code exchange it with this
-        // to handle no data in the init state for 1 sec.
-        child: CustomLoadingWithImage(),
-      );
+      return const Center(child: Text("No Data"));
     });
   }
 }
