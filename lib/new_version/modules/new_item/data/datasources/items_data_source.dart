@@ -24,6 +24,9 @@ class ItemDataSourceByDio implements BaseItemsDataSource {
       query: {
         'item_group': itemFilter.itemGroup,
         'price_list': itemFilter.priceList,
+        'page_length': ApiConstance.pageLength,
+        if (itemFilter.startKey != 0) 'start': itemFilter.startKey,
+        if (itemFilter.searchText != null) 'search_text': itemFilter.searchText,
       },
     ) as Response;
 

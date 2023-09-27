@@ -291,7 +291,7 @@
   "Sales":"مبيعات",
   "Return":"مرتجع",
   "Create":"انشاء",
-
+  "noItemAvailable" : "لا توجد عناصر متاحة",  
   "Modules": {
     "Modules": "المستندات",
     "Selling": "المبيعات",

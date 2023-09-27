@@ -6,7 +6,7 @@ class ApiConstance {
   static String baseUrl = GlobalVariables().getBaseUrl;
 
 // the page length the sent in query for pagination.
-  static const pageLength = 25;
+  static const pageLength = 20;
 
   static const connectionTimeOut = Duration(seconds: IntManager.i_15);
   static const receiveTimeOut = Duration(seconds: IntManager.i_30);

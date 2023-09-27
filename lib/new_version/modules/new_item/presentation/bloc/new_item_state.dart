@@ -12,8 +12,6 @@ class ItemState extends Equatable {
   final bool hasReachedMax;
   final List<ItemEntity> getItemData;
   final List<ItemGroupEntity> getItemGroupData;
-  // final List<Map<String, dynamic>> itemsList;
-  // final List<String> parentList;
 
   const ItemState({
     this.getItemsState = RequestState.loading,
@@ -33,7 +31,6 @@ class ItemState extends Equatable {
     String? getItemGroupMessage,
     List<ItemEntity>? getItemData,
     List<ItemGroupEntity>? getItemGroupData,
-    // List<Map<String, dynamic>>? itemsList,
     bool? hasReachedMax,
   }) =>
       ItemState(
@@ -43,9 +40,7 @@ class ItemState extends Equatable {
         getItemGroupMessage: getItemGroupMessage ?? this.getItemGroupMessage,
         getItemData: getItemData ?? this.getItemData,
         getItemGroupData: getItemGroupData ?? this.getItemGroupData,
-        // itemsList: itemsList ?? this.itemsList,
         hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-        // parentList: parentList ?? this.parentList,
       );
   @override
   List<Object?> get props => [
@@ -55,6 +50,5 @@ class ItemState extends Equatable {
         getItemData,
         getItemGroupData,
         hasReachedMax,
-        // itemsList,
       ];
 }

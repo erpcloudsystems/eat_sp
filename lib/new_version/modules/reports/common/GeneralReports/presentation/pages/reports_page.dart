@@ -21,7 +21,7 @@ class ReportsPage extends StatelessWidget {
         .add(GetAllReportsEvent(moduleName: moduleName));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           StringsManager.selectReport,
         ),
       ),
@@ -40,7 +40,7 @@ class ReportsPage extends StatelessWidget {
             previous.getReportsState != current.getReportsState,
         builder: (context, state) {
           if (state.getReportsState == RequestState.loading) {
-            return CustomLoadingWithImage();
+            return const CustomLoadingWithImage();
           }
           if (state.getReportsState == RequestState.success) {
             return ListView.builder(
@@ -67,7 +67,7 @@ class ReportsPage extends StatelessWidget {
               ),
             );
           }
-          return Center(
+          return const Center(
             child: Text(
               'No Data',
             ),

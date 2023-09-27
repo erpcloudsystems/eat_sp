@@ -10,10 +10,10 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
 import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/dismiss_keyboard.dart';
-import '../../../../core/resources/routes.dart';
+import '../../../../../widgets/nothing_here.dart';
+import '../../../../core/resources/strings_manager.dart';
 import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
 import '../../data/models/item_filter.dart';
@@ -33,12 +33,25 @@ class ItemListScreen extends StatefulWidget {
 }
 
 class _ItemListScreenState extends State<ItemListScreen> {
-  String searchText = '';
+  final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     loadData();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() {
+          isLoading = true;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
   }
 
   void loadData() {
@@ -56,6 +69,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
   }
 
   Future<void> scanBarcodeNormal() async {
+    final bloc = BlocProvider.of<NewItemBloc>(context);
     String barcodeScanRes;
 
     try {
@@ -70,13 +84,20 @@ class _ItemListScreenState extends State<ItemListScreen> {
     }
     if (!mounted) return;
 
-    setState(() {
-      searchText = barcodeScanRes;
-    });
+    bloc.add(
+      GetItemEvent(
+        itemFilter: ItemsFilter(
+          itemGroup: widget.itemGroup,
+          priceList: widget.priceList,
+          searchText: barcodeScanRes,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<NewItemBloc>(context);
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
@@ -96,9 +117,15 @@ class _ItemListScreenState extends State<ItemListScreen> {
                   Flexible(
                     child: NewSearchWidget(
                       searchFunction: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
+                        bloc.add(
+                          GetItemEvent(
+                            itemFilter: ItemsFilter(
+                              itemGroup: widget.itemGroup,
+                              priceList: widget.priceList,
+                              searchText: value,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -118,15 +145,14 @@ class _ItemListScreenState extends State<ItemListScreen> {
           ),
         ),
         body: BlocConsumer<NewItemBloc, ItemState>(
-          listenWhen: (previous, current) =>
-              previous.getItemsState != current.getItemsState,
+          // listenWhen: (previous, current) =>
+          //     previous.getItemsState != current.getItemsState,
           listener: (context, state) {
             if (state.getItemsState == RequestState.error) {
-              Navigator.of(context).pushReplacementNamed(Routes.noDataScreen);
               showDialog(
                 context: context,
                 builder: (context) => ErrorDialog(
-                  errorMessage: state.getItemMessage,
+                  errorMessage: StringsManager.noItemAvailable.tr(),
                 ),
               );
             }
@@ -134,55 +160,97 @@ class _ItemListScreenState extends State<ItemListScreen> {
           buildWhen: (previous, current) =>
               previous.getItemData != current.getItemData,
           builder: (context, state) {
-            List<ItemEntity> filteredData = state.getItemData
-                .where(
-                  (item) =>
-                      item.itemName
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()) ||
-                      item.itemCode
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()) ||
-                      item.barCode
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()),
-                )
-                .toList();
-
             return state.getItemsState == RequestState.loading
                 ? const CustomLoadingWithImage()
-                : AnimationLimiter(
-                    child: filteredData.isEmpty
-                        ? const NothingHere()
-                        : GridView.count(
-                            crossAxisCount: 2,
-                            childAspectRatio: .513,
-                            children: List.generate(
-                              filteredData.length,
-                              (int index) {
-                                return AnimationConfiguration.staggeredGrid(
-                                  position: index,
-                                  duration: const Duration(milliseconds: 1500),
-                                  columnCount: 3,
-                                  child: SlideAnimation(
-                                    verticalOffset: 100.0,
-                                    child: FadeInAnimation(
-                                      child: ItemCardWidget(
-                                        itemCode: filteredData[index].itemCode,
-                                        itemName: filteredData[index].itemName,
-                                        itemGroup: filteredData[index].itemGroup,
-                                        rate: filteredData[index].netRate,
-                                        uom: filteredData[index].uom,
-                                        imageUrl: filteredData[index].imageUrl,
-                                        uomList: filteredData[index].uomList,
-                                        priceListRate: filteredData[index].priceListRate,
-                                      ),
+                : Column(
+                    children: [
+                      Flexible(
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (scrollNotification) {
+                            if (scrollNotification is ScrollEndNotification) {
+                              // Detect when the user has reached the end of the list.
+
+                              if (scrollNotification.metrics.pixels ==
+                                  scrollNotification.metrics.maxScrollExtent) {
+                                // Load more data here by dispatching a new GetItemEvent with pagination information.
+
+                                bloc.add(
+                                  GetItemEvent(
+                                    itemFilter: ItemsFilter(
+                                      itemGroup: widget.itemGroup,
+                                      priceList: widget.priceList,
+                                      startKey: state.getItemData.length + 1,
                                     ),
                                   ),
                                 );
-                              },
+                              }
+                            }
+
+                            return false;
+                          },
+                          child: AnimationLimiter(
+                            child: state.getItemData.isEmpty
+                                ? const NothingHere()
+                                : GridView.count(
+                                    controller: scrollController,
+                                    crossAxisCount: 2,
+                                    childAspectRatio: .513,
+                                    children: List.generate(
+                                      state.getItemData.length,
+                                      (int index) {
+                                        return AnimationConfiguration
+                                            .staggeredGrid(
+                                          position: index,
+                                          duration: const Duration(
+                                              milliseconds: 1500),
+                                          columnCount: 3,
+                                          child: SlideAnimation(
+                                            verticalOffset: 100.0,
+                                            child: FadeInAnimation(
+                                              child: ItemCardWidget(
+                                                itemCode: state
+                                                    .getItemData[index]
+                                                    .itemCode,
+                                                itemName: state
+                                                    .getItemData[index]
+                                                    .itemName,
+                                                itemGroup: state
+                                                    .getItemData[index]
+                                                    .itemGroup,
+                                                rate: state
+                                                    .getItemData[index].netRate,
+                                                uom: state
+                                                    .getItemData[index].uom,
+                                                imageUrl: state
+                                                    .getItemData[index]
+                                                    .imageUrl,
+                                                uomList: state
+                                                    .getItemData[index].uomList,
+                                                priceListRate: state
+                                                    .getItemData[index]
+                                                    .priceListRate,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      if (!state.hasReachedMax && isLoading)
+                        const Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            height: 5,
+                            child: LinearProgressIndicator(
+                              color: LOADING_PROGRESS_COLOR,
+                              backgroundColor: Colors.transparent,
                             ),
                           ),
+                        ),
+                    ],
                   );
           },
         ),

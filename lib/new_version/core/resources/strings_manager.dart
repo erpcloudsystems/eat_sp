@@ -151,4 +151,5 @@ class StringsManager {
   static const String paid = 'Paid';
   static const String faq = 'FAQ';
   static const String hr = 'HR';
+  static const String noItemAvailable = 'No item available';
 }

@@ -21,13 +21,13 @@ class NewItemBloc extends Bloc<NewItemEvent, ItemState> {
     on<GetItemEvent>(_getItemData, transformer: droppable());
     on<GetItemGroupEvent>(_getItemGroupData, transformer: droppable());
     on<ResetItemEvent>(_resetItemDate);
-    // on<AddItemToListEvent>(_addItemToList);
   }
 
   FutureOr<void> _getItemData(
       GetItemEvent event, Emitter<ItemState> emit) async {
     if (state.hasReachedMax) return;
-    if (state.getItemsState == RequestState.loading) {
+    if (state.getItemsState == RequestState.loading ||
+        event.itemFilter.searchText != null) {
       final result = await _getItemsUseCase(event.itemFilter);
 
       result.fold(
@@ -39,22 +39,20 @@ class NewItemBloc extends Bloc<NewItemEvent, ItemState> {
           (itemDate) => emit(state.copyWith(
                 getItemsState: RequestState.success,
                 getItemData: itemDate,
-                hasReachedMax: false,
+                hasReachedMax: itemDate.length < ApiConstance.pageLength,
               )));
     } else {
-      final result = await _getItemsUseCase(
-        event.itemFilter,
-      );
+      final result = await _getItemsUseCase(event.itemFilter);
       result.fold(
-        (failure) => state.copyWith(
+        (failure) => emit(state.copyWith(
           getItemsState: RequestState.error,
           getItemMessage: failure.errorMessage,
-        ),
-        (itemDate) => state.copyWith(
+        )),
+        (itemDate) => emit(state.copyWith(
           getItemsState: RequestState.success,
           getItemData: List.of(state.getItemData)..addAll(itemDate),
           hasReachedMax: itemDate.length < ApiConstance.pageLength,
-        ),
+        )),
       );
     }
   }

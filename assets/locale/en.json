@@ -300,6 +300,7 @@
   "Payment":"Payment",
   "Sales":"Sales",
   "Return":"Return",
+  "noItemAvailable" : "No items available",  
   "Modules":{
     "Modules":"Modules",
     "Selling":"Selling",
