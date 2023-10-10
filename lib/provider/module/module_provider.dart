@@ -120,7 +120,14 @@ class ModuleProvider extends ChangeNotifier {
   //---------------------------------------------------------------------------
   //----------------------- New Items------------------------------------------
   List<Map<String, dynamic>> newItemList = [];
-  // dynamic total = 0.0;
+  double netTotal = 0.0;
+
+  void set setNetTotal(double value) {
+    netTotal = value;
+
+    notifyListeners();
+  }
+
   void setItemToList(Map<String, dynamic> item) {
     newItemList.add(item);
     item['amount'] = item['qty'] * item['rate'];

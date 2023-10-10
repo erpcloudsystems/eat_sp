@@ -126,6 +126,7 @@ const List<String> workOrderOrJopCard = [
   'Jop Card',
 ];
 
+const List<String> additionalDiscountList = ['Percentage', 'Amount'];
 const List<String> termLoan = [
   ' ',
   'Repay Fixed Amount per Period',
@@ -174,7 +175,10 @@ const List<String> journalEntryTypeStatus = [
   'Deferred Expense',
 ];
 
-List<Tab> manufacturingPagesTabs = const [Tab(text: 'Items'), Tab(text: 'Connections')];
+List<Tab> manufacturingPagesTabs = const [
+  Tab(text: 'Items'),
+  Tab(text: 'Connections')
+];
 
 const List<String> journalEntryTypePartyType1 = ['Customer'];
 const List<String> journalEntryTypePartyType2 = ['Supplier', 'Employee'];

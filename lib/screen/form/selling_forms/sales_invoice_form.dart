@@ -44,6 +44,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "conversion_rate": 1,
     "latitude": 0.0,
     "longitude": 0.0,
+    // "apply_discount_on": "Net Total",
+    'additional_discount_percentage': 0.0,
+    'discount_amount': 0.0,
   };
 
   LatLng location = const LatLng(0.0, 0.0);
@@ -300,6 +303,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     context.read<ModuleProvider>().resetCreationForm();
   }
 
+  bool disableAmount = false;
+  String discountValue = 'Percentage';
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
@@ -604,14 +609,19 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           return res['name'];
                         },
                       ),
-                      CustomTextFieldTest('cost_center', 'Cost Center',
-                          initialValue: data['cost_center'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => costCenterScreen()))),
+                      CustomTextFieldTest(
+                        'cost_center',
+                        'Cost Center',
+                        initialValue: data['cost_center'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => costCenterScreen(),
+                          ),
+                        ),
+                      ),
                       CustomTextFieldTest('currency', 'Currency',
                           initialValue:
                               data['currency'] ?? userProvider.defaultCurrency,
@@ -770,6 +780,67 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   priceList: data['selling_price_list'] ??
                       context.read<UserProvider>().defaultSellingPriceList,
                 ),
+
+                Group(
+                  child: Column(
+                    children: [
+                      CustomDropDownTest(
+                        'amount',
+                        'Additional Discount'.tr(),
+                        fontSize: 16,
+                        items: additionalDiscountList,
+                        defaultValue: discountValue,
+                        onChanged: (value) => setState(() {
+                          discountValue = value;
+                          if (value == 'Percentage') {
+                            data['additional_discount_percentage'] = 0.0;
+                            data['discount_amount'] = 0.0;
+                          } else {
+                            data['additional_discount_percentage'] = 0.0;
+                            data['discount_amount'] = 0.0;
+                          }
+                        }),
+                      ),
+                      if (discountValue == 'Percentage')
+                        CustomTextFieldTest(
+                          'additional_discount_percentage',
+                          'Additional Discount Percentage'.tr(),
+                          initialValue:
+                              data['additional_discount_percentage'].toString(),
+                          disableValidation: true,
+                          clearButton: true,
+                          onChanged: (value) {
+                            try {
+                              double parsedValue = double.parse(value);
+                              data['additional_discount_percentage'] =
+                                  parsedValue;
+
+                              double discount =
+                                  (parsedValue * provider.netTotal.toDouble()) /
+                                      100.0;
+                              data['discount_amount'] = discount;
+
+                              setState(() {});
+                            } catch (e) {
+                              // Handle parsing errors here, e.g., show an error message to the user
+                              print("Error parsing value: $e");
+                            }
+                          },
+                        ),
+                      CustomTextFieldTest(
+                        'discount_amount',
+                        'Additional Discount Amount'.tr(),
+                        initialValue: data['discount_amount'].toString(),
+                        disableValidation: true,
+                        enabled: discountValue == 'Percentage' ? false : true,
+                        clearButton: true,
+                        onChanged: (value) {
+                          data['discount_amount'] = value;
+                        },
+                      ),
+                    ],
+                  ),
+                )
                 // const Padding(
                 //   padding: EdgeInsets.symmetric(
                 //     vertical: 13.0,
