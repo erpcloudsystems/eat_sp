@@ -493,7 +493,7 @@ class ModuleProvider extends ChangeNotifier {
     return count;
   }
 
-  Future<void> submitDocument(BuildContext context) async {
+   Future<void> submitDocument(BuildContext context) async {
     final res = await checkDialog(context,
         'Are you sure to submit ${_currentModule!.genericListService} $_pageId');
     if (res == false) loadPage();
@@ -507,13 +507,15 @@ class ModuleProvider extends ChangeNotifier {
               .submitDoc(_pageId, _currentModule!.genericListService),
           context);
 
-      if (response != null && response == true) _pageSubmitStatus = 1;
-      final x = _filter;
-      filter = {'notifyListeners': true};
-      filter = x;
-      loadPage();
-      Navigator.pop(context);
-      showSnackBar('Submitted Successfully', context);
+      if (response != null && response == true) {
+        _pageSubmitStatus = 1;
+        final x = _filter;
+        filter = {'notifyListeners': true};
+        filter = x;
+        loadPage();
+        Navigator.pop(context);
+        showSnackBar('Submitted Successfully', context);
+      }
     }
   }
 

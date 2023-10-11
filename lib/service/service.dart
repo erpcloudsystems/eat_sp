@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:NextApp/new_version/core/extensions/html_reponse.dart';
 import 'package:NextApp/new_version/core/network/api_constance.dart';
 
 import '../models/list_models/statistics_model.dart';
 import '../models/new_version_models/check_url_validation_model.dart';
 import '../new_version/core/global/global_variables.dart';
 import '../new_version/core/resources/strings_manager.dart';
+import '../new_version/core/utils/error_dialog.dart';
 import '../provider/module/module_type.dart';
 import 'server_exception.dart';
 import 'service_constants.dart';
@@ -586,21 +588,23 @@ class APIService {
         final data = Map<String, dynamic>.from(response.data);
 
         if (data['message']['success_key'] == true) return true;
+      } else {
+        throw SubmitException(
+            title: response.data['exc_type'],
+            message: response.data['exception']);
       }
-      throw ServerException('something went wrong :(');
-    } on ServerException catch (e) {
-      throw ServerException(e.message);
+    } on SubmitException catch (e) {
+      throw SubmitException(title: e.title, message: e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
-          print(
-              "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
+          log("Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
         } else {
-          print(
-              "Exception occurred: ${error.toString()} stackTrace: $stacktrace");
+          log("Exception occurred: ${error.toString()} stackTrace: $stacktrace");
         }
       }
     }
+    return null;
   }
 
   Future<bool?> cancelDoc(String id, String docType) async {
@@ -766,12 +770,11 @@ class APIService {
 
       debugPrint("request ${response.realUri.path}");
       debugPrint(response.statusCode.toString());
- 
+
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       raf.closeSync();
       return file;
-      
     } on DioException catch (e) {
       debugPrint(e.message);
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -960,6 +963,13 @@ Future<dynamic> handleRequest(
     [VoidCallback? onException]) async {
   try {
     return await serverRequest();
+  } on SubmitException catch (e) {
+    Navigator.of(context).pop();
+    showDialog(
+      context: context,
+      builder: (context) =>
+          ErrorDialog(errorMessage: e.message.removeAllHtmlTags()),
+    );
   } on ServerException catch (e) {
     print('HttpException: $e');
     showErrorSnackBar(
