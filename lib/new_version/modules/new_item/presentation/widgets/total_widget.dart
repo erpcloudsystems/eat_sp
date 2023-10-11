@@ -16,7 +16,7 @@ class Totals extends StatelessWidget {
     for (var item in items) {
       netTotal += item['amount'];
     }
-    context.read<ModuleProvider>().setNetTotal = netTotal;
+    // context.read<ModuleProvider>().setNetTotal = netTotal;
 
     return Row(
       children: [

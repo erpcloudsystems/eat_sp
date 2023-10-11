@@ -91,10 +91,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    // InheritedForm.of(context).items.forEach((element) {
-    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
-    //   data['items'].add(element.toJson);
-    // });
     for (var element in provider.newItemList) {
       if (data['is_return'] == 1) element['qty'] = element['qty'] * -1;
       data['items'].add(element);
@@ -802,52 +798,30 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         }),
                       ),
                       if (discountValue == 'Percentage')
+                        CustomTextFieldTest('additional_discount_percentage',
+                            'Additional Discount Percentage'.tr(),
+                            initialValue: data['additional_discount_percentage']
+                                .toString(),
+                            disableValidation: true,
+                            clearButton: true,
+                            onSave: (id, value) =>
+                                data[id] = double.parse(value),
+                            onChanged: (value) =>
+                                data['additional_discount_percentage'] = value),
+                      if (discountValue == 'Amount')
                         CustomTextFieldTest(
-                          'additional_discount_percentage',
-                          'Additional Discount Percentage'.tr(),
-                          initialValue:
-                              data['additional_discount_percentage'].toString(),
+                          'discount_amount',
+                          'Additional Discount Amount'.tr(),
+                          initialValue: data['discount_amount'].toString(),
                           disableValidation: true,
                           clearButton: true,
                           onChanged: (value) {
-                            try {
-                              double parsedValue = double.parse(value);
-                              data['additional_discount_percentage'] =
-                                  parsedValue;
-
-                              double discount =
-                                  (parsedValue * provider.netTotal.toDouble()) /
-                                      100.0;
-                              data['discount_amount'] = discount;
-
-                              setState(() {});
-                            } catch (e) {
-                              // Handle parsing errors here, e.g., show an error message to the user
-                              print("Error parsing value: $e");
-                            }
+                            data['discount_amount'] = double.parse(value);
                           },
                         ),
-                      CustomTextFieldTest(
-                        'discount_amount',
-                        'Additional Discount Amount'.tr(),
-                        initialValue: data['discount_amount'].toString(),
-                        disableValidation: true,
-                        enabled: discountValue == 'Percentage' ? false : true,
-                        clearButton: true,
-                        onChanged: (value) {
-                          data['discount_amount'] = value;
-                        },
-                      ),
                     ],
                   ),
                 )
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(
-                //     vertical: 13.0,
-                //     horizontal: 8,
-                //   ),
-                //   child: SelectedItemsList(),
-                // ),
               ],
             ),
           ),
