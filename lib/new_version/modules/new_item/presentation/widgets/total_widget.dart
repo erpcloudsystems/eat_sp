@@ -1,6 +1,4 @@
-import 'package:NextApp/provider/module/module_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../models/page_models/model_functions.dart';
 import '../../../../../widgets/list_card.dart';
@@ -16,7 +14,6 @@ class Totals extends StatelessWidget {
     for (var item in items) {
       netTotal += item['amount'];
     }
-    // context.read<ModuleProvider>().setNetTotal = netTotal;
 
     return Row(
       children: [

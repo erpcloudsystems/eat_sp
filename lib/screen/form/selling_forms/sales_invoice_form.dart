@@ -478,7 +478,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         title: CustomTextFieldTest(
                             'customer_address', 'Customer Address',
                             initialValue: data['customer_address'],
-                            disableValidation: false,
+                            disableValidation: true,
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
