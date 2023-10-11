@@ -145,7 +145,6 @@ class _PaymentFormState extends State<PaymentForm> {
         data['party_type'] = KPaymentPartyList[0];
         data['posting_date'] = DateTime.now().toIso8601String();
 
-
         // from Sales Order
         if (data['doctype'] == 'Sales Order') {
           data['sales_order'] = data['name'];
@@ -443,6 +442,21 @@ class _PaymentFormState extends State<PaymentForm> {
                             data[key] = double.tryParse(value) ?? 0,
                         onChanged: (value) {
                           data['paid_amount'] = double.tryParse(value) ?? 0;
+                          if (data.containsKey('references')) {
+                            data['references'] = [
+                              {
+                                "reference_doctype": data['references'][0]
+                                    ["reference_doctype"],
+                                "reference_name": data['references'][0]
+                                    ["reference_name"],
+                                "total_amount": data['references'][0]
+                                    ["total_amount"],
+                                "outstanding_amount": data['references'][0]
+                                    ["outstanding_amount"],
+                                "allocated_amount": data['paid_amount'],
+                              }
+                            ];
+                          }
                         },
                       ),
                       const SizedBox(height: 8),
