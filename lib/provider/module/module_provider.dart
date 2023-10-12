@@ -122,7 +122,7 @@ class ModuleProvider extends ChangeNotifier {
   List<Map<String, dynamic>> newItemList = [];
   double netTotal = 0.0;
 
-  void set setNetTotal(double value) {
+   set setNetTotal(double value) {
     netTotal = value;
 
     notifyListeners();

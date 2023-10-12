@@ -227,7 +227,7 @@ String? validateMobile(String? value) {
 }
 
 String? numberValidationToast(String? value, String field,
-    {bool isInt = false}) {
+    {bool isInt = false, bool isReturn = false}) {
   debugPrint(value);
   if (value == null || value.isEmpty) {
     Fluttertoast.showToast(
@@ -243,7 +243,7 @@ String? numberValidationToast(String? value, String field,
     theNum = double.tryParse(value);
   }
 
-  if (theNum == null || theNum < 0) {
+  if (theNum == null || theNum < 0 && isReturn == false) {
     Fluttertoast.showToast(
         msg: '$value is not a valid $field',
         backgroundColor: Colors.grey.shade700.withOpacity(0.8));

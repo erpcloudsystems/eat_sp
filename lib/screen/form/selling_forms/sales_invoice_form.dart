@@ -30,7 +30,7 @@ class SalesInvoiceForm extends StatefulWidget {
   const SalesInvoiceForm({Key? key}) : super(key: key);
 
   @override
-  _SalesInvoiceFormState createState() => _SalesInvoiceFormState();
+  State<SalesInvoiceForm> createState() => _SalesInvoiceFormState();
 }
 
 class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
@@ -44,7 +44,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "conversion_rate": 1,
     "latitude": 0.0,
     "longitude": 0.0,
-    // "apply_discount_on": "Net Total",
     'additional_discount_percentage': 0.0,
     'discount_amount': 0.0,
   };
@@ -91,8 +90,14 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
+    // Here we handle return and credit note case, besides add new items to the data.
     for (var element in provider.newItemList) {
-      if (data['is_return'] == 1) element['qty'] = element['qty'] * -1;
+      if (data['is_return'] == 1 && element['qty'] > 0) {
+        element['qty'] = element['qty'] * -1;
+        if (element['stock_qty'] != null) {
+          element['stock_qty'] = element['stock_qty'] * -1;
+        }
+      }
       data['items'].add(element);
     }
 
@@ -119,36 +124,37 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       print("➡️ $k: ${data[k]}");
     }
 
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(SALES_INVOICE_POST, {'data': data}),
-        context);
-
-    Navigator.pop(context);
-
-    InheritedForm.of(context).data['selling_price_list'] = null;
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(SALES_INVOICE_POST, {'data': data}),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['sales_invoice'] != null) {
-        context
-            .read<ModuleProvider>()
-            .pushPage(res['message']['sales_invoice']);
+
+      InheritedForm.of(context).data['selling_price_list'] = null;
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['sales_invoice'] != null) {
+          context
+              .read<ModuleProvider>()
+              .pushPage(res['message']['sales_invoice']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['sales_invoice'] != null) {
+        provider.pushPage(res['message']['sales_invoice']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
       }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['sales_invoice'] != null) {
-      provider.pushPage(res['message']['sales_invoice']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+    });
   }
 
   Future<void> _getCustomerData(String customer) async {
@@ -205,14 +211,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
 
-        // // Because "Customer Visit" doesn't have Items.
+        // Because "Customer Visit" doesn't have Items.
         if (data['doctype'] != DocTypesName.customerVisit) {
           InheritedForm.of(context).items.clear();
-          // data['items'].forEach((element) {
-          //   InheritedForm.of(context)
-          //       .items
-          //       .add(ItemSelectModel.fromJson(element));
-          // });
           data['items'].forEach((element) {
             provider.newItemList.add(element);
           });
