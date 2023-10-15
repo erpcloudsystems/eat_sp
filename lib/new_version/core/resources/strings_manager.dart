@@ -65,7 +65,7 @@ class StringsManager {
   static const String wareHouseReport = 'Warehouse Balance';
   static const String expectedEndTime = 'Expected End Date';
   static const String editUserProfile = 'Edit User Profile';
-  static const String employeeCheckIn = 'Employee Check In';
+  static const String employeeCheckIn = 'Employee Checkin';
   static const String nextContactDate = 'Next Contact Date';
   static const String selectOperation = 'Select Operation';
   static const String customerBalance = 'Customer Balance';
@@ -98,11 +98,13 @@ class StringsManager {
   static const String workOrder = 'Work Order';
   static const String fixedTime = 'Fixed Time';
   static const String lastLogin = 'Last Login';
+  static const String theLatest = 'The latest';
   static const String firstName = 'First Name';
   static const String birthDate = 'Birth Date';
   static const String isDefault = 'Is Default';
   static const String operation = 'Operation';
   static const String quotation = 'Quotation';
+  static const String cancelled = 'Canceled';
   static const String timeLogs = 'Time Logs';
   static const String fromTime = 'From Time';
   static const String fromDate = 'From Date';
@@ -120,18 +122,21 @@ class StringsManager {
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
   static const String employee = 'Employee';
-  static const String returns = 'Return';
   static const String selling = 'Selling';
+  static const String overdue = 'Overdue';
   static const String project = 'Project';
   static const String company = 'Company';
   static const String reports = 'Reports';
   static const String remarks = 'Remarks';
+  static const String returns = 'Return';
   static const String noData = 'No Data';
   static const String toTime = 'To Time';
   static const String toDate = 'To Date';
   static const String select = 'Select';
+  static const String create = 'Create';
   static const String bomNo = 'BOM No.';
   static const String female = 'Female';
+  static const String unpaid = 'Unpaid';
   static const String buying = 'Buying';
   static const String gender = 'Gender';
   static const String email = 'E-Mail';
@@ -143,6 +148,8 @@ class StringsManager {
   static const String none = 'none';
   static const String save = 'Save';
   static const String male = 'Male';
+  static const String paid = 'Paid';
   static const String faq = 'FAQ';
   static const String hr = 'HR';
+  static const String noItemAvailable = 'No item available';
 }

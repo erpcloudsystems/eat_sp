@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -22,6 +21,7 @@ import '../../../models/page_models/model_functions.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
@@ -30,7 +30,7 @@ class SalesInvoiceForm extends StatefulWidget {
   const SalesInvoiceForm({Key? key}) : super(key: key);
 
   @override
-  _SalesInvoiceFormState createState() => _SalesInvoiceFormState();
+  State<SalesInvoiceForm> createState() => _SalesInvoiceFormState();
 }
 
 class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
@@ -44,6 +44,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "conversion_rate": 1,
     "latitude": 0.0,
     "longitude": 0.0,
+    'additional_discount_percentage': 0.0,
+    'discount_amount': 0.0,
   };
 
   LatLng location = const LatLng(0.0, 0.0);
@@ -88,12 +90,14 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     data['items'] = [];
     data['taxes'] = context.read<UserProvider>().defaultTax;
 
-    // InheritedForm.of(context).items.forEach((element) {
-    //   if (data['is_return'] == 1) element.qty = element.qty * -1;
-    //   data['items'].add(element.toJson);
-    // });
+    // Here we handle return and credit note case, besides add new items to the data.
     for (var element in provider.newItemList) {
-      if (data['is_return'] == 1) element['qty'] = element['qty'] * -1;
+      if (data['is_return'] == 1 && element['qty'] > 0) {
+        element['qty'] = element['qty'] * -1;
+        if (element['stock_qty'] != null) {
+          element['stock_qty'] = element['stock_qty'] * -1;
+        }
+      }
       data['items'].add(element);
     }
 
@@ -120,36 +124,37 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       print("➡️ $k: ${data[k]}");
     }
 
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(SALES_INVOICE_POST, {'data': data}),
-        context);
-
-    Navigator.pop(context);
-
-    InheritedForm.of(context).data['selling_price_list'] = null;
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(SALES_INVOICE_POST, {'data': data}),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['sales_invoice'] != null) {
-        context
-            .read<ModuleProvider>()
-            .pushPage(res['message']['sales_invoice']);
+
+      InheritedForm.of(context).data['selling_price_list'] = null;
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['sales_invoice'] != null) {
+          context
+              .read<ModuleProvider>()
+              .pushPage(res['message']['sales_invoice']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['sales_invoice'] != null) {
+        provider.pushPage(res['message']['sales_invoice']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
       }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['sales_invoice'] != null) {
-      provider.pushPage(res['message']['sales_invoice']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+    });
   }
 
   Future<void> _getCustomerData(String customer) async {
@@ -206,14 +211,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().createFromPageData;
 
-        // // Because "Customer Visit" doesn't have Items.
+        // Because "Customer Visit" doesn't have Items.
         if (data['doctype'] != DocTypesName.customerVisit) {
           InheritedForm.of(context).items.clear();
-          // data['items'].forEach((element) {
-          //   InheritedForm.of(context)
-          //       .items
-          //       .add(ItemSelectModel.fromJson(element));
-          // });
           data['items'].forEach((element) {
             provider.newItemList.add(element);
           });
@@ -300,6 +300,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     context.read<ModuleProvider>().resetCreationForm();
   }
 
+  bool disableAmount = false;
+  String discountValue = 'Percentage';
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
@@ -477,7 +479,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         title: CustomTextFieldTest(
                             'customer_address', 'Customer Address',
                             initialValue: data['customer_address'],
-                            disableValidation: false,
+                            disableValidation: true,
                             clearButton: false,
                             onSave: (key, value) => data[key] = value,
                             liestenToInitialValue:
@@ -604,14 +606,19 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           return res['name'];
                         },
                       ),
-                      CustomTextFieldTest('cost_center', 'Cost Center',
-                          initialValue: data['cost_center'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => costCenterScreen()))),
+                      CustomTextFieldTest(
+                        'cost_center',
+                        'Cost Center',
+                        initialValue: data['cost_center'],
+                        disableValidation: true,
+                        clearButton: true,
+                        onSave: (key, value) => data[key] = value,
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => costCenterScreen(),
+                          ),
+                        ),
+                      ),
                       CustomTextFieldTest('currency', 'Currency',
                           initialValue:
                               data['currency'] ?? userProvider.defaultCurrency,
@@ -770,13 +777,52 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   priceList: data['selling_price_list'] ??
                       context.read<UserProvider>().defaultSellingPriceList,
                 ),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(
-                //     vertical: 13.0,
-                //     horizontal: 8,
-                //   ),
-                //   child: SelectedItemsList(),
-                // ),
+
+                Group(
+                  child: Column(
+                    children: [
+                      CustomDropDownTest(
+                        'amount',
+                        'Additional Discount'.tr(),
+                        fontSize: 16,
+                        items: additionalDiscountList,
+                        defaultValue: discountValue,
+                        onChanged: (value) => setState(() {
+                          discountValue = value;
+                          if (value == 'Percentage') {
+                            data['additional_discount_percentage'] = 0.0;
+                            data['discount_amount'] = 0.0;
+                          } else {
+                            data['additional_discount_percentage'] = 0.0;
+                            data['discount_amount'] = 0.0;
+                          }
+                        }),
+                      ),
+                      if (discountValue == 'Percentage')
+                        CustomTextFieldTest('additional_discount_percentage',
+                            'Additional Discount Percentage'.tr(),
+                            initialValue: data['additional_discount_percentage']
+                                .toString(),
+                            disableValidation: true,
+                            clearButton: true,
+                            onSave: (id, value) =>
+                                data[id] = double.parse(value),
+                            onChanged: (value) =>
+                                data['additional_discount_percentage'] = value),
+                      if (discountValue == 'Amount')
+                        CustomTextFieldTest(
+                          'discount_amount',
+                          'Additional Discount Amount'.tr(),
+                          initialValue: data['discount_amount'].toString(),
+                          disableValidation: true,
+                          clearButton: true,
+                          onChanged: (value) {
+                            data['discount_amount'] = double.parse(value);
+                          },
+                        ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

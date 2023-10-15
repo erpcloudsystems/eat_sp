@@ -1,17 +1,14 @@
-import 'dart:developer';
 import 'dart:io';
-
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../core/cloud_system_widgets.dart';
-import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
+import '../../test/pdf_screen.dart';
 import 'module_type.dart';
 import '../../service/service.dart';
 import '../user/user_provider.dart';
@@ -123,7 +120,14 @@ class ModuleProvider extends ChangeNotifier {
   //---------------------------------------------------------------------------
   //----------------------- New Items------------------------------------------
   List<Map<String, dynamic>> newItemList = [];
-  // dynamic total = 0.0;
+  double netTotal = 0.0;
+
+   set setNetTotal(double value) {
+    netTotal = value;
+
+    notifyListeners();
+  }
+
   void setItemToList(Map<String, dynamic> item) {
     newItemList.add(item);
     item['amount'] = item['qty'] * item['rate'];
@@ -496,7 +500,7 @@ class ModuleProvider extends ChangeNotifier {
     return count;
   }
 
-  Future<void> submitDocument(BuildContext context) async {
+   Future<void> submitDocument(BuildContext context) async {
     final res = await checkDialog(context,
         'Are you sure to submit ${_currentModule!.genericListService} $_pageId');
     if (res == false) loadPage();
@@ -510,13 +514,15 @@ class ModuleProvider extends ChangeNotifier {
               .submitDoc(_pageId, _currentModule!.genericListService),
           context);
 
-      if (response != null && response == true) _pageSubmitStatus = 1;
-      final x = _filter;
-      filter = {'notifyListeners': true};
-      filter = x;
-      loadPage();
-      Navigator.pop(context);
-      showSnackBar('Submitted Successfully', context);
+      if (response != null && response == true) {
+        _pageSubmitStatus = 1;
+        final x = _filter;
+        filter = {'notifyListeners': true};
+        filter = x;
+        loadPage();
+        Navigator.pop(context);
+        showSnackBar('Submitted Successfully', context);
+      }
     }
   }
 
@@ -654,26 +660,29 @@ class ModuleProvider extends ChangeNotifier {
           id: _pageId,
           format: pdfFormats[0]);
     } else {
-      final format = await showDialog(
+      await showDialog(
           context: context,
           builder: (_) => SelectFormatDialog(
-              formats: pdfFormats, title: 'Select Print Format'));
-      if (format == null) return;
-      APIService().printInvoice(
-          context: context,
-          docType: _currentModule!.genericListService,
-          id: _pageId,
-          format: format);
+              formats: pdfFormats,
+              title: 'Select Print Format')).then((format) {
+        if (format == null) return;
+        APIService().printInvoice(
+            context: context,
+            docType: _currentModule!.genericListService,
+            id: _pageId,
+            format: format);
+      });
     }
   }
 
   void downloadPdf(BuildContext context) async {
+    final userProvider = context.read<UserProvider>();
     //make sure for storage permission
-    if (!context.read<UserProvider>().storageAccess) {
-      await context.read<UserProvider>().checkPermission();
+    if (!userProvider.storageAccess) {
+      await userProvider.checkPermission();
 
       //return if it's not guaranteed
-      if (!context.read<UserProvider>().storageAccess) {
+      if (!userProvider.storageAccess) {
         showSnackBar('Storage Access Required!', context, color: Colors.red);
         return;
       }
@@ -685,7 +694,7 @@ class ModuleProvider extends ChangeNotifier {
       if (pdfFormats.length == 1) {
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '${userProvider.url}/api/$PRINT_INVOICE',
           '$_pageId.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
@@ -702,7 +711,7 @@ class ModuleProvider extends ChangeNotifier {
         if (format == null) return;
         showLoadingDialog(context, 'Downloading PDF ...');
         file = await APIService().downloadFile(
-          '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+          '${userProvider.url}/api/$PRINT_INVOICE',
           '$_pageId-$format' '.pdf',
           queryParameters: {
             'doctype': _currentModule!.genericListService,
@@ -712,14 +721,8 @@ class ModuleProvider extends ChangeNotifier {
           path: null,
         );
       }
-      Navigator.pop(context);
-      if (file is File) {
-          if (await Permission.storage.request().isGranted) {
-        log(file.path);
-        final res = await OpenFile.open(file.path);
-        debugPrint('${res.message}  ${res.type}');}
-      }
-      
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => PDFScreen(path: file!.path)));
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);

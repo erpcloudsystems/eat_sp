@@ -1,3 +1,4 @@
+import 'package:NextApp/new_version/core/extensions/status_converter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class ChartDashboardWidget extends StatelessWidget {
             spacing: 1.6,
             isVisibleInLegend: false,
             dataSource: data,
-            xValueMapper: (BarChartModel barChartModel, _) => barChartModel.title,
+            xValueMapper: (BarChartModel barChartModel, _) => barChartModel.title!.translateDashBoardStatus(),
             yValueMapper: (BarChartModel barChartModel, _) => barChartModel.count,
             pointColorMapper: (BarChartModel barChartModel, _) => statusColor(barChartModel.title!),
             dataLabelSettings: const DataLabelSettings(

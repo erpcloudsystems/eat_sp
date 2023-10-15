@@ -126,6 +126,7 @@ const List<String> workOrderOrJopCard = [
   'Jop Card',
 ];
 
+const List<String> additionalDiscountList = ['Percentage', 'Amount'];
 const List<String> termLoan = [
   ' ',
   'Repay Fixed Amount per Period',
@@ -174,7 +175,10 @@ const List<String> journalEntryTypeStatus = [
   'Deferred Expense',
 ];
 
-List<Tab> manufacturingPagesTabs = const [Tab(text: 'Items'), Tab(text: 'Connections')];
+List<Tab> manufacturingPagesTabs = const [
+  Tab(text: 'Items'),
+  Tab(text: 'Connections')
+];
 
 const List<String> journalEntryTypePartyType1 = ['Customer'];
 const List<String> journalEntryTypePartyType2 = ['Supplier', 'Employee'];
@@ -223,7 +227,7 @@ String? validateMobile(String? value) {
 }
 
 String? numberValidationToast(String? value, String field,
-    {bool isInt = false}) {
+    {bool isInt = false, bool isReturn = false}) {
   debugPrint(value);
   if (value == null || value.isEmpty) {
     Fluttertoast.showToast(
@@ -239,7 +243,7 @@ String? numberValidationToast(String? value, String field,
     theNum = double.tryParse(value);
   }
 
-  if (theNum == null || theNum < 0) {
+  if (theNum == null || theNum < 0 && isReturn == false) {
     Fluttertoast.showToast(
         msg: '$value is not a valid $field',
         backgroundColor: Colors.grey.shade700.withOpacity(0.8));

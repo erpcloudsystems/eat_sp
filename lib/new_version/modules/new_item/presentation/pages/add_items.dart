@@ -146,7 +146,9 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                                   validator: (value) =>
                                                       numberValidationToast(
                                                           value, 'Quantity',
-                                                          isInt: true),
+                                                          isInt: true,
+                                                          isReturn: true
+                                                          ),
                                                   keyboardType:
                                                       TextInputType.number,
                                                   disableError: true,

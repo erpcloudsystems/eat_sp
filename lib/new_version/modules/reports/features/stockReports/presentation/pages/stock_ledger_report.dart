@@ -17,7 +17,7 @@ class StockLedgerReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<StockLedgerBloc>(context);
-    bloc.add(ResetStockLedgerEvent());
+    bloc.add(const ResetStockLedgerEvent());
 
     final stockLedgerFilter =
         ModalRoute.of(context)!.settings.arguments as StockLedgerFilters;
@@ -46,7 +46,7 @@ class StockLedgerReport extends StatelessWidget {
             current.getStockLedgerReportData,
         builder: (context, state) {
           if (state.getStockLedgerReportsState == RequestState.loading) {
-            return CustomLoadingWithImage();
+            return const CustomLoadingWithImage();
           }
           if (state.getStockLedgerReportsState == RequestState.success) {
             /// Waiting..............
@@ -112,7 +112,7 @@ class StockLedgerReport extends StatelessWidget {
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

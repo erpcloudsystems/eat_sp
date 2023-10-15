@@ -20,12 +20,13 @@ class GPSService {
   List<Placemark> placeman = [];
 
   Future<LatLng> getCurrentLocation(BuildContext context) async {
-    if (!(await Permission.location.request().isGranted)) {
+    if (!(await Permission.location.isGranted)) {
       Geolocator.requestPermission();
     }
 
-    if ((await Permission.location.request().isPermanentlyDenied)) {
-      Future.delayed(Duration(seconds: 1), () async {
+    var status = await Geolocator.checkPermission();
+    if (status == LocationPermission.deniedForever) {
+      Future.delayed(const Duration(seconds: 1), () async {
         final res = await checkDialog(
             context, KPermanentlyDeniedSnackBar, 'Allow Location');
         if (res) {
@@ -36,9 +37,8 @@ class GPSService {
 
     try {
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-
-      showSnackBar(KLocationGrantedSnackBar, context);
+              desiredAccuracy: LocationAccuracy.best)
+          .whenComplete(() => showSnackBar(KLocationGrantedSnackBar, context));
 
       latitude = position.latitude;
       longitude = position.longitude;
@@ -47,25 +47,23 @@ class GPSService {
       try {
         placeman = await placemarkFromCoordinates(latitude!, longitude!);
       } catch (e) {
-        print("Fail To get Address from Coordinates.: $e");
+        debugPrint("Fail To get Address from Coordinates.: $e");
       }
 
-      print('latitude:$latitude');
-      print('longitude: $longitude');
-      print('isMocked:$isMocked');
+      debugPrint('latitude:$latitude');
+      debugPrint('longitude: $longitude');
+      debugPrint('isMocked:$isMocked');
 
       if (Platform.isAndroid) {
         if (isMocked == true) {
           showSnackBar('Please use real location', context);
           latitude = 0.0;
           longitude = 0.0;
-          latLang = LatLng(0.0, 0.0);
+          latLang = const LatLng(0.0, 0.0);
         }
-
-        
       }
     } catch (e) {
-      print("Getting location Error: $e");
+      debugPrint("Getting location Error: $e");
     }
 
     return latLang;

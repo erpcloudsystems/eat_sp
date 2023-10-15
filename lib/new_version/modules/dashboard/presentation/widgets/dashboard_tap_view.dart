@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -26,18 +29,6 @@ class DashboardTapView extends StatelessWidget {
       animationDuration: const Duration(milliseconds: 800),
       length: 4,
       child: BlocConsumer<TransactionBloc, TransactionState>(
-        // listenWhen: (previous, current) =>
-        //     previous.getTaskState != current.getTaskState &&
-        //     previous.getAttendanceState != current.getAttendanceState &&
-        //     previous.getEmployeeState != current.getEmployeeState &&
-        //     previous.getLeaveState != current.getLeaveState,
-        // buildWhen: (previous, current) =>
-        //     previous.getTaskList != current.getTaskList &&
-        //     previous.getAttendanceRequestList !=
-        //         current.getAttendanceRequestList &&
-        //     previous.getEmployeeCheckingList !=
-        //         current.getEmployeeCheckingList &&
-        //     previous.getLeaveApplicationList != current.getLeaveApplicationList,
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
@@ -48,24 +39,28 @@ class DashboardTapView extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white),
-                child: const TabBar(
+                child: TabBar(
                   unselectedLabelColor: Colors.black38,
-                  labelStyle: TextStyle(
-                    fontSize: 18,
-                  ),
+                  labelStyle: const TextStyle(fontSize: 18),
                   isScrollable: true,
                   tabs: [
                     Tab(
-                      icon: Text(DocTypesName.task),
+                      icon: Text(tr('DocType.${DocTypesName.task}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon: Text(DocTypesName.leaveApplication),
+                      icon: Text(tr('DocType.${DocTypesName.leaveApplication}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon: Text(StringsManager.employeeCheckIn),
+                      icon: Text(
+                          tr('DocType.${StringsManager.employeeCheckIn}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                     Tab(
-                      icon: Text(DocTypesName.attendanceRequest),
+                      icon: Text(
+                          tr('DocType.${DocTypesName.attendanceRequest}'),
+                          style: GoogleFonts.cairo(fontSize: 14.sp)),
                     ),
                   ],
                 ),
@@ -140,8 +135,9 @@ class DashboardTapView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: CustomButton(
             text: title == DocTypesName.employeeCheckin
-                ? 'Create ${StringsManager.employeeCheckIn}'
-                : "Create $title",
+                ? tr(
+                    '${StringsManager.create.tr()} ${tr("DocType.${StringsManager.employeeCheckIn}")}')
+                : '${StringsManager.create.tr()} ${tr("DocType.$title")}',
             color: APPBAR_COLOR,
             onPressed: () {
               moduleProvider.setModule = title;

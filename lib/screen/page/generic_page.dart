@@ -65,7 +65,10 @@ class _GenericPageState extends State<GenericPage> {
                 ),
               ),
               actions: [
-                const EditPageButton(),
+                  // if we put "const" it will make a bug when entering the page
+                  // for the first time in editing.
+                 // ignore: prefer_const_constructors
+                 EditPageButton(),
                 IconButton(
                   onPressed: () {
                     Navigator.pushReplacement(context,

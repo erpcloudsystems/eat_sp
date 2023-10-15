@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ class NewSearchWidget extends StatefulWidget {
 }
 
 class _NewSearchWidgetState extends State<NewSearchWidget> {
+  Timer? debounceTimer;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -32,7 +35,13 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
         child: TextField(
           onChanged: (value) {
-            widget.searchFunction(value);
+            // Clear the previous debounce timer
+            debounceTimer?.cancel();
+
+            // Set a new debounce timer
+            debounceTimer = Timer(const Duration(milliseconds: 1000), () {
+              widget.searchFunction(value);
+            });
           },
           onEditingComplete: () {
             FocusScope.of(context).unfocus();

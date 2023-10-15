@@ -9,8 +9,6 @@ class Totals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double vat = 0;
-    double total = 0;
     double netTotal = 0;
 
     for (var item in items) {

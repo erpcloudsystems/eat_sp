@@ -65,8 +65,9 @@ class TransactionCard extends StatelessWidget {
           ),
           title: Text(
             title,
+            maxLines: 1,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
           subtitle: Text(subTitle),

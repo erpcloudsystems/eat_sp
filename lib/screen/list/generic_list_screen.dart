@@ -1,8 +1,8 @@
-import 'package:NextApp/screen/sorting_screen.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../sorting_screen.dart';
 import '../../core/cloud_system_widgets.dart';
 import '../../models/list_models/statistics_model.dart';
 import '../../test/statisics_widget.dart';
@@ -143,7 +143,9 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
                 titleTextStyle:
                     const TextStyle(color: Colors.black, fontSize: 18),
                 title: Text(
-                  moduleProvider.currentModule.title,
+                  widget.title != null
+                      ? widget.title!
+                      : moduleProvider.currentModule.title,
                 ),
                 actions: [
                   IconButton(
@@ -304,7 +306,9 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
           : AppBar(
               elevation: 0,
               title: Text(
-                moduleProvider.currentModule.title,
+                 widget.title != null
+                      ? widget.title!
+                      : moduleProvider.currentModule.title,
               ),
               actions: [
                 if (widget.createForm != null)

@@ -11,7 +11,7 @@ import '../../../../../test/test_text_field.dart';
 import '../../../../core/utils/request_state.dart';
 import '../../../../core/resources/strings_manager.dart';
 import '../../data/models/get_total_sales_invoice_filters.dart';
-import '../../../../core/extensions.dart/date_tine_extension.dart';
+import '../../../../core/extensions/date_time_extension.dart';
 
 class GetTotalWidget extends StatelessWidget {
   const GetTotalWidget({Key? key}) : super(key: key);
@@ -30,9 +30,6 @@ class GetTotalWidget extends StatelessWidget {
     );
 
     return BlocConsumer<TotalBloc, TotalState>(
-      // listenWhen: (previous, current) {
-      //   return previous.getTotalState != current.getTotalState;
-      // },
       listener: (context, state) {
         if (state.getTotalState == RequestState.error) {
           showDialog(
@@ -43,8 +40,6 @@ class GetTotalWidget extends StatelessWidget {
           );
         }
       },
-      // buildWhen: (previous, current) =>
-      //     previous.totalEntity != current.totalEntity,
       builder: (context, state) {
         var fromDate = DateTime.now();
         var toDate = DateTime.now();

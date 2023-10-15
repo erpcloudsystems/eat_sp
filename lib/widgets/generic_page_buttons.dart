@@ -88,20 +88,16 @@ class EditPageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final moduleProvider = context.read<ModuleProvider>();
-    return IconButton(
-      onPressed: moduleProvider.pageSubmitStatus == 0 &&
-              moduleProvider.currentModule.createForm != null
-          ? () => editPage(context)
-          : () {},
-      splashRadius: DoublesManager.d_20,
-      icon: Icon(
-        Icons.edit,
-        color: (context.read<ModuleProvider>().pageSubmitStatus == 0)
-            ? Colors.black
-            : Colors.black54,
-      ),
-      tooltip: 'Edit',
-    );
+    final bool isEditable = moduleProvider.pageSubmitStatus == 0 &&
+        moduleProvider.currentModule.createForm != null;
+    return isEditable
+        ? IconButton(
+            onPressed: () => editPage(context),
+            splashRadius: DoublesManager.d_20,
+            icon: const Icon(Icons.edit, color: Colors.black),
+            tooltip: 'Edit',
+          )
+        : const SizedBox();
   }
 }
 

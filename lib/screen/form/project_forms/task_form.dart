@@ -17,7 +17,6 @@ import '../../../service/service_constants.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
-import '../../../new_version/core/resources/strings_manager.dart';
 
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
