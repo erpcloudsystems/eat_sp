@@ -28,6 +28,7 @@ dependencies:
   horizontal_data_table: ^4.1.5
   printing: ^5.10.4
   auto_size_text: ^3.0.0
+  infinite_scroll_pagination: ^4.0.0
 
   #permission_handler:
   permission_handler: ^11.0.1

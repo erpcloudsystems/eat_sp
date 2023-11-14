@@ -7,7 +7,6 @@ import 'package:NextApp/new_version/modules/new_item/domain/entities/item_entity
 import 'package:NextApp/new_version/modules/new_item/domain/entities/item_group_entity.dart';
 
 import 'package:dartz/dartz.dart';
-
 import '../../../../core/network/exceptions.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/resources/strings_manager.dart';

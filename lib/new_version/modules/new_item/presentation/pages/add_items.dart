@@ -1,11 +1,11 @@
-import 'package:NextApp/new_version/modules/new_item/presentation/pages/item_group_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../../../provider/module/module_provider.dart';
-import '../../../../../widgets/form_widgets.dart';
-import '../../../../../widgets/item_card.dart';
+import 'item_list_screen.dart';
 import '../widgets/total_widget.dart';
+import '../../../../../widgets/item_card.dart';
+import '../../../../../widgets/form_widgets.dart';
+import '../../../../../provider/module/module_provider.dart';
 
 class AddItemsWidget extends StatefulWidget {
   const AddItemsWidget({
@@ -54,11 +54,11 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                             style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.zero),
                             onPressed: () async {
-                              Navigator.push(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return ItemGroupScreen(
+                                    return ItemListScreen(
                                       priceList: widget.priceList,
                                     );
                                   },

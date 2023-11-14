@@ -13,6 +13,7 @@ import '../../modules/reports/common/GeneralReports/presentation/bloc/generalrep
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../modules/new_item/presentation/cubit/cubit/items_cubit.dart';
 import '../global/dependency_container.dart' as di;
 import '../../../provider/user/user_provider.dart';
 import '../../../provider/module/module_provider.dart';
@@ -34,6 +35,7 @@ class StateManagement {
     BlocProvider(create: (_) => di.sl<StockLedgerBloc>()),
     BlocProvider(create: (_) => di.sl<ItemPriceBloc>()),
     BlocProvider(create: (_) => di.sl<FaqBloc>()),
+    BlocProvider(create: (_) => ItemsCubit()),
     BlocProvider(
         create: (context) => di.sl<UserProfileBloc>()
           ..add(GetUserProfileDataEvent(

@@ -168,8 +168,10 @@ class GetTotalWidget extends StatelessWidget {
                         .toString(),
                     arrowIcon: Icons.arrow_upward,
                     color: Colors.green,
-                    total: state.totalEntity.paidSalesInvoiceEntity['total']
-                        .toString(),
+                    total:
+                        (state.totalEntity.paidSalesInvoiceEntity?['total'] ??
+                                0.00)
+                            .toStringAsFixed(2),
                   ),
                   IncomeWidget(
                     docType: DocTypesName.quotation,
@@ -177,7 +179,8 @@ class GetTotalWidget extends StatelessWidget {
                     arrowIcon: Icons.money,
                     color: Colors.green,
                     total:
-                        state.totalEntity.quotationsEntity['total'].toString(),
+                        (state.totalEntity.quotationsEntity?['total'] ?? 0.00)
+                            .toStringAsFixed(2),
                     count:
                         state.totalEntity.quotationsEntity['count'].toString(),
                   ),
@@ -187,8 +190,10 @@ class GetTotalWidget extends StatelessWidget {
                       'filter1': 'Return',
                     },
                     title: StringsManager.returns.tr(),
-                    total: state.totalEntity.returnedSalesInvoiceEntity['total']
-                        .toString(),
+                    total: (state.totalEntity
+                                .returnedSalesInvoiceEntity?['total'] ??
+                            0.00)
+                        .toStringAsFixed(2),
                     count: state.totalEntity.returnedSalesInvoiceEntity['count']
                         .toString(),
                     arrowIcon: Icons.arrow_downward,
@@ -198,7 +203,8 @@ class GetTotalWidget extends StatelessWidget {
                     docType: DocTypesName.salesOrder,
                     title: 'DocType.${DocTypesName.salesOrder}'.tr(),
                     total:
-                        state.totalEntity.salesOrderEntity['total'].toString(),
+                        (state.totalEntity.salesOrderEntity?['total'] ?? 0.00)
+                            .toStringAsFixed(2),
                     count:
                         state.totalEntity.salesOrderEntity['count'].toString(),
                     arrowIcon: Icons.request_quote_outlined,
@@ -211,8 +217,9 @@ class GetTotalWidget extends StatelessWidget {
                         .toString(),
                     arrowIcon: Icons.arrow_upward,
                     color: Colors.green,
-                    total: state.totalEntity.paymentEntriesEntity['total']
-                        .toString(),
+                    total: (state.totalEntity.paymentEntriesEntity?['total'] ??
+                            0.00)
+                        .toStringAsFixed(2),
                   ),
                   IncomeWidget(
                     docType: DocTypesName.stockEntry,
@@ -227,7 +234,8 @@ class GetTotalWidget extends StatelessWidget {
                     title: 'DocType.${DocTypesName.deliveryNote}'.tr(),
                     arrowIcon: Icons.money,
                     color: Colors.green,
-                    total: state.totalEntity.deliveryNotes['total'].toString(),
+                    total: (state.totalEntity.deliveryNotes['total'] ?? 0.00)
+                        .toStringAsFixed(2),
                     count: state.totalEntity.deliveryNotes['count'].toString(),
                   ),
                 ],
