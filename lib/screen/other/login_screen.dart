@@ -19,9 +19,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var userNameController = TextEditingController();
-  var passwordController = TextEditingController();
-  var urlController = TextEditingController();
+  var userNameController = TextEditingController(text: 'mobile');
+  var passwordController = TextEditingController(text: 'Ecs_2021');
+  var urlController =
+      TextEditingController(text: 'https://mobile.erpcloud.systems');
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;
   final APIService service = APIService();
@@ -41,8 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _isLoading = true);
 
       try {
-        await context.read<UserProvider>().login(userNameController.text,
-            passwordController.text, urlController.text, rememberMe);
+        await context.read<UserProvider>().login(
+              userNameController.text.trim(),
+              passwordController.text.trim(),
+              urlController.text.trim(),
+              rememberMe,
+            );
       } catch (e) {
         setState(() => _isLoading = false);
         print(e);
