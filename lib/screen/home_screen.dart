@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     notificationConfig(context);
-    GPSService.trackUserLocation();
+    GPSService.trackUserLocation(context);
   }
 
   @override

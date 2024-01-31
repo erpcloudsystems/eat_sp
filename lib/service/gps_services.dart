@@ -1,19 +1,24 @@
-import 'dart:async';
-import 'dart:developer';
 import 'dart:io' show Platform;
+import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'service.dart';
+import 'service_constants.dart';
 import '../core/constants.dart';
-import '../new_version/core/resources/app_values.dart';
 import '../widgets/snack_bar.dart';
+import '../provider/user/user_provider.dart';
 import '../widgets/dialog/loading_dialog.dart';
+import '../new_version/core/resources/app_values.dart';
+import '../new_version/core/resources/strings_manager.dart';
+import '../new_version/core/extensions/date_time_extension.dart';
 
 class GPSService {
   GPSService({this.latitude, this.longitude, this.isMocked});
@@ -74,9 +79,10 @@ class GPSService {
   }
 
   /// This configurations is related to background tracking.
-  static void trackUserLocation() {
-    late LocationSettings locationSettings;
+  static void trackUserLocation(BuildContext context) {
+    context.read<UserProvider>().checkPermission();
     const distanceFilter = IntManager.i_100;
+    late LocationSettings locationSettings;
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       locationSettings = AndroidSettings(
@@ -85,9 +91,8 @@ class GPSService {
           forceLocationManager: true,
           intervalDuration: const Duration(seconds: 10),
           foregroundNotificationConfig: const ForegroundNotificationConfig(
-            notificationText:
-                "NextApp app will continue to receive your location even when you aren't using it",
-            notificationTitle: "Running in Background",
+            notificationText: StringsManager.locationNotificationTitle,
+            notificationTitle: StringsManager.locationNotificationText,
           ));
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       locationSettings = AppleSettings(
@@ -104,13 +109,19 @@ class GPSService {
       );
     }
 
-    StreamSubscription<Position> positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-      log(position == null
-          ? 'Unknown'
-          : '${position.latitude.toString()}, ${position.longitude.toString()}');
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position? position) async {
+
+      final server = APIService();
+      if (position != null) {
+        await handleRequest(
+            () async => await server.postRequest(Location_tacking, {
+                  'long': position.longitude,
+                  'lat': position.latitude,
+                  'date': position.timestamp!.formatDateYMD(),
+                }),
+            context);
+      }
     });
   }
-  
 }
