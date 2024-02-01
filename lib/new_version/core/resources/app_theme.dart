@@ -5,6 +5,7 @@ import '../../../core/constants.dart';
 
 abstract class AppTheme {
   static ThemeData mainTheme(BuildContext context) => ThemeData(
+        useMaterial3: false,
         textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
         primaryColor: const Color(0xffF9F9F9),
         colorScheme: ColorScheme.fromSwatch(

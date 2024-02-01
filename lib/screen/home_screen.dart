@@ -1,19 +1,20 @@
-import 'package:NextApp/core/constants.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
-import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
-import '../test/home_item_test.dart';
+import '../core/constants.dart';
+import '../service/gps_services.dart';
 import 'sub_category_screen.dart';
 import 'Drawer/drawer_screen.dart';
+import '../test/home_item_test.dart';
 import 'other/notification_screen.dart';
 import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
 import '../widgets/dialog/loading_dialog.dart';
 import '../service/local_notification_service.dart';
+import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
 import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     notificationConfig(context);
+    GPSService.trackUserLocation(context);
   }
 
   @override

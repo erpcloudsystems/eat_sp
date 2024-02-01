@@ -11,7 +11,7 @@ class IncomeWidget extends StatelessWidget {
     Key? key,
     required this.title,
     this.count,
-    required this.total,
+   this.total,
     required this.arrowIcon,
     required this.color,
     this.status,
@@ -23,7 +23,7 @@ class IncomeWidget extends StatelessWidget {
   final String? status;
   final String docType;
   final String title;
-  final String total;
+  final String? total;
   final String? count;
   final bool isCounted;
   final IconData arrowIcon;

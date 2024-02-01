@@ -24,6 +24,7 @@ import '../../modules/faq/data/repositories/faq_implementaion_repo.dart';
 import '../../modules/faq/domain/repositories/faq_base_repo.dart';
 import '../../modules/faq/domain/usecases/get_faqs_use_case.dart';
 import '../../modules/faq/presentation/bloc/faq_bloc.dart';
+import '../../modules/new_item/presentation/cubit/cubit/items_cubit.dart';
 import '../../modules/reports/common/GeneralReports/data/datasources/reports_data_source.dart';
 import '../../modules/reports/common/GeneralReports/data/repositories/reports_repo.dart';
 import '../../modules/reports/common/GeneralReports/domain/repositories/general_reports_base_repo.dart';
@@ -105,6 +106,7 @@ Future<void> init() async {
 // New Item use case
   sl.registerLazySingleton(() => GetItemsUseCase(sl()));
   sl.registerLazySingleton(() => GetItemsGroupUseCase(sl()));
+  sl.registerLazySingleton(() => ItemsCubit());
 
   /// Repositories
 
