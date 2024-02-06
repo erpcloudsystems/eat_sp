@@ -338,7 +338,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         clearButton: true,
                         onPressed: () async {
                           String? id;
-
                           final res = await Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) =>
