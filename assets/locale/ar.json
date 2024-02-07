@@ -231,6 +231,7 @@
   "Quality Inspection Required": "يوجد نموذج فحص الجودة",
   "Rate Of Materials Based On: ": " :سعر المواد بناءً على",
   "Set rate of sub-assembly item based on BOM": "تحديد سعر العنصر الفرعي بناءً على قائمة مواد التجميع ",
+  "user permission for location message": "يحتاج البرنامج الي الوصول الي مرقعك دائما وذلك لامور متعلقة بفريق الادارة الخاص بالشركة",
   "Let's go back to work.": "لنعد إلى العمل.",
   "Profile": "الملف الشخصي",
   "Apply": "تطبيق",
