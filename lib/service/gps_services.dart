@@ -128,8 +128,9 @@ class GPSService {
       if (position != null) {
         await handleRequest(
             () async => await server.postRequest(Location_tacking, {
-                  'long': position.longitude,
-                  'lat': position.latitude,
+                  // We send it in this way as requested by the backend [Kholoud El-Barody].
+                  'long': position.latitude,
+                  'lat': position.longitude,
                   'date': position.timestamp!.formatDateYMD(),
                 }),
             context);
