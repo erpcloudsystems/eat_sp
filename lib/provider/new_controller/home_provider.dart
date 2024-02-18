@@ -1,6 +1,4 @@
-import 'package:NextApp/service/local_notification_service.dart';
 import 'package:flutter/material.dart';
-
 import '../../service/service.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -34,14 +32,13 @@ class HomeProvider extends ChangeNotifier {
   }
 
   /// General get list
-  List<Map<String, dynamic>> getList = [];
-  Future<void> generalGetList(
-      {required String docType}) async {
+  Future<List> generalGetList({required String docType}) async {
     final response = await service.genericGet(
       'method/ecs_mobile.general.general_service',
-      {'docType': docType},
+      {'doctype': docType},
     );
-    getList = response['message'];
     notifyListeners();
+
+    return response['message'];
   }
 }

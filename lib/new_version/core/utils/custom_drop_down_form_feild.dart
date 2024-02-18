@@ -1,4 +1,3 @@
-import 'package:NextApp/core/constants.dart';
 import 'package:NextApp/provider/new_controller/home_provider.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +28,12 @@ class CustomDropDownFromField extends StatefulWidget {
 }
 
 class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
+  List getList = [];
   Future<void> handelCall() async {
     final provider = Provider.of<HomeProvider>(context, listen: false);
 
-    await provider.generalGetList(docType: widget.docType);
+    getList = await provider.generalGetList(docType: widget.docType);
+    setState(() {});
   }
 
   @override
@@ -53,46 +54,94 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) {
-        List<DropDownValueModel> dropDownList = provider.getList.map((value) {
+        List<DropDownValueModel> dropDownList = getList.map((value) {
           return DropDownValueModel(
             name: value[widget.nameResponse],
             value: value[widget.nameResponse],
           );
         }).toList();
-        return DropDownTextField(
-          controller: widget.controller,
-          clearOption: true,
-          validator: widget.isValidate
-              ? (value) {
-                  if (value!.trim().isEmpty) {
-                    return 'This field is required';
-                  }
-                  return null;
-                }
-              : null,
-          textFieldDecoration: InputDecoration(
-            label: Text(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
               widget.title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
-            prefixIcon: widget.icon != null
-                ? Icon(
-                    widget.icon,
-                    color: APPBAR_COLOR,
-                  )
-                : null,
-          ),
-          listTextStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          enableSearch: true,
-          dropDownItemCount: provider.getList.length,
-          dropDownList: dropDownList,
-          onChanged: (val) {
-            widget.onChange(val);
-          },
+            DropDownTextField(
+              controller: widget.controller,
+              clearOption: true,
+              validator: widget.isValidate
+                  ? (value) {
+                      if (value!.trim().isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    }
+                  : null,
+              textFieldDecoration: InputDecoration(
+                filled: true,
+                //<-- SEE HERE
+                fillColor: Colors.grey.shade200,
+                labelStyle: const TextStyle(
+                  color: Colors.black,
+                ),
+                isDense: true,
+                isCollapsed: false,
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.transparent,
+                  ),
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.red,
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.transparent,
+                  ),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.red,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.all(5),
+              ),
+              listTextStyle: const TextStyle(
+                color: Colors.black,
+              ),
+              enableSearch: true,
+              dropDownItemCount: getList.length,
+              dropDownList: dropDownList,
+              onChanged: (val) {
+                int index = dropDownList.indexWhere((item) => item == val);
+                if (index != -1) {
+                  Map<String, dynamic> selectedMap = getList[index];
+                  widget.onChange(selectedMap);
+                }
+              },
+            ),
+          ],
         );
       },
     );

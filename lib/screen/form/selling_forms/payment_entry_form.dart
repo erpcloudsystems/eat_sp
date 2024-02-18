@@ -1,7 +1,9 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../../widgets/dismiss_keyboard.dart';
@@ -319,42 +321,80 @@ class _PaymentFormState extends State<PaymentForm> {
                           data['party_type'] = value;
                         }),
                       ),
-                      if (data['party_type'] != null)
-                        CustomTextFieldTest(
-                          'party',
-                          data['party_type'],
-                          initialValue: data['party'],
-                          onPressed: () async {
-                            String? id;
-
-                            if (data['party_type'] == KPaymentPartyList[0]) {
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          selectCustomerScreen()));
-                              if (res != null) {
-                                id = res['name'];
-                                setState(() {
-                                  data['party'] = res['name'];
-                                  data['party_name'] = res['customer_name'];
-                                });
-                              }
-                            } else {
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          supplierListScreen()));
-                              if (res != null) {
-                                id = res['name'];
-                                setState(() {
-                                  data['party'] = res['name'];
-                                  data['party_name'] = res['supplier_name'];
-                                });
-                              }
-                            }
-                            return id;
+                      // -----------------
+                      if (data['party_type'] == KPaymentPartyList[0] &&
+                          data['party_type'] != null)
+                        CustomDropDownFromField(
+                          controller: SingleValueDropDownController(
+                            data: DropDownValueModel(
+                              name: data['party'] ?? '',
+                              value: data['party'] ?? '',
+                            ),
+                          ),
+                          docType: 'Customer',
+                          nameResponse: 'name',
+                          title: data['party_type'] ?? 'Customer',
+                          onChange: (value) {
+                            setState(() {
+                              data['party'] = value['name'];
+                              data['party_name'] = value['customer_name'];
+                            });
                           },
                         ),
+                      if (data['party_type'] != KPaymentPartyList[0] &&
+                          data['party_type'] != null)
+                        CustomDropDownFromField(
+                            controller: SingleValueDropDownController(
+                              data: DropDownValueModel(
+                                name: data['party'] ?? '',
+                                value: data['party'] ?? '',
+                              ),
+                            ),
+                            docType: 'Supplier',
+                            nameResponse: 'name',
+                            title: data['party_type'] ?? "Supplier",
+                            onChange: (value) {
+                              setState(() {
+                                data['party'] = value['name'];
+                                data['party_name'] = value['supplier_name'];
+                              });
+                            }),
+                      // if (data['party_type'] != null)
+                      //   CustomTextFieldTest(
+                      //     'party',
+                      //     data['party_type'],
+                      //     initialValue: data['party'],
+                      //     onPressed: () async {
+                      //       String? id;
+
+                      //       if (data['party_type'] == KPaymentPartyList[0]) {
+                      //         final res = await Navigator.of(context).push(
+                      //             MaterialPageRoute(
+                      //                 builder: (context) =>
+                      //                     selectCustomerScreen()));
+                      //         if (res != null) {
+                      //           id = res['name'];
+                      //           setState(() {
+                      //             data['party'] = res['name'];
+                      //             data['party_name'] = res['customer_name'];
+                      //           });
+                      //         }
+                      //       } else {
+                      //         final res = await Navigator.of(context).push(
+                      //             MaterialPageRoute(
+                      //                 builder: (context) =>
+                      //                     supplierListScreen()));
+                      //         if (res != null) {
+                      //           id = res['name'];
+                      //           setState(() {
+                      //             data['party'] = res['name'];
+                      //             data['party_name'] = res['supplier_name'];
+                      //           });
+                      //         }
+                      //       }
+                      //       return id;
+                      //     },
+                      //   ),
                       if (data['party_name'] != null)
                         Align(
                             alignment: Alignment.centerLeft,
@@ -378,27 +418,47 @@ class _PaymentFormState extends State<PaymentForm> {
                           data['posting_date'] = value;
                         });
                       }),
-                      CustomTextFieldTest(
-                        'mode_of_payment',
-                        data['payment_type'] == paymentType[2]
-                            ? 'Payment From'
-                            : 'Mode Of Payment',
-                        initialValue: data['mode_of_payment'],
-                        clearButton: true,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => modeOfPaymentScreen(
-                                      data['mode_of_payment_2'])));
-                          setState(() {
-                            bankType = res['type'];
-                          });
-                          if (res != null) {
-                            data['mode_of_payment'] = res['name'];
-                          }
-                          return res['name'];
-                        },
-                      ),
+
+                      /// New mode of payment
+                      CustomDropDownFromField(
+                          controller: SingleValueDropDownController(
+                            data: DropDownValueModel(
+                              name: data['mode_of_payment'] ?? '',
+                              value: data['mode_of_payment'] ?? '',
+                            ),
+                          ),
+                          docType: 'Mode of Payment',
+                          nameResponse: 'name',
+                          title: data['payment_type'] == paymentType[2]
+                              ? 'Payment From'
+                              : 'Mode Of Payment',
+                          onChange: (value) {
+                            setState(() {
+                              bankType = value['type'];
+                              data['mode_of_payment'] = value['name'];
+                            });
+                          }),
+                      // CustomTextFieldTest(
+                      //   'mode_of_payment',
+                      //   data['payment_type'] == paymentType[2]
+                      //       ? 'Payment From'
+                      //       : 'Mode Of Payment',
+                      //   initialValue: data['mode_of_payment'],
+                      //   clearButton: true,
+                      //   onPressed: () async {
+                      //     final res = await Navigator.of(context).push(
+                      //         MaterialPageRoute(
+                      //             builder: (_) => modeOfPaymentScreen(
+                      //                 data['mode_of_payment_2'])));
+                      //     setState(() {
+                      //       bankType = res['type'];
+                      //     });
+                      //     if (res != null) {
+                      //       data['mode_of_payment'] = res['name'];
+                      //     }
+                      //     return res['name'];
+                      //   },
+                      // ),
                       if (bankType == 'Bank')
                         CustomTextFieldTest(
                           'reference_no',
