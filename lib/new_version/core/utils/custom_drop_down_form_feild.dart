@@ -38,6 +38,9 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
 
   @override
   void initState() {
+    print('---------------------------------');
+    print(widget.docType);
+    print('---------------------------------');
     Future.delayed(Duration.zero, () {
       handelCall();
     });
@@ -133,7 +136,7 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
               enableSearch: true,
               dropDownItemCount: getList.length,
               dropDownList: dropDownList,
-              onChanged: (val) {
+              onChanged: (val) async {
                 int index = dropDownList.indexWhere((item) => item == val);
                 if (index != -1) {
                   Map<String, dynamic> selectedMap = getList[index];
