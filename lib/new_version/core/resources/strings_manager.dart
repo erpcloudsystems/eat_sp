@@ -155,4 +155,5 @@ class StringsManager {
   static const String faq = 'FAQ';
   static const String hr = 'HR';
   static const String noItemAvailable = 'No item available';
+  static const String cancel = 'Cancel';
 }

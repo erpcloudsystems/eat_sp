@@ -20,7 +20,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
     return DismissKeyboard(
       child: Container(
         height: 40,
-        margin: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 12),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(14),
@@ -46,7 +46,8 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
           onEditingComplete: () {
             FocusScope.of(context).unfocus();
           },
-          textAlignVertical: TextAlignVertical.bottom,
+          textAlign: TextAlign.start,
+          textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
             hintText: "Search".tr(),
             border: InputBorder.none,

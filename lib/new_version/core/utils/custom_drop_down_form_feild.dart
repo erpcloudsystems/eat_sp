@@ -1,7 +1,10 @@
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:NextApp/provider/new_controller/home_provider.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../test/test_text_field.dart';
+import 'new_list_widget.dart';
 
 class CustomDropDownFromField extends StatefulWidget {
   const CustomDropDownFromField({
@@ -28,120 +31,52 @@ class CustomDropDownFromField extends StatefulWidget {
 }
 
 class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
-  List getList = [];
-  Future<void> handelCall() async {
-    final provider = Provider.of<HomeProvider>(context, listen: false);
-
-    getList = await provider.generalGetList(docType: widget.docType);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    print('---------------------------------');
-    print(widget.docType);
-    print('---------------------------------');
-    Future.delayed(Duration.zero, () {
-      handelCall();
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
-
+  String selectedValue = '';
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) {
-        List<DropDownValueModel> dropDownList = getList.map((value) {
-          return DropDownValueModel(
-            name: value[widget.nameResponse],
-            value: value[widget.nameResponse],
-          );
-        }).toList();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            CustomTextFieldTest(
+              'test',
               widget.title,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+              initialValue: selectedValue,
+              clearButton: true,
+              keyboardType: TextInputType.number,
+              onPressed: () async {
+                _showMyDialog();
+                return null;
+              },
             ),
-            DropDownTextField(
-              controller: widget.controller,
-              clearOption: true,
-              validator: widget.isValidate
-                  ? (value) {
-                      if (value!.trim().isEmpty) {
-                        return 'This field is required';
-                      }
-                      return null;
-                    }
-                  : null,
-              textFieldDecoration: InputDecoration(
-                filled: true,
-                //<-- SEE HERE
-                fillColor: Colors.grey.shade200,
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                isDense: true,
-                isCollapsed: false,
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: Colors.transparent,
-                  ),
-                ),
-                focusedErrorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: Colors.red,
-                  ),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: Colors.transparent,
-                  ),
-                ),
-                errorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: Colors.red,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.all(5),
-              ),
-              listTextStyle: const TextStyle(
-                color: Colors.black,
-              ),
-              enableSearch: true,
-              dropDownItemCount: getList.length,
-              dropDownList: dropDownList,
-              onChanged: (val) async {
-                int index = dropDownList.indexWhere((item) => item == val);
-                if (index != -1) {
-                  Map<String, dynamic> selectedMap = getList[index];
-                  widget.onChange(selectedMap);
-                }
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: NewListWidget(
+            docType: widget.docType,
+            nameResponse: widget.nameResponse,
+            onPressed: (value) {
+              widget.onChange(value);
+              setState(() {
+                selectedValue = value[widget.nameResponse];
+              });
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text(StringsManager.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],
