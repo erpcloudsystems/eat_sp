@@ -15,6 +15,8 @@ class CustomDropDownFromField extends StatefulWidget {
     required this.docType,
     required this.nameResponse,
     this.defaultValue,
+    this.keys,
+    this.filters,
   });
   final String title;
   final String docType;
@@ -23,6 +25,8 @@ class CustomDropDownFromField extends StatefulWidget {
   final IconData? icon;
   final Function(dynamic) onChange;
   final bool isValidate;
+  final Map<String, dynamic>? keys;
+  final Map<String, dynamic>? filters;
 
   @override
   State<CustomDropDownFromField> createState() =>
@@ -43,12 +47,15 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
               widget.title,
               initialValue: selectedValue ?? widget.defaultValue,
               clearButton: true,
-              keyboardType: TextInputType.number,
+              disableValidation: !widget.isValidate,
               onPressed: () async {
                 CommonPageUtils.commonBottomSheet(
                   builderWidget: NewListWidget(
                     docType: widget.docType,
                     nameResponse: widget.nameResponse,
+                    subTitleKey: widget.keys?['subTitle'],
+                    trailingKey: widget.keys?['trailing'],
+                    filter: widget.filters,
                     onPressed: (value) {
                       widget.onChange(value);
 
@@ -68,38 +75,4 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
       },
     );
   }
-
-  // Future<void> _showMyDialog() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         contentPadding: EdgeInsets.zero,
-  //         content: Align(
-  //           alignment: Alignment.bottomCenter,
-  //           child: NewListWidget(
-  //             docType: widget.docType,
-  //             nameResponse: widget.nameResponse,
-  //             onPressed: (value) {
-  //               widget.onChange(value);
-
-  //               setState(() {
-  //                 selectedValue = value[widget.nameResponse];
-  //               });
-  //             },
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             child: const Text(StringsManager.cancel),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }

@@ -327,6 +327,10 @@ class _PaymentFormState extends State<PaymentForm> {
                           defaultValue: data['party'],
                           docType: 'Customer',
                           nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'customer_group',
+                            'trailing': 'territory',
+                          },
                           title: data['party_type'] ?? 'Customer',
                           onChange: (value) {
                             setState(() {
@@ -340,6 +344,10 @@ class _PaymentFormState extends State<PaymentForm> {
                         CustomDropDownFromField(
                             defaultValue: data['party'],
                             docType: 'Supplier',
+                            keys: const {
+                              'subTitle': 'supplier_group',
+                              'trailing': 'country',
+                            },
                             nameResponse: 'name',
                             title: data['party_type'] ?? "Supplier",
                             onChange: (value) {
@@ -348,42 +356,6 @@ class _PaymentFormState extends State<PaymentForm> {
                                 data['party_name'] = value['supplier_name'];
                               });
                             }),
-                      // if (data['party_type'] != null)
-                      //   CustomTextFieldTest(
-                      //     'party',
-                      //     data['party_type'],
-                      //     initialValue: data['party'],
-                      //     onPressed: () async {
-                      //       String? id;
-
-                      //       if (data['party_type'] == KPaymentPartyList[0]) {
-                      //         final res = await Navigator.of(context).push(
-                      //             MaterialPageRoute(
-                      //                 builder: (context) =>
-                      //                     selectCustomerScreen()));
-                      //         if (res != null) {
-                      //           id = res['name'];
-                      //           setState(() {
-                      //             data['party'] = res['name'];
-                      //             data['party_name'] = res['customer_name'];
-                      //           });
-                      //         }
-                      //       } else {
-                      //         final res = await Navigator.of(context).push(
-                      //             MaterialPageRoute(
-                      //                 builder: (context) =>
-                      //                     supplierListScreen()));
-                      //         if (res != null) {
-                      //           id = res['name'];
-                      //           setState(() {
-                      //             data['party'] = res['name'];
-                      //             data['party_name'] = res['supplier_name'];
-                      //           });
-                      //         }
-                      //       }
-                      //       return id;
-                      //     },
-                      //   ),
                       if (data['party_name'] != null)
                         Align(
                             alignment: Alignment.centerLeft,
@@ -422,27 +394,7 @@ class _PaymentFormState extends State<PaymentForm> {
                               data['mode_of_payment'] = value['name'];
                             });
                           }),
-                      // CustomTextFieldTest(
-                      //   'mode_of_payment',
-                      //   data['payment_type'] == paymentType[2]
-                      //       ? 'Payment From'
-                      //       : 'Mode Of Payment',
-                      //   initialValue: data['mode_of_payment'],
-                      //   clearButton: true,
-                      //   onPressed: () async {
-                      //     final res = await Navigator.of(context).push(
-                      //         MaterialPageRoute(
-                      //             builder: (_) => modeOfPaymentScreen(
-                      //                 data['mode_of_payment_2'])));
-                      //     setState(() {
-                      //       bankType = res['type'];
-                      //     });
-                      //     if (res != null) {
-                      //       data['mode_of_payment'] = res['name'];
-                      //     }
-                      //     return res['name'];
-                      //   },
-                      // ),
+
                       if (bankType == 'Bank')
                         CustomTextFieldTest(
                           'reference_no',

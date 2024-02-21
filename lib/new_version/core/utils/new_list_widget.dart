@@ -1,5 +1,6 @@
 import 'package:NextApp/new_version/modules/new_item/presentation/widgets/new_search_widget.dart';
 import 'package:NextApp/provider/new_controller/home_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,10 +10,16 @@ class NewListWidget extends StatefulWidget {
     required this.docType,
     required this.onPressed,
     required this.nameResponse,
+    this.subTitleKey,
+    this.trailingKey,
+    this.filter = const {},
   });
   final String docType;
   final Function(Map<String, dynamic>) onPressed;
   final String nameResponse;
+  final String? subTitleKey;
+  final String? trailingKey;
+  final Map<String, dynamic>? filter;
 
   @override
   State<NewListWidget> createState() => _NewListWidgetState();
@@ -29,7 +36,13 @@ class _NewListWidgetState extends State<NewListWidget> {
     final provider = Provider.of<HomeProvider>(context, listen: false);
 
     getList = await provider
-        .generalGetList(docType: widget.docType, search: search)
+        .generalGetList(
+      filters: {
+        'doctype': widget.docType,
+        'page_length': 20,
+        if (search != null) 'search_text': search,
+      }..addAll(widget.filter ?? {}),
+    )
         .whenComplete(() {
       setState(() {
         isLoading = false;
@@ -73,6 +86,10 @@ class _NewListWidgetState extends State<NewListWidget> {
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
+                if (!isLoading && getList.isEmpty)
+                  Center(
+                    child: Text('No data'.tr()),
+                  ),
                 if (!isLoading)
                   ListView.builder(
                     shrinkWrap: true,
@@ -86,15 +103,27 @@ class _NewListWidgetState extends State<NewListWidget> {
                         child: Card(
                           margin: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
+                          color: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: ListTile(
+                            title: Text(
                               getList[index]['name'],
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            subtitle: widget.subTitleKey != null
+                                ? Text(
+                                    getList[index][widget.subTitleKey] ?? '',
+                                  )
+                                : null,
+                            trailing: widget.trailingKey != null
+                                ? Text(
+                                    getList[index][widget.trailingKey] ?? '',
+                                  )
+                                : null,
                           ),
                         ),
                       );

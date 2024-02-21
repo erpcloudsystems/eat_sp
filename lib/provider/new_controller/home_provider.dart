@@ -32,14 +32,12 @@ class HomeProvider extends ChangeNotifier {
   }
 
   /// General get list
-  Future<List> generalGetList({required String docType, String? search}) async {
+  Future<List> generalGetList({
+    required Map<String, dynamic> filters,
+  }) async {
     final response = await service.genericGet(
       'method/ecs_mobile.general.general_service',
-      {
-        'doctype': docType,
-        'page_length': 20,
-        if (search != null) 'search_text': search,
-      },
+      filters,
     );
     notifyListeners();
 
