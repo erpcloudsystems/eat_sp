@@ -1,4 +1,3 @@
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -325,12 +324,7 @@ class _PaymentFormState extends State<PaymentForm> {
                       if (data['party_type'] == KPaymentPartyList[0] &&
                           data['party_type'] != null)
                         CustomDropDownFromField(
-                          controller: SingleValueDropDownController(
-                            data: DropDownValueModel(
-                              name: data['party'] ?? '',
-                              value: data['party'] ?? '',
-                            ),
-                          ),
+                          defaultValue: data['party'],
                           docType: 'Customer',
                           nameResponse: 'name',
                           title: data['party_type'] ?? 'Customer',
@@ -344,12 +338,7 @@ class _PaymentFormState extends State<PaymentForm> {
                       if (data['party_type'] != KPaymentPartyList[0] &&
                           data['party_type'] != null)
                         CustomDropDownFromField(
-                            controller: SingleValueDropDownController(
-                              data: DropDownValueModel(
-                                name: data['party'] ?? '',
-                                value: data['party'] ?? '',
-                              ),
-                            ),
+                            defaultValue: data['party'],
                             docType: 'Supplier',
                             nameResponse: 'name',
                             title: data['party_type'] ?? "Supplier",
@@ -421,12 +410,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
                       /// New mode of payment
                       CustomDropDownFromField(
-                          controller: SingleValueDropDownController(
-                            data: DropDownValueModel(
-                              name: data['mode_of_payment'] ?? '',
-                              value: data['mode_of_payment'] ?? '',
-                            ),
-                          ),
+                          defaultValue: data['mode_of_payment'],
                           docType: 'Mode of Payment',
                           nameResponse: 'name',
                           title: data['payment_type'] == paymentType[2]

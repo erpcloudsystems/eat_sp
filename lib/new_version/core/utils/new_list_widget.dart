@@ -47,46 +47,64 @@ class _NewListWidgetState extends State<NewListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        NewSearchWidget(
-          searchFunction: (value) {
-            handelCall(search: value);
-          },
+    final size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height / 1.5,
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(.95),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
-        if (isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-        SizedBox(
-          height: 250,
-          width: 500,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: getList.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  widget.onPressed(getList[index]);
-                  Navigator.pop(context);
-                },
-                child: Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      getList[index]['name'],
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-              );
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          NewSearchWidget(
+            searchFunction: (value) {
+              handelCall(search: value);
             },
           ),
-        ),
-      ],
+          Flexible(
+            child: Stack(
+              children: [
+                if (isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                if (!isLoading)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: getList.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          widget.onPressed(getList[index]);
+                          Navigator.pop(context);
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 5),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              getList[index]['name'],
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
