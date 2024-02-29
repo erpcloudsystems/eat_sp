@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../list/otherLists.dart';
-import '../../../new_version/core/extensions/date_tine_extension.dart';
+import '../../../new_version/core/extensions/date_time_extension.dart';
 
 class AddTimeSheetDialog extends StatefulWidget {
   const AddTimeSheetDialog({

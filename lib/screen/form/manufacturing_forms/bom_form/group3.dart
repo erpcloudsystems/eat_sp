@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../new_version/core/resources/strings_manager.dart';
-import '../../../../test/test_text_field.dart';
+import '../../../../widgets/new_widgets/test_text_field.dart';
 import '../../../../widgets/form_widgets.dart';
 
 class Group3 extends StatefulWidget {

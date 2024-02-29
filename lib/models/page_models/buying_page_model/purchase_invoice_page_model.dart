@@ -38,7 +38,6 @@ class PurchaseInvoicePageModel {
         tr("Status"): data['status'] ?? tr('none'),
         tr("Tax Id"): data['tax_id'] ?? tr('none'),
       },
-      //{tr("Customer Group"): data['customer_group'] ?? tr('none'), tr("Territory"): data['territory'] ?? tr('none')},
       {
         tr("Supplier Address"): data['supplier_address'] != null
             ? formatDescription(data['supplier_address'])
@@ -104,8 +103,8 @@ class PurchaseInvoicePageModel {
       (data['base_total'] == data['total'])
           ? {}
           : {
-              tr("Total  ") + "(${data['currency']})": currency(data['total']),
-              tr("Net Total  ") + "(${data['currency']})":
+              "${tr("Total  ")}(${data['currency']})": currency(data['total']),
+              "${tr("Net Total  ")}(${data['currency']})":
                   currency(data['net_total'])
             },
       {
@@ -116,7 +115,7 @@ class PurchaseInvoicePageModel {
       (data['base_total_taxes_and_charges'] == data['total_taxes_and_charges'])
           ? {}
           : {
-              tr("Total Taxes and Charges  ") + "(${data['currency']})":
+              "${tr("Total Taxes and Charges  ")}(${data['currency']})":
                   currency(data['total_taxes_and_charges']),
             },
       {
@@ -130,7 +129,7 @@ class PurchaseInvoicePageModel {
       (data['base_discount_amount'] == data['discount_amount'])
           ? {}
           : {
-              tr("Additional Discount Amount  ") + "(${data['currency']})":
+              "${tr("Additional Discount Amount  ")}(${data['currency']})":
                   currency(data['discount_amount'])
             },
       {
@@ -148,25 +147,17 @@ class PurchaseInvoicePageModel {
       (data['base_grand_total'] == data['grand_total'])
           ? {}
           : {
-              tr("Grand Total ") + "(${data['currency']})":
+              "${tr("Grand Total ")}(${data['currency']})":
                   currency(data['grand_total'])
             },
       (data['base_grand_total'] == data['grand_total'])
           ? {}
           : {
-              tr("In Words  ") + "(${data['currency']})":
+              "${tr("In Words  ")}(${data['currency']})":
                   data['in_words'] ?? tr('none')
             },
     ];
   }
-
-  // List<Map<String, String>> get addressDisplayValues{
-  //   return [
-  //     {
-  //       tr("Total Quantity"): data['total_qty'].toString(),
-  //     },
-  //   ];
-  // }
 
   List<String> get subList1Names {
     return [

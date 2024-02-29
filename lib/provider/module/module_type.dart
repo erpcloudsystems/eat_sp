@@ -25,7 +25,7 @@ import '../../screen/page/project_pages/timesheet_page.dart';
 import '../../screen/page/stock_pages/delivery_note_page.dart';
 import '../../screen/page/selling_pages/opportunity_page.dart';
 import '../../screen/page/workflow_pages/workflow_page.dart';
-import '../../test/list_card.dart';
+import '../../widgets/new_widgets/list_card.dart';
 import '../../widgets/filter_widgets/manufacturing_filters/bom_filters.dart';
 import '../../widgets/filter_widgets/manufacturing_filters/job_card_filters.dart';
 import '../../widgets/filter_widgets/project_filters/issue_filter.dart';
@@ -154,7 +154,7 @@ import '../../models/list_models/selling_list_model/sales_invoice_list_model.dar
 import '../../models/list_models/stock_list_model/stock_entry_list_model.dart';
 import '../../models/page_models/model_functions.dart';
 import '../../service/service_constants.dart';
-import '../../new_version/core/extensions/date_tine_extension.dart';
+import '../../new_version/core/extensions/date_time_extension.dart';
 
 class ModuleType {
   final String _genericListService, _title, _pageService;

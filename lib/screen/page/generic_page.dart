@@ -6,7 +6,7 @@ import '../home_screen.dart';
 import '../../core/constants.dart';
 import '../../service/service.dart';
 import '../../widgets/nothing_here.dart';
-import '../../test/floating_button_widget.dart';
+import '../../widgets/new_widgets/floating_button_widget.dart';
 import '../../widgets/generic_page_buttons.dart';
 import '../../provider/module/module_provider.dart';
 import 'common_page_widgets/page_actions_pop_menu.dart';

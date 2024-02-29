@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../provider/user/user_provider.dart';
-import '../../../test/custom_page_view_form.dart';
-import '../../../test/test_text_field.dart';
+import '../../../widgets/new_widgets/custom_page_view_form.dart';
+import '../../../widgets/new_widgets/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import '../bloc/dasboard_bloc.dart';
 import '../bloc/total_bloc/total_bloc.dart';
 import '../../../../../core/constants.dart';
-import '../../../../../test/icome_widget.dart';
 import '../../../../core/utils/error_dialog.dart';
-import '../../../../../test/test_text_field.dart';
 import '../../../../core/utils/request_state.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../data/models/get_total_sales_invoice_filters.dart';
 import '../../../../core/extensions/date_time_extension.dart';
+import '../../../../../widgets/new_widgets/icome_widget.dart';
+import '../../data/models/get_total_sales_invoice_filters.dart';
+import '../../../../../widgets/new_widgets/test_text_field.dart';
 
 class GetTotalWidget extends StatelessWidget {
   const GetTotalWidget({Key? key}) : super(key: key);

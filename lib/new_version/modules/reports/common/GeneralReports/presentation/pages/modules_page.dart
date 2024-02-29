@@ -1,12 +1,12 @@
 import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../../../../../../../test/home_item_test.dart';
+import '../../../../../../../widgets/new_widgets/home_item_test.dart';
 import '../../../../../../core/resources/routes.dart';
 import '../../data/models/module_model.dart';
 
-class ModulesPage extends StatelessWidget {
-  const ModulesPage({super.key});
+class ReportsModulePage extends StatelessWidget {
+  const ReportsModulePage({super.key});
 
   @override
   Widget build(BuildContext context) {

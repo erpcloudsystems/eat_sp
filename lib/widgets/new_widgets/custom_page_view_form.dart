@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../core/constants.dart';
-import '../provider/module/module_provider.dart';
+import '../../core/constants.dart';
+import '../../provider/module/module_provider.dart';
 
 class CustomPageViewForm extends StatefulWidget {
   const CustomPageViewForm({

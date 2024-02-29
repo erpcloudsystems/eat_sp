@@ -164,9 +164,6 @@ abstract class FcmToken {
   static String deviceTokenToSendPushNotification = '';
   static bool isTokenRefreshed = false;
 
-  // for Firebase Crashlytics
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
 //Get the device token
   static Future<void> getDeviceTokenToSendNotification() async {
     final FirebaseMessaging fcm = FirebaseMessaging.instance;

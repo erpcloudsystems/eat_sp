@@ -3,7 +3,7 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
-import '../test/home_item_test.dart';
+import '../widgets/new_widgets/home_item_test.dart';
 import 'drawer/drawer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -87,7 +87,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       ),
       const DashboardScreen(),
       const NotificationScreen(),
-      const CustomDrawer(),
+      const SettingsMenu(),
     ];
 
     List<String> appBarTitles = [

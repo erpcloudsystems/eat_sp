@@ -119,7 +119,6 @@ class _FilterScreenState extends State<FilterScreen> {
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    // maximumSize: Size.fromWidth(106),
                     backgroundColor: APPBAR_COLOR,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(

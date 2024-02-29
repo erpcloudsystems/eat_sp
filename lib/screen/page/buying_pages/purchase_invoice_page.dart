@@ -38,7 +38,6 @@ class PurchaseInvoicePage extends StatelessWidget {
                   doctype: 'Purchase Invoice',
                   data: data,
                   items: fromPurchaseInvoice,
-                  // disableCreate: false,
                   disableCreate:
                       data['docstatus'].toString() == "1" ? false : true,
                 ),
@@ -214,8 +213,6 @@ class PurchaseInvoicePage extends StatelessWidget {
                                       .toString(),
                                   values: model.taxesCardValues(index),
                                 )),
-
-                    //
                     data['payment_schedule'] == null ||
                             data['payment_schedule'].isEmpty
                         ? const NothingHere()

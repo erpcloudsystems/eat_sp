@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../core/constants.dart';
-import '../service/service.dart';
+import '../../core/constants.dart';
+import '../../service/service.dart';
 
 class HomeItemTest extends StatelessWidget {
   final String imageUrl, title;

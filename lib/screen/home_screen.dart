@@ -6,13 +6,12 @@ import 'package:upgrader/upgrader.dart';
 
 import '../core/constants.dart';
 import '../service/gps_services.dart';
+import 'drawer/drawer_screen.dart';
 import 'sub_category_screen.dart';
-import 'Drawer/drawer_screen.dart';
-import '../test/home_item_test.dart';
+import '../widgets/new_widgets/home_item_test.dart';
 import 'other/notification_screen.dart';
 import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
-import '../widgets/dialog/loading_dialog.dart';
 import '../service/local_notification_service.dart';
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
 import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
@@ -44,66 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      const ModulesPage(),
-
-      /// Home Screen
-      Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text(
-            'Modules.Modules'.tr(),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 22,
-            ),
-          ),
-        ),
-        body: GridView.count(
-          padding: const EdgeInsets.only(
-            top: 30,
-            right: 6,
-            left: 6,
-            bottom: 50,
-          ),
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
-          crossAxisCount: 2, childAspectRatio: 1.2,
-          // Generate 100 widgets that display their index in the List.
-          children: List.generate(userProvider.modules.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.all(4),
-              child: HomeItemTest(
-                title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
-                imageUrl: userProvider.modules[index].values.first,
-                onPressed: () => Navigator.of(context).push(PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) =>
-                      SubCategoryScreen(
-                    userProvider.modules[index].keys.first,
-                    index,
-                  ),
-                )),
-              ),
-            );
-          }),
-        ),
-      ),
+      const ReportsModulePage(),
+      ModulesPage(userProvider: userProvider),
       const DashboardScreen(),
       const NotificationScreen(),
-      const CustomDrawer(),
+      const SettingsMenu(),
     ];
-    void logout() async {
-      final res =
-          await checkDialog(context, 'Are you sure do you want to logout ?');
-      if (res == true) userProvider.logout();
-    }
 
     return UpgradeAlert(
-      upgrader: Upgrader(
-        shouldPopScope: () => true,
-      ),
+      upgrader: Upgrader(shouldPopScope: () => true),
       child: ColorfulSafeArea(
         color: APPBAR_COLOR,
         child: Scaffold(
@@ -119,6 +67,62 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Container(
               padding: const EdgeInsets.only(bottom: 50), child: pages[_page]),
         ),
+      ),
+    );
+  }
+}
+
+class ModulesPage extends StatelessWidget {
+  const ModulesPage({
+    super.key,
+    required this.userProvider,
+  });
+
+  final UserProvider userProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Modules.Modules'.tr(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: 22,
+          ),
+        ),
+      ),
+      body: GridView.count(
+        padding: const EdgeInsets.only(
+          top: 30,
+          right: 6,
+          left: 6,
+          bottom: 50,
+        ),
+        // Create a grid with 2 columns. If you change the scrollDirection to
+        // horizontal, this produces 2 rows.
+        crossAxisCount: 2, childAspectRatio: 1.2,
+        // Generate 100 widgets that display their index in the List.
+        children: List.generate(userProvider.modules.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.all(4),
+            child: HomeItemTest(
+              title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
+              imageUrl: userProvider.modules[index].values.first,
+              onPressed: () => Navigator.of(context).push(PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) =>
+                    SubCategoryScreen(
+                  userProvider.modules[index].keys.first,
+                  index,
+                ),
+              )),
+            ),
+          );
+        }),
       ),
     );
   }

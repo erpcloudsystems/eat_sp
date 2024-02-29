@@ -1,4 +1,3 @@
-import 'package:NextApp/bloc/custom_form_bloc/cubit/custom_from_cubit_cubit.dart';
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
 import 'package:NextApp/provider/new_controller/home_provider.dart';
 
@@ -43,7 +42,6 @@ class StateManagement {
     BlocProvider(create: (_) => di.sl<TotalBloc>()),
     BlocProvider(create: (_) => di.sl<DashboardBloc>()),
     BlocProvider(create: (_) => di.sl<TransactionBloc>()),
-    BlocProvider(create: (_) => CustomFromCubitCubit()),
     BlocProvider(create: (_) => di.sl<NewItemBloc>()),
   ];
 }
