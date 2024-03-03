@@ -216,11 +216,12 @@ class TableButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
-              primary: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              onPrimary: Colors.grey),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
+            backgroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            foregroundColor: Colors.grey,
+          ),
           onPressed: table.isEmpty
               ? null
               : () {
@@ -240,7 +241,8 @@ class TableButton extends StatelessWidget {
                       fontSize: 16,
                       color: Colors.black)),
               const Spacer(),
-              const Icon(Icons.arrow_right_sharp, color: Colors.blueAccent, size: 26)
+              const Icon(Icons.arrow_right_sharp,
+                  color: Colors.blueAccent, size: 26)
             ],
           )),
     );

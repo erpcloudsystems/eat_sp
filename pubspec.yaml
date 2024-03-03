@@ -56,8 +56,7 @@ dependencies:
 
   #Firebase
   firebase_messaging: ^14.6.3
-  firebase_core: ^2.1.1
-  firebase_crashlytics: ^3.0.3
+  firebase_core: ^2.25.5
   cloud_firestore: ^4.2.0
 
   flutter_local_notifications: ^9.9.1
