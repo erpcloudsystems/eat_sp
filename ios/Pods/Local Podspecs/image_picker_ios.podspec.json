@@ -28,5 +28,10 @@
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES"
+  },
+  "resource_bundles": {
+    "image_picker_ios_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
   }
 }
