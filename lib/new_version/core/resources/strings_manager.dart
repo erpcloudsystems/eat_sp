@@ -48,7 +48,7 @@ class StringsManager {
   static const String userDataUpdatedSuccessfully =
       'Your Data Updated Successfully';
   static const String locationNotificationTitle = 'The application will continue to receive your location even when you aren\'t using it';
-  static const String userPermissionForLocationMessage = '"user permission for location message"';
+  static const String userPermissionForLocationMessage = 'user permission for location message';
   static const String offlineFailureMessage = 'There is no internet connection';
   static const String qualityInspectionTemplate = 'Quality Inspection Template';
   static const String qualityInspectionRequired = 'Quality Inspection Required';
