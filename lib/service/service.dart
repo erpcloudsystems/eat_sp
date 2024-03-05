@@ -922,7 +922,7 @@ class APIService {
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: ApiConstance.receiveTimeOut, // 30 seconds
+          receiveTimeout: ApiConstance.receiveTimeOut, 
           validateStatus: (status) {
             if (status == null) return false;
             return status < 500;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'timing_details_form.dart';
 import '../../../list/otherLists.dart';
-import '../../../../test/test_text_field.dart';
+import '../../../../widgets/new_widgets/test_text_field.dart';
 import '../../../../widgets/form_widgets.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
 

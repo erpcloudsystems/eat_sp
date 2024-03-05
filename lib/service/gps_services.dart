@@ -131,7 +131,7 @@ class GPSService {
                   // We send it in this way as requested by the backend [Kholoud El-Barody].
                   'long': position.latitude,
                   'lat': position.longitude,
-                  'date': position.timestamp!.formatDateYMD(),
+                  'date': position.timestamp.formatDateYMD(),
                 }),
             context);
       }

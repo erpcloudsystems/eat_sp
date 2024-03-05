@@ -46,8 +46,6 @@ class _PaginationListState<T> extends State<PaginationList> {
   _PaginationListState(this.listItem);
 
   Future<void> getItems() async {
-    // if (!mounted) return;
-
     setState(() => _isLoading = true);
 
     pageCount += PAGINATION_PAGE_LENGTH;
@@ -90,13 +88,14 @@ class _PaginationListState<T> extends State<PaginationList> {
         items = <T>[];
         _oldValue = widget.reset.value;
       });
+      await getItems();
     }
-    await getItems();
   }
 
   @override
   void initState() {
     super.initState();
+    _isLoading = true;
     _reset();
     widget.reset.addListener(_reset);
     _scrollController.addListener(loadMore);
@@ -134,7 +133,7 @@ class _PaginationListState<T> extends State<PaginationList> {
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     controller: _scrollController,
-                    itemCount: _noMoreItems ? items.length + 1 : items.length,
+                    itemCount: _noMoreItems ? items.length : items.length + 1,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                     itemBuilder: (context, i) {
@@ -142,9 +141,7 @@ class _PaginationListState<T> extends State<PaginationList> {
                       return const Center(
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'no more items',
-                          ),
+                          child: Text('no more items'),
                         ),
                       );
                     },
@@ -157,10 +154,7 @@ class _PaginationListState<T> extends State<PaginationList> {
               child: Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 18,
-                      top: 3,
-                    ),
+                    padding: const EdgeInsets.only(right: 18, top: 3),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -206,9 +200,7 @@ class _PaginationListState<T> extends State<PaginationList> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomLoadingWithImage(),
-          ],
+          children: [CustomLoadingWithImage()],
         ));
       }
       return const Center(child: Text("No Data"));

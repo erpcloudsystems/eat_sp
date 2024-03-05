@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../core/cloud_system_widgets.dart';
-import '../core/constants.dart';
-import '../widgets/list_card.dart';
+import '../../core/cloud_system_widgets.dart';
+import '../../core/constants.dart';
+import '../list_card.dart';
 
 class ListCardTest extends StatelessWidget {
   final String id;

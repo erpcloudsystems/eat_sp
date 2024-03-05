@@ -28,10 +28,9 @@ class Routes {
   static const String noDataScreen = '/no_data';
   static const String pdfScreen = '/pdf_screen';
 
-
   static Map<String, WidgetBuilder> get routes {
     return {
-      modulesScreen: (context) => const ModulesPage(),
+      modulesScreen: (context) => const ReportsModulePage(),
       reportsScreen: (context) => const ReportsPage(),
       noDataScreen: (context) => const NoDataScreen(),
       reportFilterScreen: (context) => const FilterScreen(),

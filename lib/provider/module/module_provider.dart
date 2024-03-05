@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
-import '../../test/pdf_screen.dart';
 import 'module_type.dart';
 import '../../service/service.dart';
 import '../user/user_provider.dart';
@@ -17,6 +16,7 @@ import '../../screen/page/page_screen.dart';
 import '../../service/server_exception.dart';
 import '../../service/service_constants.dart';
 import '../../widgets/dialog/loading_dialog.dart';
+import '../../widgets/new_widgets/pdf_screen.dart';
 
 class ModuleProvider extends ChangeNotifier {
   ModuleType? _currentModule;
@@ -79,7 +79,6 @@ class ModuleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Workflow ----------------------------------------------------------------
   bool getWorkflow = false;
 
   bool get hasWorkflow => getWorkflow;
@@ -117,7 +116,6 @@ class ModuleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //---------------------------------------------------------------------------
   //----------------------- New Items------------------------------------------
   List<Map<String, dynamic>> newItemList = [];
   double netTotal = 0.0;

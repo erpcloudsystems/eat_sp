@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../sorting_screen.dart';
 import '../../core/cloud_system_widgets.dart';
 import '../../models/list_models/statistics_model.dart';
-import '../../test/statisics_widget.dart';
+import '../../widgets/new_widgets/statisics_widget.dart';
 import '../home_screen.dart';
 import '/widgets/pagination.dart' as pagination;
 import '../../core/constants.dart';

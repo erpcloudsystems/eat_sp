@@ -9,7 +9,7 @@ import 'user_profile_card.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../../../core/extensions/date_tine_extension.dart';
+import '../../../../core/extensions/date_time_extension.dart';
 
 class UserProfileMainWidget extends StatelessWidget {
   final UserEntity user;

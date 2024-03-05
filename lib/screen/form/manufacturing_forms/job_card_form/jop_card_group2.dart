@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../list/otherLists.dart';
 import '../../../../widgets/form_widgets.dart';
-import '../../../../test/test_text_field.dart';
+import '../../../../widgets/new_widgets/test_text_field.dart';
 import '../../../../new_version/core/resources/strings_manager.dart';
 
 class JobCardGroup2 extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../widgets/form_widgets.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../../../core/extensions/date_tine_extension.dart';
+import '../../../../core/extensions/date_time_extension.dart';
 
 class BirthDateField extends StatelessWidget {
   const BirthDateField({

@@ -2,24 +2,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/app_local.dart';
-import '../../new_version/modules/faq/presentation/pages/faq_screen.dart';
 import 'aboutus_screen.dart';
+import '../../core/app_local.dart';
 import '../other/app_settings.dart';
 import '../../provider/user/user_provider.dart';
 import '../../widgets/dialog/loading_dialog.dart';
+import '../../new_version/modules/faq/presentation/pages/faq_screen.dart';
 
-class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+class SettingsMenu extends StatefulWidget {
+  const SettingsMenu({Key? key}) : super(key: key);
 
   @override
-  State<CustomDrawer> createState() => _CustomDrawerState();
+  State<SettingsMenu> createState() => _SettingsMenuState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer> {
-  final drawerPages = [const AppSettings(), const AboutUs(), const FAQ(), null];
+class _SettingsMenuState extends State<SettingsMenu> {
+  final menuPages = [const AppSettings(), const AboutUs(), const FAQ(), null];
 
-  final drawerIcons = [
+  final menuIcons = [
     Icons.settings,
     Icons.info,
     Icons.question_answer,
@@ -44,7 +44,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> drawerNames = [
+    List<String> menuNames = [
       'App Settings'.tr(),
       'About Us'.tr(),
       'FAQ'.tr(),
@@ -59,7 +59,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 10),
-              itemCount: drawerNames.length,
+              itemCount: menuNames.length,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(
                 height: 0,
@@ -68,19 +68,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(
-                    drawerNames[index],
+                    menuNames[index],
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  trailing: Icon(drawerIcons[index]),
+                  trailing: Icon(menuIcons[index]),
                   onTap: () async {
-                    if (drawerNames[index] == 'Logout'.tr()) {
+                    if (menuNames[index] == 'Logout'.tr()) {
                       logout(context);
                       return;
                     }
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => drawerPages[index]!));
+                        MaterialPageRoute(builder: (c) => menuPages[index]!));
                   },
                 );
               },
@@ -128,7 +128,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     groupValue: AppLocal.isEnglish,
                     onChanged: (bool? value) {
                       AppLocal.isEnglish = value!;
-
                       AppLocal.toggleBetweenLocales(context);
                       setState(() {});
                     },

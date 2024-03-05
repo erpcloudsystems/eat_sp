@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:NextApp/test/test_text_field.dart';
+import 'package:NextApp/widgets/new_widgets/test_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
-import '../../../test/custom_page_view_form.dart';
+import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';

@@ -7,7 +7,7 @@ import '../../../../new_version/core/resources/strings_manager.dart';
 import '../../../../provider/module/module_provider.dart';
 import '../../../../provider/user/user_provider.dart';
 
-import '../../../../test/test_text_field.dart';
+import '../../../../widgets/new_widgets/test_text_field.dart';
 import '../../../../widgets/page_group.dart';
 import '../../../list/otherLists.dart';
 import '../../../../widgets/form_widgets.dart';

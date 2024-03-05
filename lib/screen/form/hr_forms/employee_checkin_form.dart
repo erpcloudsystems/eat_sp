@@ -3,8 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../test/custom_page_view_form.dart';
-import '../../../test/test_text_field.dart';
+import '../../../widgets/new_widgets/custom_page_view_form.dart';
+import '../../../widgets/new_widgets/test_text_field.dart';
 import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
