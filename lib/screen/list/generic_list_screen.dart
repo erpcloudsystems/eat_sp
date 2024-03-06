@@ -288,7 +288,7 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
   final APIService service = APIService();
 
   String searchText = '';
-  ValueNotifier<bool> reset = ValueNotifier(false);
+  ValueNotifier<bool> reset = ValueNotifier(true);
   late UserProvider userProvider;
 
   void _search(value) {
@@ -306,9 +306,9 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
           : AppBar(
               elevation: 0,
               title: Text(
-                 widget.title != null
-                      ? widget.title!
-                      : moduleProvider.currentModule.title,
+                widget.title != null
+                    ? widget.title!
+                    : moduleProvider.currentModule.title,
               ),
               actions: [
                 if (widget.createForm != null)

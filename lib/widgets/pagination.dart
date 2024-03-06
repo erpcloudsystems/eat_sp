@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -81,7 +82,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   void _reset() async {
     if (widget.reset.value != _oldValue) {
-      setState(() {
+      setState(()  {
         pageCount = -20;
         newLoadCount = 0;
         _noMoreItems = false;
@@ -111,6 +112,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   @override
   Widget build(BuildContext context) {
+    log(items.length.toString());
     return LayoutBuilder(builder: (context, snapshot) {
       if (items.isNotEmpty) {
         return Stack(
