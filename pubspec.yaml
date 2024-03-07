@@ -44,7 +44,7 @@ dependencies:
   maps_launcher: ^2.2.0
   flutter_map: 
   latlong2: 
-  app_settings: 
+  app_settings: ^5.1.1
 
   #Alert
   cool_alert: ^1.1.0
@@ -70,7 +70,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   get_it: ^7.2.0
   bloc_concurrency: ^0.2.2
-  flutter_screenutil: ^5.8.4
+  flutter_screenutil: ^5.9.0
   syncfusion_flutter_charts: ^20.4.54
   expandable_menu: ^0.0.5
   flutter_native_splash: ^2.3.1
