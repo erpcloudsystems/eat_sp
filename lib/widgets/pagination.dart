@@ -81,7 +81,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   void _reset() async {
     if (widget.reset.value != _oldValue) {
-      setState(() {
+      setState(()  {
         pageCount = -20;
         newLoadCount = 0;
         _noMoreItems = false;
