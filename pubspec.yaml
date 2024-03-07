@@ -3,7 +3,7 @@ description: NextApp is a mobile application produced by ERPCloud.systems Egypti
 
 publish_to: 'none' 
 
-version: 2.3.2+37
+version: 2.3.3+38
 
 environment:
   sdk: ">=3.0.0"
