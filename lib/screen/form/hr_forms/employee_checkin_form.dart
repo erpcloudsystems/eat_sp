@@ -78,8 +78,8 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
     final server = APIService();
 
     if (!context.read<ModuleProvider>().isEditing) {
-      data['latitude'] = location.latitude;
-      data['longitude'] = location.longitude;
+      data['latitude'] = location.longitude;
+      data['longitude'] = location.latitude;
       data['location'] = gpsService.placeman[0].subAdministrativeArea;
     }
 
