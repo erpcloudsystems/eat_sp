@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -172,21 +173,21 @@ class _ContactFormState extends State<ContactForm> {
                           });
                         },
                       ),
-                      CustomTextFieldTest(
-                        'user',
-                        'User Id'.tr(),
-                        initialValue: data['user'],
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          var res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => userListScreen(),
-                            ),
-                          );
-                          data['user'] = res;
-                          return res;
-                        },
-                      ),
+                      // New user list
+                      CustomDropDownFromField(
+                          defaultValue: data['user'],
+                          docType: 'User',
+                          nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'full_name',
+                            'trailing': '',
+                          },
+                          title: 'User Id'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['user'] = value['name'];
+                            });
+                          }),
                       // CustomTextFieldTest(
                       //   'user',
                       //   'User Id'.tr(),

@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -208,22 +208,18 @@ class _AddressFormState extends State<AddressForm> {
                         onSave: (key, value) => data[key] = value,
                       ),
 
-                      CustomTextFieldTest(
-                        'country',
-                        'Country'.tr(),
-                        initialValue: data['country'],
-                        disableValidation: false,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => countryScreen(),
-                            ),
-                          );
-                          data['country'] = res;
-                          return res;
-                        },
-                      ),
+                      // New Country
+                      CustomDropDownFromField(
+                          defaultValue: data['country'],
+                          docType: 'Country',
+                          nameResponse: 'name',
+                          title: 'Country'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['country'] = value['name'];
+                            });
+                          }),
+
                       const SizedBox(height: 8),
                     ],
                   ),
@@ -246,48 +242,36 @@ class _AddressFormState extends State<AddressForm> {
                     Divider(
                         color: Colors.grey.shade300, height: 1, thickness: 0.9),
                     if (data['link_doctype'] == linkDocumentTypeList[0])
-                      CustomTextFieldTest(
-                        'link_name',
-                        'Link Name'.tr(),
-                        initialValue: data['link_name'],
-                        onPressed: () async {
-                          String? id;
-
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
+                      // New Link doc
+                      CustomDropDownFromField(
+                          defaultValue: data['link_name'],
+                          docType: APIService.CUSTOMER,
+                          nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'customer_group',
+                            'trailing': 'territory',
+                          },
+                          title: 'Link Name'.tr(),
+                          onChange: (value) {
                             setState(() {
-                              data['link_name'] = res['name'];
+                              data['link_name'] = value['name'];
                             });
-                          }
-
-                          return id;
-                        },
-                      ),
+                          }),
                     if (data['link_doctype'] == linkDocumentTypeList[1])
-                      CustomTextFieldTest(
-                        'link_name',
-                        'Link Name',
-                        initialValue: data['link_name'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectSupplierScreen()));
-                          if (res != null) {
-                            id = res['name'];
-
+                      CustomDropDownFromField(
+                          defaultValue: data['link_name'],
+                          docType: APIService.SUPPLIER,
+                          nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'supplier_group',
+                            'trailing': 'country',
+                          },
+                          title: 'Link Name'.tr(),
+                          onChange: (value) {
                             setState(() {
-                              data['link_name'] = res['name'];
+                              data['link_name'] = value['name'];
                             });
-                          }
-                          return id;
-                        },
-                      ),
+                          }),
                     CheckBoxWidget('is_primary_address', 'Is Primary',
                         initialValue:
                             data['is_primary_address'] == 1 ? true : false,

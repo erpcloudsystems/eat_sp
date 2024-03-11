@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -621,7 +620,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             });
                           }),
                       CustomDropDownFromField(
-                          defaultValue: data['currency'],
+                          defaultValue: data['currency']??
+                            userProvider.defaultCurrency,
                           docType: APIService.CURRENCY,
                           nameResponse: 'name',
                           title: 'Currency'.tr(),
@@ -644,7 +644,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             data[key] = double.tryParse(value) ?? 1,
                       ),
                       CustomDropDownFromField(
-                          defaultValue: data['selling_price_list'],
+                          defaultValue: data['selling_price_list']??
+                            userProvider.defaultSellingPriceList,
                           docType: APIService.PRICE_LIST,
                           nameResponse: 'name',
                           title: 'Price List'.tr(),

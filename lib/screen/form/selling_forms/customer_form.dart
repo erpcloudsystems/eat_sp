@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../list/otherLists.dart';
@@ -221,86 +222,53 @@ class _CustomerFormState extends State<CustomerForm> {
                             setState(() => data['customer_type'] = value)),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                      'customer_group',
-                      tr('Customer Group'),
-                      initialValue: data['customer_group'],
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['customer_group'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => customerGroupScreen(),
-                          ),
-                        );
-                        data['customer_group'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'territory',
-                      tr('Territory'),
-                      initialValue: data['territory'],
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['territory'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => territoryScreen(),
-                          ),
-                        );
-                        data['territory'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'market_segment',
-                      tr('Market Segment'),
-                      initialValue: data['market_segment'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['market_segment'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => marketSegmentScreen(),
-                          ),
-                        );
-                        data['market_segment'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'industry',
-                      tr('Industry'),
-                      initialValue: data['industry'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['industry'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => industryScreen()));
-                        data['industry'] = res;
-                        return res;
-                      },
-                    ),
+                    // New customer group
+                    CustomDropDownFromField(
+                        defaultValue: data['customer_group'],
+                        docType: 'Customer Group',
+                        nameResponse: 'name',
+                        title: 'Customer Group'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['customer_group'] = value['name'];
+                          });
+                        }),
+
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
+                    // Market Segment
+                    CustomDropDownFromField(
+                        defaultValue: data['market_segment'],
+                        docType: APIService.MARKET_SEGMENT,
+                        nameResponse: 'name',
+                        title: tr('Market Segment'),
+                        onChange: (value) {
+                          setState(() {
+                            data['market_segment'] = value['name'];
+                          });
+                        }),
+                    // Industry
+                    CustomDropDownFromField(
+                        defaultValue: data['industry'],
+                        docType: APIService.INDUSTRY,
+                        nameResponse: 'name',
+                        title: tr('Industry'),
+                        onChange: (value) {
+                          setState(() {
+                            data['industry'] = value['name'];
+                          });
+                        }),
+
+                    ///------------------------------
                     CustomTextFieldTest(
                       'tax_id',
                       tr('Tax ID'),
