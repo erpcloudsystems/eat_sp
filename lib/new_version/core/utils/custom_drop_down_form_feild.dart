@@ -17,6 +17,7 @@ class CustomDropDownFromField extends StatefulWidget {
     this.defaultValue,
     this.keys,
     this.filters,
+    this.enable = true,
   });
   final String title;
   final String docType;
@@ -27,6 +28,7 @@ class CustomDropDownFromField extends StatefulWidget {
   final bool isValidate;
   final Map<String, dynamic>? keys;
   final Map<String, dynamic>? filters;
+  final bool? enable;
 
   @override
   State<CustomDropDownFromField> createState() =>
@@ -47,6 +49,7 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
               widget.title,
               initialValue: selectedValue ?? widget.defaultValue,
               clearButton: true,
+              enabled: widget.enable,
               disableValidation: !widget.isValidate,
               onPressed: () async {
                 CommonPageUtils.commonBottomSheet(

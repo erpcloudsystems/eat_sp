@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -269,50 +269,47 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 4),
-                    CustomTextFieldTest(
-                      'customer',
-                      'Customer',
-                      initialValue: data['customer'],
-                      onPressed: () async {
-                        String? id;
-
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => selectCustomerScreen()));
-                        if (res != null) {
-                          id = res['name'];
-                          setState(() {
-                            data['customer'] = res['name'];
-                            data['customer_name'] = res['customer_name'];
-                            data['territory'] = res['territory'];
-                            data['customer_group'] = res['customer_group'];
-                            data['customer_address'] =
-                                res["customer_primary_address"];
-                            data['contact_person'] =
-                                res["customer_primary_contact"];
-                            data['currency'] = res['default_currency'];
-                            data['price_list_currency'] =
-                                res['default_currency'];
-                            if (data['selling_price_list'] !=
-                                res['default_price_list']) {
-                              data['selling_price_list'] =
-                                  res['default_price_list'];
-                              InheritedForm.of(context).items.clear();
-                              InheritedForm.of(context)
-                                      .data['selling_price_list'] =
-                                  res['default_price_list'];
-                            }
-                            data['payment_terms_template'] =
-                                res['payment_terms'];
-                            data['sales_partner'] =
-                                res['default_sales_partner'];
-                            data['tax_id'] = res['tax_id'];
-                          });
-                        }
-
-                        return id;
-                      },
-                    ),
+                    // New customer list
+                    CustomDropDownFromField(
+                        defaultValue: data['customer'],
+                        docType: 'Customer',
+                        nameResponse: 'name',
+                        title: 'Customer'.tr(),
+                        keys: const {
+                          'subTitle': 'customer_group',
+                          'trailing': 'territory',
+                        },
+                        onChange: (value) async {
+                          if (value != null) {
+                            setState(() {
+                              data['customer'] = value['name'];
+                              data['customer_name'] = value['customer_name'];
+                              data['territory'] = value['territory'];
+                              data['customer_group'] = value['customer_group'];
+                              data['customer_address'] =
+                                  value["customer_primary_address"];
+                              data['contact_person'] =
+                                  value["customer_primary_contact"];
+                              data['currency'] = value['default_currency'];
+                              data['price_list_currency'] =
+                                  value['default_currency'];
+                              if (data['selling_price_list'] !=
+                                  value['default_price_list']) {
+                                data['selling_price_list'] =
+                                    value['default_price_list'];
+                                InheritedForm.of(context).items.clear();
+                                InheritedForm.of(context)
+                                        .data['selling_price_list'] =
+                                    value['default_price_list'];
+                              }
+                              data['payment_terms_template'] =
+                                  value['payment_terms'];
+                              data['sales_partner'] =
+                                  value['default_sales_partner'];
+                              data['tax_id'] = value['tax_id'];
+                            });
+                          }
+                        }),
                     if (data['customer_name'] != null)
                       Align(
                           alignment: Alignment.centerLeft,
@@ -347,47 +344,53 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                         child: Divider(
                             color: Colors.grey, height: 1, thickness: 0.7),
                       ),
-                    CustomTextFieldTest('customer_group', 'Customer Group'.tr(),
-                        initialValue: data['customer_group'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => customerGroupScreen()))),
-                    CustomTextFieldTest('territory', 'Territory'.tr(),
-                        onSave: (key, value) => data[key] = value,
-                        disableValidation: true,
-                        initialValue: data['territory'],
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => territoryScreen()))),
+                    // New customer group
+                    CustomDropDownFromField(
+                        defaultValue: data['customer_group'],
+                        docType: 'Customer Group',
+                        nameResponse: 'name',
+                        title: 'Customer Group'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['customer_group'] = value['name'];
+                          });
+                        }),
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
+                    // New customer address
                     CustomExpandableTile(
                       hideArrow: data['customer'] == null,
-                      title: CustomTextFieldTest(
-                          'customer_address', 'Customer Address',
-                          initialValue: data['customer_address'],
-                          disableValidation: true,
-                          clearButton: false,
-                          onSave: (key, value) => data[key] = value,
-                          liestenToInitialValue:
-                              data['customer_address'] == null,
-                          onPressed: () async {
+                      title: CustomDropDownFromField(
+                          defaultValue: data['customer_address'],
+                          docType: APIService.FILTERED_ADDRESS,
+                          nameResponse: 'name',
+                          title: 'Customer Address'.tr(),
+                          filters: {
+                            'cur_nam': data['customer'],
+                          },
+                          onChange: (value) async {
                             if (data['customer'] == null) {
                               return showSnackBar(
                                   'Please select a customer to first', context);
                             }
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => customerAddressScreen(
-                                        data['customer'])));
+
                             setState(() {
-                              data['customer_address'] = res['name'];
+                              data['customer_address'] = value['name'];
                               selectedCstData['address_line1'] =
-                                  res['address_line1'];
-                              selectedCstData['city'] = res['city'];
-                              selectedCstData['country'] = res['country'];
+                                  value['address_line1'];
+                              selectedCstData['city'] = value['city'];
+                              selectedCstData['country'] = value['country'];
                             });
-                            return res['name'];
                           }),
                       children: (data['customer_address'] != null)
                           ? <Widget>[
@@ -407,32 +410,31 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                             ]
                           : null,
                     ),
+                    // New contact person
                     CustomExpandableTile(
-                      hideArrow: data['customer'] == null,
-                      title: CustomTextFieldTest(
-                          'contact_person', 'Contact Person',
-                          initialValue: data['contact_person'],
-                          disableValidation: true,
-                          clearButton: false,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
+                      hideArrow: data['contact_person'] == null,
+                      title: CustomDropDownFromField(
+                          defaultValue: data['contact_person'],
+                          docType: APIService.FILTERED_CONTACT,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Contact Person'.tr(),
+                          filters: {
+                            'cur_nam': data['customer'],
+                          },
+                          onChange: (value) {
                             if (data['customer'] == null) {
                               showSnackBar('Please select a customer', context);
                               return null;
                             }
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        contactScreen(data['customer'])));
                             setState(() {
-                              data['contact_person'] = res['name'];
+                              data['contact_person'] = value['name'];
                               selectedCstData['contact_display'] =
-                                  res['contact_display'];
-                              selectedCstData['phone'] = res['phone'];
-                              selectedCstData['mobile_no'] = res['mobile_no'];
-                              selectedCstData['email_id'] = res['email_id'];
+                                  value['contact_display'];
+                              selectedCstData['phone'] = value['phone'];
+                              selectedCstData['mobile_no'] = value['mobile_no'];
+                              selectedCstData['email_id'] = value['email_id'];
                             });
-                            return res['name'];
                           }),
                       children: (data['contact_person'] != null)
                           ? <Widget>[
@@ -471,41 +473,36 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 4),
-
                     CheckBoxWidget('is_return', 'Is Return',
                         initialValue: data['is_return'] == 1 ? true : false,
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
-
-                    CustomTextFieldTest(
-                      'project',
-                      'Project'.tr(),
-                      initialValue: data['project'],
-                      disableValidation: true,
-                      clearButton: true,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => projectScreen(),
-                          ),
-                        );
-                        return res['name'];
-                      },
-                    ),
-
-                    CustomTextFieldTest(
-                      'currency',
-                      'Currency',
-                      initialValue:
-                          data['currency'] ?? userProvider.defaultCurrency,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => currencyListScreen(),
-                        ),
-                      ),
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['project'],
+                        docType: APIService.PROJECT,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        keys: const {
+                          "subTitle": 'project_name',
+                          "trailing": 'status',
+                        },
+                        title: 'Project'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['project'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue:
+                            data['currency'] ?? userProvider.defaultCurrency,
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: 'Currency'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['currency'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest(
                       'conversion_rate',
                       'Exchange Rate'.tr(),
@@ -519,27 +516,25 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                       onSave: (key, value) =>
                           data[key] = double.tryParse(value) ?? 1,
                     ),
-
-                    CustomTextFieldTest('selling_price_list', 'Price List'.tr(),
-                        initialValue: data['selling_price_list'] ??
+                    CustomDropDownFromField(
+                        defaultValue: data['selling_price_list'] ??
                             userProvider.defaultSellingPriceList,
-                        onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => priceListScreen()));
-                      if (res != null && res.isNotEmpty) {
-                        setState(() {
-                          if (data['selling_price_list'] != res['name']) {
-                            InheritedForm.of(context).items.clear();
-                            InheritedForm.of(context)
-                                .data['selling_price_list'] = res['name'];
-                            data['selling_price_list'] = res['name'];
+                        docType: APIService.PRICE_LIST,
+                        nameResponse: 'name',
+                        title: 'Price List'.tr(),
+                        onChange: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            setState(() {
+                              if (data['selling_price_list'] != value['name']) {
+                                InheritedForm.of(context).items.clear();
+                                InheritedForm.of(context)
+                                    .data['selling_price_list'] = value['name'];
+                                data['selling_price_list'] = value['name'];
+                              }
+                              data['price_list_currency'] = value['currency'];
+                            });
                           }
-                          data['price_list_currency'] = res['currency'];
-                        });
-                        return res['name'];
-                      }
-                      return null;
-                    }),
+                        }),
                     if (data['price_list_currency'] != null)
                       Align(
                           alignment: Alignment.centerLeft,
@@ -561,7 +556,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                     if (data['price_list_currency'] != null)
                       const Divider(
                           color: Colors.grey, height: 1, thickness: 0.7),
-
                     CustomTextFieldTest(
                         'plc_conversion_rate', 'Price List Exchange Rate'.tr(),
                         initialValue: '${data['plc_conversion_rate'] ?? ''}',
@@ -573,22 +567,30 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                         keyboardType: TextInputType.number,
                         onSave: (key, value) =>
                             data[key] = double.tryParse(value) ?? 1),
-
-                    CustomTextFieldTest(
-                        'set_warehouse', 'Source Warehouse'.tr(),
-                        initialValue: data['set_warehouse'],
-                        disableValidation: false,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => warehouseScreen()))),
-                    CustomTextFieldTest('tc_name', 'Terms & Conditions'.tr(),
-                        initialValue: data['tc_name'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => termsConditionScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['set_warehouse'],
+                        docType: APIService.WAREHOUSE,
+                        nameResponse: 'name',
+                        title: 'Source Warehouse'.tr(),
+                        keys: const {
+                          'subTitle': 'warehouse_name',
+                          'trailing': 'warehouse_type',
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            data['set_warehouse'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['tc_name'],
+                        docType: APIService.TERMS_CONDITION,
+                        nameResponse: 'name',
+                        title: 'Terms & Conditions'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['tc_name'] = value['name'];
+                          });
+                        }),
                     if (_terms != null)
                       Align(
                           alignment: Alignment.centerLeft,
@@ -601,23 +603,17 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                     if (_terms != null)
                       const Divider(
                           color: Colors.grey, height: 1, thickness: 0.7),
-                    // CustomTextField(
-                    //   'terms',
-                    //   'Terms & Conditions Details',
-                    //   onSave: (key, value) => data[key] = value.isEmpty ? null : value,
-                    //   validator: (value) => null,
-                    // ),
-
-                    CustomTextFieldTest(
-                      'sales_partner',
-                      'Sales Partner'.tr(),
-                      initialValue: data['sales_partner'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => salesPartnerScreen())),
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['sales_partner'],
+                        docType: APIService.SALES_PARTNER,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        title: 'Sales Partner'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['sales_partner'] = value['name'];
+                          });
+                        }),
                   ],
                 ),
               ),
@@ -625,10 +621,6 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
                 priceList: data['selling_price_list'] ??
                     context.read<UserProvider>().defaultSellingPriceList,
               ),
-              // const Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-              //   child: SelectedItemsList(),
-              // ),
             ],
           ),
         ),

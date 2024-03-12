@@ -3,11 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import 'quotation_form.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -239,54 +239,64 @@ class _OpportunityFormState extends State<OpportunityForm> {
                             data["opportunity_from"] ?? KQuotationToList[1]),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                      'party_name',
-                      data['opportunity_from'].toString().tr(),
-                      initialValue: data['party_name'],
-                      onPressed: () async {
-                        String? id;
+                    // New customer list
+                    if (_type == quotationType.customer)
+                      CustomDropDownFromField(
+                          defaultValue: data['party_name'],
+                          docType: 'Customer',
+                          nameResponse: 'name',
+                          title: 'Customer'.tr(),
+                          keys: const {
+                            'subTitle': 'customer_group',
+                            'trailing': 'territory',
+                          },
+                          onChange: (value) async {
+                            if (value != null) {
+                              setState(() {
+                                data['party_name'] = value['name'];
+                                data['customer_name'] = value['customer_name'];
+                                data['territory'] = value['territory'];
+                                data['customer_group'] =
+                                    value['customer_group'];
+                                data['customer_address'] =
+                                    value["customer_primary_address"];
+                                data['contact_person'] =
+                                    value["customer_primary_contact"];
+                                data['contact_mobile'] = value['mobile_no'];
+                              });
+                            } else {
+                              showSnackBar(
+                                  'select quotation to first', context);
+                            }
+                          }),
+                    // New lead list
+                    if (_type == quotationType.lead)
+                      CustomDropDownFromField(
+                          defaultValue: data['party_name'],
+                          docType: 'Lead',
+                          nameResponse: 'name',
+                          title: 'Lead'.tr(),
+                          keys: const {
+                            'subTitle': 'lead_name',
+                            'trailing': 'territory',
+                          },
+                          onChange: (value) async {
+                            if (value != null) {
+                              setState(() {
+                                data['party_name'] = value['name'];
+                                data['customer_name'] = value['lead_name'];
+                                data['territory'] = value['territory'];
+                                data['source'] = value['source'];
+                                data['campaign'] = value['campaign_name'];
+                                data['contact_mobile'] = value['mobile_no'];
+                                data['contact_email'] = value['email_id'];
+                              });
+                            } else {
+                              showSnackBar(
+                                  'select quotation to first', context);
+                            }
+                          }),
 
-                        if (_type == quotationType.customer) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            setState(() {
-                              data['party_name'] = res['name'];
-                              data['customer_name'] = res['customer_name'];
-                              data['territory'] = res['territory'];
-                              data['customer_group'] = res['customer_group'];
-                              data['customer_address'] =
-                                  res["customer_primary_address"];
-                              data['contact_person'] =
-                                  res["customer_primary_contact"];
-                              data['contact_mobile'] = res['mobile_no'];
-                            });
-                          }
-                        } else if (_type == quotationType.lead) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => selectLeadScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            setState(() {
-                              data['party_name'] = res['name'];
-                              data['customer_name'] = res['lead_name'];
-                              data['territory'] = res['territory'];
-                              data['source'] = res['source'];
-                              data['campaign'] = res['campaign_name'];
-                              data['contact_mobile'] = res['mobile_no'];
-                              data['contact_email'] = res['email_id'];
-                            });
-                          }
-                        } else {
-                          showSnackBar('select quotation to first', context);
-                        }
-                        return id;
-                      },
-                    ),
                     if (data['customer_name'] != null)
                       CustomTextFieldTest(
                         'customer_name',
@@ -300,65 +310,131 @@ class _OpportunityFormState extends State<OpportunityForm> {
                         onChanged: (value) =>
                             setState(() => data['transaction_date'] = value)),
                     if (_type == quotationType.customer)
-                      CustomTextFieldTest(
-                          'customer_group', 'Customer Group'.tr(),
-                          initialValue: data['customer_group'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => customerGroupScreen()))),
-                    CustomTextFieldTest('territory', 'Territory'.tr(),
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['territory'],
-                        disableValidation: true,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => territoryScreen()))),
-                    if (_type == quotationType.customer)
-                      CustomTextFieldTest(
-                          'customer_address', 'Customer Address'.tr(),
-                          initialValue: data['customer_address'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onChanged: (value) {
-                            setState(() {
-                              data['customer_address'] = value;
-                            });
-                          },
-                          // liestenToInitialValue:
-                          //     data['customer_address'] == null,
-                          onPressed: () async {
-                            if (data['party_name'] == null) {
-                              return showSnackBar(
-                                  'Please select a customer to first', context);
-                            }
 
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => customerAddressScreen(
-                                        data['party_name'])));
-                            print(res);
-                            print('------------------------------------');
-                            data['customer_address'] = res['name'];
-                            return res['name'];
+                      // New customer group
+                      CustomDropDownFromField(
+                          defaultValue: data['customer_group'],
+                          docType: 'Customer Group',
+                          nameResponse: 'name',
+                          title: 'Customer Group'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['customer_group'] = value['name'];
+                            });
                           }),
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
                     if (_type == quotationType.customer)
-                      CustomTextFieldTest(
-                          'contact_person', 'Contact Person'.tr(),
-                          initialValue: data['contact_person'],
-                          disableValidation: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            if (data['customer_name'] == null) {
-                              showSnackBar('Please select a customer', context);
-                              return null;
-                            }
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        contactScreen(data['party_name'])));
-                            return res;
-                          }),
+                      // New customer address
+                      CustomExpandableTile(
+                        hideArrow: data['customer_address'] == null,
+                        title: CustomDropDownFromField(
+                            defaultValue: data['customer_address'],
+                            docType: APIService.FILTERED_ADDRESS,
+                            nameResponse: 'name',
+                            title: 'Customer Address'.tr(),
+                            filters: {
+                              'cur_nam': data['party_name'],
+                            },
+                            onChange: (value) async {
+                              if (data['party_name'] == null) {
+                                return showSnackBar(
+                                    'Please select a customer to first',
+                                    context);
+                              }
+
+                              setState(() {
+                                data['customer_address'] = value['name'];
+                                selectedCstData['address_line1'] =
+                                    value['address_line1'];
+                                selectedCstData['city'] = value['city'];
+                                selectedCstData['country'] = value['country'];
+                              });
+                            }),
+                        children: (data['customer_address'] != null)
+                            ? <Widget>[
+                                ListTile(
+                                  trailing: const Icon(Icons.location_on),
+                                  title: Text(
+                                      selectedCstData['address_line1'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.location_city),
+                                  title: Text(selectedCstData['city'] ?? ''),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.flag),
+                                  title: Text(selectedCstData['country'] ?? ''),
+                                )
+                              ]
+                            : null,
+                      ),
+
+                    if (_type == quotationType.customer)
+                      // New contact person
+                      CustomExpandableTile(
+                        hideArrow: data['contact_person'] == null,
+                        title: CustomDropDownFromField(
+                            defaultValue: data['contact_person'],
+                            docType: APIService.FILTERED_CONTACT,
+                            nameResponse: 'name',
+                            isValidate: false,
+                            title: 'Contact Person'.tr(),
+                            filters: {
+                              'cur_nam': data['party_name'],
+                            },
+                            onChange: (value) {
+                              if (data['party_name'] == null) {
+                                showSnackBar(
+                                    'Please select a customer', context);
+                                return null;
+                              }
+                              setState(() {
+                                data['contact_person'] = value['name'];
+                                selectedCstData['contact_display'] =
+                                    value['contact_display'];
+                                selectedCstData['phone'] = value['phone'];
+                                selectedCstData['mobile_no'] =
+                                    value['mobile_no'];
+                                selectedCstData['email_id'] = value['email_id'];
+                              });
+                            }),
+                        children: (data['contact_person'] != null)
+                            ? <Widget>[
+                                ListTile(
+                                  trailing: const Icon(Icons.person),
+                                  title: Text('' +
+                                      (selectedCstData['contact_display'] ??
+                                          '')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.phone_iphone),
+                                  title: Text('Mobile :  ' +
+                                      (selectedCstData['mobile_no'] ?? 'none')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.call),
+                                  title: Text('Phone :  ' +
+                                      (selectedCstData['phone'] ?? 'none')),
+                                ),
+                                ListTile(
+                                  trailing: const Icon(Icons.alternate_email),
+                                  title: Text('' +
+                                      (selectedCstData['email_id'] ?? 'none')),
+                                )
+                              ]
+                            : null,
+                      ),
+
                     const SizedBox(height: 8),
                   ],
                 ),
@@ -372,28 +448,37 @@ class _OpportunityFormState extends State<OpportunityForm> {
                   children: [
                     const SizedBox(height: 4),
                     if (_type == quotationType.lead)
-                      CustomTextFieldTest('campaign', 'Campaign'.tr(),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['campaign'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => campaignScreen()))),
+                      CustomDropDownFromField(
+                          defaultValue: data['campaign'],
+                          docType: APIService.CAMPAIGN,
+                          nameResponse: 'name',
+                          title: 'Campaign'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['campaign'] = value['name'];
+                            });
+                          }),
                     if (_type == quotationType.lead)
-                      CustomTextFieldTest('source', 'Source',
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['source'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => sourceScreen()))),
-                    CustomTextFieldTest('opportunity_type', 'Opportunity Type',
-                        initialValue: data['opportunity_type'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => opportunityTypeScreen()))),
+                      CustomDropDownFromField(
+                          defaultValue: data['source'],
+                          docType: APIService.SOURCE,
+                          nameResponse: 'name',
+                          title: 'Source'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['source'] = value['name'];
+                            });
+                          }),
+                    CustomDropDownFromField(
+                        defaultValue: data['opportunity_type'],
+                        docType: APIService.OPPORTUNITY_TYPE,
+                        nameResponse: 'name',
+                        title: 'Opportunity Type'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['opportunity_type'] = value['name'];
+                          });
+                        }),
                     if (_type == quotationType.lead)
                       CustomTextFieldTest('to_discuss', 'To Discuss'.tr(),
                           initialValue: data['to_discuss'],
@@ -403,249 +488,11 @@ class _OpportunityFormState extends State<OpportunityForm> {
                 ),
               ),
 
-               AddItemsWidget(
+              AddItemsWidget(
                 haveRate: false,
-                priceList: data['selling_price_list'] ?? context.read<UserProvider>().defaultSellingPriceList,
+                priceList: data['selling_price_list'] ??
+                    context.read<UserProvider>().defaultSellingPriceList,
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-              //   child: ListView(
-              //     children: [
-              //       Card(
-              //         elevation: 1,
-              //         margin: EdgeInsets.zero,
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(12)),
-              //         child: Container(
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(
-              //                 horizontal: 8.0, vertical: 8),
-              //             child: Column(
-              //               children: [
-              //                 Padding(
-              //                   padding:
-              //                       const EdgeInsets.symmetric(horizontal: 16),
-              //                   child: Row(
-              //                     mainAxisAlignment:
-              //                         MainAxisAlignment.spaceBetween,
-              //                     children: [
-              //                       const Text(
-              //                         'Items',
-              //                         style: TextStyle(
-              //                           fontSize: 16,
-              //                           fontWeight: FontWeight.w600,
-              //                         ),
-              //                       ),
-              //                       SizedBox(
-              //                         width: 40,
-              //                         child: ElevatedButton(
-              //                           style: ElevatedButton.styleFrom(
-              //                               padding: EdgeInsets.zero),
-              //                           onPressed: () async {
-              //                             final res =
-              //                                 await Navigator.of(context).push(
-              //                                     MaterialPageRoute(
-              //                                         builder: (_) =>
-              //                                             itemListScreen('')));
-              //                             if (res != null &&
-              //                                 !_items.contains(res)) {
-              //                               setState(() =>
-              //                                   _items.add(ItemQuantity(res)));
-              //                             }
-              //                           },
-              //                           child: const Icon(Icons.add,
-              //                               size: 25, color: Colors.white),
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //                 const Divider(),
-              //                 Row(
-              //                   mainAxisAlignment: MainAxisAlignment.end,
-              //                   mainAxisSize: MainAxisSize.min,
-              //                   children: [
-              //                     ListTitle(
-              //                       title: 'Total',
-              //                       value: totalAmount.toString(),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //         child: ConstrainedBox(
-              //           constraints: BoxConstraints(
-              //               maxHeight:
-              //                   MediaQuery.of(context).size.height * 0.55),
-              //           child: _items.isEmpty
-              //               ? const Center(
-              //                   child: Text('no items added',
-              //                       style: TextStyle(
-              //                           color: Colors.grey,
-              //                           fontStyle: FontStyle.italic,
-              //                           fontSize: 16)))
-              //               : ListView.builder(
-              //                   physics: const BouncingScrollPhysics(),
-              //                   padding: const EdgeInsets.only(bottom: 12),
-              //                   itemCount: _items.length,
-              //                   itemBuilder: (context, index) => Padding(
-              //                         padding: const EdgeInsets.symmetric(
-              //                             horizontal: 8.0),
-              //                         child: Stack(
-              //                           alignment: Alignment.bottomCenter,
-              //                           children: [
-              //                             Container(
-              //                               decoration: BoxDecoration(
-              //                                   color: Colors.white,
-              //                                   borderRadius:
-              //                                       const BorderRadius.vertical(
-              //                                           bottom:
-              //                                               Radius.circular(8)),
-              //                                   border: Border.all(
-              //                                       color: Colors.blue)),
-              //                               margin: const EdgeInsets.only(
-              //                                   bottom: 8.0,
-              //                                   left: 16,
-              //                                   right: 16),
-              //                               padding: const EdgeInsets.only(
-              //                                   left: 16, right: 16),
-              //                               child: Row(
-              //                                 children: [
-              //                                   Expanded(
-              //                                       child: CustomTextField(
-              //                                     '${_items[index].itemCode}Quantity',
-              //                                     'Quantity',
-              //                                     initialValue:
-              //                                         _items[index].qty == 0
-              //                                             ? null
-              //                                             : _items[index]
-              //                                                 .qty
-              //                                                 .toString(),
-              //                                     validator: (value) =>
-              //                                         numberValidationToast(
-              //                                             value, 'Quantity',
-              //                                             isInt: true),
-              //                                     keyboardType:
-              //                                         TextInputType.number,
-              //                                     disableError: true,
-              //                                     onSave: (_, value) =>
-              //                                         _items[index].qty =
-              //                                             int.parse(value),
-              //                                     onChanged: (value) {
-              //                                       _items[index].qty =
-              //                                           int.parse(value);
-              //                                       _items[index].total =
-              //                                           _items[index].qty *
-              //                                               _items[index].rate;
-              //                                       Future.delayed(
-              //                                           const Duration(
-              //                                               seconds: 1),
-              //                                           () => setState(() {}));
-              //                                     },
-              //                                   )),
-              //                                   const SizedBox(width: 12),
-              //                                   Expanded(
-              //                                       child: CustomTextField(
-              //                                     'rate',
-              //                                     'Rate',
-              //                                     initialValue:
-              //                                         _items[index].rate == 0.0
-              //                                             ? null
-              //                                             : _items[index]
-              //                                                 .rate
-              //                                                 .toString(),
-              //                                     keyboardType:
-              //                                         TextInputType.number,
-              //                                     disableError: true,
-              //                                     onSave: (_, value) =>
-              //                                         _items[index].rate =
-              //                                             double.parse(value),
-              //                                     onChanged: (value) {
-              //                                       _items[index].rate =
-              //                                           double.parse(value);
-              //                                       _items[index].total =
-              //                                           _items[index].qty *
-              //                                               _items[index].rate;
-              //                                       Future.delayed(
-              //                                           const Duration(
-              //                                               seconds: 1),
-              //                                           () => setState(() {}));
-              //                                     },
-              //                                   )),
-              //                                   const SizedBox(width: 12),
-              //                                   Expanded(
-              //                                       child: CustomTextField(
-              //                                     'amount',
-              //                                     'Amount',
-              //                                     initialValue: (_items[index]
-              //                                                 .qty *
-              //                                             _items[index].rate)
-              //                                         .toString(),
-              //                                     enabled: false,
-              //                                     disableError: true,
-              //                                   )),
-              //                                   const SizedBox(width: 12),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                             Padding(
-              //                               padding: const EdgeInsets.only(
-              //                                   bottom: 62),
-              //                               child: Dismissible(
-              //                                 key: Key(_items[index].itemCode),
-              //                                 direction:
-              //                                     DismissDirection.endToStart,
-              //                                 onDismissed: (_) => setState(
-              //                                     () => _items.removeAt(index)),
-              //                                 background: Container(
-              //                                   decoration: BoxDecoration(
-              //                                       borderRadius:
-              //                                           BorderRadius.circular(
-              //                                               12),
-              //                                       color: Colors.red),
-              //                                   child: const Align(
-              //                                     alignment:
-              //                                         Alignment.centerRight,
-              //                                     child: Padding(
-              //                                       padding: EdgeInsets.all(16),
-              //                                       child: Icon(
-              //                                         Icons.delete_forever,
-              //                                         color: Colors.white,
-              //                                         size: 30,
-              //                                       ),
-              //                                     ),
-              //                                   ),
-              //                                 ),
-              //                                 child: ItemCard(
-              //                                     names: const [
-              //                                       'Code',
-              //                                       'Group',
-              //                                       'UoM'
-              //                                     ],
-              //                                     values: [
-              //                                       _items[index].itemName,
-              //                                       _items[index].itemCode,
-              //                                       _items[index].group,
-              //                                       _items[index].stockUom
-              //                                     ],
-              //                                     imageUrl:
-              //                                         _items[index].imageUrl),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         ),
-              //                       )),
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),

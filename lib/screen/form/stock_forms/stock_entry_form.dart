@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../provider/user/user_provider.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
 import '../../../widgets/inherited_widgets/select_items_list.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -248,20 +248,17 @@ class _StockEntryFormState extends State<StockEntryForm> {
                         onChanged: (value) =>
                             setState(() => data['posting_date'] = value)),
                     if (data['stock_entry_type'] != stockEntryType[1])
-                      CustomTextFieldTest(
-                          'from_warehouse', 'Source Warehouse'.tr(),
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['from_warehouse'],
-                          clearButton: true,
-                          onClear: () {
-                            data['from_warehouse'] = null;
+                      CustomDropDownFromField(
+                          defaultValue: data['from_warehouse'],
+                          docType: APIService.WAREHOUSE,
+                          nameResponse: 'name',
+                          title: 'Source Warehouse'.tr(),
+                          keys: const {
+                            'subTitle': 'warehouse_name',
+                            'trailing': 'warehouse_type',
                           },
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        warehouseScreen(data['to_warehouse'])));
-                            if (res != null) data['from_warehouse'] = res;
+                          onChange: (value) async {
+                            if (value != null) data['from_warehouse'] = value;
 
                             // to update Actual Qty for each item
                             for (var value in _items) {
@@ -272,289 +269,46 @@ class _StockEntryFormState extends State<StockEntryForm> {
                               print('Actual Qty (at source/target) $actualQty');
                             }
                             setState(() {});
-
-                            return res;
                           }),
                     if (data['stock_entry_type'] != stockEntryType[0])
-                      CustomTextFieldTest(
-                          'to_warehouse', 'Target Warehouse'.tr(),
-                          initialValue: data['to_warehouse'],
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => warehouseScreen(
-                                        data['from_warehouse'])));
-                            if (res != null) data['to_warehouse'] = res;
-                            return res;
+                      CustomDropDownFromField(
+                          defaultValue: data['to_warehouse'],
+                          docType: APIService.WAREHOUSE,
+                          nameResponse: 'name',
+                          title: 'Target Warehouse'.tr(),
+                          keys: const {
+                            'subTitle': 'warehouse_name',
+                            'trailing': 'warehouse_type',
+                          },
+                          onChange: (value) async {
+                            setState(() {
+                              data['to_warehouse'] = value['name'];
+                            });
                           }),
-                    CustomTextFieldTest(
-                      'project',
-                      'Project'.tr(),
-                      initialValue: data['project'],
-                      disableValidation: true,
-                      clearButton: true,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => projectScreen(),
-                          ),
-                        );
-                        return res['name'];
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['project'],
+                        docType: APIService.PROJECT,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        keys: const {
+                          "subTitle": 'project_name',
+                          "trailing": 'status',
+                        },
+                        title: 'Project'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['project'] = value['name'];
+                          });
+                        }),
                     const SizedBox(height: 8),
                   ],
                 ),
               ),
-               AddItemsWidget(
+              AddItemsWidget(
                 haveRate: false,
-                 priceList: data['selling_price_list'] ??
+                priceList: data['selling_price_list'] ??
                     context.read<UserProvider>().defaultSellingPriceList,
               ),
-              // ListView(
-              //   children: [
-              //     Card(
-              //       elevation: 1,
-              //       margin: const EdgeInsets.symmetric(
-              //           horizontal: 10, vertical: 10),
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(12)),
-              //       child: Padding(
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 8.0, vertical: 8),
-              //         child: Column(
-              //           children: [
-              //             Padding(
-              //               padding: const EdgeInsets.symmetric(horizontal: 16),
-              //               child: Row(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   const Text(
-              //                     'Items',
-              //                     style: TextStyle(
-              //                       fontSize: 16,
-              //                       fontWeight: FontWeight.w600,
-              //                     ),
-              //                   ),
-              //                   SizedBox(
-              //                     width: 40,
-              //                     child: ElevatedButton(
-              //                       style: ElevatedButton.styleFrom(
-              //                           padding: EdgeInsets.zero),
-              //                       onPressed: () async {
-              //                         final res = await Navigator.of(context)
-              //                             .push(MaterialPageRoute(
-              //                                 builder: (_) =>
-              //                                     itemListScreen('')));
-
-              //                         final actualQty = await _getActualQty(
-              //                             data['from_warehouse'].toString(),
-              //                             res.itemCode);
-
-              //                         print(
-              //                             'Actual Qty (at source/target) $actualQty');
-
-              //                         if (res != null &&
-              //                             !_items.contains(res)) {
-              //                           setState(() => _items.add(ItemQuantity(
-              //                               res,
-              //                               actualQty: actualQty.toString())));
-              //                         }
-              //                       },
-              //                       child: const Icon(Icons.add,
-              //                           size: 25, color: Colors.white),
-              //                     ),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //             const Divider(),
-              //             Row(
-              //               mainAxisAlignment: MainAxisAlignment.end,
-              //               mainAxisSize: MainAxisSize.min,
-              //               children: [
-              //                 ListTitle(
-              //                     title: 'Total', value: currency(totalAmount)),
-              //               ],
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //       child: ConstrainedBox(
-              //         constraints: BoxConstraints(
-              //             maxHeight: MediaQuery.of(context).size.height * 0.55),
-              //         child: _items.isEmpty
-              //             ? const Center(
-              //                 child: Text('no items added',
-              //                     style: TextStyle(
-              //                         color: Colors.grey,
-              //                         fontStyle: FontStyle.italic,
-              //                         fontSize: 16)))
-              //             : ListView.builder(
-              //                 physics: const BouncingScrollPhysics(),
-              //                 padding: const EdgeInsets.only(bottom: 12),
-              //                 itemCount: _items.length,
-              //                 itemBuilder: (context, index) => Padding(
-              //                       padding: const EdgeInsets.symmetric(
-              //                           horizontal: 8.0),
-              //                       child: Stack(
-              //                         alignment: Alignment.bottomCenter,
-              //                         children: [
-              //                           Container(
-              //                             decoration: BoxDecoration(
-              //                                 color: Colors.white,
-              //                                 borderRadius:
-              //                                     const BorderRadius.vertical(
-              //                                         bottom:
-              //                                             Radius.circular(8)),
-              //                                 border: Border.all(
-              //                                     color: Colors.blue)),
-              //                             margin: const EdgeInsets.only(
-              //                                 bottom: 8.0, left: 16, right: 16),
-              //                             padding: const EdgeInsets.only(
-              //                                 left: 16, right: 16),
-              //                             child: Row(
-              //                               mainAxisAlignment:
-              //                                   MainAxisAlignment.spaceAround,
-              //                               mainAxisSize: MainAxisSize.min,
-              //                               children: [
-              //                                 Expanded(
-              //                                   child: CustomTextField(
-              //                                     '${_items[index].itemCode}Quantity',
-              //                                     'Quantity',
-              //                                     initialValue:
-              //                                         _items[index].qty == 0
-              //                                             ? null
-              //                                             : _items[index]
-              //                                                 .qty
-              //                                                 .toString(),
-              //                                     validator: (value) =>
-              //                                         numberValidationToast(
-              //                                             value, 'Quantity',
-              //                                             isInt: true),
-              //                                     keyboardType:
-              //                                         TextInputType.number,
-              //                                     disableError: true,
-              //                                     onSave: (_, value) =>
-              //                                         _items[index].qty =
-              //                                             int.parse(value),
-              //                                     onChanged: (value) {
-              //                                       _items[index].qty =
-              //                                           int.parse(value);
-              //                                       _items[index].total =
-              //                                           _items[index].qty *
-              //                                               _items[index].rate;
-              //                                       Future.delayed(
-              //                                           const Duration(
-              //                                               seconds: 1),
-              //                                           () => setState(() {}));
-              //                                     },
-              //                                   ),
-              //                                 ),
-              //                                 Expanded(
-              //                                   child: CustomTextField(
-              //                                     'uom',
-              //                                     'UOM',
-              //                                     disableError: true,
-              //                                     initialValue:
-              //                                         _items[index].stockUom,
-              //                                     onPressed: () async {
-              //                                       final res =
-              //                                           await Navigator.of(
-              //                                                   context)
-              //                                               .push(
-              //                                         MaterialPageRoute(
-              //                                           builder: (_) =>
-              //                                               filteredUOMListScreen(
-              //                                             _items[index]
-              //                                                 .itemCode
-              //                                                 .toString(),
-              //                                           ),
-              //                                         ),
-              //                                       );
-
-              //                                       if (res != null) {
-              //                                         _items[index].stockUom =
-              //                                             res['uom'];
-
-              //                                         setState(() {});
-              //                                       }
-              //                                       return null;
-              //                                     },
-              //                                     onSave: (_, value) =>
-              //                                         _items[index].stockUom =
-              //                                             value,
-              //                                     onChanged: (value) {
-              //                                       _items[index].stockUom =
-              //                                           value;
-              //                                       Future.delayed(
-              //                                           const Duration(
-              //                                               seconds: 1),
-              //                                           () => setState(() {}));
-              //                                     },
-              //                                   ),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                           ),
-              //                           Padding(
-              //                             padding:
-              //                                 const EdgeInsets.only(bottom: 62),
-              //                             child: Dismissible(
-              //                               key: Key(_items[index].itemCode),
-              //                               direction:
-              //                                   DismissDirection.endToStart,
-              //                               onDismissed: (_) => setState(
-              //                                   () => _items.removeAt(index)),
-              //                               background: Container(
-              //                                 decoration: BoxDecoration(
-              //                                     borderRadius:
-              //                                         BorderRadius.circular(12),
-              //                                     color: Colors.red),
-              //                                 child: const Align(
-              //                                   alignment:
-              //                                       Alignment.centerRight,
-              //                                   child: Padding(
-              //                                     padding: EdgeInsets.all(16),
-              //                                     child: Icon(
-              //                                       Icons.delete_forever,
-              //                                       color: Colors.white,
-              //                                       size: 30,
-              //                                     ),
-              //                                   ),
-              //                                 ),
-              //                               ),
-              //                               child: ItemCard(
-              //                                   names: const [
-              //                                     'Code',
-              //                                     'Group',
-              //                                     'UoM',
-              //                                     'Actual Qty'
-              //                                   ],
-              //                                   values: [
-              //                                     _items[index].itemName,
-              //                                     _items[index].itemCode,
-              //                                     _items[index].group,
-              //                                     _items[index].stockUom,
-              //                                     _items[index].actualQty
-              //                                   ],
-              //                                   imageUrl:
-              //                                       _items[index].imageUrl),
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     )),
-              //       ),
-              //     )
-              //   ],
-              // ),
             ],
           ),
         ),

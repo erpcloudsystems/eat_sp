@@ -595,6 +595,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           defaultValue: data['project'],
                           docType: APIService.PROJECT,
                           nameResponse: 'name',
+                          isValidate: false,
                           keys: const {
                             "subTitle": 'project_name',
                             "trailing": 'status',
@@ -609,6 +610,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           defaultValue: data['cost_center'],
                           docType: APIService.COST_CENTER,
                           nameResponse: 'name',
+                          isValidate: false,
                           keys: const {
                             "subTitle": 'parent_cost_center',
                             "trailing": 'cost_center_name',
@@ -620,8 +622,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             });
                           }),
                       CustomDropDownFromField(
-                          defaultValue: data['currency']??
-                            userProvider.defaultCurrency,
+                          defaultValue:
+                              data['currency'] ?? userProvider.defaultCurrency,
                           docType: APIService.CURRENCY,
                           nameResponse: 'name',
                           title: 'Currency'.tr(),
@@ -644,8 +646,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             data[key] = double.tryParse(value) ?? 1,
                       ),
                       CustomDropDownFromField(
-                          defaultValue: data['selling_price_list']??
-                            userProvider.defaultSellingPriceList,
+                          defaultValue: data['selling_price_list'] ??
+                              userProvider.defaultSellingPriceList,
                           docType: APIService.PRICE_LIST,
                           nameResponse: 'name',
                           title: 'Price List'.tr(),
@@ -730,6 +732,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           }),
                       CustomDropDownFromField(
                           defaultValue: data['tc_name'],
+                          isValidate: false,
                           docType: APIService.TERMS_CONDITION,
                           nameResponse: 'name',
                           title: 'Terms & Conditions'.tr(),
@@ -755,6 +758,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           defaultValue: data['sales_partner'],
                           docType: APIService.SALES_PARTNER,
                           nameResponse: 'name',
+                          isValidate: false,
                           title: 'Sales Partner'.tr(),
                           onChange: (value) {
                             setState(() {
