@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -32,8 +31,6 @@ class SupplierQuotationForm extends StatefulWidget {
 
 class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
   final quotationType _type = quotationType.supplier;
-
-  String? _terms;
 
   Map<String, dynamic> data = {
     "doctype": "Supplier Quotation",
@@ -265,60 +262,38 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 4),
-                    CustomTextFieldTest(
-                      'supplier',
-                      'Supplier',
-                      initialValue: data['supplier'],
-                      onPressed: () async {
-                        String? id;
-                        if (_type == quotationType.supplier) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectSupplierScreen())); //todo check @run
+                    CustomDropDownFromField(
+                        defaultValue: data['supplier'],
+                        docType: APIService.SUPPLIER,
+                        nameResponse: 'name',
+                        title: tr('Supplier'),
+                        onChange: (value) {
+                          if (_type == quotationType.supplier) {
+                            if (value != null) {
+                              _getSupplierData(value['name']);
 
-                          if (res != null) {
-                            id = res['name'];
-                            _getSupplierData(res['name']);
-                            // selectedSupplierData = Map<String, dynamic>.from(
-                            //     await APIService().getPage(
-                            //         SUPPLIER_PAGE, res['name']))['message'];
-                            setState(() {
-                              data['name'] = res['name'];
-                              data['supplier'] = res['name'];
-                              data['supplier_name'] = res['supplier_name'];
-                              data['valid_till'] = DateTime.now()
-                                  .add(Duration(days: int.parse('30')))
-                                  .toIso8601String(); // selectedSupplierData['credit_days']
-                              data['supplier_address'] = selectedSupplierData[
-                                  "supplier_primary_address"];
-                              // data['contact_mobile'] =
-                              //     selectedSupplierData["mobile_no"];
-                              // data['contact_email'] =
-                              //     selectedSupplierData["email_id"];
-                              data['contact_person'] = selectedSupplierData[
-                                  "supplier_primary_contact"];
-                              data['contact_display'] = selectedSupplierData[
-                                  "supplier_primary_contact"];
-                              data['currency'] =
-                                  selectedSupplierData['default_currency'];
-                              // if (data['buying_price_list'] !=
-                              //     res['default_price_list']) {
-                              //   data['buying_price_list'] =
-                              //       res['default_price_list'];
-                              //   InheritedForm.of(context).items.clear();
-                              // InheritedForm.of(context)
-                              //         .data['buying_price_list'] =
-                              //     res['default_price_list'];
-                              // }
-                            });
+                              setState(() {
+                                data['name'] = value['name'];
+                                data['supplier'] = value['name'];
+                                data['supplier_name'] = value['supplier_name'];
+                                data['valid_till'] = DateTime.now()
+                                    .add(Duration(days: int.parse('30')))
+                                    .toIso8601String(); // selectedSupplierData['credit_days']
+                                data['supplier_address'] = selectedSupplierData[
+                                    "supplier_primary_address"];
+
+                                data['contact_person'] = selectedSupplierData[
+                                    "supplier_primary_contact"];
+                                data['contact_display'] = selectedSupplierData[
+                                    "supplier_primary_contact"];
+                                data['currency'] =
+                                    selectedSupplierData['default_currency'];
+                              });
+                            }
+                          } else {
+                            showSnackBar('select quotation to first', context);
                           }
-                        } else {
-                          showSnackBar('select quotation to first', context);
-                        }
-                        return id;
-                      },
-                    ),
+                        }),
                     Row(children: [
                       Flexible(
                         child: DatePickerTest(
@@ -344,31 +319,25 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                     ]),
                     CustomExpandableTile(
                       hideArrow: data['supplier'] == null,
-                      title: CustomTextFieldTest(
-                          'supplier_address', 'Supplier Address',
-                          initialValue: data['supplier_address'],
-                          disableValidation: true,
-                          clearButton: false,
-                          onSave: (key, value) => data[key] = value,
-                          liestenToInitialValue:
-                              data['supplier_address'] == null,
-                          onPressed: () async {
+                      title: CustomDropDownFromField(
+                          defaultValue: data['supplier_address'],
+                          docType: APIService.FILTERED_ADDRESS,
+                          nameResponse: 'name',
+                          title: tr('Supplier Address'),
+                          filters: {'cur_nam': data['supplier']},
+                          onChange: (value) {
                             if (data['supplier'] == null) {
                               return showSnackBar(
                                   'Please select a supplier to first', context);
                             }
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => customerAddressScreen(
-                                        data['supplier'])));
                             setState(() {
-                              data['supplier_address'] = res['name'];
+                              data['supplier_address'] = value['name'];
                               selectedSupplierData['address_line1'] =
-                                  res['address_line1'];
-                              selectedSupplierData['city'] = res['city'];
-                              selectedSupplierData['country'] = res['country'];
+                                  value['address_line1'];
+                              selectedSupplierData['city'] = value['city'];
+                              selectedSupplierData['country'] =
+                                  value['country'];
                             });
-                            return res['name'];
                           }),
                       children: (data['supplier_address'] != null)
                           ? <Widget>[
@@ -396,33 +365,30 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                     ),
                     CustomExpandableTile(
                       hideArrow: data['supplier'] == null,
-                      title: CustomTextFieldTest(
-                          'contact_person', 'Contact Person',
-                          initialValue: data['contact_person'],
-                          disableValidation: true,
-                          clearButton: false,
-                          onSave: (key, value) => data[key] = value,
-                          onPressed: () async {
+                      title: CustomDropDownFromField(
+                          defaultValue: data['contact_person'],
+                          docType: APIService.FILTERED_CONTACT,
+                          nameResponse: 'name',
+                          title: tr('Contact Person'),
+                          isValidate: false,
+                          filters: {'cur_nam': data['supplier']},
+                          onChange: (value) {
                             if (data['supplier'] == null) {
                               showSnackBar('Please select a supplier', context);
                               return null;
                             }
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        contactScreen(data['supplier'])));
+
                             setState(() {
-                              data['contact_person'] = res['name'];
+                              data['contact_person'] = value['name'];
 
                               selectedSupplierData['contact_display'] =
-                                  res['contact_person'];
+                                  value['contact_person'];
                               selectedSupplierData['mobile_no'] =
-                                  res['mobile_no'];
-                              selectedSupplierData['phone'] = res['phone'];
+                                  value['mobile_no'];
+                              selectedSupplierData['phone'] = value['phone'];
                               selectedSupplierData['email_id'] =
-                                  res['email_id'];
+                                  value['email_id'];
                             });
-                            return res['name'];
                           }),
                       children: (data['contact_person'] != null)
                           ? <Widget>[
@@ -463,18 +429,17 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
               Group(
                 child: ListView(
                   children: [
-                    CustomTextFieldTest(
-                      'currency',
-                      'Currency',
-                      initialValue:
-                          data['currency'] ?? userProvider.defaultCurrency,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => currencyListScreen(),
-                        ),
-                      ),
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue:
+                            data['currency'] ?? userProvider.defaultCurrency,
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: tr('Currency'),
+                        onChange: (value) {
+                          setState(() {
+                            data['currency'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest(
                       'conversion_rate',
                       'Exchange Rate'.tr(),
@@ -499,41 +464,36 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                       onSave: (key, value) =>
                           data[key] = double.tryParse(value) ?? 1,
                     ),
-                    CustomTextFieldTest('buying_price_list', 'Price List'.tr(),
-                        initialValue: data['buying_price_list'] ??
+                    CustomDropDownFromField(
+                        defaultValue: data['buying_price_list'] ??
                             userProvider.defaultBuyingPriceList,
-                        disableValidation: true, onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => buyingPriceListScreen(),
-                        ),
-                      );
-                      if (res != null && res.isNotEmpty) {
-                        setState(() {
-                          if (data['buying_price_list'] != res['name']) {
-                            provider.newItemList.clear();
-                            InheritedForm.of(context)
-                                .data['buying_price_list'] = res['name'];
-                            data['buying_price_list'] = res['name'];
+                        docType: APIService.BUYING_PRICE_LIST,
+                        nameResponse: 'name',
+                        title: 'Price List'.tr(),
+                        onChange: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            setState(() {
+                              if (data['buying_price_list'] != value['name']) {
+                                provider.newItemList.clear();
+                                InheritedForm.of(context)
+                                    .data['buying_price_list'] = value['name'];
+                                data['buying_price_list'] = value['name'];
+                              }
+                              data['price_list_currency'] = value['currency'];
+                            });
                           }
-                          data['price_list_currency'] = res['currency'];
-                        });
-                        return res['name'];
-                      }
-                      return null;
-                    }),
-                    CustomTextFieldTest(
-                      'price_list_currency',
-                      'Price List Currency',
-                      initialValue: data['price_list_currency'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => currencyListScreen(),
-                        ),
-                      ),
-                    ),
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['price_list_currency'],
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: 'Price List Currency'.tr(),
+                        isValidate: false,
+                        onChange: (value) {
+                          setState(() {
+                            data['price_list_currency'] = value['name'];
+                          });
+                        }),
                     CheckBoxWidget('ignore_pricing_rule', 'Ignore Pricing Rule',
                         initialValue:
                             data['ignore_pricing_rule'] == 1 ? true : false,
@@ -546,10 +506,6 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
                 priceList: data['buying_price_list'] ??
                     context.read<UserProvider>().defaultBuyingPriceList,
               ),
-              // const Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
-              //   child: SelectedItemsList(),
-              // ),
             ],
           ),
         ),
