@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -147,31 +147,29 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 4),
-                    CustomTextFieldTest(
-                      'employee',
-                      'Employee',
-                      initialValue: data['employee'],
-                      onPressed: () async {
-                        String? id;
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => selectEmployeeScreen()));
-                        if (res != null) {
-                          id = res['name'];
-                          await _getEmployeeData(res['name']);
+                    CustomDropDownFromField(
+                        defaultValue: data['employee'],
+                        docType: APIService.EMPLOYEE,
+                        nameResponse: 'name',
+                        keys: const {
+                          'subTitle': 'employee_name',
+                          'trailing': 'department',
+                        },
+                        title: 'Employee'.tr(),
+                        onChange: (value) async {
+                          if (value != null) {
+                            await _getEmployeeData(value['name']);
 
-                          setState(() {
-                            data['employee'] = res['name'];
-                            data['employee_name'] = res['employee_name'];
-                            data['department'] = res['department'];
-                            data['leave_approver'] = res['leave_approver'];
-                            data['leave_approver_name'] =
-                                selectedEmployeeData['leave_approver_name'];
-                          });
-                        }
-                        return id;
-                      },
-                    ),
+                            setState(() {
+                              data['employee'] = value['name'];
+                              data['employee_name'] = value['employee_name'];
+                              data['department'] = value['department'];
+                              data['leave_approver'] = value['leave_approver'];
+                              data['leave_approver_name'] =
+                                  selectedEmployeeData['leave_approver_name'];
+                            });
+                          }
+                        }),
                     if (data['employee_name'] != null)
                       CustomTextFieldTest(
                         'employee_name',
@@ -186,18 +184,17 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                         initialValue: data['department'],
                         enabled: false,
                       ),
-                    CustomTextFieldTest(
-                      'leave_type',
-                      'Leave Type',
-                      initialValue: data['leave_type'],
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => leaveTypeListScreen()));
-                        if (res != null) data['leave_type'] = res;
-                        return res;
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['leave_type'],
+                        isValidate: false,
+                        docType: APIService.LEAVE_TYPE,
+                        nameResponse: 'name',
+                        title: 'Leave Type'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['leave_type'] = value['name'];
+                          });
+                        }),
                     Row(children: [
                       Flexible(
                           child: DatePickerTest(
@@ -208,21 +205,7 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                             setState(() => data['posting_date'] = value),
                       )),
                       const SizedBox(width: 10),
-                      // Flexible(
-                      //     child: DatePicker(
-                      //       'schedule_date',
-                      //       'Required By Date',
-                      //       onChanged: (value)  => setState(() => data['schedule_date'] = value),
-                      //       initialValue: data['schedule_date'] ??
-                      //           ((selectedSupplierData['name'].toString() !=
-                      //               'noName')?
-                      //           DateTime.now()
-                      //               .add(Duration(
-                      //               days: int.parse(selectedSupplierData["credit_days"].toString())))
-                      //               .toIso8601String():null),
-                      //     )),
                     ]),
-
                     CustomDropDown(
                       'status',
                       'Status    '.tr(),
@@ -295,16 +278,6 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                       const SizedBox(width: 10),
                     ]),
                     const SizedBox(height: 8),
-
-                    // CustomTextField(
-                    //   'leave_balance',
-                    //   'Leave Balance Before Application',
-                    //   initialValue:
-                    //       (data['leave_balance'].toString() != 'null')
-                    //           ? data['leave_balance'].toString()
-                    //           : tr('0'),
-                    //   enabled: false,
-                    // ),
                     CheckBoxWidget('half_day', 'Half Day',
                         initialValue: data['half_day'] == 1 ? true : false,
                         onChanged: (id, value) => setState(() {
@@ -344,7 +317,6 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                           )),
                         ],
                       ),
-
                     CustomTextFieldTest(
                       'description',
                       'Reason',
@@ -352,7 +324,6 @@ class _LeaveApplicationFormState extends State<LeaveApplicationForm> {
                       disableValidation: true,
                       onSave: (key, value) => data[key] = value,
                     ),
-
                     const SizedBox(height: 8),
                   ],
                 ),

@@ -187,6 +187,15 @@ class _CustomTextFieldTestState extends State<CustomTextFieldTest> {
                     color: Colors.transparent,
                   ),
                 ),
+                disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.transparent,
+                  ),
+                ),
                 errorBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10),

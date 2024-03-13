@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import 'add_time_sheet_dialog.dart';
-import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -206,30 +206,22 @@ class _TimesheetFormState extends State<TimesheetForm> {
                     children: [
                       const SizedBox(height: 4),
                       //___________________________________Project_____________________________________________________
-                      CustomTextFieldTest(
-                        'parent_project',
-                        'Project'.tr(),
-                        clearButton: true,
-                        initialValue: data['parent_project'],
-                        onSave: (key, value) {
-                          data[key] = value;
-                        },
-                        onChanged: (value) => data['parent_project'] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => projectScreen(),
-                            ),
-                          );
-                          data['parent_project'] = res['name'];
-                          setState(() {
-                            data['customer'] = res['customer'].toString();
-                            projectName = res['name'].toString();
-                          });
-
-                          return res['name'];
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['parent_project'],
+                          docType: APIService.PROJECT,
+                          nameResponse: 'name',
+                          keys: const {
+                            "subTitle": 'project_name',
+                            "trailing": 'status',
+                          },
+                          title: 'Project'.tr(),
+                          onChange: (value) {
+                            data['parent_project'] = value['name'];
+                            setState(() {
+                              data['customer'] = value['customer'].toString();
+                              projectName = value['name'].toString();
+                            });
+                          }),
                       //_______________________________________Customer_____________________________________________________
                       CustomTextFieldTest(
                         'customer',
@@ -242,24 +234,21 @@ class _TimesheetFormState extends State<TimesheetForm> {
                         onSave: (key, value) => data[key] = value,
                       ),
                       //_______________________________________Employee___________________________________________________
-                      CustomTextFieldTest(
-                        'employee',
-                        'Employee'.tr(),
-                        initialValue: data['employee'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => data['employee'] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => selectEmployeeScreen(),
-                            ),
-                          );
-                          data['employee'] = res['name'];
-                          return res['name'];
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['employee'],
+                          docType: APIService.EMPLOYEE,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          keys: const {
+                            "subTitle": 'employee_name',
+                            "trailing": 'department',
+                          },
+                          title: 'Employee'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['employee'] = value['name'];
+                            });
+                          }),
                       //__________________________________________Second Group_____________________________________________________
                       Row(
                         children: [

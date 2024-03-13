@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -55,7 +55,9 @@ class _WorkflowFormState extends State<WorkflowForm> {
             : 'Creating Your Workflow');
 
     // To print the body we send to backend
-    for (var k in data.keys) log("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      log("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -68,23 +70,24 @@ class _WorkflowFormState extends State<WorkflowForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null)
       Navigator.pop(context);
     else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['workflow'] != null)
+      if (res != null && res['message']['workflow'] != null) {
         context.read<ModuleProvider>().pushPage(res['message']['workflow']);
+      }
       Navigator.of(context)
           .push(MaterialPageRoute(
-            builder: (_) => GenericPage(),
+            builder: (_) => const GenericPage(),
           ))
           .then((value) => Navigator.pop(context));
     } else if (res != null && res['message']['workflow'] != null) {
       provider.pushPage(res['message']['workflow']);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => GenericPage(),
+          builder: (_) => const GenericPage(),
         ),
       );
     }
@@ -110,12 +113,13 @@ class _WorkflowFormState extends State<WorkflowForm> {
 
     data['states'] = provider.workflowStates;
     data['transitions'] = provider.workflowTransitions;
-    if (provider.isCreateFromPage)
+    if (provider.isCreateFromPage) {
       Future.delayed(Duration.zero, () {
         data = provider.createFromPageData;
         data['doctype'] = "Workflow";
         setState(() {});
       });
+    }
   }
 
   @override
@@ -149,7 +153,7 @@ class _WorkflowFormState extends State<WorkflowForm> {
                 Group(
                   child: Column(
                     children: [
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       //_______________________________________Workflow Name_____________________________________________________
                       CustomTextFieldTest(
                         'workflow_name',
@@ -162,19 +166,17 @@ class _WorkflowFormState extends State<WorkflowForm> {
                       ),
 
                       //_______________________________________Doc Type_____________________________________________________
-                      CustomTextFieldTest(
-                        'document_type',
-                        'Document Type'.tr(),
-                        initialValue: data['document_type'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => documentTypeListScreen(),
-                          ),
-                        ),
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['document_type'],
+                          isValidate: false,
+                          docType: APIService.DOC_TYPE,
+                          nameResponse: 'name',
+                          title: 'Document Type'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['document_type'] = value['name'];
+                            });
+                          }),
                       //---------------------------------------IS Active----------------------------------------------------
                       CheckBoxWidget(
                         'is_active',
@@ -226,7 +228,7 @@ class _WorkflowFormState extends State<WorkflowForm> {
                                 title: "Add State",
                                 onPressed: () {
                                   bottomSheetBuilder(
-                                    bottomSheetView: AddStateDialog(),
+                                    bottomSheetView: const AddStateDialog(),
                                     context: context,
                                   );
                                 },
@@ -244,15 +246,15 @@ class _WorkflowFormState extends State<WorkflowForm> {
                                             child: PageCard(
                                               items: [
                                                 {
-                                                  "State":
-                                                      builder.workflowStates[
-                                                          index]['state'],
+                                                  "State": builder
+                                                          .workflowStates[index]
+                                                      ['state'],
                                                   "Allow Edit": builder
-                                                          .workflowStates[
-                                                      index]['allow_edit'],
+                                                          .workflowStates[index]
+                                                      ['allow_edit'],
                                                   "Doc Status": builder
-                                                          .workflowStates[
-                                                      index]['doc_status'],
+                                                          .workflowStates[index]
+                                                      ['doc_status'],
                                                 }
                                               ],
                                             ),
@@ -264,7 +266,7 @@ class _WorkflowFormState extends State<WorkflowForm> {
                                                     .removeAt(index);
                                               });
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.delete,
                                               color: Colors.red,
                                             ),
@@ -284,15 +286,16 @@ class _WorkflowFormState extends State<WorkflowForm> {
                                 title: "Add Transaction",
                                 onPressed: () {
                                   bottomSheetBuilder(
-                                    bottomSheetView: AddTransitionsDialog(),
+                                    bottomSheetView:
+                                        const AddTransitionsDialog(),
                                     context: context,
                                   );
                                 },
                               ),
                               if (builder.workflowTransitions.isNotEmpty)
                                 SizedBox(
-                                  height: builder.workflowTransitions.length *
-                                      100,
+                                  height:
+                                      builder.workflowTransitions.length * 100,
                                   child: ListView.builder(
                                     itemCount:
                                         builder.workflowTransitions.length,
@@ -324,7 +327,7 @@ class _WorkflowFormState extends State<WorkflowForm> {
                                                     .removeAt(index);
                                               });
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.delete,
                                               color: Colors.red,
                                             ),

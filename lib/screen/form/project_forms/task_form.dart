@@ -4,8 +4,7 @@ import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../list/otherLists.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -188,106 +187,73 @@ class _TaskFormState extends State<TaskForm> {
                         onSave: (key, value) => data[key] = value,
                       ),
                       //_______________________________________Project_____________________________________________________
-                      CustomTextFieldTest(
-                        'project',
-                        StringsManager.project.tr(),
-                        initialValue: data['project'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) {
-                          setState(() {
-                            data['project'] = value;
-                          });
-                        },
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => projectScreen(),
-                            ),
-                          );
-                          data['project'] = res['name'];
-                          return res['name'];
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['project'],
+                          docType: APIService.PROJECT,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          keys: const {
+                            "subTitle": 'project_name',
+                            "trailing": 'status',
+                          },
+                          title: 'Project'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['project'] = value['name'];
+                            });
+                          }),
                       //_______________________________________Parent Task_____________________________________________________
-                      CustomTextFieldTest(
-                        'parent_task',
-                        'Parent Task'.tr(),
-                        initialValue: data['parent_task'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => setState(() {
-                          data['parent_task'] = value;
-                        }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => parentTaskScreen(),
-                            ),
-                          );
-                          data['parent_task'] = res;
-                          return res;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['parent_task'],
+                          docType: APIService.TASK,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          keys: const {
+                            "subTitle": 'subject',
+                            "trailing": 'status',
+                          },
+                          title: 'Parent Task'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['parent_task'] = value['name'];
+                            });
+                          }),
                       //_______________________________________Issue_____________________________________________________
-                      CustomTextFieldTest('issue', 'Issue'.tr(),
-                          initialValue: data['issue'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onChanged: (value) => setState(() {
-                                data['issue'] = value;
-                              }),
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => issueListScreen(),
-                              ),
-                            );
-                            data['issue'] = res;
-                            return res;
+                      CustomDropDownFromField(
+                          defaultValue: data['issue'],
+                          docType: APIService.ISSUE,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Issue'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['issue'] = value['name'];
+                            });
                           }),
                       //_______________________________________Type_____________________________________________________
-                      CustomTextFieldTest('type', 'Type'.tr(),
-                          initialValue: data['type'],
-                          disableValidation: true,
-                          clearButton: true,
-                          onSave: (key, value) => data[key] = value,
-                          onChanged: (value) => setState(() {
-                                data['type'] = value;
-                              }),
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => typeListScreen(),
-                              ),
-                            );
-                            data['type'] = res;
-                            return res;
+                      CustomDropDownFromField(
+                          defaultValue: data['type'],
+                          docType: APIService.TASK_TYPE,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Type'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['type'] = value['name'];
+                            });
                           }),
                       //_______________________________________Department_____________________________________________________
-                      CustomTextFieldTest(
-                        'department',
-                        'Department'.tr(),
-                        initialValue: data['department'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => setState(() {
-                          data['department'] = value;
-                        }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => departmentListScreen(),
-                            ),
-                          );
-                          data['department'] = res;
-                          return res;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['department'],
+                          docType: APIService.DEPARTMENT,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Department'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['department'] = value['name'];
+                            });
+                          }),
                     ],
                   ),
                 ),

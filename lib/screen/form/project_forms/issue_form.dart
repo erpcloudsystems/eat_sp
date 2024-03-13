@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../test/custom_page_view_form.dart';
 import '../../../test/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -179,45 +179,32 @@ class _IssueFormState extends State<IssueForm> {
                         onSave: (key, value) => data[key] = value,
                       ),
                       //_______________________________________Issue Type_____________________________________________________
-                      CustomTextFieldTest(
-                        'issue_type',
-                        'Issue Type'.tr(),
-                        initialValue: data['issue_type'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => issueTypeListScreen(),
-                            ),
-                          );
-                          data['issue_type'] = res;
-                          return res;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['issue_type'],
+                          isValidate: false,
+                          docType: APIService.ISSUE_TYPE,
+                          nameResponse: 'name',
+                          title: 'Issue Type'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['issue_type'] = value['name'];
+                            });
+                          }),
                       //___________________________________Project_____________________________________________________
-                      CustomTextFieldTest(
-                        'project',
-                        'Project'.tr(),
-                        clearButton: true,
-                        initialValue: data['project'],
-                        onSave: (key, value) {
-                          data[key] = value;
-                        },
-                        onChanged: (value) => setState(() {
-                          data['project'] = value;
-                        }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => projectScreen(),
-                            ),
-                          );
-                          data['project'] = res['name'];
-                          return res['name'];
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['project'],
+                          docType: APIService.PROJECT,
+                          nameResponse: 'name',
+                          keys: const {
+                            "subTitle": 'project_name',
+                            "trailing": 'status',
+                          },
+                          title: 'Project'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['project'] = value['name'];
+                            });
+                          }),
                     ],
                   ),
                 ),

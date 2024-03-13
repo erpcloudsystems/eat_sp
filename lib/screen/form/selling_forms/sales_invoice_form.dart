@@ -722,6 +722,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             }),
                       CustomDropDownFromField(
                           defaultValue: data['payment_terms_template'],
+                          isValidate: false,
                           docType: APIService.PAYMENT_TERMS,
                           nameResponse: 'name',
                           title: 'Payment Terms Template'.tr(),
