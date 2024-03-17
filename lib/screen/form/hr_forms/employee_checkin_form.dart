@@ -3,9 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -178,29 +178,25 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                   child: ListView(
                     children: [
                       const SizedBox(height: 4),
-                      CustomTextFieldTest(
-                        'employee',
-                        'Employee',
-                        initialValue: data['employee'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectEmployeeScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            await _getEmployeeData(res['name']);
-
-                            setState(() {
-                              data['name'] = res['name'];
-                              data['employee'] = res['name'];
-                              data['employee_name'] = res['employee_name'];
-                            });
-                          }
-                          return id;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['employee'],
+                          docType: APIService.EMPLOYEE,
+                          keys: const {
+                            'subTitle': 'employee_name',
+                            'trailing': 'department',
+                          },
+                          nameResponse: 'name',
+                          title: 'Employee'.tr(),
+                          onChange: (value) async {
+                            if (value != null) {
+                              await _getEmployeeData(value['name']);
+                              setState(() {
+                                data['name'] = value['name'];
+                                data['employee'] = value['name'];
+                                data['employee_name'] = value['employee_name'];
+                              });
+                            }
+                          }),
                       Row(children: [
                         Flexible(
                             child: DatePickerTest(
@@ -256,7 +252,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                       const SizedBox(height: 8),
-                       Row(
+                      const Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

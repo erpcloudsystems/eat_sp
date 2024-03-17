@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../service/service.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -30,5 +29,18 @@ class HomeProvider extends ChangeNotifier {
     } catch (error) {
       print(error);
     }
+  }
+
+  /// General get list
+  Future<List> generalGetList({
+    required Map<String, dynamic> filters,
+  }) async {
+    final response = await service.genericGet(
+      'method/ecs_mobile.general.general_service',
+      filters,
+    );
+    notifyListeners();
+
+    return response['message'];
   }
 }

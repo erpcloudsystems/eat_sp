@@ -1,5 +1,4 @@
 import 'package:NextApp/new_version/modules/dashboard/domain/entities/dashboard_entity.dart';
-import 'package:NextApp/new_version/modules/dashboard/domain/entities/sealse_invoice_entity.dart';
 import 'package:NextApp/new_version/modules/dashboard/domain/entities/tap_view_entity/task_entity.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/network/failure.dart';

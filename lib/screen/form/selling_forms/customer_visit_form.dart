@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../list/otherLists.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -183,63 +183,55 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                   child: ListView(
                     children: [
                       const SizedBox(height: 4),
-                      CustomTextFieldTest(
-                        'customer',
-                        'Customer',
-                        initialValue: data['customer'],
-                        disableValidation: false,
-                        onPressed: () async {
-                          String? id;
+                      // New customer list
+                      CustomDropDownFromField(
+                          defaultValue: data['customer'],
+                          docType: 'Customer',
+                          nameResponse: 'name',
+                          title: 'Customer'.tr(),
+                          keys: const {
+                            'subTitle': 'customer_group',
+                            'trailing': 'territory',
+                          },
+                          onChange: (value) async {
+                            if (value != null) {
+                              await _getCustomerData(value['name']);
 
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            await _getCustomerData(res['name']);
-
-                            setState(() {
-                              data['customer'] = res['name'];
-                              data['customer_name'] = res['customer_name'];
-                              data['customer_address'] =
-                                  res["customer_primary_address"];
-                              data['contact_person'] =
-                                  res["customer_primary_contact"];
-                            });
-                          }
-
-                          return id;
-                        },
-                      ),
+                              setState(() {
+                                data['customer'] = value['name'];
+                                data['customer_name'] = value['customer_name'];
+                                data['customer_address'] =
+                                    value["customer_primary_address"];
+                                data['contact_person'] =
+                                    value["customer_primary_contact"];
+                              });
+                            }
+                          }),
+// New customer address
                       CustomExpandableTile(
                         hideArrow: data['customer'] == null,
-                        title: CustomTextFieldTest(
-                            'customer_address', 'Customer Address',
-                            initialValue: data['customer_address'],
-                            disableValidation: false,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            liestenToInitialValue:
-                                data['customer_address'] == null,
-                            onPressed: () async {
+                        title: CustomDropDownFromField(
+                            defaultValue: data['customer_address'],
+                            docType: APIService.FILTERED_ADDRESS,
+                            nameResponse: 'name',
+                            title: 'Customer Address'.tr(),
+                            filters: {
+                              'cur_nam': data['customer'],
+                            },
+                            onChange: (value) async {
                               if (data['customer'] == null) {
                                 return showSnackBar(
                                     'Please select a customer to first',
                                     context);
                               }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => customerAddressScreen(
-                                          data['customer'])));
+
                               setState(() {
-                                data['customer_address'] = res['name'];
+                                data['customer_address'] = value['name'];
                                 selectedCstData['address_line1'] =
-                                    res['address_line1'];
-                                selectedCstData['city'] = res['city'];
-                                selectedCstData['country'] = res['country'];
+                                    value['address_line1'];
+                                selectedCstData['city'] = value['city'];
+                                selectedCstData['country'] = value['country'];
                               });
-                              return res['name'];
                             }),
                         children: (data['customer_address'] != null)
                             ? <Widget>[
@@ -259,6 +251,7 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                               ]
                             : null,
                       ),
+
                       Row(children: [
                         Flexible(
                             child: DatePickerTest(

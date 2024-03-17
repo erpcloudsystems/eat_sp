@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
@@ -132,9 +132,7 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
         InheritedExpenseForm.of(context).taxData['rate'] =
             data['taxes'][0]['rate'].toString();
 
-        setState(() {
-        
-        });
+        setState(() {});
       });
     }
   }
@@ -172,34 +170,34 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
                   Group(
                     child: Column(
                       children: [
-                        CustomTextFieldTest(
-                          'employee',
-                          'Employee'.tr(),
-                          initialValue: data['employee'],
-                          onPressed: () async {
-                            String? id;
-                            final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => selectEmployeeScreen(),
-                              ),
-                            );
-                            if (res != null) {
-                              id = res['name'];
-                              await _getEmployeeData(res['name']);
-
-                              setState(() {
-                                data['employee'] = res['name'];
-                                data['employee_name'] = res['employee_name'];
-                                data['department'] = res['department'];
-                                data['company'] = res['company'];
-                                // data['currency'] = res['currency'];
-                                data['expense_approver'] =
-                                    res['expense_approver'];
-                              });
-                            }
-                            return id;
-                          },
+                        const SizedBox(
+                          height: 8,
                         ),
+                        CustomDropDownFromField(
+                            defaultValue: data['employee'],
+                            docType: APIService.EMPLOYEE,
+                            nameResponse: 'name',
+                            title: 'Employee'.tr(),
+                            keys: const {
+                              'subTitle': 'employee_name',
+                              'trailing': 'department',
+                            },
+                            onChange: (value) async {
+                              if (value != null) {
+                                await _getEmployeeData(value['name']);
+
+                                setState(() {
+                                  data['employee'] = value['name'];
+                                  data['employee_name'] =
+                                      value['employee_name'];
+                                  data['department'] = value['department'];
+                                  data['company'] = value['company'];
+
+                                  data['expense_approver'] =
+                                      value['expense_approver'];
+                                });
+                              }
+                            }),
                         if (data['employee_name'] != null)
                           CustomTextFieldTest(
                             'employee_name',
@@ -214,17 +212,19 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
                             initialValue: data['department'],
                             enabled: false,
                           ),
-                        CustomTextFieldTest(
-                            'expense_approver', 'Expense Approver'.tr(),
-                            initialValue: data['expense_approver'],
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
-                              var res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => userListScreen(),
-                                ),
-                              );
-                              return res;
+                        CustomDropDownFromField(
+                            defaultValue: data['expense_approver'],
+                            docType: 'User',
+                            nameResponse: 'name',
+                            title: 'Expense Approver'.tr(),
+                            keys: const {
+                              'subTitle': 'full_name',
+                              'trailing': '',
+                            },
+                            onChange: (value) async {
+                              setState(() {
+                                data['expense_approver'] = value['name'];
+                              });
                             }),
                         CheckBoxWidget('is_paid', 'Is Paid'.tr(),
                             initialValue: data['is_paid'] == 1 ? true : false,
@@ -249,54 +249,36 @@ class _ExpenseClaimFormState extends State<ExpenseClaimForm> {
                         )),
                         const SizedBox(width: 10),
                       ]),
-                      // CustomTextFieldTest(
-                      //     'payable_account', tr('Payable Account'),
-                      //     initialValue: data['payable_account'],
-                      //     disableValidation: true,
-                      //     onSave: (key, value) => data[key] = value,
-                      //     onPressed: () async {
-                      //       final res = await Navigator.of(context).push(
-                      //           MaterialPageRoute(
-                      //               builder: (_) => accountListScreen(
-                      //                   filters: {"filter1": "Payable"})));
-                      //       data['payable_account'] = res['name'];
-                      //       return res['name'];
-                      //     }),
-                      CustomTextFieldTest(
-                        'project',
-                        'Project'.tr(),
-                        initialValue: data['project'],
-                        disableValidation: true,
-                        clearButton: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => projectScreen(),
-                            ),
-                          );
-                          data['project'] = res['name'];
-                          return res['name'];
-                        },
-                      ),
-                      CustomTextFieldTest(
-                        'cost_center',
-                        'Cost Center',
-                        disableValidation: true,
-                        clearButton: true,
-                        initialValue: data['cost_center'] ?? '',
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => data['cost_center'] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => costCenterScreen(),
-                            ),
-                          );
-                          data['cost_center'] = res;
-                          return res;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['project'],
+                          docType: APIService.PROJECT,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Project'.tr(),
+                          keys: const {
+                            'subTitle': 'project_name',
+                            'trailing': 'status',
+                          },
+                          onChange: (value) async {
+                            setState(() {
+                              data['project'] = value['name'];
+                            });
+                          }),
+                      CustomDropDownFromField(
+                          defaultValue: data['cost_center'],
+                          docType: APIService.COST_CENTER,
+                          nameResponse: 'name',
+                          isValidate: false,
+                          title: 'Cost Center'.tr(),
+                          keys: const {
+                            'subTitle': 'parent_cost_center',
+                            'trailing': 'cost_center_name',
+                          },
+                          onChange: (value) async {
+                            setState(() {
+                              data['cost_center'] = value['name'];
+                            });
+                          }),
                     ],
                   )),
                 ],

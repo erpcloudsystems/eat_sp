@@ -3,9 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
@@ -221,86 +221,53 @@ class _CustomerFormState extends State<CustomerForm> {
                             setState(() => data['customer_type'] = value)),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                      'customer_group',
-                      tr('Customer Group'),
-                      initialValue: data['customer_group'],
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['customer_group'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => customerGroupScreen(),
-                          ),
-                        );
-                        data['customer_group'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'territory',
-                      tr('Territory'),
-                      initialValue: data['territory'],
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['territory'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => territoryScreen(),
-                          ),
-                        );
-                        data['territory'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'market_segment',
-                      tr('Market Segment'),
-                      initialValue: data['market_segment'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['market_segment'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => marketSegmentScreen(),
-                          ),
-                        );
-                        data['market_segment'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'industry',
-                      tr('Industry'),
-                      initialValue: data['industry'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['industry'] = value;
-                        });
-                      },
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => industryScreen()));
-                        data['industry'] = res;
-                        return res;
-                      },
-                    ),
+                    // New customer group
+                    CustomDropDownFromField(
+                        defaultValue: data['customer_group'],
+                        docType: 'Customer Group',
+                        nameResponse: 'name',
+                        title: 'Customer Group'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['customer_group'] = value['name'];
+                          });
+                        }),
+
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
+                    // Market Segment
+                    CustomDropDownFromField(
+                        defaultValue: data['market_segment'],
+                        docType: APIService.MARKET_SEGMENT,
+                        nameResponse: 'name',
+                        title: tr('Market Segment'),
+                        onChange: (value) {
+                          setState(() {
+                            data['market_segment'] = value['name'];
+                          });
+                        }),
+                    // Industry
+                    CustomDropDownFromField(
+                        defaultValue: data['industry'],
+                        docType: APIService.INDUSTRY,
+                        nameResponse: 'name',
+                        title: tr('Industry'),
+                        onChange: (value) {
+                          setState(() {
+                            data['industry'] = value['name'];
+                          });
+                        }),
+
+                    ///------------------------------
                     CustomTextFieldTest(
                       'tax_id',
                       tr('Tax ID'),
@@ -366,19 +333,18 @@ class _CustomerFormState extends State<CustomerForm> {
                           },
                           initialValue: data['city']),
                     if (removeWhenUpdate)
-                      CustomTextFieldTest('country', tr('Country'),
-                          initialValue: data['country'],
-                          onSave: (key, value) {
-                            data[key] = value;
-                          },
-                          onChanged: (value) {
+                      // New country
+                      CustomDropDownFromField(
+                          defaultValue: data['country'],
+                          docType: APIService.COUNTRY,
+                          nameResponse: 'name',
+                          title: tr('Country'),
+                          onChange: (value) {
                             setState(() {
-                              data['country'] = value;
+                              data['country'] = value['name'];
                             });
-                          },
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => countryScreen()))),
+                          }),
+
                     // if (data['lead_name']!=null)
                     // CustomTextField('lead_name', tr('From Lead'),
                     //     initialValue: data['lead_name'],
@@ -395,64 +361,48 @@ class _CustomerFormState extends State<CustomerForm> {
               Group(
                 child: Column(
                   children: [
-                    CustomTextFieldTest(
-                      'default_currency',
-                      'Currency',
-                      initialValue: data['default_currency'] ??
-                          userProvider.defaultCurrency,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) {
-                        setState(() {
-                          data['default_currency'] = value;
-                        });
-                      },
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => currencyListScreen())),
-                    ),
-                    CustomTextFieldTest('default_price_list', 'Price List'.tr(),
-                        initialValue: data['default_price_list'] ??
-                            userProvider.defaultSellingPriceList,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) {
+                    CustomDropDownFromField(
+                        defaultValue: data['default_currency'] ??
+                            userProvider.defaultCurrency,
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: 'Currency'.tr(),
+                        onChange: (value) {
                           setState(() {
-                            data['default_price_list'] = value;
+                            data['default_currency'] = value['name'];
                           });
-                        },
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => priceListScreen()));
-                          if (res != null) {
-                            data['default_price_list'] = res['name'];
-                            return res['name'];
-                          }
-                          return res['name'];
                         }),
-                    CustomTextFieldTest(
-                        'default_sales_partner', 'Sales Partner',
-                        initialValue: data['default_sales_partner'],
-                        onSave: (key, value) => data[key] = value,
-                        disableValidation: true,
-                        onChanged: (value) {
+                    CustomDropDownFromField(
+                        defaultValue: data['default_price_list'] ??
+                            userProvider.defaultSellingPriceList,
+                        docType: APIService.PRICE_LIST,
+                        nameResponse: 'name',
+                        title: 'Price List'.tr(),
+                        onChange: (value) {
                           setState(() {
-                            data['default_sales_partner'] = value;
+                            data['default_price_list'] = value['name'];
                           });
-                        },
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => salesPartnerScreen()))),
-                    CustomTextFieldTest(
-                        'payment_terms', 'Payment Terms Template'.tr(),
-                        initialValue: data['payment_terms'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => data['payment_terms'] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => paymentTermsScreen()))),
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['default_sales_partner'],
+                        docType: APIService.SALES_PARTNER,
+                        nameResponse: 'name',
+                        title: 'Sales Partner'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['default_sales_partner'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['payment_terms'],
+                        docType: APIService.PAYMENT_TERMS,
+                        nameResponse: 'name',
+                        title: 'Payment Terms Template'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['payment_terms'] = value['name'];
+                          });
+                        }),
                   ],
                 ),
               ),
