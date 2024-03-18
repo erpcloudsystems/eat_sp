@@ -58,7 +58,7 @@ class CommonPageSheetBody extends StatelessWidget {
                     ),
                     //___________________________ Header text______________________________________
                     Text(
-                        "${(context.read<ModuleProvider>().pageData[databaseKey] as List?)?.length} $appBarHeader",
+                        "${(context.read<ModuleProvider>().pageData[databaseKey] as List?)?.length ?? 0} $appBarHeader",
                         style: const TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w700,
