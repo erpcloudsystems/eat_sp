@@ -40,7 +40,7 @@ class _NewListWidgetState extends State<NewListWidget> {
       filters: {
         'doctype': widget.docType,
         'page_length': 20,
-        if (search != null) 'search_text': search,
+        if (search != null) 'search_text': '%$search%',
       }..addAll(widget.filter ?? {}),
     )
         .whenComplete(() {
