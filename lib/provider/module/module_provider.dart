@@ -614,6 +614,8 @@ class ModuleProvider extends ChangeNotifier {
           Future.delayed(const Duration(seconds: 1), () {
             showSnackBar('File Uploaded Successfully', context);
           });
+          notifyListeners();
+          
         }
       } catch (e) {}
     }

@@ -38,7 +38,8 @@ void showAttachments(BuildContext context) {
                           top: Radius.circular(GLOBAL_BORDER_RADIUS),
                           bottom: Radius.circular(5))),
                   child: context.read<ModuleProvider>().attachments.isEmpty
-                      ? const Center(child: Text('press + to add new attachment'))
+                      ? const Center(
+                          child: Text('press + to add new attachment'))
                       : SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
@@ -57,8 +58,10 @@ void showAttachments(BuildContext context) {
             child: Padding(
               padding: const EdgeInsets.only(right: 20, bottom: 20),
               child: InkWell(
-                onTap: () =>
-                    context.read<ModuleProvider>().addAttachment(context),
+                onTap: () => context
+                    .read<ModuleProvider>()
+                    .addAttachment(context)
+                    .whenComplete(() => Navigator.pop(context)),
                 child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
@@ -76,7 +79,6 @@ void showAttachments(BuildContext context) {
     },
   );
 }
-
 
 class Attachment extends StatelessWidget {
   final Map<String, dynamic> attachment;
@@ -111,7 +113,7 @@ class Attachment extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.blueGrey,
                     borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
-                child: Icon(Icons.insert_drive_file_rounded,
+                child: const Icon(Icons.insert_drive_file_rounded,
                     color: Colors.white, size: 26),
               ),
               Expanded(
