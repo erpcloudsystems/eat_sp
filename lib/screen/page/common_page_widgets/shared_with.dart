@@ -36,6 +36,7 @@ class SharedWithBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pageData = context.read<ModuleProvider>().pageData;
     return Container(
       padding: const EdgeInsets.fromLTRB(
         DoublesManager.d_12,
@@ -122,10 +123,12 @@ class SharedWithBubble extends StatelessWidget {
                       sharedObject: sharedObject,
                       databaseKey: 'Share',
                     ),
-                    SharedCheckBox(
-                      sharedObject: sharedObject,
-                      databaseKey: 'Submit',
-                    ),
+                    // Check if the doc is submittable or not to display submit checkbox.
+                    if (pageData['is_submittable'] == 1)
+                      SharedCheckBox(
+                        sharedObject: sharedObject,
+                        databaseKey: 'Submit',
+                      ),
                   ],
                 ),
               ],
