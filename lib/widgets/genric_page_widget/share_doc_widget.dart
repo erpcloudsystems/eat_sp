@@ -96,18 +96,20 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
                 ),
                 Row(
                   children: [
-                    Flexible(
-                      child: CheckBoxWidget(
-                        'can_submit',
-                        'Can Submit'.tr(),
-                        initialValue: shareData['submit'] == 0 ? false : true,
-                        onChanged: (id, value) {
-                          setState(() {
-                            shareData['submit'] = value ? 1 : 0;
-                          });
-                        },
+                    // Check if the doc is submittable or not to display submit checkbox.
+                    if (moduleProvider.pageData['is_submittable'] == 1)
+                      Flexible(
+                        child: CheckBoxWidget(
+                          'can_submit',
+                          'Can Submit'.tr(),
+                          initialValue: shareData['submit'] == 0 ? false : true,
+                          onChanged: (id, value) {
+                            setState(() {
+                              shareData['submit'] = value ? 1 : 0;
+                            });
+                          },
+                        ),
                       ),
-                    ),
                     Flexible(
                       child: CheckBoxWidget(
                         'can_share',
