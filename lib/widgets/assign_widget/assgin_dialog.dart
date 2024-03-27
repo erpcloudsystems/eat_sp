@@ -234,6 +234,8 @@ class _AssignToDialogState extends State<AssignToDialog> {
                                     .whenComplete(() {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
                                 });
                               });
                             }

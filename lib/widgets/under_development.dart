@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:share_plus/share_plus.dart';
-
-import '../service/local_notification_service.dart';
 
 class UnderDevelopmentScreen extends StatelessWidget {
   UnderDevelopmentScreen({Key? key, required this.message}) : super(key: key);

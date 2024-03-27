@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
@@ -138,31 +138,31 @@ class _EmployeeAdvanceFormState extends State<EmployeeAdvanceForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 4),
-                    CustomTextFieldTest(
-                      'employee',
-                      'Employee',
-                      initialValue: data['employee'],
-                      onPressed: () async {
-                        String? id;
-                        final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => selectEmployeeScreen()));
-                        if (res != null) {
-                          id = res['name'];
-                          await _getEmployeeData(res['name']);
+                    CustomDropDownFromField(
+                        defaultValue: data['employee'],
+                        docType: APIService.EMPLOYEE,
+                        nameResponse: 'name',
+                        title: 'Employee'.tr(),
+                        keys: const {
+                          'subTitle': 'employee_name',
+                          'trailing': 'department',
+                        },
+                        onChange: (value) async {
+                          if (value != null) {
+                            await _getEmployeeData(value['name']);
 
-                          setState(() {
-                            data['employee'] = res['name'];
-                            data['employee_name'] = res['employee_name'];
-                            data['department'] = res['department'];
-                            data['company'] = res['company'];
-                            data['currency'] = res['currency'];
-                            data['advance_account'] = res['advance_account'];
-                          });
-                        }
-                        return id;
-                      },
-                    ),
+                            setState(() {
+                              data['employee'] = value['name'];
+                              data['employee_name'] = value['employee_name'];
+                              data['department'] = value['department'];
+                              data['company'] = value['company'];
+                              data['currency'] = value['currency'];
+                              data['advance_account'] =
+                                  value['advance_account'];
+                            });
+                          }
+                        }),
+
                     if (data['employee_name'] != null)
                       CustomTextFieldTest(
                         'employee_name',

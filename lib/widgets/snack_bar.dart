@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../main.dart';
-import '../screen/home_screen.dart';
-import '../screen/page/common_page_widgets/comments.dart';
 
 showSnackBar(String message, BuildContext context, {Color? color}) {
   ScaffoldMessenger.of(context).clearSnackBars();

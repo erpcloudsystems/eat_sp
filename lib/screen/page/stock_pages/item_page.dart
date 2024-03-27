@@ -218,9 +218,7 @@ class TableButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
-            backgroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            foregroundColor: Colors.grey,
           ),
           onPressed: table.isEmpty
               ? null

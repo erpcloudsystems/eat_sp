@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
@@ -143,54 +143,43 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                             })),
                     ////////Employee
                     if (data['applicant_type'] == applicantTypeList[0])
-                      CustomTextFieldTest(
-                        'applicant',
-                        'Applicant'.tr(),
-                        initialValue: data['applicant'],
-                        onPressed: () async {
-                          String? id;
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectEmployeeScreen()));
-                          if (res != null) {
-                            id = res['name'];
-                            //await _getEmployeeData(res['name']);
-
-                            setState(() {
-                              data['applicant'] = res['name'];
-                              data['applicant_name'] = res['employee_name'];
-                            });
-                          }
-                          return id;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['applicant'],
+                          docType: APIService.EMPLOYEE,
+                          nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'employee_name',
+                            'trailing': 'department',
+                          },
+                          title: 'Applicant'.tr(),
+                          onChange: (value) async {
+                            if (value != null) {
+                              setState(() {
+                                data['applicant'] = value['name'];
+                                data['applicant_name'] = value['employee_name'];
+                              });
+                            }
+                          }),
 
                     ////////Customer
                     if (data['applicant_type'] == applicantTypeList[1])
-                      CustomTextFieldTest(
-                        'applicant',
-                        'Applicant'.tr(),
-                        initialValue: data['applicant'],
-                        onPressed: () async {
-                          String? id;
-
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
-
-                            setState(() {
-                              data['applicant'] = res['name'];
-                              data['applicant_name'] = res['customer_name'];
-                            });
-                          }
-
-                          return id;
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['applicant'],
+                          docType: APIService.CUSTOMER,
+                          nameResponse: 'name',
+                          keys: const {
+                            'subTitle': 'customer_name',
+                            'trailing': 'territory',
+                          },
+                          title: 'Applicant'.tr(),
+                          onChange: (value) async {
+                            if (value != null) {
+                              setState(() {
+                                data['applicant'] = value['name'];
+                                data['applicant_name'] = value['customer_name'];
+                              });
+                            }
+                          }),
 
                     if (data['applicant_name'] != null)
                       CustomTextFieldTest(
@@ -234,19 +223,19 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                     const SizedBox(height: 8),
 
                     // Loan Type
-                    CustomTextFieldTest('loan_type', tr('Loan Type'),
-                        initialValue: data['loan_type'],
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => loanTypeListScreen()));
+                    CustomDropDownFromField(
+                        defaultValue: data['loan_type'],
+                        docType: APIService.LOAN_TYPE,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        title: tr('Loan Type'),
+                        onChange: (value) async {
                           setState(() {
-                            data['loan_type'] = res['name'];
-                            data['is_term_loan'] = res['is_term_loan'];
-                            data['rate_of_interest'] = res['rate_of_interest'];
+                            data['loan_type'] = value['name'];
+                            data['is_term_loan'] = value['is_term_loan'];
+                            data['rate_of_interest'] =
+                                value['rate_of_interest'];
                           });
-                          return res['name'];
                         }),
 
                     CheckBoxWidget(
@@ -307,14 +296,6 @@ class _LoanApplicationFormState extends State<LoanApplicationForm> {
                             data['repayment_periods'] = int.parse(value),
                         onSave: (key, value) => data[key] = int.parse(value),
                       ),
-
-                    // CheckBoxWidget('is_secured_loan', ' Is Secured Loan',
-                    //     initialValue:
-                    //         data['is_secured_loan'] == 1 ? true : false,
-                    //     onChanged: (id, value) => setState(() {
-                    //           data[id] = value ? 1 : 0;
-                    //         })),
-
                     CustomTextFieldTest(
                       'rate_of_interest',
                       'Rate of Interest'.tr(),

@@ -4,9 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
+
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/form_widgets.dart';
@@ -159,39 +160,30 @@ class _EmployeeFormState extends State<EmployeeForm> {
                       onSave: (key, value) => data[key] = value,
                       initialValue: data['last_name'],
                     ),
-                    CustomTextFieldTest(
-                      'gender',
-                      tr('Gender'),
-                      clearButton: true,
-                      initialValue: data['gender'],
-                      onSave: (key, value) => setState(() {
-                        data['gender'] = value;
-                      }),
-                      onChanged: (value) => setState(() {
-                        data['gender'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => genderListScreen(),
-                          ),
-                        );
-                        data['gender'] = res;
-                        return res;
-                      },
+                    CustomDropDownFromField(
+                        defaultValue: data['gender'],
+                        docType: APIService.GENDER,
+                        nameResponse: 'name',
+                        title: tr('Gender'),
+                        onChange: (value) {
+                          setState(() {
+                            data['gender'] = value['name'];
+                          });
+                        }),
+                    Row(
+                      children: [
+                        Flexible(
+                            child: DatePickerTest(
+                          'date_of_birth',
+                          'Date of Birth'.tr(),
+                          initialValue: data['date_of_birth'],
+                          onChanged: (value) =>
+                              setState(() => data['date_of_birth'] = value),
+                          firstDate: DateTime(DateTime.now().year - 100),
+                        )),
+                        const SizedBox(width: 10),
+                      ],
                     ),
-                    Row(children: [
-                      Flexible(
-                          child: DatePickerTest(
-                        'date_of_birth',
-                        'Date of Birth'.tr(),
-                        initialValue: data['date_of_birth'],
-                        onChanged: (value) =>
-                            setState(() => data['date_of_birth'] = value),
-                        firstDate: DateTime(DateTime.now().year - 100),
-                      )),
-                      const SizedBox(width: 10),
-                    ]),
                     CustomDropDown(
                       'status',
                       'Status'.tr(),
@@ -213,84 +205,50 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 8),
-                    CustomTextFieldTest(
-                      'department',
-                      tr('Department'),
-                      initialValue: data['department'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['department'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => departmentListScreen(),
-                          ),
-                        );
-                        data['department'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'designation',
-                      tr('Designation'),
-                      initialValue: data['designation'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['designation'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => designationListScreen(),
-                          ),
-                        );
-                        data['designation'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'branch',
-                      tr('Branch'),
-                      initialValue: data['branch'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['branch'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => branchListScreen(),
-                          ),
-                        );
-                        data['branch'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'employment_type',
-                      tr('Employment Type'),
-                      initialValue: data['employment_type'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => data['employment_type'] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => employmentTypeListScreen(),
-                          ),
-                        );
-                        data['employment_type'] = res;
-                        return res;
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['department'],
+                        isValidate: false,
+                        docType: APIService.DEPARTMENT,
+                        nameResponse: 'name',
+                        title: tr('Department'),
+                        onChange: (value) {
+                          setState(() {
+                            data['department'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['designation'],
+                        isValidate: false,
+                        docType: APIService.DESIGNATION,
+                        nameResponse: 'name',
+                        title: tr('Designation'),
+                        onChange: (value) {
+                          setState(() {
+                            data['designation'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['branch'],
+                        isValidate: false,
+                        docType: APIService.BRANCH,
+                        nameResponse: 'name',
+                        title: tr('Branch'),
+                        onChange: (value) {
+                          setState(() {
+                            data['branch'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['employment_type'],
+                        isValidate: false,
+                        docType: APIService.EMPLOYMENT_TYPE,
+                        nameResponse: 'name',
+                        title: tr('Employment Type'),
+                        onChange: (value) {
+                          setState(() {
+                            data['employment_type'] = value['name'];
+                          });
+                        }),
                     Row(children: [
                       Flexible(
                           child: DatePickerTest(
@@ -303,44 +261,28 @@ class _EmployeeFormState extends State<EmployeeForm> {
                       )),
                       const SizedBox(width: 10),
                     ]),
-                    CustomTextFieldTest(
-                      'leave_approver',
-                      tr('Leave Approver'),
-                      initialValue: data['leave_approver'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['leave_approver'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => leaveApproverScreen(),
-                          ),
-                        );
-                        data['leave_approver'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'expense_approver',
-                      tr('Expense Approver'),
-                      initialValue: data['expense_approver'],
-                      clearButton: true,
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => leaveApproverScreen(),
-                          ),
-                        );
-                        data['expense_approver'] = res;
-
-                        return res;
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['leave_approver'],
+                        isValidate: false,
+                        docType: APIService.LEAVE_APPROVER,
+                        nameResponse: 'name',
+                        title: tr('Leave Approver'),
+                        onChange: (value) {
+                          setState(() {
+                            data['leave_approver'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['expense_approver'],
+                        isValidate: false,
+                        docType: APIService.LEAVE_APPROVER,
+                        nameResponse: 'name',
+                        title: tr('Expense Approver'),
+                        onChange: (value) {
+                          setState(() {
+                            data['expense_approver'] = value['name'];
+                          });
+                        }),
                     const SizedBox(height: 8),
                   ],
                 ),
@@ -398,33 +340,18 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         onChanged: (value) => data['permanent_address'] = value,
                         onSave: (key, value) => data[key] = value,
                         initialValue: data['permanent_address']),
-                    CustomTextFieldTest('user_id', tr('ERPNext User'),
-                        clearButton: true,
-                        disableValidation: true,
-                        initialValue: data['user_id'],
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => setState(() {
-                              data['user_id'] = value;
-                            }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => leaveApproverScreen(),
-                            ),
-                          );
-                          if (res != null) {
-                            setState(() {
-                              data['user_id'] = res;
-                              data['prefered_email'] = res;
-                            });
-                          }
-                          return res;
+                    CustomDropDownFromField(
+                        defaultValue: data['user_id'],
+                        isValidate: false,
+                        docType: APIService.LEAVE_APPROVER,
+                        nameResponse: 'name',
+                        title: tr('ERPNext User'),
+                        onChange: (value) {
+                          setState(() {
+                            data['user_id'] = value['name'];
+                            data['prefered_email'] = value['name'];
+                          });
                         }),
-                    // CustomTextField('attendance_device_id', tr('Attendance Device ID (Biometric/RF tag ID)'),
-                    //     initialValue: data['attendance_device_id'],
-                    //     keyboardType: TextInputType.phone,
-                    //     validator: validateMobile,
-                    //     onSave: (key, value) => data[key] = value),
                     CustomTextFieldTest(
                       'attendance_device_id',
                       'Attendance Device ID (Biometric/RF tag ID)'.tr(),
@@ -448,46 +375,28 @@ class _EmployeeFormState extends State<EmployeeForm> {
                   child: ListView(
                 children: [
                   const SizedBox(height: 8),
-                  CustomTextFieldTest(
-                    'holiday_list',
-                    tr('Holiday List'),
-                    clearButton: true,
-                    disableValidation: true,
-                    initialValue: data['holiday_list'],
-                    onSave: (key, value) => data[key] = value,
-                    onChanged: (value) => setState(() {
-                      data['holiday_list'] = value;
-                    }),
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => holidayListScreen(),
-                        ),
-                      );
-                      data['holiday_list'] = res;
-                      return res;
-                    },
-                  ),
-                  CustomTextFieldTest(
-                    'default_shift',
-                    tr('Default Shift '),
-                    clearButton: true,
-                    disableValidation: true,
-                    initialValue: data['default_shift'],
-                    onSave: (key, value) => data[key] = value,
-                    onChanged: (value) => setState(() {
-                      data['default_shift'] = value;
-                    }),
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => shiftTypeListScreen(),
-                        ),
-                      );
-                      data['default_shift'] = res;
-                      return res;
-                    },
-                  ),
+                  CustomDropDownFromField(
+                      defaultValue: data['holiday_list'],
+                      isValidate: false,
+                      docType: APIService.HOLIDAY_LIST,
+                      nameResponse: 'name',
+                      title: tr('Holiday List'),
+                      onChange: (value) {
+                        setState(() {
+                          data['holiday_list'] = value['name'];
+                        });
+                      }),
+                  CustomDropDownFromField(
+                      defaultValue: data['default_shift'],
+                      isValidate: false,
+                      docType: APIService.DEFAULT_SHIFT,
+                      nameResponse: 'name',
+                      title: tr('Default Shift '),
+                      onChange: (value) {
+                        setState(() {
+                          data['default_shift'] = value['name'];
+                        });
+                      }),
                   const SizedBox(height: 8),
                 ],
               )),

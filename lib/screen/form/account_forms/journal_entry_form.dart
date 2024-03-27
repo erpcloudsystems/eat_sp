@@ -64,7 +64,9 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
             ? 'Updating ${provider.pageId}'
             : 'Adding new Journal Entry');
 
-    for (var k in data.keys) print("➡️ $k: ${data[k]}");
+    for (var k in data.keys) {
+      print("➡️ $k: ${data[k]}");
+    }
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -74,17 +76,17 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
     Navigator.pop(context);
 
-    if (provider.isEditing && res == false)
+    if (provider.isEditing && res == false) {
       return;
-    else if (provider.isEditing && res == null)
+    } else if (provider.isEditing && res == null)
       Navigator.pop(context);
     else if (res != null &&
         res['message']['ejournal_entry_data_name'] != null) {
       context
           .read<ModuleProvider>()
           .pushPage(res['message']['ejournal_entry_data_name']);
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => const GenericPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GenericPage()));
     }
   }
 
@@ -106,10 +108,12 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
     if (context.read<ModuleProvider>().isEditing ||
         provider.isAmendingMode ||
-        provider.duplicateMode)
+        provider.duplicateMode) {
       Future.delayed(Duration.zero, () {
         data = context.read<ModuleProvider>().updateData;
-        for (var k in data.keys) print("➡️ $k: ${data[k]}");
+        for (var k in data.keys) {
+          print("➡️ $k: ${data[k]}");
+        }
 
         data['accounts'].forEach((element) => InheritedAccountForm.of(context)
             .account
@@ -121,6 +125,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
         }
         setState(() {});
       });
+    }
   }
 
   @override
@@ -192,8 +197,8 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                       onSave: (key, value) => data[key] = value,
                       keyboardType: TextInputType.number,
                       disableError: true,
-                      validator: (value) => numberValidationToast(
-                          value, 'Reference Number'.tr()),
+                      validator: (value) =>
+                          numberValidationToast(value, 'Reference Number'.tr()),
                       disableValidation: true,
                     ),
                     Row(children: [
@@ -218,7 +223,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 13),
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 13),
                 child: SelectedAccountsList(),
               ),
             ],

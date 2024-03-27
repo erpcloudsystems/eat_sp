@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -323,26 +323,25 @@ class _QuotationFormState extends State<QuotationForm> {
                       'id',
                       'Quotation To',
                       items: KQuotationToList,
-                      onChanged: changeType,
+                      onChanged: (value) => changeType(value),
                       defaultValue: data["quotation_to"] ?? KQuotationToList[1],
                     ),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                      'party_name',
-                      data['quotation_to'] ?? '',
-                      initialValue: data['party_name'],
-                      onPressed: () async {
-                        String? id;
-                        if (_type == quotationType.customer) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      selectCustomerScreen()));
-                          if (res != null) {
-                            id = res['name'];
-
-                            await _getCustomerData(res['name']);
+                    // New customer list
+                    if (_type == quotationType.customer)
+                      CustomDropDownFromField(
+                        defaultValue: data['party_name'],
+                        docType: 'Customer',
+                        nameResponse: 'name',
+                        title: data['quotation_to'] ?? '',
+                        keys: const {
+                          'subTitle': 'customer_group',
+                          'trailing': 'territory',
+                        },
+                        onChange: (value) async {
+                          if (value != null) {
+                            await _getCustomerData(value['name']);
 
                             setState(() {
                               data['valid_till'] = DateTime.now()
@@ -352,36 +351,46 @@ class _QuotationFormState extends State<QuotationForm> {
                                               "0")
                                           .toString())))
                                   .toIso8601String();
-                              data['party_name'] = res['name'];
-                              data['customer_name'] = res['customer_name'];
-                              data['territory'] = res['territory'];
-                              data['customer_group'] = res['customer_group'];
+                              data['party_name'] = value['name'];
+                              data['customer_name'] = value['customer_name'];
+                              data['territory'] = value['territory'];
+                              data['customer_group'] = value['customer_group'];
                               data['customer_address'] =
-                                  res["customer_primary_address"];
+                                  value["customer_primary_address"];
                               data['contact_person'] =
-                                  res["customer_primary_contact"];
-                              data['currency'] = res['default_currency'];
+                                  value["customer_primary_contact"];
+                              data['currency'] = value['default_currency'];
                               data['price_list_currency'] =
-                                  res['default_currency'];
+                                  value['default_currency'];
                               if (data['selling_price_list'] !=
-                                  res['default_price_list']) {
+                                  value['default_price_list']) {
                                 data['selling_price_list'] =
-                                    res['default_price_list'];
+                                    value['default_price_list'];
                                 InheritedForm.of(context).items.clear();
                                 InheritedForm.of(context)
                                         .data['selling_price_list'] =
-                                    res['default_price_list'];
+                                    value['default_price_list'];
                               }
                               data['payment_terms_template'] =
-                                  res['payment_terms'];
+                                  value['payment_terms'];
                             });
+                          } else {
+                            showSnackBar('select quotation to first', context);
                           }
-                        } else if (_type == quotationType.lead) {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => selectLeadScreen()));
-                          if (res != null) {
-                            id = res['name'];
+                        },
+                      ),
+                    if (_type == quotationType.lead)
+                      CustomDropDownFromField(
+                        defaultValue: data['party_name'],
+                        docType: 'Lead',
+                        nameResponse: 'name',
+                        title: data['quotation_to'] ?? '',
+                        keys: const {
+                          'subTitle': 'lead_name',
+                          'trailing': 'territory',
+                        },
+                        onChange: (value) async {
+                          if (value != null) {
                             //await _getCustomerData(res['name']);
                             setState(() {
                               data['valid_till'] = DateTime.now()
@@ -390,19 +399,18 @@ class _QuotationFormState extends State<QuotationForm> {
                                               'quotation_validaty_days']
                                           .toString())))
                                   .toIso8601String();
-                              data['party_name'] = res['name'];
-                              data['customer_name'] = res['lead_name'];
-                              data['territory'] = res['territory'];
-                              data['source'] = res['source'];
-                              data['campaign'] = res['campaign_name'];
+                              data['party_name'] = value['name'];
+                              data['customer_name'] = value['lead_name'];
+                              data['territory'] = value['territory'];
+                              data['source'] = value['source'];
+                              data['campaign'] = value['campaign_name'];
                             });
+                          } else {
+                            showSnackBar('select quotation to first', context);
                           }
-                        } else {
-                          showSnackBar('select quotation to first', context);
-                        }
-                        return id;
-                      },
-                    ),
+                        },
+                      ),
+
                     if (data['customer_name'] != null)
                       CustomTextFieldTest(
                         'customer_name',
@@ -450,48 +458,55 @@ class _QuotationFormState extends State<QuotationForm> {
                       )),
                     ]),
                     if (_type == quotationType.customer)
-                      CustomTextFieldTest('customer_group', 'Customer Group',
-                          initialValue: data['customer_group'],
-                          disableValidation: true,
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => customerGroupScreen()))),
-                    CustomTextFieldTest('territory', 'Territory'.tr(),
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['territory'],
-                        disableValidation: true,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => territoryScreen()))),
+                      // New customer group
+                      CustomDropDownFromField(
+                          defaultValue: data['customer_group'],
+                          docType: 'Customer Group',
+                          nameResponse: 'name',
+                          title: 'Customer Group'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['customer_group'] = value['name'];
+                            });
+                          }),
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
+
                     if (_type == quotationType.customer)
+                      // New customer address
                       CustomExpandableTile(
                         hideArrow: data['customer_name'] == null,
-                        title: CustomTextFieldTest(
-                            'customer_address', 'Customer Address',
-                            initialValue: data['customer_address'],
-                            disableValidation: true,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            liestenToInitialValue:
-                                data['customer_address'] == null,
-                            onPressed: () async {
+                        title: CustomDropDownFromField(
+                            defaultValue: data['customer_address'],
+                            docType: APIService.FILTERED_ADDRESS,
+                            nameResponse: 'name',
+                            title: 'Customer Address'.tr(),
+                            filters: {
+                              'cur_nam': data['customer_name'],
+                            },
+                            onChange: (value) async {
                               if (data['customer_name'] == null) {
                                 return showSnackBar(
                                     'Please select a customer to first',
                                     context);
                               }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => customerAddressScreen(
-                                          data['customer_name'])));
+
                               setState(() {
-                                data['customer_address'] = res['name'];
+                                data['customer_address'] = value['name'];
                                 selectedCstData['address_line1'] =
-                                    res['address_line1'];
-                                selectedCstData['city'] = res['city'];
-                                selectedCstData['country'] = res['country'];
+                                    value['address_line1'];
+                                selectedCstData['city'] = value['city'];
+                                selectedCstData['country'] = value['country'];
                               });
-                              return res['name'];
                             }),
                         children: (data['customer_address'] != null)
                             ? <Widget>[
@@ -512,33 +527,33 @@ class _QuotationFormState extends State<QuotationForm> {
                             : null,
                       ),
                     if (_type == quotationType.customer)
+                      // New contact person
                       CustomExpandableTile(
                         hideArrow: data['customer_name'] == null,
-                        title: CustomTextFieldTest(
-                            'contact_person', 'Contact Person',
-                            initialValue: data['contact_person'],
-                            disableValidation: true,
-                            clearButton: false,
-                            onSave: (key, value) => data[key] = value,
-                            onPressed: () async {
+                        title: CustomDropDownFromField(
+                            defaultValue: data['contact_person'],
+                            docType: APIService.FILTERED_CONTACT,
+                            nameResponse: 'name',
+                            isValidate: false,
+                            title: 'Contact Person'.tr(),
+                            filters: {
+                              'cur_nam': data['customer_name'],
+                            },
+                            onChange: (value) {
                               if (data['customer_name'] == null) {
                                 showSnackBar(
                                     'Please select a customer', context);
                                 return null;
                               }
-                              final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => contactScreen(
-                                          data['customer_name'])));
                               setState(() {
-                                data['contact_person'] = res['name'];
+                                data['contact_person'] = value['name'];
                                 selectedCstData['contact_display'] =
-                                    res['contact_display'];
-                                selectedCstData['phone'] = res['phone'];
-                                selectedCstData['mobile_no'] = res['mobile_no'];
-                                selectedCstData['email_id'] = res['email_id'];
+                                    value['contact_display'];
+                                selectedCstData['phone'] = value['phone'];
+                                selectedCstData['mobile_no'] =
+                                    value['mobile_no'];
+                                selectedCstData['email_id'] = value['email_id'];
                               });
-                              return res['name'];
                             }),
                         children: (data['contact_person'] != null)
                             ? <Widget>[
@@ -566,20 +581,30 @@ class _QuotationFormState extends State<QuotationForm> {
                               ]
                             : null,
                       ),
+
                     if (_type == quotationType.lead)
-                      CustomTextField('campaign', 'Campaign',
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['campaign'],
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => campaignScreen()))),
+                      CustomDropDownFromField(
+                          defaultValue: data['campaign'],
+                          docType: APIService.CAMPAIGN,
+                          nameResponse: 'name',
+                          title: 'Campaign'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['campaign'] = value['name'];
+                            });
+                          }),
+
                     if (_type == quotationType.lead)
-                      CustomTextField('source', 'Source',
-                          onSave: (key, value) => data[key] = value,
-                          initialValue: data['source'],
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => sourceScreen()))),
+                      CustomDropDownFromField(
+                          defaultValue: data['source'],
+                          docType: APIService.SOURCE,
+                          nameResponse: 'name',
+                          title: 'Source'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['source'] = value['name'];
+                            });
+                          }),
                     const SizedBox(height: 8),
                   ],
                 ),
@@ -596,14 +621,17 @@ class _QuotationFormState extends State<QuotationForm> {
                         onChanged: (value) => data['order_type'] = value),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest('currency', 'Currency',
-                        initialValue:
+                    CustomDropDownFromField(
+                        defaultValue:
                             data['currency'] ?? userProvider.defaultCurrency,
-                        liestenToInitialValue: data['currency'] == null,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => currencyListScreen()))),
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: 'Currency'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['currency'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest(
                       'conversion_rate',
                       'Exchange Rate'.tr(),
@@ -616,29 +644,24 @@ class _QuotationFormState extends State<QuotationForm> {
                       onSave: (key, value) =>
                           data[key] = double.tryParse(value) ?? 1,
                     ),
-                    CustomTextFieldTest('selling_price_list', 'Price List'.tr(),
-                        initialValue: data['selling_price_list'] ??
+                    CustomDropDownFromField(
+                        defaultValue: data['selling_price_list'] ??
                             userProvider.defaultSellingPriceList,
-                        onChanged: (value) => setState(() {
-                              data['selling_price_list'] = value;
-                            }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => priceListScreen()));
-                          if (res != null && res.isNotEmpty) {
+                        docType: APIService.PRICE_LIST,
+                        nameResponse: 'name',
+                        title: 'Price List'.tr(),
+                        onChange: (value) {
+                          if (value != null && value.isNotEmpty) {
                             setState(() {
-                              if (data['selling_price_list'] != res['name']) {
+                              if (data['selling_price_list'] != value['name']) {
                                 provider.newItemList.clear();
                                 InheritedForm.of(context)
-                                    .data['selling_price_list'] = res['name'];
-                                data['selling_price_list'] = res['name'];
+                                    .data['selling_price_list'] = value['name'];
+                                data['selling_price_list'] = value['name'];
                               }
-                              data['price_list_currency'] = res['currency'];
+                              data['price_list_currency'] = value['currency'];
                             });
-                            return res['name'];
                           }
-                          return null;
                         }),
                     if (data['price_list_currency'] != null)
                       Align(
@@ -671,21 +694,26 @@ class _QuotationFormState extends State<QuotationForm> {
                         keyboardType: TextInputType.number,
                         onSave: (key, value) =>
                             data[key] = double.tryParse(value) ?? 1),
-                    CustomTextFieldTest(
-                        'payment_terms_template', 'Payment Terms Template'.tr(),
-                        initialValue: data['payment_terms_template'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => paymentTermsScreen()))),
-                    CustomTextFieldTest('tc_name', 'Terms & Conditions'.tr(),
-                        initialValue: data['tc_name'],
-                        onSave: (key, value) => data[key] = value,
-                        disableValidation: true,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => termsConditionScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['payment_terms_template'],
+                        docType: APIService.PAYMENT_TERMS,
+                        nameResponse: 'name',
+                        title: 'Payment Terms Template'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['payment_terms_template'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['tc_name'],
+                        docType: APIService.TERMS_CONDITION,
+                        nameResponse: 'name',
+                        title: 'Terms & Conditions'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['tc_name'] = value['name'];
+                          });
+                        }),
                     if (_terms != null)
                       Align(
                           alignment: Alignment.centerLeft,

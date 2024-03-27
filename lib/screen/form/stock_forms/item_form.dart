@@ -5,9 +5,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../page/generic_page.dart';
 import '../../../core/constants.dart';
 import '../../../service/service.dart';
@@ -249,60 +249,38 @@ class _ItemFormState extends State<ItemForm> {
                         initialValue: data['disabled'] == 1 ? true : false,
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
-                    CustomTextFieldTest('item_group', 'Item Group',
-                        disableValidation: false,
-                        initialValue: data['item_group'] ?? '',
-                        onChanged: (value) => setState(() {
-                              data['item_group'] = value;
-                            }),
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => itemGroupScreen(),
-                            ),
-                          );
-                          data['item_group'] = res;
-                          return res;
+                    // New Item group
+                    CustomDropDownFromField(
+                        defaultValue: data['item_group'],
+                        docType: 'Item Group',
+                        nameResponse: 'name',
+                        title: 'Item Group'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['item_group'] = value['name'];
+                          });
                         }),
-                    CustomTextFieldTest(
-                      'brand',
-                      'Brand',
-                      disableValidation: true,
-                      initialValue: data['brand'] ?? '',
-                      onChanged: (value) => setState(() {
-                        data['brand'] = value;
-                      }),
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => brandListScreen(),
-                          ),
-                        );
-                        data['brand'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'stock_uom',
-                      'Default UOM',
-                      disableValidation: false,
-                      initialValue: data['stock_uom'] ?? '',
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['stock_uom'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => uomListScreen(),
-                          ),
-                        );
-                        data['stock_uom'] = res;
-                        return res;
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['brand'],
+                        docType: 'Brand',
+                        nameResponse: 'name',
+                        title: 'Brand'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['brand'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['stock_uom'],
+                        docType: 'UOM',
+                        nameResponse: 'name',
+                        title: 'Default UOM'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['stock_uom'] = value['name'];
+                          });
+                        }),
+
                     CustomTextFieldTest(
                       'description',
                       'Description'.tr(),
@@ -329,56 +307,49 @@ class _ItemFormState extends State<ItemForm> {
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
                     if (data['is_fixed_asset'] == 1)
-                      CustomTextFieldTest(
-                        'asset_category',
-                        'Asset Category',
-                        disableValidation: false,
-                        initialValue: data['asset_category'] ?? '',
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => setState(() {
-                          data['asset_category'] = value;
-                        }),
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => assetCategoryListScreen()));
-                          return res['asset_category_name'];
-                        },
-                      ),
+                      CustomDropDownFromField(
+                          defaultValue: data['asset_category'],
+                          docType: APIService.ASSET_CATEGORY,
+                          nameResponse: 'name',
+                          title: 'Asset Category'.tr(),
+                          onChange: (value) {
+                            setState(() {
+                              data['asset_category'] = value['name'];
+                            });
+                          }),
+
                     CheckBoxWidget('is_sales_item', 'Is Sales Item',
                         initialValue: data['is_sales_item'] == 1 ? true : false,
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
-                    CustomTextFieldTest('sales_uom', 'Sales UOM',
-                        disableValidation: true,
-                        initialValue: data['sales_uom'] ?? '',
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => setState(() {
-                              data['sales_uom'] = value;
-                            }),
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => uomListScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['sales_uom'],
+                        docType: 'UOM',
+                        isValidate: false,
+                        nameResponse: 'name',
+                        title: 'Sales UOM'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['sales_uom'] = value['name'];
+                          });
+                        }),
+
                     CheckBoxWidget('is_purchase_item', 'Is Purchase Item',
                         initialValue:
                             data['is_purchase_item'] == 1 ? true : false,
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
-                    CustomTextFieldTest(
-                      'purchase_uom',
-                      'Purchase UOM',
-                      disableValidation: true,
-                      initialValue: data['purchase_uom'] ?? '',
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['purchase_uom'] = value;
-                      }),
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => uomListScreen(),
-                        ),
-                      ),
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['purchase_uom'],
+                        docType: 'UOM',
+                        isValidate: false,
+                        nameResponse: 'name',
+                        title: 'Purchase UOM'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['purchase_uom'] = value['name'];
+                          });
+                        }),
                     const SizedBox(height: 22),
                   ],
                 ),

@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../list/otherLists.dart';
 import '../../../core/constants.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
@@ -152,22 +152,16 @@ class _SupplierFormState extends State<SupplierForm> {
                     ),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                      'supplier_group',
-                      tr('Supplier Group'),
-                      initialValue: data['supplier_group'],
-                      onSave: (key, value) => data[key] = value,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => supplierGroupScreen(),
-                          ),
-                        );
-                        data['supplier_group'] = res;
-
-                        return res;
-                      },
-                    ),
+                    CustomDropDownFromField(
+                        defaultValue: data['supplier_group'],
+                        docType: APIService.SUPPLIER_GROUP,
+                        nameResponse: 'name',
+                        title: tr('Supplier Group'),
+                        onChange: (value) {
+                          setState(() {
+                            data['supplier_group'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest(
                       'tax_id',
                       tr('Tax ID'),
@@ -232,13 +226,18 @@ class _SupplierFormState extends State<SupplierForm> {
                       onSave: (key, value) => data[key] = value,
                     ),
                     //if (removeWhenUpdate)
-                    CustomTextFieldTest('country', tr('Country'),
-                        initialValue: data['country'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => countryScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['country'],
+                        docType: APIService.COUNTRY,
+                        nameResponse: 'name',
+                        isValidate: false,
+                        title: tr('Country'),
+                        onChange: (value) {
+                          setState(() {
+                            data['country'] = value['name'];
+                          });
+                        }),
+
                     if (!removeWhenUpdate)
                       CheckBoxWidget('disabled', 'Disabled'.tr(),
                           initialValue: data['disabled'] == 1,
@@ -254,37 +253,38 @@ class _SupplierFormState extends State<SupplierForm> {
               Group(
                 child: ListView(
                   children: [
-                    CustomTextFieldTest('default_currency', 'Currency',
-                        initialValue: data['default_currency'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => currencyListScreen()))),
-                    CustomTextFieldTest('default_price_list', 'Price List'.tr(),
-                        initialValue: data['default_price_list'] ?? userProvider.defaultBuyingPriceList,
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onPressed: () async {
-                          final res = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => buyingPriceListScreen()));
-                          if (res != null) {
-                            data['default_price_list'] = res['name'];
-
-                            return res['name'];
-                          }
-                          return null;
+                    CustomDropDownFromField(
+                        defaultValue: data['default_currency'] ??
+                            userProvider.defaultCurrency,
+                        docType: APIService.CURRENCY,
+                        nameResponse: 'name',
+                        title: tr('Currency'),
+                        onChange: (value) {
+                          setState(() {
+                            data['default_currency'] = value['name'];
+                          });
                         }),
-                    CustomTextFieldTest(
-                        'payment_terms', 'Payment Terms Template'.tr(),
-                        initialValue: data['payment_terms'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => data['payment_terms'] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => paymentTermsScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['default_price_list'] ??
+                            userProvider.defaultSellingPriceList,
+                        docType: APIService.PRICE_LIST,
+                        nameResponse: 'name',
+                        title: 'Price List'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['default_price_list'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['payment_terms'],
+                        docType: APIService.PAYMENT_TERMS,
+                        nameResponse: 'name',
+                        title: 'Payment Terms Template'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['payment_terms'] = value['name'];
+                          });
+                        }),
                   ],
                 ),
               ),

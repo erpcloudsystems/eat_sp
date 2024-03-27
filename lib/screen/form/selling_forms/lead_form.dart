@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../list/otherLists.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
@@ -138,60 +138,40 @@ class _LeadFormState extends State<LeadForm> {
                       enabled: true,
                       disableValidation: true,
                     ),
-                    CustomTextFieldTest(
-                      'industry',
-                      tr('Industry'),
-                      onSave: (key, value) => data[key] = value,
-                      initialValue: data['industry'],
-                      disableValidation: true,
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => industryScreen(),
-                          ),
-                        );
-                        data['industry'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'market_segment',
-                      tr('Market Segment'),
-                      initialValue: data['market_segment'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['market_segment'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => marketSegmentScreen(),
-                          ),
-                        );
-                        data['market_segment'] = res;
-                        return res;
-                      },
-                    ),
-                    CustomTextFieldTest(
-                      'territory',
-                      tr('Territory'),
-                      initialValue: data['territory'],
-                      disableValidation: true,
-                      onSave: (key, value) => data[key] = value,
-                      onChanged: (value) => setState(() {
-                        data['territory'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => territoryScreen(),
-                          ),
-                        );
-                        data['territory'] = res;
-                        return res;
-                      },
-                    ),
+                    // Industry
+                    CustomDropDownFromField(
+                        defaultValue: data['industry'],
+                        docType: APIService.INDUSTRY,
+                        nameResponse: 'name',
+                        title: tr('Industry'),
+                        onChange: (value) {
+                          setState(() {
+                            data['industry'] = value['name'];
+                          });
+                        }),
+                    // Market Segment
+                    CustomDropDownFromField(
+                        defaultValue: data['market_segment'],
+                        docType: APIService.MARKET_SEGMENT,
+                        nameResponse: 'name',
+                        title: tr('Market Segment'),
+                        onChange: (value) {
+                          setState(() {
+                            data['market_segment'] = value['name'];
+                          });
+                        }),
+
+                    // New territory
+                    CustomDropDownFromField(
+                        defaultValue: data['territory'],
+                        docType: APIService.TERRITORY,
+                        nameResponse: 'name',
+                        title: 'Territory'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['territory'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest(
                       'city',
                       'City',
@@ -202,25 +182,17 @@ class _LeadFormState extends State<LeadForm> {
                       initialValue: data['city'],
                       disableValidation: true,
                     ),
-                    CustomTextFieldTest(
-                      'country',
-                      tr('Country'),
-                      onSave: (key, value) => data[key] = value,
-                      initialValue: data['country'],
-                      disableValidation: true,
-                      onChanged: (value) => setState(() {
-                        data['country'] = value;
-                      }),
-                      onPressed: () async {
-                        final res = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => countryScreen(),
-                          ),
-                        );
-                        data['country'] = res;
-                        return res;
-                      },
-                    ),
+                    // New country
+                    CustomDropDownFromField(
+                        defaultValue: data['country'],
+                        docType: APIService.COUNTRY,
+                        nameResponse: 'name',
+                        title: tr('Country'),
+                        onChange: (value) {
+                          setState(() {
+                            data['country'] = value['name'];
+                          });
+                        }),
                     CustomTextFieldTest('mobile_no', tr('Mobile No'),
                         initialValue: data['mobile_no'],
                         disableValidation: true,
@@ -259,20 +231,26 @@ class _LeadFormState extends State<LeadForm> {
                         data['status'] = value;
                       }),
                     ),
-                    CustomTextFieldTest('source', 'Source'.tr(),
-                        onSave: (key, value) => data[key] = value,
-                        initialValue: data['source'],
-                        disableValidation: true,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => sourceScreen()))),
-                    CustomTextFieldTest('campaign_name', 'Campaign Name'.tr(),
-                        initialValue: data['campaign_name'],
-                        disableValidation: true,
-                        onSave: (key, value) => data[key] = value,
-                        onChanged: (value) => data['campaign_name'] = value,
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => campaignScreen()))),
+                    CustomDropDownFromField(
+                        defaultValue: data['source'],
+                        docType: APIService.SOURCE,
+                        nameResponse: 'name',
+                        title: tr('Source'),
+                        onChange: (value) {
+                          setState(() {
+                            data['source'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['campaign_name'],
+                        docType: APIService.CAMPAIGN,
+                        nameResponse: 'name',
+                        title: 'Campaign Name'.tr(),
+                        onChange: (value) {
+                          setState(() {
+                            data['campaign_name'] = value['name'];
+                          });
+                        }),
                     CustomDropDown('request_type', 'Request Type'.tr(),
                         items: requestTypeList,
                         defaultValue: requestTypeList[0],
