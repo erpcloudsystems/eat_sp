@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +22,17 @@ showLogsSheet(BuildContext context) {
 }
 
 class LogsBubble extends StatelessWidget {
-  final String logs;
+  const LogsBubble(this.log, {Key? key}) : super(key: key);
 
-  const LogsBubble(this.logs, {Key? key}) : super(key: key);
+  final Map<String, dynamic> log;
 
   @override
   Widget build(BuildContext context) {
-    List<String> parts = logs.split('\n');
-    String part1 = parts[0];
-    String part2 = parts[1];
-
+    final ({String timeLine, String time, String? detailedTime}) logObject = (
+      timeLine: log['timeline'],
+      time: log['time'],
+      detailedTime: log['detailed_Time'],
+    );
     return Container(
       padding: const EdgeInsets.fromLTRB(
         DoublesManager.d_12,
@@ -41,7 +41,6 @@ class LogsBubble extends StatelessWidget {
         DoublesManager.d_8,
       ),
       margin: const EdgeInsets.symmetric(vertical: DoublesManager.d_8),
-      height: DoublesManager.d_100.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DoublesManager.d_14),
         color: Colors.white,
@@ -54,26 +53,25 @@ class LogsBubble extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            part1,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              height: 1.6,
-            ),
-          ),
-          Text(
-            part2,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              height: 1.6,
-            ),
-          ),
-        ],
+      child: LogsBubbleTextWidget(logObject: logObject),
+    );
+  }
+}
+
+class LogsBubbleTextWidget extends StatelessWidget {
+  const LogsBubbleTextWidget({super.key, required this.logObject});
+
+  final ({String timeLine, String time, String? detailedTime}) logObject;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: logObject.detailedTime ?? 'Waiting for time',
+      child: Text(
+        '${logObject.timeLine}.  ${logObject.time}',
+        textAlign: TextAlign.left,
+        overflow: TextOverflow.visible,
+        softWrap: true,
       ),
     );
   }
