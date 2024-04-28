@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants.dart';
 import 'common_utils.dart';
 import 'common_page_sheet_body.dart';
 import '../../../provider/module/module_provider.dart';
@@ -65,13 +66,31 @@ class LogsBubbleTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: logObject.detailedTime ?? 'Waiting for time',
-      child: Text(
-        '${logObject.timeLine}.  ${logObject.time}',
-        textAlign: TextAlign.left,
-        overflow: TextOverflow.visible,
-        softWrap: true,
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: logObject.timeLine,
+            style: const TextStyle(color: Colors.black, fontSize: 14),
+          ),
+          WidgetSpan(
+            baseline: TextBaseline.alphabetic,
+            alignment: PlaceholderAlignment.baseline,
+            child: Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: Tooltip(
+                message: logObject.detailedTime ?? 'Waiting for time',
+                child: Text(
+                  logObject.time,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      color: APP_MAIN_COLOR,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

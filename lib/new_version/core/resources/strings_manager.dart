@@ -57,6 +57,7 @@ class StringsManager {
   static const String locationNotificationText = 'Tracking is activated';
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';
+  static const String addItemAtLeast = 'Please add an item at least';
   static const String areYouSureToGoBack = 'Are you sure to go back';
   static const String expectedStartTime = 'Expected Start Date';
   static const String selectWorkstation = 'Select Workstation';
@@ -68,10 +69,11 @@ class StringsManager {
   static const String wareHouseReport = 'Warehouse Balance';
   static const String expectedEndTime = 'Expected End Date';
   static const String editUserProfile = 'Edit User Profile';
-  static const String employeeCheckIn = 'Employee Checkin';
+  static const String noItemAvailable = 'No item available';
   static const String nextContactDate = 'Next Contact Date';
   static const String selectOperation = 'Select Operation';
   static const String customerBalance = 'Customer Balance';
+  static const String employeeCheckIn = 'Employee Checkin';
   static const String changeUrPhoto = 'Change your photo';
   static const String productionItem = 'Production Item';
   static const String withOperations = 'With Operations';
@@ -125,6 +127,8 @@ class StringsManager {
   static const String quantity = 'Quantity';
   static const String currency = 'Currency';
   static const String employee = 'Employee';
+  static const String updating = 'Updating';
+  static const String creating = 'Creating';
   static const String selling = 'Selling';
   static const String overdue = 'Overdue';
   static const String project = 'Project';
@@ -135,6 +139,7 @@ class StringsManager {
   static const String noData = 'No Data';
   static const String toTime = 'To Time';
   static const String toDate = 'To Date';
+  static const String cancel = 'Cancel';
   static const String select = 'Select';
   static const String create = 'Create';
   static const String bomNo = 'BOM No.';
@@ -154,6 +159,4 @@ class StringsManager {
   static const String paid = 'Paid';
   static const String faq = 'FAQ';
   static const String hr = 'HR';
-  static const String noItemAvailable = 'No item available';
-  static const String cancel = 'Cancel';
 }

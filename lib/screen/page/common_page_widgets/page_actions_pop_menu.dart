@@ -39,17 +39,17 @@ class PageActionPopMenu extends StatelessWidget {
               )),
               PopupMenuItem(
                   child: PagePopItem(
-                sheetFunction: showLogsSheet,
-                buttonText: StringsManager.logs.tr(),
-                dataKey: 'logs',
-                buttonIcon: Icons.history,
-              )),
-              PopupMenuItem(
-                  child: PagePopItem(
                 sheetFunction: showAttachments,
                 buttonText: StringsManager.attachments.tr(),
                 dataKey: 'attachments',
                 buttonIcon: Icons.attach_file,
+              )),
+              PopupMenuItem(
+                  child: PagePopItem(
+                sheetFunction: showLogsSheet,
+                buttonText: StringsManager.logs.tr(),
+                dataKey: 'logs',
+                buttonIcon: Icons.history,
               )),
             ]);
   }

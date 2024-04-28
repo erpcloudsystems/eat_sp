@@ -1,21 +1,24 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
-import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
-import '../../../provider/user/user_provider.dart';
-import '../../../widgets/new_widgets/custom_page_view_form.dart';
-import '../../../widgets/new_widgets/test_text_field.dart';
-import '../../../widgets/inherited_widgets/select_items_list.dart';
 import '../../page/generic_page.dart';
 import '../../../service/service.dart';
 import '../../../widgets/snack_bar.dart';
 import '../../../widgets/form_widgets.dart';
 import '../../../service/service_constants.dart';
+import '../../../provider/user/user_provider.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
+import '../../../widgets/new_widgets/test_text_field.dart';
+import '../../../widgets/new_widgets/custom_page_view_form.dart';
+import '../../../new_version/core/resources/strings_manager.dart';
+import '../../../widgets/inherited_widgets/select_items_list.dart';
+import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
 import '../../../models/list_models/stock_list_model/item_table_model.dart';
+import '../../../new_version/modules/new_item/presentation/pages/add_items.dart';
 import '../../../models/page_models/stock_page_model/stock_entry_page_model.dart';
 
 const List<String> stockEntryType = [
@@ -28,7 +31,7 @@ class StockEntryForm extends StatefulWidget {
   const StockEntryForm({Key? key}) : super(key: key);
 
   @override
-  _StockEntryFormState createState() => _StockEntryFormState();
+  State<StockEntryForm> createState() => _StockEntryFormState();
 }
 
 class _StockEntryFormState extends State<StockEntryForm> {
@@ -48,7 +51,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
     if (!_formKey.currentState!.validate()) return;
 
     if (provider.newItemList.isEmpty) {
-      showSnackBar('Please add an item at least', context);
+      showSnackBar(StringsManager.addItemAtLeast.tr(), context);
       return;
     }
 
@@ -62,11 +65,6 @@ class _StockEntryFormState extends State<StockEntryForm> {
 
     data['docstatus'] = 0;
     data['items'] = [];
-    // for (var element in _items) {
-    //   data['items'].add(element.toJson);
-    // }
-
-    /// New Item Set list of item in data item and post request,
     for (var element in provider.newItemList) {
       data['items'].add(element);
     }
@@ -74,40 +72,43 @@ class _StockEntryFormState extends State<StockEntryForm> {
     showLoadingDialog(
         context,
         provider.isEditing
-            ? 'Updating ${provider.pageId}'
-            : 'Creating Stock Entry');
+            ? '${StringsManager.updating.tr()} ${provider.pageId}'
+            : '${StringsManager.creating.tr()}  ${'DocType.${DocTypesName.stockEntry}'.tr()}');
 
     final server = APIService();
 
     for (var k in data.keys) {
-      print("$k: ${data[k]}");
+      log("$k: ${data[k]}");
     }
-    final res = await handleRequest(
-        () async => provider.isEditing
-            ? await provider.updatePage(data)
-            : await server.postRequest(STOCK_ENTRY_POST, {'data': data}),
-        context);
-
-    Navigator.pop(context);
-
-    if (provider.isEditing && res == false) {
-      return;
-    } else if (provider.isEditing && res == null) {
+    await handleRequest(
+            () async => provider.isEditing
+                ? await provider.updatePage(data)
+                : await server.postRequest(STOCK_ENTRY_POST, {'data': data}),
+            context)
+        .then((res) {
       Navigator.pop(context);
-    } else if (context.read<ModuleProvider>().isCreateFromPage) {
-      if (res != null && res['message']['stock_entry'] != null) {
-        context.read<ModuleProvider>().pushPage(res['message']['stock_entry']);
+
+      if (provider.isEditing && res == false) {
+        return;
+      } else if (provider.isEditing && res == null) {
+        Navigator.pop(context);
+      } else if (context.read<ModuleProvider>().isCreateFromPage) {
+        if (res != null && res['message']['stock_entry'] != null) {
+          context
+              .read<ModuleProvider>()
+              .pushPage(res['message']['stock_entry']);
+        }
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => const GenericPage(),
+            ))
+            .then((value) => Navigator.pop(context));
+      } else if (res != null && res['message']['stock_entry'] != null) {
+        provider.pushPage(res['message']['stock_entry']);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const GenericPage()));
       }
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (_) => const GenericPage(),
-          ))
-          .then((value) => Navigator.pop(context));
-    } else if (res != null && res['message']['stock_entry'] != null) {
-      provider.pushPage(res['message']['stock_entry']);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const GenericPage()));
-    }
+    });
   }
 
   Future<String?> _getActualQty(String warehouse, String itemCode) async {
@@ -120,7 +121,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
         return res;
       }
     } catch (e) {
-      print('Can\'t get warehouse actual qty because : $e');
+      log('Can\'t get warehouse actual qty because : $e');
     }
     return '0';
   }
@@ -137,14 +138,9 @@ class _StockEntryFormState extends State<StockEntryForm> {
         data = provider.updateData;
 
         final items = StockEntryPageModel(data).items;
-        //New Item
         for (var element in items) {
           provider.setItemToList(element);
         }
-        // for (var element in items) {
-        //   final item = ItemSelectModel.fromJson(element);
-        //   _items.add(ItemQuantity(item, qty: item.qty));
-        // }
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -161,12 +157,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
         data = context.read<ModuleProvider>().createFromPageData;
         data['doctype'] = "Stock Entry";
         InheritedForm.of(context).items.clear();
-        // for (var element in data['items']) {
-        //   final item = ItemSelectModel.fromJson(element);
-        //   _items.add(ItemQuantity(item, qty: item.qty));
-        // }
 
-        /// New Item
         data['items'].forEach((element) {
           provider.newItemList.add(element);
         });
@@ -189,7 +180,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
         data.remove('_currentModule');
         data.remove('status');
         data.remove('organization_lead');
-        print('sdfsdfsd${data['items']}');
+        log('${data['items']}');
         setState(() {});
       });
     }
@@ -199,7 +190,6 @@ class _StockEntryFormState extends State<StockEntryForm> {
   void deactivate() {
     super.deactivate();
     context.read<ModuleProvider>().resetCreationForm();
-    // InheritedForm.of(context).items.clear();
   }
 
   @override
@@ -209,7 +199,8 @@ class _StockEntryFormState extends State<StockEntryForm> {
     }
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, StringsManager.areYouSureToGoBack.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);
@@ -258,7 +249,8 @@ class _StockEntryFormState extends State<StockEntryForm> {
                             'trailing': 'warehouse_type',
                           },
                           onChange: (value) async {
-                            if (value != null) data['from_warehouse'] = value;
+                            log('value $value');
+                            if (value != null) data['from_warehouse'] = value['name'];
 
                             // to update Actual Qty for each item
                             for (var value in _items) {
@@ -266,7 +258,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
                                   data['from_warehouse'].toString(),
                                   value.itemCode);
                               value.actualQty = actualQty.toString();
-                              print('Actual Qty (at source/target) $actualQty');
+                              log('Actual Qty (at source/target) $actualQty');
                             }
                             setState(() {});
                           }),

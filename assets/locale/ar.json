@@ -1,5 +1,4 @@
 {
-  "Are you sure to go back?": "هل تريد الرجوع؟",
   "none": "فارغ",
   "Password": "الرقم السري",
   "remember_me": "تذكرني",
@@ -293,6 +292,9 @@
   "Return":"مرتجع",
   "Create":"انشاء",
   "noItemAvailable" : "لا توجد عناصر متاحة",  
+  "Please add an item at least" : "الرجاء أضافة عنصر على الاقل",  
+  "Updating" : "تحديث",  
+  "Creating" : "انشاء",  
   "Modules": {
     "Modules": "المستندات",
     "Selling": "المبيعات",

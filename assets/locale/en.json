@@ -293,6 +293,9 @@
   "Sales": "Sales",
   "Return": "Return",
   "noItemAvailable": "No items available",
+  "Please add an item at least": "Please add an item at least",
+  "Updating": "Updating",
+  "Creating": "Creating",
   "Modules": {
     "Modules": "Modules",
     "Selling": "Selling",
