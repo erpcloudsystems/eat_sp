@@ -4,8 +4,7 @@ import 'package:latlong2/latlong.dart';
 
 class CustomMapView extends StatefulWidget {
   const CustomMapView(
-      {Key? key, required this.latitude, required this.longitude})
-      : super(key: key);
+      {super.key, required this.latitude, required this.longitude});
 
   final double latitude;
   final double longitude;
@@ -28,7 +27,7 @@ class _CustomMapViewState extends State<CustomMapView> {
         height: 80,
         point: LatLng(double.parse(widget.latitude.toString()),
             double.parse(widget.longitude.toString())),
-        builder: (ctx) => Icon(
+        child: const Icon(
           Icons.location_on,
           color: Colors.redAccent,
           size: 40,
@@ -51,7 +50,7 @@ class _CustomMapViewState extends State<CustomMapView> {
       children: [
         SizedBox(
           child: Container(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -69,9 +68,9 @@ class _CustomMapViewState extends State<CustomMapView> {
               borderRadius: BorderRadius.circular(12),
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(double.parse(widget.latitude.toString()),
+                  initialCenter: LatLng(double.parse(widget.latitude.toString()),
                       double.parse(widget.longitude.toString())),
-                  zoom: 14,
+                  initialZoom: 14,
 
                   minZoom: 2,
                   maxZoom: 30,
@@ -83,7 +82,7 @@ class _CustomMapViewState extends State<CustomMapView> {
                   TileLayer(
                     tileProvider: NetworkTileProvider(),
                     maxZoom: 30,
-                    subdomains: ['a', 'b', 'c'],
+                    subdomains: const ['a', 'b', 'c'],
                     urlTemplate:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     // urlTemplate:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
@@ -104,7 +103,7 @@ class _CustomMapViewState extends State<CustomMapView> {
                   color: Colors.orange.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(8)),
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.my_location,
                   color: Colors.black87,
                 ),

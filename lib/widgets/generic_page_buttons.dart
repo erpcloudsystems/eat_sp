@@ -159,8 +159,10 @@ class AttachmentPageButton extends StatelessWidget {
               const TextStyle(fontSize: 13, color: Colors.black, height: 1.5),
         ),
         stackFit: StackFit.passthrough,
-        badgeColor: Colors.redAccent,
-        elevation: 0,
+        badgeStyle: const badges.BadgeStyle(
+          badgeColor: Colors.redAccent,
+          elevation: 0,
+        ),
         showBadge: moduleProvider.pageData['attachments']?.length == null
             ? false
             : moduleProvider.pageData['attachments']?.length == 0

@@ -114,7 +114,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
   Future<String?> _getActualQty(String warehouse, String itemCode) async {
     try {
       final res = Map<String, dynamic>.from(await APIService().genericGet(
-                  'method/ecs_mobile.general.get_actual_qty?warehouse=$warehouse&item_code=$itemCode'))[
+                  'method/ecs_eat.eat_sp.general.get_actual_qty?warehouse=$warehouse&item_code=$itemCode'))[
               'message']['actual_qty']
           .toString();
       if (res != 'null') {
@@ -250,7 +250,8 @@ class _StockEntryFormState extends State<StockEntryForm> {
                           },
                           onChange: (value) async {
                             log('value $value');
-                            if (value != null) data['from_warehouse'] = value['name'];
+                            if (value != null)
+                              data['from_warehouse'] = value['name'];
 
                             // to update Actual Qty for each item
                             for (var value in _items) {

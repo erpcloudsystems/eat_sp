@@ -49,9 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
       const NotificationScreen(),
       const SettingsMenu(),
     ];
-
     return UpgradeAlert(
-      upgrader: Upgrader(shouldPopScope: () => true),
+      upgrader: Upgrader(),
       child: ColorfulSafeArea(
         color: APPBAR_COLOR,
         child: Scaffold(

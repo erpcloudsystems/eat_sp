@@ -120,7 +120,7 @@ class ModuleProvider extends ChangeNotifier {
   List<Map<String, dynamic>> newItemList = [];
   double netTotal = 0.0;
 
-   set setNetTotal(double value) {
+  set setNetTotal(double value) {
     netTotal = value;
 
     notifyListeners();
@@ -137,7 +137,7 @@ class ModuleProvider extends ChangeNotifier {
 
   Future<void> getUOM({required String itemCode}) async {
     var response = await APIService().genericGet(
-      'method/ecs_mobile.general.get_item_uoms',
+      'method/ecs_eat.eat_sp.general.get_item_uoms',
       {
         'item_code': itemCode,
       },
@@ -498,7 +498,7 @@ class ModuleProvider extends ChangeNotifier {
     return count;
   }
 
-   Future<void> submitDocument(BuildContext context) async {
+  Future<void> submitDocument(BuildContext context) async {
     final res = await checkDialog(context,
         'Are you sure to submit ${_currentModule!.genericListService} $_pageId');
     if (res == false) loadPage();
@@ -615,7 +615,6 @@ class ModuleProvider extends ChangeNotifier {
             showSnackBar('File Uploaded Successfully', context);
           });
           notifyListeners();
-          
         }
       } catch (e) {}
     }

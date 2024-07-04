@@ -949,7 +949,7 @@ Widget filteredUOMListScreen(String itemCode) =>
     GenericListScreen<Map<String, dynamic>>(
       title: 'Select UoM',
       service: 'UOM',
-      customServiceURL: 'method/ecs_mobile.general.get_item_uoms',
+      customServiceURL: 'method/ecs_eat.eat_sp.general.get_item_uoms',
       filters: {'item_code': itemCode},
       listItem: (value) => SingleValueTile(value['uom'],
           onTap: (context) => Navigator.of(context).pop(value)),

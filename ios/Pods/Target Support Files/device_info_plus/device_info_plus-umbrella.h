@@ -10,7 +10,7 @@
 #endif
 #endif
 
-#import "FLTDeviceInfoPlusPlugin.h"
+#import "FPPDeviceInfoPlusPlugin.h"
 
 FOUNDATION_EXPORT double device_info_plusVersionNumber;
 FOUNDATION_EXPORT const unsigned char device_info_plusVersionString[];

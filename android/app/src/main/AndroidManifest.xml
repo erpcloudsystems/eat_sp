@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-          package="mobi.nextapp.next_app">
+          package="com.eat_sp.eat_sp">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -16,7 +16,7 @@
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
     <application
-            android:label="NextApp"
+            android:label="EAT SP"
             android:requestLegacyExternalStorage="true"
             android:icon="@mipmap/launcher_icon"
             android:usesCleartextTraffic="true">

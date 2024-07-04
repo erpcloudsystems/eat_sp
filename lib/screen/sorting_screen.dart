@@ -51,7 +51,7 @@ class _SortingScreenState extends State<SortingScreen> {
       onFinish: () {
         context.read<UserProvider>().setShowcaseProgress('filter_tut');
       },
-      builder: Builder(builder: (context) {
+      builder:(context)=> Builder(builder: (context) {
         showCaseContext = context;
         return Scaffold(
           appBar: AppBar(

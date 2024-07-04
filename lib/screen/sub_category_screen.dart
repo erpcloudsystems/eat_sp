@@ -76,7 +76,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                     onComplete: (index, key) {
                       userProvider.setShowcaseProgress('list_tut');
                     },
-                    builder: Builder(
+                    builder:(ctx)=> Builder(
                         builder: (context) => GenericListScreen.module()),
                   ),
                 ),

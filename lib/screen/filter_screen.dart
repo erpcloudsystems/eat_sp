@@ -10,7 +10,7 @@ import 'package:showcaseview/showcaseview.dart';
 import '../core/constants.dart';
 
 class FilterScreen extends StatefulWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+  const FilterScreen({super.key});
 
   static _FilterScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<_FilterScreenState>()!;
@@ -34,7 +34,10 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!context.read<UserProvider>().showcaseProgress!.contains('filter_tut')) {
+    if (!context
+        .read<UserProvider>()
+        .showcaseProgress!
+        .contains('filter_tut')) {
       Future.delayed(Duration.zero, () {
         ShowCaseWidget.of(showCaseContext)
             .startShowCase([clearFiltersGK, chooseFiltersGK, applyFiltersGK]);
@@ -48,7 +51,7 @@ class _FilterScreenState extends State<FilterScreen> {
       onFinish: () {
         context.read<UserProvider>().setShowcaseProgress('filter_tut');
       },
-      builder: Builder(builder: (context) {
+      builder: (ctx) => Builder(builder: (context) {
         showCaseContext = context;
         return Scaffold(
           appBar: AppBar(

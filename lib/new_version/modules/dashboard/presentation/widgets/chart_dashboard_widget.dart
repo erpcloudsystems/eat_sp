@@ -7,15 +7,17 @@ import '../../../../../core/cloud_system_widgets.dart';
 
 class ChartDashboardWidget extends StatelessWidget {
   const ChartDashboardWidget({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
   final List<BarChartModel> data;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8, ),
+      margin: const EdgeInsets.only(
+        bottom: 8,
+      ),
       height: 220,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -31,25 +33,26 @@ class ChartDashboardWidget extends StatelessWidget {
       ),
       child: SfCartesianChart(
         plotAreaBorderColor: Colors.white,
-        primaryXAxis: CategoryAxis(
-          majorGridLines: const MajorGridLines(color: Colors.transparent),
-          minorGridLines: const MinorGridLines(color: Colors.transparent),
+        primaryXAxis: const CategoryAxis(
+          majorGridLines: MajorGridLines(color: Colors.transparent),
         ),
-        primaryYAxis: CategoryAxis(
-          majorGridLines: const MajorGridLines(color: Colors.transparent),
-          minorGridLines: const MinorGridLines(color: Colors.transparent),
+        primaryYAxis: const CategoryAxis(
+          majorGridLines: MajorGridLines(color: Colors.transparent),
         ),
         enableAxisAnimation: true,
-        legend: Legend(isVisible: true),
+        legend: const Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
-        series: <ChartSeries<BarChartModel, String>>[
+        series: <CartesianSeries<BarChartModel, String>>[
           ColumnSeries<BarChartModel, String>(
-            spacing: 1.6,
+            spacing: .6,
             isVisibleInLegend: false,
             dataSource: data,
-            xValueMapper: (BarChartModel barChartModel, _) => barChartModel.title!.translateDashBoardStatus(),
-            yValueMapper: (BarChartModel barChartModel, _) => barChartModel.count,
-            pointColorMapper: (BarChartModel barChartModel, _) => statusColor(barChartModel.title!),
+            xValueMapper: (BarChartModel barChartModel, _) =>
+                barChartModel.title!.translateDashBoardStatus(),
+            yValueMapper: (BarChartModel barChartModel, _) =>
+                barChartModel.count,
+            pointColorMapper: (BarChartModel barChartModel, _) =>
+                statusColor(barChartModel.title!),
             dataLabelSettings: const DataLabelSettings(
               isVisible: true,
             ),

@@ -1,3 +1,4 @@
+import '../../new_version/core/resources/strings_manager.dart';
 import '../../widgets/dismiss_keyboard.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var userNameController = TextEditingController(text: 'mobile');
-  var passwordController = TextEditingController(text: 'Ecs_2021');
-  var urlController =
-      TextEditingController(text: 'https://mobile.erpcloud.systems');
+  var userNameController = TextEditingController(text: 'em@gmail.com');
+  var passwordController = TextEditingController(text: 'Erp@123@');
+  var urlController = TextEditingController(text: 'https://eat.erpnext.cloud');
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;
   final APIService service = APIService();
@@ -91,11 +91,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text("Welcome")),
-                        const Text("To NextApp"),
+                        const Text(ConstantStrings.appName),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: TextField(
                                 controller: urlController,
+                                enabled: false,
                                 decoration: textFieldDecoration.copyWith(
                                   labelText: "Url",
                                 ))),
@@ -154,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: Text(
                                         tr("for_pass"),
                                         style: const TextStyle(
-                                            color: Color(0xff0488FA)),
+                                            color: APPBAR_COLOR),
                                       ),
                                     ),
                                   ],
@@ -169,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Container(
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: const Color(0xff0488FA),
+                                        color: APPBAR_COLOR,
                                         border: Border.all(
                                             color: const Color(0xffE8E8E8),
                                             width: 1.5),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ReportCharts extends StatelessWidget {
-  const ReportCharts({Key? key}) : super(key: key);
+  const ReportCharts({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class ReportCharts extends StatelessWidget {
           Expanded(
             flex: 2,
             child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
+              primaryXAxis: const CategoryAxis(),
               // Chart title
               // Enable legend
-              legend: Legend(isVisible: true),
+              legend: const Legend(isVisible: true),
               // Enable tooltip
               tooltipBehavior: TooltipBehavior(enable: true),
-              series: <ChartSeries<_SalesData, String>>[
+              series: <CartesianSeries<_SalesData, String>>[
                 ColumnSeries<_SalesData, String>(
                   dataSource: data,
                   xValueMapper: (_SalesData sales, _) => sales.year,
@@ -35,7 +35,7 @@ class ReportCharts extends StatelessWidget {
                   spacing: .4,
                   pointColorMapper: (_SalesData data, _) => data.color,
                   // Enable data label
-                  dataLabelSettings: DataLabelSettings(
+                  dataLabelSettings: const DataLabelSettings(
                     isVisible: true,
                   ),
                 )

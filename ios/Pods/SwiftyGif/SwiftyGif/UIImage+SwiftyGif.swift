@@ -112,17 +112,12 @@ public extension UIImage {
     func framesCount() -> Int {
         return displayOrder?.count ?? 0
     }
-
-    private func giflog(_ msg: String) {
-        print("SwiftyGIF: \(msg)")
-    }
     
     /// Set backing data for this gif. Overwrites any existing data.
     ///
     /// - Parameter name: Filename
     /// - Parameter levelOfIntegrity: 0 to 1, 1 meaning no frame skipping
     func setGif(_ name: String, levelOfIntegrity: GifLevelOfIntegrity, bundle: Bundle = Bundle.main) throws {
-        giflog(bundle.debugDescription)
         if let url = bundle.url(forResource: name, withExtension: name.pathExtension() == "gif" ? "" : "gif") {
             if let data = try? Data(contentsOf: url) {
                 try setGifFromData(data, levelOfIntegrity: levelOfIntegrity)
@@ -214,22 +209,30 @@ public extension UIImage {
         let levelOfIntegrity = max(0, min(1, levelOfIntegrity))
         var delays = delaysArray
 
-        var displayRefreshFactors = [60, 30, 20, 15, 12, 10, 6, 5, 4, 3, 2, 1]
-        
-        if #available(iOS 10.3, tvOS 10.3, *) {
+        var displayRefreshFactors = [Int]()
+
+        displayRefreshFactors.append(contentsOf: [60, 30, 20, 15, 12, 10, 6, 5, 4, 3, 2, 1])
+
+        let defaultMaxFramePerSecond = 60
+        var maxFramePerSecond = defaultMaxFramePerSecond
+
+        if #available(iOS 10.3, *) {
             // Will be 120 on devices with ProMotion display, 60 otherwise.
-            // TODO: Use CADisplayLink to get current framerate. This is still 120 on ProMotion dispays even in low power mode.
             let maximumFramesPerSecond = UIScreen.main.maximumFramesPerSecond
             if maximumFramesPerSecond == 120 {
+                maxFramePerSecond = maximumFramesPerSecond
                 displayRefreshFactors.insert(maximumFramesPerSecond, at: 0)
             }
         }
-        
-        let maxFramePerSecond = displayRefreshFactors[0]
-        
+
+        let frameRateRatio = Float(maxFramePerSecond / defaultMaxFramePerSecond)
+
+        // frame numbers per second
+        let displayRefreshRates = displayRefreshFactors.map { maxFramePerSecond / $0 }
+
         // time interval per frame
-        let displayRefreshDelayTime = displayRefreshFactors.map { Float($0) / Float(maxFramePerSecond) }
-        
+        let displayRefreshDelayTime = displayRefreshRates.map { frameRateRatio / Float($0) }
+
         // calculate the time when each frame should be displayed at(start at 0)
         for i in delays.indices.dropFirst() {
             delays[i] += delays[i - 1]

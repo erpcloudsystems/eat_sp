@@ -362,7 +362,7 @@ class _SelectedAccountsListState extends State<SelectedAccountsList> {
                                                                       dynamic>.from(
                                                                   await APIService()
                                                                       .genericGet(
-                                                                          'method/ecs_mobile.general.general_service?doctype=Account&filter2=${InheritedAccountForm.of(context).account[index].account}'))['message']
+                                                                          'method/ecs_eat.eat_sp.general.general_service?doctype=Account&filter2=${InheritedAccountForm.of(context).account[index].account}'))['message']
                                                               [
                                                               0]['account_type'];
 

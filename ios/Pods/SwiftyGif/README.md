@@ -12,6 +12,8 @@ High performance & easy to use Gif engine
     <img src="https://github.com/kirualex/SwiftyGif/blob/master/example.gif" align="center" />
 </p>
 
+> Language Switch: [한국어](README_KR.md)
+
 ## Features
 - [x] UIImage and UIImageView extension based
 - [x] Remote GIFs with customizable loader
@@ -43,7 +45,9 @@ https://github.com/kirualex/SwiftyGif.git
 
 ## How to Use
 
-### Project files
+### Project files  
+![projec-file-explain](projec-file-explain.png)  
+
 As of now, Xcode `xcassets` folders do not recognize `.gif` as images. This means you need to put your `.gif` outside of the assets. I recommend creating a group `gif` for instance. 
 
 ### Quick Start
@@ -84,6 +88,33 @@ let loader = UIActivityIndicatorView(style: .white)
 cell.gifImageView.setGifFromURL(url, customLoader: loader)
 ```
 
+
+#### SwiftUI
+
+Add this `UIViewRepresentable` to your code.
+
+```swift
+struct AnimatedGifView: UIViewRepresentable {
+    @Binding var url: URL
+
+    func makeUIView(context: Context) -> UIImageView {
+        let imageView = UIImageView(gifURL: self.url)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }
+
+    func updateUIView(_ uiView: UIImageView, context: Context) {
+        uiView.setGifFromURL(self.url)
+    }
+}
+```
+
+Then to use it: 
+
+```swift
+AnimatedGifView(url: Binding(get: { myModel.gif.url }, set: { _ in }))
+```
+
 ### Performances
 A  `SwiftyGifManager`  can hold one or several UIImageView using the same memory pool. This allows you to tune the memory limits to your convenience. If no manager is declared, SwiftyGif will just use the `SwiftyGifManager.defaultManager`.
 
@@ -111,7 +142,7 @@ self.myImageView.showFrameAtIndex(index: Int)
 To allow easy use of those controls, some utility methods are provided :
 
 ```swift
-self.myImageView.isAnimatingGif() // Returns wether the gif is currently playing
+self.myImageView.isAnimatingGif() // Returns whether the gif is currently playing
 self.myImageView.gifImage!.framesCount() // Returns number of frames for this gif
 ```
 
@@ -168,4 +199,3 @@ extension MyController : SwiftyGifDelegate {
 |SwiftyGif(memoryLimit:20)|45%      |26Mb                     |
 
 Measured on an iPhone 6S, iOS 9.3.1 and Xcode 7.3.
-

@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "mobi.nextapp.next_app"
+        applicationId "com.eat_sp.eat_sp"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

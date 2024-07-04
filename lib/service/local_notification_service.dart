@@ -83,24 +83,17 @@ class LocalNotificationService {
     InitializationSettings initializationSettings =
         const InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
-      iOS: IOSInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
-      ),
     );
     _notificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: (String? payload) async {
-        if (payload != null) {
-          final List payloadDetails = json.decode(payload);
+      onDidReceiveNotificationResponse: (payload) async {
+        final List payloadDetails = json.decode(payload.payload!);
 
-          navigateFromNotification(
-            context: context,
-            docType: payloadDetails[0],
-            docName: payloadDetails[1],
-          );
-        }
+        navigateFromNotification(
+          context: context,
+          docType: payloadDetails[0],
+          docName: payloadDetails[1],
+        );
       },
     );
   }
@@ -110,18 +103,14 @@ class LocalNotificationService {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
       const NotificationDetails notificationDetails = NotificationDetails(
-          android: AndroidNotificationDetails(
-            "nextapp-notification-channel",
-            "nextapp-notification-channel channel",
-            channelDescription: "this is NextApp Notification channel",
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
-          iOS: IOSNotificationDetails(
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true,
-          ));
+        android: AndroidNotificationDetails(
+          "nextapp-notification-channel",
+          "nextapp-notification-channel channel",
+          channelDescription: "this is NextApp Notification channel",
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      );
 
       // Here we convert the notification details to String as Payload doesn't accept
       // any other data types in this version.

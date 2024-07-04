@@ -14,13 +14,12 @@ final applyFiltersGK = GlobalKey();
 
 class CustomShowCase extends StatelessWidget {
   const CustomShowCase(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.title,
       required this.description,
       this.overlayPadding,
-      required this.globalKey})
-      : super(key: key);
+      required this.globalKey});
 
   final String title;
   final String description;
@@ -33,11 +32,10 @@ class CustomShowCase extends StatelessWidget {
     return Showcase(
       key: globalKey,
       title: title,
-      titleTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+      titleTextStyle:
+          const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
       description: description,
-      shapeBorder: const CircleBorder(),
-      radius: const BorderRadius.all(Radius.circular(8)),
-      overlayPadding: overlayPadding ?? EdgeInsets.zero,
+
       blurValue: 1,
       // showArrow: false,
       child: child,
