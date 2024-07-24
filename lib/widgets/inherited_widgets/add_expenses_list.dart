@@ -73,12 +73,12 @@ class _SelectedExpensesListState extends State<SelectedExpensesList> {
 
     initExpense[
         'cost_center'] = Map<String, dynamic>.from(await APIService().genericGet(
-            'method/ecs_eat.eat_sp.general.general_service?doctype=${APIService.COMPANY}'))[
+            'method/eat_mobile.general.general_service?doctype=${APIService.COMPANY}'))[
         'message'][0]['round_off_cost_center'];
 
     InheritedExpenseForm.of(context).taxData[
         'cost_center'] = Map<String, dynamic>.from(await APIService().genericGet(
-            'method/ecs_eat.eat_sp.general.general_service?doctype=${APIService.COMPANY}'))[
+            'method/eat_mobile.general.general_service?doctype=${APIService.COMPANY}'))[
         'message'][0]['round_off_cost_center'];
     setState(() {});
     print('asdas${InheritedExpenseForm.of(context).taxData['cost_center']}');

@@ -27,7 +27,7 @@ import '../../../models/page_models/selling_page_model/sales_invoice_page_model.
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
 class SalesInvoiceForm extends StatefulWidget {
-  const SalesInvoiceForm({Key? key}) : super(key: key);
+  const SalesInvoiceForm({super.key});
 
   @override
   State<SalesInvoiceForm> createState() => _SalesInvoiceFormState();
@@ -591,21 +591,21 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           initialValue: data['is_return'] == 1 ? true : false,
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
-                      CustomDropDownFromField(
-                          defaultValue: data['project'],
-                          docType: APIService.PROJECT,
-                          nameResponse: 'name',
-                          isValidate: false,
-                          keys: const {
-                            "subTitle": 'project_name',
-                            "trailing": 'status',
-                          },
-                          title: 'Project'.tr(),
-                          onChange: (value) {
-                            setState(() {
-                              data['project'] = value['name'];
-                            });
-                          }),
+                      // CustomDropDownFromField(
+                      //     defaultValue: data['project'],
+                      //     docType: APIService.PROJECT,
+                      //     nameResponse: 'name',
+                      //     isValidate: false,
+                      //     keys: const {
+                      //       "subTitle": 'project_name',
+                      //       "trailing": 'status',
+                      //     },
+                      //     title: 'Project'.tr(),
+                      //     onChange: (value) {
+                      //       setState(() {
+                      //         data['project'] = value['name'];
+                      //       });
+                      //     }),
                       CustomDropDownFromField(
                           defaultValue: data['cost_center'],
                           docType: APIService.COST_CENTER,
@@ -625,6 +625,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           defaultValue:
                               data['currency'] ?? userProvider.defaultCurrency,
                           docType: APIService.CURRENCY,
+                          enable: false,
                           nameResponse: 'name',
                           title: 'Currency'.tr(),
                           onChange: (value) {
@@ -638,6 +639,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         clearButton: true,
                         initialValue: '${data['conversion_rate'] ?? ''}',
                         disableValidation: true,
+                        enabled: false,
                         hintText: '1',
                         validator: (value) =>
                             numberValidation(value, allowNull: true),
@@ -649,6 +651,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           defaultValue: data['selling_price_list'] ??
                               userProvider.defaultSellingPriceList,
                           docType: APIService.PRICE_LIST,
+                          enable: false,
                           nameResponse: 'name',
                           title: 'Price List'.tr(),
                           onChange: (value) {

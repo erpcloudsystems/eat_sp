@@ -25,7 +25,7 @@ import '../../../models/page_models/selling_page_model/sales_order_model.dart';
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
 class SalesOrderForm extends StatefulWidget {
-  const SalesOrderForm({Key? key}) : super(key: key);
+  const SalesOrderForm({super.key});
 
   @override
   _SalesOrderFormState createState() => _SalesOrderFormState();
@@ -526,20 +526,20 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                   shrinkWrap: true,
                   children: [
                     const SizedBox(height: 4),
-                    CustomDropDownFromField(
-                        defaultValue: data['project'],
-                        docType: APIService.PROJECT,
-                        nameResponse: 'name',
-                        keys: const {
-                          "subTitle": 'project_name',
-                          "trailing": 'status',
-                        },
-                        title: 'Project'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['project'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['project'],
+                    //     docType: APIService.PROJECT,
+                    //     nameResponse: 'name',
+                    //     keys: const {
+                    //       "subTitle": 'project_name',
+                    //       "trailing": 'status',
+                    //     },
+                    //     title: 'Project'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['project'] = value['name'];
+                    //       });
+                    //     }),
                     CustomDropDown('order_type', 'Order Type'.tr(),
                         items: orderTypeList,
                         defaultValue: data['order_type'] ?? orderTypeList[0],
@@ -550,6 +550,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         defaultValue:
                             data['currency'] ?? userProvider.defaultCurrency,
                         docType: APIService.CURRENCY,
+                        enable: false,
                         nameResponse: 'name',
                         title: 'Currency'.tr(),
                         onChange: (value) {
@@ -574,6 +575,7 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                         defaultValue: data['selling_price_list'] ??
                             userProvider.defaultSellingPriceList,
                         docType: APIService.PRICE_LIST,
+                        enable: false,
                         nameResponse: 'name',
                         title: 'Price List'.tr(),
                         onChange: (value) {

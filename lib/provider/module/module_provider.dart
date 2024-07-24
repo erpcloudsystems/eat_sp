@@ -137,7 +137,7 @@ class ModuleProvider extends ChangeNotifier {
 
   Future<void> getUOM({required String itemCode}) async {
     var response = await APIService().genericGet(
-      'method/ecs_eat.eat_sp.general.get_item_uoms',
+      'method/eat_mobile.general.get_item_uoms',
       {
         'item_code': itemCode,
       },

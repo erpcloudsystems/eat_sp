@@ -1,115 +1,26 @@
 {
   "project_info": {
-    "project_number": "554398885603",
-    "project_id": "nextapp-9fd93",
-    "storage_bucket": "nextapp-9fd93.appspot.com"
+    "project_number": "89927184410",
+    "project_id": "eat-sp",
+    "storage_bucket": "eat-sp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:554398885603:android:6cb3f01a261c7246cc07d6",
+        "mobilesdk_app_id": "1:89927184410:android:65a7fed6b1f0e49fb6a1a3",
         "android_client_info": {
-          "package_name": "mobi.egeu.egeu_app"
+          "package_name": "com.eatsp.eatsp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAm3_r2PGRYdttl7O7BoTxn0Q9nTRMXIrs"
+          "current_key": "AIzaSyCQNd3VRh_8edWlk_qCRkFxAZSbs5d2gJU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "554398885603-768g28pj1e9b4j24046a44jh9jal6sq9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "mobi.nextapp.nextapp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:554398885603:android:bfdd2b436f77d28dcc07d6",
-        "android_client_info": {
-          "package_name": "mobi.nextapp.classA"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAm3_r2PGRYdttl7O7BoTxn0Q9nTRMXIrs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "554398885603-768g28pj1e9b4j24046a44jh9jal6sq9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "mobi.nextapp.nextapp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:554398885603:android:453cd0bacd8d962fcc07d6",
-        "android_client_info": {
-          "package_name": "mobi.nextapp.next_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAm3_r2PGRYdttl7O7BoTxn0Q9nTRMXIrs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "554398885603-q1sf503ev85bliv1ticqs805vm31ln62.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "554398885603-768g28pj1e9b4j24046a44jh9jal6sq9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "mobi.nextapp.nextapp"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

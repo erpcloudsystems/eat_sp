@@ -50,21 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAm3_r2PGRYdttl7O7BoTxn0Q9nTRMXIrs',
-    appId: '1:554398885603:android:453cd0bacd8d962fcc07d6',
-    messagingSenderId: '554398885603',
-    projectId: 'nextapp-9fd93',
-    storageBucket: 'nextapp-9fd93.appspot.com',
+    apiKey: 'AIzaSyCQNd3VRh_8edWlk_qCRkFxAZSbs5d2gJU',
+    appId: '1:89927184410:android:65a7fed6b1f0e49fb6a1a3',
+    messagingSenderId: '89927184410',
+    projectId: 'eat-sp',
+    storageBucket: 'eat-sp.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCk7byA1N7UOvbf1zya4NLumsRVtKlp2qI',
-    appId: '1:554398885603:ios:6a9b77b82196c9ddcc07d6',
-    messagingSenderId: '554398885603',
-    projectId: 'nextapp-9fd93',
-    storageBucket: 'nextapp-9fd93.appspot.com',
-    androidClientId: '554398885603-daou0enrvftqb9scaplmja12eqt4ince.apps.googleusercontent.com',
-    iosClientId: '554398885603-768g28pj1e9b4j24046a44jh9jal6sq9.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCHKK_PqB6-_Fc9dKZAirLEXvJXuZAbtYk',
+    appId: '1:89927184410:ios:aff8e090db293080b6a1a3',
+    messagingSenderId: '89927184410',
+    projectId: 'eat-sp',
+    storageBucket: 'eat-sp.appspot.com',
     iosBundleId: 'mobi.nextapp.nextapp',
   );
+
 }

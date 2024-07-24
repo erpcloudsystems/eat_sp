@@ -253,7 +253,7 @@ class APIService {
     if (search != null && search.isNotEmpty) print('search: $search');
     try {
       var response = await dio.get(
-          customServiceURL ?? 'method/ecs_eat.eat_sp.general.general_service',
+          customServiceURL ?? 'method/eat_mobile.general.general_service',
           queryParameters: {
             if (customServiceURL == null) 'doctype': service,
             if (filterById != null) "cur_nam": filterById,
@@ -295,7 +295,7 @@ class APIService {
   }) async {
     try {
       var response = await dio
-          .get('method/ecs_eat.eat_sp.count.general_service', queryParameters: {
+          .get('method/eat_mobile.count.general_service', queryParameters: {
         'doctype': service,
         "page_length": 0,
         if (search != null && search.isNotEmpty) 'search_text': '%$search%',
@@ -478,7 +478,7 @@ class APIService {
   Future hasWorkflow({String? docTypeName}) async {
     try {
       final response = await dio.post(
-        'method/ecs_eat.eat_sp.workflow.has_workflow',
+        'method/eat_mobile.workflow.has_workflow',
         data: {
           'doctype': docTypeName,
         },
@@ -710,7 +710,7 @@ class APIService {
   Future<List<StatisticsModel>?> getStatisticsList({String? docType}) async {
     try {
       final response = await dio.get(
-        'method/ecs_eat.eat_sp.doctype_statistics.doc_stats',
+        'method/eat_mobile.doctype_statistics.doc_stats',
         queryParameters: {
           'doctype': docType,
         },

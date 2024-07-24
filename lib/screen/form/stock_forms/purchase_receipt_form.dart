@@ -25,7 +25,7 @@ import '../../../models/page_models/stock_page_model/purchase_receipt_page_model
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
 class PurchaseReceiptForm extends StatefulWidget {
-  const PurchaseReceiptForm({Key? key}) : super(key: key);
+  const PurchaseReceiptForm({super.key});
 
   @override
   _PurchaseReceiptFormState createState() => _PurchaseReceiptFormState();
@@ -477,26 +477,27 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                             data['cost_center'] = value['name'];
                           });
                         }),
-                    CustomDropDownFromField(
-                        defaultValue: data['project'],
-                        docType: APIService.PROJECT,
-                        nameResponse: 'name',
-                        isValidate: false,
-                        keys: const {
-                          "subTitle": 'project_name',
-                          "trailing": 'status',
-                        },
-                        title: 'Project'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['project'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['project'],
+                    //     docType: APIService.PROJECT,
+                    //     nameResponse: 'name',
+                    //     isValidate: false,
+                    //     keys: const {
+                    //       "subTitle": 'project_name',
+                    //       "trailing": 'status',
+                    //     },
+                    //     title: 'Project'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['project'] = value['name'];
+                    //       });
+                    //     }),
                     CustomDropDownFromField(
                         defaultValue:
                             data['currency'] ?? userProvider.defaultCurrency,
                         docType: APIService.CURRENCY,
                         nameResponse: 'name',
+                        enable: false,
                         title: 'Currency'.tr(),
                         onChange: (value) {
                           setState(() {
@@ -506,6 +507,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                     CustomTextFieldTest(
                       'conversion_rate',
                       'Exchange Rate'.tr(),
+                      enabled: false,
                       initialValue: '${data['conversion_rate'] ?? '1'}',
                       disableValidation: true,
                       hintText: 'ex:1.0',
@@ -523,6 +525,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                       disableValidation: true,
                       hintText: 'ex:1.0',
                       clearButton: true,
+                      enabled: false,
                       validator: (value) =>
                           numberValidation(value, allowNull: true),
                       keyboardType: TextInputType.number,
@@ -540,6 +543,7 @@ class _PurchaseReceiptFormState extends State<PurchaseReceiptForm> {
                         docType: APIService.BUYING_PRICE_LIST,
                         nameResponse: 'name',
                         title: 'Price List'.tr(),
+                        enable: false,
                         onChange: (value) {
                           if (value != null && value.isNotEmpty) {
                             setState(() {

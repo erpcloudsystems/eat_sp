@@ -28,7 +28,7 @@ const List<String> stockEntryType = [
 ];
 
 class StockEntryForm extends StatefulWidget {
-  const StockEntryForm({Key? key}) : super(key: key);
+  const StockEntryForm({super.key});
 
   @override
   State<StockEntryForm> createState() => _StockEntryFormState();
@@ -114,7 +114,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
   Future<String?> _getActualQty(String warehouse, String itemCode) async {
     try {
       final res = Map<String, dynamic>.from(await APIService().genericGet(
-                  'method/ecs_eat.eat_sp.general.get_actual_qty?warehouse=$warehouse&item_code=$itemCode'))[
+                  'method/eat_mobile.general.get_actual_qty?warehouse=$warehouse&item_code=$itemCode'))[
               'message']['actual_qty']
           .toString();
       if (res != 'null') {
@@ -250,8 +250,9 @@ class _StockEntryFormState extends State<StockEntryForm> {
                           },
                           onChange: (value) async {
                             log('value $value');
-                            if (value != null)
+                            if (value != null) {
                               data['from_warehouse'] = value['name'];
+                            }
 
                             // to update Actual Qty for each item
                             for (var value in _items) {
@@ -278,21 +279,21 @@ class _StockEntryFormState extends State<StockEntryForm> {
                               data['to_warehouse'] = value['name'];
                             });
                           }),
-                    CustomDropDownFromField(
-                        defaultValue: data['project'],
-                        docType: APIService.PROJECT,
-                        nameResponse: 'name',
-                        isValidate: false,
-                        keys: const {
-                          "subTitle": 'project_name',
-                          "trailing": 'status',
-                        },
-                        title: 'Project'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['project'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['project'],
+                    //     docType: APIService.PROJECT,
+                    //     nameResponse: 'name',
+                    //     isValidate: false,
+                    //     keys: const {
+                    //       "subTitle": 'project_name',
+                    //       "trailing": 'status',
+                    //     },
+                    //     title: 'Project'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['project'] = value['name'];
+                    //       });
+                    //     }),
                     const SizedBox(height: 8),
                   ],
                 ),
