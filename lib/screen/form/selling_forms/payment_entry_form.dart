@@ -18,7 +18,7 @@ import '../../../provider/module/module_provider.dart';
 import '../../../new_version/core/resources/strings_manager.dart';
 
 class PaymentForm extends StatefulWidget {
-  const PaymentForm({Key? key}) : super(key: key);
+  const PaymentForm({super.key});
 
   @override
   _PaymentFormState createState() => _PaymentFormState();
@@ -438,6 +438,7 @@ class _PaymentFormState extends State<PaymentForm> {
                             data[key] = double.tryParse(value) ?? 0,
                         onChanged: (value) {
                           data['paid_amount'] = double.tryParse(value) ?? 0;
+                          data['received_amount'] = double.tryParse(value) ?? 0;
                           if (data.containsKey('references')) {
                             data['references'] = [
                               {

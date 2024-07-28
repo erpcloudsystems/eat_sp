@@ -125,7 +125,7 @@ const List<String> workOrderOrJopCard = [
   'Work Order',
   'Jop Card',
 ];
-
+const List<String> taxType = ['Commercial', 'Taxable', ''];
 const List<String> additionalDiscountList = ['Percentage', 'Amount'];
 const List<String> termLoan = [
   ' ',
@@ -268,8 +268,7 @@ class CheckBoxWidget extends StatefulWidget {
       this.onClear,
       this.fontSize = 14,
       this.onChanged,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   factory CheckBoxWidget(
     String id,
@@ -373,7 +372,7 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
 
   const CustomTextField._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.maxLines = 1,
       this.minLines = 1,
       this.keyboardType,
@@ -391,8 +390,7 @@ class CustomTextField extends StatefulWidget {
       required this.disableError,
       this.clearValue,
       this.onClear,
-      this.onChanged})
-      : super(key: key);
+      this.onChanged});
 
   factory CustomTextField(String id, String title,
           {Key? key,
@@ -540,12 +538,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
 class CustomExpandableTile extends StatefulWidget {
   CustomExpandableTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.children,
     required this.hideArrow,
     this.opened,
-  }) : super(key: key);
+  });
   final bool hideArrow;
   final Widget title;
   final List<Widget>? children;
@@ -600,7 +598,7 @@ class NumberTextField extends StatefulWidget {
   final num? initialValue;
 
   const NumberTextField._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.maxLines = 1,
       this.keyboardType,
       this.onPressed,
@@ -612,8 +610,7 @@ class NumberTextField extends StatefulWidget {
       required this.disableError,
       this.removeUnderLine = false,
       this.clearValue,
-      this.onChanged})
-      : super(key: key);
+      this.onChanged});
 
   factory NumberTextField(String id, String title,
           {Key? key,
@@ -740,7 +737,7 @@ class DatePicker extends StatefulWidget {
   final bool removeUnderLine;
 
   const DatePicker._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.onChanged,
       this.initialValue,
       this.lastDate,
@@ -749,8 +746,7 @@ class DatePicker extends StatefulWidget {
       this.enable = true,
       required this.disableValidation,
       this.removeUnderLine = false,
-      this.onClear})
-      : super(key: key);
+      this.onClear});
 
   factory DatePicker(
     id,
@@ -913,15 +909,14 @@ class TimePicker extends StatefulWidget {
   final bool disableValidation;
 
   const TimePicker._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.onChanged,
       this.initialValue,
       this.clear = false,
       this.enable = true,
       this.removeUnderLine = false,
       required this.disableValidation,
-      this.onClear})
-      : super(key: key);
+      this.onClear});
 
   factory TimePicker(
     id,
@@ -1081,8 +1076,7 @@ class CustomDropDown extends StatefulWidget {
       this.enable = true,
       this.fontSize = 14.0,
       this.onClear,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   _CustomDropDownState createState() => _CustomDropDownState();
@@ -1135,8 +1129,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                     ? widget.itemBuilder!(e)
                     : DropdownMenuItem(
                         value: e,
-                        child: FittedBox(
-                            child: Text(e, overflow: TextOverflow.ellipsis))))
+                        child: Text(e, overflow: TextOverflow.ellipsis)))
                 .toList()),
         if (widget.clear && _value != null)
           Material(
@@ -1161,8 +1154,7 @@ class SelectImage extends StatefulWidget {
   final String id, title;
   final void Function(String value)? onChanged;
 
-  const SelectImage(this.id, this.title, {this.onChanged, Key? key})
-      : super(key: key);
+  const SelectImage(this.id, this.title, {this.onChanged, super.key});
 
   @override
   _SelectImageState createState() => _SelectImageState();
@@ -1238,7 +1230,7 @@ class Group extends StatelessWidget {
   final Widget child;
   final Color? color;
 
-  const Group({required this.child, Key? key, this.color}) : super(key: key);
+  const Group({required this.child, super.key, this.color});
 
   @override
   Widget build(BuildContext context) {

@@ -46,6 +46,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     "longitude": 0.0,
     'additional_discount_percentage': 0.0,
     'discount_amount': 0.0,
+    'tax_type': taxType[0],
   };
 
   LatLng location = const LatLng(0.0, 0.0);
@@ -591,6 +592,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           initialValue: data['is_return'] == 1 ? true : false,
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
+
                       // CustomDropDownFromField(
                       //     defaultValue: data['project'],
                       //     docType: APIService.PROJECT,
@@ -606,6 +608,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       //         data['project'] = value['name'];
                       //       });
                       //     }),
+
+                      CustomDropDown('tax_type', 'Tax Type'.tr(),
+                          items: taxType,
+                          defaultValue: data['tax_type'] ?? taxType[0],
+                          onChanged: (value) => setState(() {
+                                data['tax_type'] = value;
+                              })),
                       CustomDropDownFromField(
                           defaultValue: data['cost_center'],
                           docType: APIService.COST_CENTER,
