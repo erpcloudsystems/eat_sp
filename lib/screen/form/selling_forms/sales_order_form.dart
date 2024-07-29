@@ -558,19 +558,19 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                             data['currency'] = value['name'];
                           });
                         }),
-                    CustomTextFieldTest(
-                      'conversion_rate',
-                      'Exchange Rate'.tr(),
-                      disableValidation: true,
-                      initialValue: '${data['conversion_rate'] ?? ''}',
-                      hintText: '1',
-                      clearButton: true,
-                      validator: (value) =>
-                          numberValidation(value, allowNull: true),
-                      keyboardType: TextInputType.number,
-                      onSave: (key, value) =>
-                          data[key] = double.tryParse(value) ?? 1,
-                    ),
+                    // CustomTextFieldTest(
+                    //   'conversion_rate',
+                    //   'Exchange Rate'.tr(),
+                    //   disableValidation: true,
+                    //   initialValue: '${data['conversion_rate'] ?? ''}',
+                    //   hintText: '1',
+                    //   clearButton: true,
+                    //   validator: (value) =>
+                    //       numberValidation(value, allowNull: true),
+                    //   keyboardType: TextInputType.number,
+                    //   onSave: (key, value) =>
+                    //       data[key] = double.tryParse(value) ?? 1,
+                    // ),
                     CustomDropDownFromField(
                         defaultValue: data['selling_price_list'] ??
                             userProvider.defaultSellingPriceList,
@@ -612,17 +612,17 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
                     if (data['price_list_currency'] != null)
                       const Divider(
                           color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomTextFieldTest(
-                        'plc_conversion_rate', 'Price List Exchange Rate'.tr(),
-                        initialValue: '${data['plc_conversion_rate'] ?? ''}',
-                        hintText: '1',
-                        clearButton: true,
-                        disableValidation: true,
-                        validator: (value) =>
-                            numberValidation(value, allowNull: true),
-                        keyboardType: TextInputType.number,
-                        onSave: (key, value) =>
-                            data[key] = double.tryParse(value) ?? 1),
+                    // CustomTextFieldTest(
+                    //     'plc_conversion_rate', 'Price List Exchange Rate'.tr(),
+                    //     initialValue: '${data['plc_conversion_rate'] ?? ''}',
+                    //     hintText: '1',
+                    //     clearButton: true,
+                    //     disableValidation: true,
+                    //     validator: (value) =>
+                    //         numberValidation(value, allowNull: true),
+                    //     keyboardType: TextInputType.number,
+                    //     onSave: (key, value) =>
+                    //         data[key] = double.tryParse(value) ?? 1),
                     CustomDropDownFromField(
                         defaultValue: data['set_warehouse'],
                         docType: APIService.WAREHOUSE,

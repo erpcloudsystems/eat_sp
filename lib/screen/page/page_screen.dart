@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
@@ -24,19 +22,19 @@ Widget submitDocument({
 }) {
   switch (docStatus) {
     case (0):
-      return SubmitButton();
+      return const SubmitButton();
     case (1):
-      return CancelButton();
+      return const CancelButton();
     case (2):
-      return AmendButton();
+      return const AmendButton();
 
     default:
-      return SizedBox();
+      return const SizedBox();
   }
 }
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({Key? key}) : super(key: key);
+  const SubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +44,13 @@ class SubmitButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () => context.read<ModuleProvider>().submitDocument(context),
-        child: Text('Submit',
-            style: const TextStyle(color: Colors.white, fontSize: 15)));
+        child: const Text('Submit',
+            style: TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({Key? key}) : super(key: key);
+  const CancelButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +61,13 @@ class CancelButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () =>
             context.read<ModuleProvider>().cancelledDocument(context),
-        child: Text('Cancel',
-            style: const TextStyle(color: Colors.white, fontSize: 15)));
+        child: const Text('Cancel',
+            style: TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
 class AmendButton extends StatelessWidget {
-  const AmendButton({Key? key}) : super(key: key);
+  const AmendButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +82,8 @@ class AmendButton extends StatelessWidget {
               builder: (_) =>
                   context.read<ModuleProvider>().currentModule.createForm!));
         },
-        child: Text('Amend',
-            style: const TextStyle(color: Colors.white, fontSize: 15)));
+        child: const Text('Amend',
+            style: TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
@@ -94,8 +92,7 @@ class SelectFormatDialog extends StatelessWidget {
   final String title;
 
   const SelectFormatDialog(
-      {Key? key, required this.formats, required this.title})
-      : super(key: key);
+      {super.key, required this.formats, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +102,7 @@ class SelectFormatDialog extends StatelessWidget {
         LimitedBox(
           maxHeight: MediaQuery.of(context).size.height * 0.85,
           child: Dialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             backgroundColor: Colors.white,
             child: Column(
@@ -118,12 +115,12 @@ class SelectFormatDialog extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold))),
                 ),
-                Divider(color: Colors.grey, height: 5, thickness: 0.5),
+                const Divider(color: Colors.grey, height: 5, thickness: 0.5),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (_, i) => InkWell(
                             onTap: () => Navigator.pop(context, formats[i]),
@@ -137,7 +134,7 @@ class SelectFormatDialog extends StatelessWidget {
                                 ),
                               ],
                             )),
-                        separatorBuilder: (_, i) => Divider(
+                        separatorBuilder: (_, i) => const Divider(
                             height: 2, color: Colors.grey, thickness: 0.35),
                         itemCount: formats.length),
                   ),
@@ -159,13 +156,13 @@ class PageAppBar extends StatefulWidget {
   final ValueNotifier<List<String>> pdfFormats;
 
   const PageAppBar({
-    Key? key,
+    super.key,
     required this.docType,
     required this.id,
     required this.pdfFormats,
     required this.attachments,
     this.onAttachmentAdded,
-  }) : super(key: key);
+  });
 
   @override
   State<PageAppBar> createState() => _PageAppBarState();
@@ -190,13 +187,13 @@ class _PageAppBarState extends State<PageAppBar> {
   @override
   Widget build(BuildContext context) {
     void printPdf() async {
-      if (widget.pdfFormats.value.length == 1)
+      if (widget.pdfFormats.value.length == 1) {
         APIService().printInvoice(
             context: context,
             docType: widget.docType,
             id: widget.id,
             format: widget.pdfFormats.value[0]);
-      else {
+      } else {
         final format = await showDialog(
             context: context,
             builder: (_) => SelectFormatDialog(
@@ -243,13 +240,13 @@ class _PageAppBarState extends State<PageAppBar> {
         // // }
         // print(_localPath);
         // hold out the response
-        var file;
+        File? file;
 
         if (widget.pdfFormats.value.length == 1) {
           showLoadingDialog(context, 'Downloading PDF ...');
           file = await APIService().downloadFile(
-            context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
-            widget.id + '.pdf',
+            '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+            '${widget.id}.pdf',
             queryParameters: {
               'doctype': widget.docType,
               'name': widget.id,
@@ -266,8 +263,8 @@ class _PageAppBarState extends State<PageAppBar> {
           if (format == null) return;
           showLoadingDialog(context, 'Downloading PDF ...');
           file = await APIService().downloadFile(
-            context.read<UserProvider>().url + '/api/' + PRINT_INVOICE,
-            '${widget.id}-$format' + '.pdf',
+            '${context.read<UserProvider>().url}/api/$PRINT_INVOICE',
+            '${widget.id}-$format' '.pdf',
             queryParameters: {
               'doctype': widget.docType,
               'name': widget.id,
@@ -300,25 +297,25 @@ class _PageAppBarState extends State<PageAppBar> {
         IconButton(
             onPressed: widget.pdfFormats.value.isEmpty ? null : downloadPdf,
             splashRadius: 20,
-            icon: Icon(Icons.download)),
+            icon: const Icon(Icons.download)),
         IconButton(
             onPressed: widget.pdfFormats.value.isEmpty ? null : printPdf,
             splashRadius: 20,
-            icon: Icon(Icons.print_sharp)),
+            icon: const Icon(Icons.print_sharp)),
         IconButton(
             onPressed: () => showAttachments(context),
             splashRadius: 20,
-            icon: Icon(Icons.attach_file)),
+            icon: const Icon(Icons.attach_file)),
       ],
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, color: Colors.black),
           style: TextButton.styleFrom(
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             // padding: EdgeInsets.zero,
           ),
+          child: const Icon(Icons.arrow_back, color: Colors.black),
         ),
       ),
     );
@@ -353,7 +350,7 @@ PopupMenuItem<Choice> choiceItem(Choice choice) {
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS)),
             child: Icon(choice.icon, color: Colors.white),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(choice.title,
               style: TextStyle(
                   color: choice.onPressed == null ? Colors.grey : Colors.black))

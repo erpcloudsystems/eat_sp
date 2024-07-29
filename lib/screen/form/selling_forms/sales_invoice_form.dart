@@ -642,20 +642,20 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                               data['currency'] = value['name'];
                             });
                           }),
-                      CustomTextFieldTest(
-                        'conversion_rate',
-                        'Exchange Rate'.tr(),
-                        clearButton: true,
-                        initialValue: '${data['conversion_rate'] ?? ''}',
-                        disableValidation: true,
-                        enabled: false,
-                        hintText: '1',
-                        validator: (value) =>
-                            numberValidation(value, allowNull: true),
-                        keyboardType: TextInputType.number,
-                        onSave: (key, value) =>
-                            data[key] = double.tryParse(value) ?? 1,
-                      ),
+                      // CustomTextFieldTest(
+                      //   'conversion_rate',
+                      //   'Exchange Rate'.tr(),
+                      //   clearButton: true,
+                      //   initialValue: '${data['conversion_rate'] ?? ''}',
+                      //   disableValidation: true,
+                      //   enabled: false,
+                      //   hintText: '1',
+                      //   validator: (value) =>
+                      //       numberValidation(value, allowNull: true),
+                      //   keyboardType: TextInputType.number,
+                      //   onSave: (key, value) =>
+                      //       data[key] = double.tryParse(value) ?? 1,
+                      // ),
                       CustomDropDownFromField(
                           defaultValue: data['selling_price_list'] ??
                               userProvider.defaultSellingPriceList,
@@ -701,17 +701,17 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       if (data['price_list_currency'] != null)
                         const Divider(
                             color: Colors.grey, height: 1, thickness: 0.7),
-                      CustomTextFieldTest('plc_conversion_rate',
-                          'Price List Exchange Rate'.tr(),
-                          initialValue: '${data['plc_conversion_rate'] ?? ''}',
-                          disableValidation: true,
-                          clearButton: true,
-                          hintText: '1',
-                          validator: (value) =>
-                              numberValidation(value, allowNull: true),
-                          keyboardType: TextInputType.number,
-                          onSave: (key, value) =>
-                              data[key] = double.tryParse(value) ?? 1),
+                      // CustomTextFieldTest('plc_conversion_rate',
+                      //     'Price List Exchange Rate'.tr(),
+                      //     initialValue: '${data['plc_conversion_rate'] ?? ''}',
+                      //     disableValidation: true,
+                      //     clearButton: true,
+                      //     hintText: '1',
+                      //     validator: (value) =>
+                      //         numberValidation(value, allowNull: true),
+                      //     keyboardType: TextInputType.number,
+                      //     onSave: (key, value) =>
+                      //         data[key] = double.tryParse(value) ?? 1),
                       CheckBoxWidget('update_stock', 'Update Stock',
                           initialValue:
                               data['update_stock'] == 1 ? true : false,

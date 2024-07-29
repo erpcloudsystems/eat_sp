@@ -38,7 +38,7 @@ class GPSService {
       Future.delayed(const Duration(seconds: 1), () async {
         final res = await checkDialog(
             context, KPermanentlyDeniedSnackBar, 'Allow Location');
-        if (res) {
+        if (res!) {
           AppSettings.openAppSettings();
         }
       });
