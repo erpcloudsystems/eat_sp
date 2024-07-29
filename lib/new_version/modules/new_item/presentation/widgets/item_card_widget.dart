@@ -1,4 +1,5 @@
 import 'package:NextApp/core/constants.dart';
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:NextApp/new_version/modules/new_item/data/models/item_model.dart';
 import 'package:NextApp/provider/module/module_provider.dart';
 import 'package:NextApp/widgets/snack_bar.dart';
@@ -11,7 +12,7 @@ import '../../../../../widgets/new_widgets/test_text_field.dart';
 
 class ItemCardWidget extends StatefulWidget {
   ItemCardWidget({
-    Key? key,
+    super.key,
     required this.itemName,
     required this.rate,
     required this.uom,
@@ -20,8 +21,13 @@ class ItemCardWidget extends StatefulWidget {
     required this.uomList,
     required this.itemGroup,
     required this.priceListRate,
-  }) : super(key: key);
+    this.itemTaxTemplate,
+    this.taxPercent,
+  });
   final String itemName, imageUrl, itemCode, itemGroup;
+  final String? itemTaxTemplate;
+
+  final double? taxPercent;
   final double rate, priceListRate;
   String uom;
   final List<UomModel> uomList;
@@ -118,7 +124,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                           ),
                         ),
                         Text(
-                          (newRate ?? widget.rate).toStringAsFixed(2),
+                          (newRate ?? widget.priceListRate).toStringAsFixed(2),
                           //widget.rate.toString(),
                           style: const TextStyle(
                             fontSize: 16,
@@ -274,7 +280,13 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                               "image": widget.imageUrl,
                               "qty": QTY,
                               "uom": UOM ?? widget.uom,
-                              "rate": newRate ?? widget.rate,
+                              "rate": newRate ?? widget.priceListRate,
+                              if (provider.currentModule.title ==
+                                  DocTypesName.salesInvoice)
+                                'item_tax_template': widget.itemTaxTemplate,
+                              if (provider.currentModule.title ==
+                                  DocTypesName.salesInvoice)
+                                'tax_percent': widget.taxPercent,
                             });
                             showSnackBar(
                               '${"This Item added".tr()}\n${widget.itemName}',

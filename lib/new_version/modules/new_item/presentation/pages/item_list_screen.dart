@@ -19,7 +19,7 @@ import '../widgets/new_search_widget.dart';
 class ItemListScreen extends StatefulWidget {
   const ItemListScreen({
     super.key,
-     this.itemGroup,
+    this.itemGroup,
     required this.priceList,
   });
   final String priceList;
@@ -55,10 +55,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
     final bloc = BlocProvider.of<ItemsCubit>(context);
     bloc.resetItem();
     bloc.getAllItems(
-      itemFilter: ItemsFilter(
-        priceList: widget.priceList,
-        startKey: 1
-      ),
+      itemFilter: ItemsFilter(priceList: widget.priceList, startKey: 1),
     );
   }
 
@@ -193,6 +190,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
                               verticalOffset: 100.0,
                               child: FadeInAnimation(
                                 child: ItemCardWidget(
+                                  itemTaxTemplate:
+                                      bloc.items[index].itemTaxTemplate,
+                                  taxPercent: bloc.items[index].taxPercent,
                                   itemCode: bloc.items[index].itemCode,
                                   itemName: bloc.items[index].itemName,
                                   itemGroup: bloc.items[index].itemGroup,

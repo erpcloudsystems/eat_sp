@@ -3,8 +3,16 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/item_model.dart';
 
 class ItemEntity extends Equatable {
-  final String name, itemName, itemCode, itemGroup, uom, imageUrl ,barCode;
-  final double netRate, priceListRate;
+  final String name,
+      itemName,
+      itemCode,
+      itemGroup,
+      uom,
+      imageUrl,
+      barCode,
+      itemTaxTemplate
+      ;
+  final double netRate, priceListRate,taxPercent;
   final List<UomModel> uomList;
 
   const ItemEntity({
@@ -17,7 +25,9 @@ class ItemEntity extends Equatable {
     required this.netRate,
     required this.priceListRate,
     required this.uomList,
-    required this.barCode
+    required this.barCode,
+    required this.itemTaxTemplate,
+    required this.taxPercent,
   });
   @override
   List<Object?> get props => [
@@ -31,5 +41,7 @@ class ItemEntity extends Equatable {
         priceListRate,
         uomList,
         barCode,
+        itemTaxTemplate,
+        taxPercent
       ];
 }

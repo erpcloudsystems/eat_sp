@@ -13,6 +13,8 @@ class NewItemModel extends ItemEntity {
     required super.priceListRate,
     required super.uomList,
     required super.barCode,
+    required super.itemTaxTemplate,
+    required super.taxPercent,
   });
 
   factory NewItemModel.fromJson(Map<String, dynamic> json) => NewItemModel(
@@ -23,7 +25,9 @@ class NewItemModel extends ItemEntity {
         barCode: json['barcode'] ?? 'none',
         itemName: json['item_name'] ?? 'none',
         itemGroup: json['item_group'] ?? 'none',
+        itemTaxTemplate: json['item_tax_template'] ?? '',
         netRate: json['net_rate'] ?? 0,
+        taxPercent: json['tax_percent'] ?? 0,
         priceListRate: json['price_list_rate'] ?? 0,
         uomList: List.from(
           json['uom_list'].map(

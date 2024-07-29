@@ -112,7 +112,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     if (!context.read<ModuleProvider>().isEditing) {
       data['latitude'] = location.latitude;
       data['longitude'] = location.longitude;
-      data['location'] = gpsService.placeman[0].subAdministrativeArea;
+      if (gpsService.placeman.isNotEmpty) {
+        data['location'] = gpsService.placeman[0].subAdministrativeArea;
+      }
     }
 
     showLoadingDialog(
