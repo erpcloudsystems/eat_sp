@@ -54,7 +54,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                             style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.zero),
                             onPressed: () async {
-                            Navigator.push(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
@@ -147,8 +147,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                                       numberValidationToast(
                                                           value, 'Quantity',
                                                           isInt: true,
-                                                          isReturn: true
-                                                          ),
+                                                          isReturn: true),
                                                   keyboardType:
                                                       TextInputType.number,
                                                   disableError: true,
@@ -185,6 +184,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                                     ),
                                                     keyboardType:
                                                         TextInputType.number,
+                                                    enabled: false,
                                                     disableError: true,
                                                     initialValue:
                                                         (provider.newItemList[
