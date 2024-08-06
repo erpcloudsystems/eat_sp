@@ -20,9 +20,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var userNameController = TextEditingController(text: 'em@gmail.com');
-  var passwordController = TextEditingController(text: 'Erp@123@');
-  var urlController = TextEditingController(text: 'https://eat.erpnext.cloud');
+  var userNameController = TextEditingController();
+  var passwordController = TextEditingController();
+  var urlController =
+      TextEditingController(text: 'https://eat.erpcloud.systems');
+
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;
   final APIService service = APIService();

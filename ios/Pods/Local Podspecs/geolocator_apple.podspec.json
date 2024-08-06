@@ -28,5 +28,10 @@
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
     "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  },
+  "resource_bundles": {
+    "geolocator_apple_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
   }
 }

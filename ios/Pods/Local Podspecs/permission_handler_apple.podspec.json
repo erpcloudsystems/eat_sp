@@ -23,5 +23,10 @@
   "platforms": {
     "ios": "8.0"
   },
-  "static_framework": true
+  "static_framework": true,
+  "resource_bundles": {
+    "permission_handler_apple_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
+  }
 }

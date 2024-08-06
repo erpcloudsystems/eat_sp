@@ -23,16 +23,16 @@
 
     ],
     "GoogleMaps": [
-      "< 9.0"
+      ">= 8.4",
+      "< 10.0"
     ]
   },
   "static_framework": true,
   "platforms": {
-    "ios": "12.0"
+    "ios": "14.0"
   },
   "pod_target_xcconfig": {
-    "DEFINES_MODULE": "YES",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+    "DEFINES_MODULE": "YES"
   },
   "resource_bundles": {
     "google_maps_flutter_ios_privacy": [
