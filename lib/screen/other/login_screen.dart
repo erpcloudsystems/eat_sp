@@ -1,14 +1,12 @@
 import '../../new_version/core/resources/strings_manager.dart';
 import '../../widgets/dismiss_keyboard.dart';
 import 'package:flutter/material.dart';
-
 import '../../provider/user/user_provider.dart';
 import '../../service/service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../core/constants.dart';
 import '../../core/shared_pref.dart';
 

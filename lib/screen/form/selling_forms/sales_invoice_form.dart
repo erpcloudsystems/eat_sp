@@ -595,43 +595,27 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
 
-                      // CustomDropDownFromField(
-                      //     defaultValue: data['project'],
-                      //     docType: APIService.PROJECT,
-                      //     nameResponse: 'name',
-                      //     isValidate: false,
-                      //     keys: const {
-                      //       "subTitle": 'project_name',
-                      //       "trailing": 'status',
-                      //     },
-                      //     title: 'Project'.tr(),
-                      //     onChange: (value) {
-                      //       setState(() {
-                      //         data['project'] = value['name'];
-                      //       });
-                      //     }),
-
                       CustomDropDown('tax_type', 'Tax Type'.tr(),
                           items: taxType,
                           defaultValue: data['tax_type'] ?? taxType[0],
                           onChanged: (value) => setState(() {
                                 data['tax_type'] = value;
                               })),
-                      CustomDropDownFromField(
-                          defaultValue: data['cost_center'],
-                          docType: APIService.COST_CENTER,
-                          nameResponse: 'name',
-                          isValidate: false,
-                          keys: const {
-                            "subTitle": 'parent_cost_center',
-                            "trailing": 'cost_center_name',
-                          },
-                          title: 'Cost Center'.tr(),
-                          onChange: (value) {
-                            setState(() {
-                              data['cost_center'] = value['name'];
-                            });
-                          }),
+                      // CustomDropDownFromField(
+                      //     defaultValue: data['cost_center'],
+                      //     docType: APIService.COST_CENTER,
+                      //     nameResponse: 'name',
+                      //     isValidate: false,
+                      //     keys: const {
+                      //       "subTitle": 'parent_cost_center',
+                      //       "trailing": 'cost_center_name',
+                      //     },
+                      //     title: 'Cost Center'.tr(),
+                      //     onChange: (value) {
+                      //       setState(() {
+                      //         data['cost_center'] = value['name'];
+                      //       });
+                      //     }),
                       CustomDropDownFromField(
                           defaultValue:
                               data['currency'] ?? userProvider.defaultCurrency,
@@ -703,17 +687,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       if (data['price_list_currency'] != null)
                         const Divider(
                             color: Colors.grey, height: 1, thickness: 0.7),
-                      // CustomTextFieldTest('plc_conversion_rate',
-                      //     'Price List Exchange Rate'.tr(),
-                      //     initialValue: '${data['plc_conversion_rate'] ?? ''}',
-                      //     disableValidation: true,
-                      //     clearButton: true,
-                      //     hintText: '1',
-                      //     validator: (value) =>
-                      //         numberValidation(value, allowNull: true),
-                      //     keyboardType: TextInputType.number,
-                      //     onSave: (key, value) =>
-                      //         data[key] = double.tryParse(value) ?? 1),
+
                       CheckBoxWidget('update_stock', 'Update Stock',
                           initialValue:
                               data['update_stock'] == 1 ? true : false,
@@ -725,6 +699,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             docType: APIService.WAREHOUSE,
                             nameResponse: 'name',
                             title: 'Source Warehouse'.tr(),
+                            filters: const {
+                              'filter1': DocTypesName.salesInvoice
+                            },
                             keys: const {
                               'subTitle': 'warehouse_name',
                               'trailing': 'warehouse_type',
@@ -806,52 +783,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   priceList: data['selling_price_list'] ??
                       context.read<UserProvider>().defaultSellingPriceList,
                 ),
-
-                Group(
-                  child: Column(
-                    children: [
-                      CustomDropDownTest(
-                        'amount',
-                        'Additional Discount'.tr(),
-                        fontSize: 16,
-                        items: additionalDiscountList,
-                        defaultValue: discountValue,
-                        onChanged: (value) => setState(() {
-                          discountValue = value;
-                          if (value == 'Percentage') {
-                            data['additional_discount_percentage'] = 0.0;
-                            data['discount_amount'] = 0.0;
-                          } else {
-                            data['additional_discount_percentage'] = 0.0;
-                            data['discount_amount'] = 0.0;
-                          }
-                        }),
-                      ),
-                      if (discountValue == 'Percentage')
-                        CustomTextFieldTest('additional_discount_percentage',
-                            'Additional Discount Percentage'.tr(),
-                            initialValue: data['additional_discount_percentage']
-                                .toString(),
-                            disableValidation: true,
-                            clearButton: true,
-                            onSave: (id, value) =>
-                                data[id] = double.parse(value),
-                            onChanged: (value) =>
-                                data['additional_discount_percentage'] = value),
-                      if (discountValue == 'Amount')
-                        CustomTextFieldTest(
-                          'discount_amount',
-                          'Additional Discount Amount'.tr(),
-                          initialValue: data['discount_amount'].toString(),
-                          disableValidation: true,
-                          clearButton: true,
-                          onChanged: (value) {
-                            data['discount_amount'] = double.parse(value);
-                          },
-                        ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
