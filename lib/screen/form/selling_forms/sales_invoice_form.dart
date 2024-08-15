@@ -170,6 +170,12 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     super.initState();
 
     final provider = context.read<ModuleProvider>();
+    final userProvider = context.read<UserProvider>();
+
+    // Default Warehouse
+    if (userProvider.warehouseList.isNotEmpty) {
+      data['set_warehouse'] = userProvider.warehouseList.first.docName;
+    }
 
     //Editing Mode and Amending Mode
     if (provider.isEditing ||
@@ -594,28 +600,12 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           initialValue: data['is_return'] == 1 ? true : false,
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
-
                       CustomDropDown('tax_type', 'Tax Type'.tr(),
                           items: taxType,
                           defaultValue: data['tax_type'] ?? taxType[0],
                           onChanged: (value) => setState(() {
                                 data['tax_type'] = value;
                               })),
-                      // CustomDropDownFromField(
-                      //     defaultValue: data['cost_center'],
-                      //     docType: APIService.COST_CENTER,
-                      //     nameResponse: 'name',
-                      //     isValidate: false,
-                      //     keys: const {
-                      //       "subTitle": 'parent_cost_center',
-                      //       "trailing": 'cost_center_name',
-                      //     },
-                      //     title: 'Cost Center'.tr(),
-                      //     onChange: (value) {
-                      //       setState(() {
-                      //         data['cost_center'] = value['name'];
-                      //       });
-                      //     }),
                       CustomDropDownFromField(
                           defaultValue:
                               data['currency'] ?? userProvider.defaultCurrency,
@@ -628,20 +618,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                               data['currency'] = value['name'];
                             });
                           }),
-                      // CustomTextFieldTest(
-                      //   'conversion_rate',
-                      //   'Exchange Rate'.tr(),
-                      //   clearButton: true,
-                      //   initialValue: '${data['conversion_rate'] ?? ''}',
-                      //   disableValidation: true,
-                      //   enabled: false,
-                      //   hintText: '1',
-                      //   validator: (value) =>
-                      //       numberValidation(value, allowNull: true),
-                      //   keyboardType: TextInputType.number,
-                      //   onSave: (key, value) =>
-                      //       data[key] = double.tryParse(value) ?? 1,
-                      // ),
                       CustomDropDownFromField(
                           defaultValue: data['selling_price_list'] ??
                               userProvider.defaultSellingPriceList,
@@ -687,7 +663,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       if (data['price_list_currency'] != null)
                         const Divider(
                             color: Colors.grey, height: 1, thickness: 0.7),
-
                       CheckBoxWidget('update_stock', 'Update Stock',
                           initialValue:
                               data['update_stock'] == 1 ? true : false,
@@ -699,6 +674,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             docType: APIService.WAREHOUSE,
                             nameResponse: 'name',
                             title: 'Source Warehouse'.tr(),
+                            enable: data['set_warehouse'] == null,
                             filters: const {
                               'filter1': DocTypesName.salesInvoice
                             },

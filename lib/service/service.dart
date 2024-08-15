@@ -118,6 +118,7 @@ class APIService {
   static const TASK_TYPE = 'Task Type';
   static const STATUS = 'Status';
   static const ACTIVITY = 'Activity Type';
+  static const ITEM_GROUP = 'Item Group';
 
   //Workflow
   static const WORKFLOW = 'Workflow';

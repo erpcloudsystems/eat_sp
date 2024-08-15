@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../../service/service.dart';
+import '../../../../../../core/utils/custom_drop_down_form_feild.dart';
 import '../../data/models/warehouse_filters.dart';
 import '../../data/models/item_price_filters.dart';
 import '../../data/models/stock_ledger_filter.dart';
@@ -15,21 +17,39 @@ import '../../../../../../core/resources/strings_manager.dart';
 import '../../../../../../../provider/module/module_provider.dart';
 import '../../../../../../../models/list_models/stock_list_model/item_table_model.dart';
 
-class FilterScreen extends StatelessWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+class FilterScreen extends StatefulWidget {
+  const FilterScreen({super.key});
+
+  @override
+  State<FilterScreen> createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  late final reportType;
+  String? wareHouseName;
+  String? itemCode;
+  String? itemGroup;
+  String? priceList;
+  var formKey = GlobalKey<FormState>();
+  String? fromDate;
+  String? toDate;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        reportType = ModalRoute.of(context)!.settings.arguments;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Provider.of<ModuleProvider>(context).setCurrentModule = ModuleType.item;
-    final reportType = ModalRoute.of(context)!.settings.arguments;
-    String? wareHouseName;
-    String? itemCode;
-    String? itemGroup;
-    String? priceList;
-    var formKey = GlobalKey<FormState>();
-    String? fromDate;
-    String? toDate;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           '$reportType Filters',
@@ -43,26 +63,39 @@ class FilterScreen extends StatelessWidget {
             children: [
               /// Warehouse list
               if (reportType != StringsManager.priceList)
-                Flexible(
-                  child: CustomTextField(
-                    'warehouse_name',
-                    'Warehouse',
-                    clearButton: true,
-                    onSave: (key, value) {
-                      print(value);
-                      wareHouseName = value;
+                CustomDropDownFromField(
+                    defaultValue: wareHouseName,
+                    docType: APIService.WAREHOUSE,
+                    nameResponse: 'name',
+                    title: 'Warehouse'.tr(),
+                    keys: const {
+                      'subTitle': 'warehouse_name',
+                      'trailing': 'warehouse_type',
                     },
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => warehouseScreen(),
-                        ),
-                      );
-                      print(res);
-                      return res;
-                    },
-                  ),
-                ),
+                    onChange: (value) {
+                      setState(() {
+                        wareHouseName = value['name'];
+                      });
+                    }),
+              // Flexible(
+              //   child: CustomTextField(
+              //     'warehouse_name',
+              //     'Warehouse',
+              //     clearButton: true,
+              //     onSave: (key, value) {
+              //       wareHouseName = value;
+              //     },
+              //     onPressed: () async {
+              //       final res = await Navigator.of(context).push(
+              //         MaterialPageRoute(
+              //           builder: (_) => warehouseScreen(),
+              //         ),
+              //       );
+
+              //       return res;
+              //     },
+              //   ),
+              // ),
 
               /// From date and to date in stock ledger Report
               if (reportType == StringsManager.stockLedger)
@@ -81,7 +114,7 @@ class FilterScreen extends StatelessWidget {
                           },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Flexible(
@@ -102,26 +135,37 @@ class FilterScreen extends StatelessWidget {
 
               ///Price List
               if (reportType == StringsManager.priceList)
-                Flexible(
-                  child: CustomTextField(
-                    'price_list',
-                    'Price List',
-                    clearButton: true,
-                    onSave: (key, value) {
-                      priceList = value;
-                    },
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => priceListScreen(),
-                        ),
-                      );
-                      return res['name'];
-                    },
-                  ),
-                ),
+                CustomDropDownFromField(
+                    defaultValue: priceList,
+                    docType: APIService.PRICE_LIST,
+                    nameResponse: 'name',
+                    title: 'Price List'.tr(),
+                    onChange: (value) {
+                      setState(() {
+                        priceList = value['name'];
+                      });
+                    }),
+              // Flexible(
+              //   child: CustomTextField(
+              //     'price_list',
+              //     'Price List',
+              //     clearButton: true,
+              //     onSave: (key, value) {
+              //       priceList = value;
+              //     },
+              //     onPressed: () async {
+              //       final res = await Navigator.of(context).push(
+              //         MaterialPageRoute(
+              //           builder: (_) => priceListScreen(),
+              //         ),
+              //       );
+              //       return res['name'];
+              //     },
+              //   ),
+              // ),
 
               /// Item code list
+
               Flexible(
                 child: CustomTextField(
                   'item_code',
@@ -143,34 +187,44 @@ class FilterScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
               /// Item group list
               if (reportType != StringsManager.wareHouseReport)
-                Flexible(
-                  child: CustomTextField(
-                    'item_group',
-                    'Item Group',
-                    clearButton: true,
-                    disableValidation: true,
-                    onClear: () {
-                      itemGroup = null;
-                    },
-                    onPressed: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => itemGroupScreen(),
-                        ),
-                      );
-                      itemGroup = res;
-                      print(itemGroup);
-                      return res;
-                    },
-                  ),
-                ),
-              SizedBox(
+                CustomDropDownFromField(
+                    defaultValue: itemGroup,
+                    docType: APIService.ITEM_GROUP,
+                    nameResponse: 'name',
+                    title: 'Item Group'.tr(),
+                    onChange: (value) {
+                      setState(() {
+                        itemGroup = value['name'];
+                      });
+                    }),
+              // Flexible(
+              //   child: CustomTextField(
+              //     'item_group',
+              //     'Item Group',
+              //     clearButton: true,
+              //     disableValidation: true,
+              //     onClear: () {
+              //       itemGroup = null;
+              //     },
+              //     onPressed: () async {
+              //       final res = await Navigator.of(context).push(
+              //         MaterialPageRoute(
+              //           builder: (_) => itemGroupScreen(),
+              //         ),
+              //       );
+              //       itemGroup = res;
+              //       print(itemGroup);
+              //       return res;
+              //     },
+              //   ),
+              // ),
+              const SizedBox(
                 height: 20,
               ),
 
@@ -182,7 +236,7 @@ class FilterScreen extends StatelessWidget {
                     if (reportType == StringsManager.wareHouseReport) {
                       final filters = WarehouseFilters(
                         warehouseFilter: wareHouseName!,
-                        itemFilter: itemCode != null ? itemCode : null,
+                        itemFilter: itemCode,
                       );
                       Navigator.of(context).pushNamed(
                         Routes.warehouseReportsScreen,
@@ -191,8 +245,8 @@ class FilterScreen extends StatelessWidget {
                     } else if (reportType == StringsManager.stockLedger) {
                       final filters = StockLedgerFilters(
                         warehouseFilter: wareHouseName!,
-                        itemCode: itemCode != null ? itemCode : null,
-                        itemGroup: itemGroup != null ? itemGroup : null,
+                        itemCode: itemCode,
+                        itemGroup: itemGroup,
                         fromDate: fromDate!,
                         toDate: toDate!,
                       );
@@ -203,8 +257,8 @@ class FilterScreen extends StatelessWidget {
                     } else if (reportType == StringsManager.priceList) {
                       final filters = ItemPriceFilters(
                         priceList: priceList!,
-                        itemCode: itemCode != null ? itemCode : null,
-                        itemGroup: itemGroup != null ? itemGroup : null,
+                        itemCode: itemCode,
+                        itemGroup: itemGroup,
                       );
                       Navigator.of(context).pushNamed(
                         Routes.priceListReportScreen,
@@ -219,7 +273,7 @@ class FilterScreen extends StatelessWidget {
                     color: Colors.blue,
                     borderRadius: AppRadius.radius10,
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Apply Filter',
                       style: TextStyle(
@@ -231,7 +285,7 @@ class FilterScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
             ],

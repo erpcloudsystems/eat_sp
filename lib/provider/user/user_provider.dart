@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:NextApp/models/new_version_models/warehoouse_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -122,6 +123,9 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  // Warehouses list
+  List<WarehouseModel> warehouseList = [];
+
   Future<void> login(
       String username, String password, String url, bool rememberMe) async {
     final bool checkUrlValidation = await service.checkUrlValidation(url);
@@ -141,6 +145,12 @@ class UserProvider extends ChangeNotifier {
         _userId = res['message']['user_id'] ?? 'none';
         try {
           // ignore: prefer_interpolation_to_compose_strings
+          if (res['message']['user_permissions']['Warehouse'] != null) {
+            warehouseList = List<WarehouseModel>.from(
+                List.from(res['message']['user_permissions']['Warehouse'])
+                    .map((e) => WarehouseModel.fromJson(e))
+                    .toList());
+          }
           _defaultCurrency =
               res['message']['company_defaults'][0]['default_currency'];
           _defaultSellingPriceList = res['message']['company_defaults'][0]
