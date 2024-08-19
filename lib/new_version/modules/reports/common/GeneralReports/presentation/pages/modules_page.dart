@@ -12,22 +12,10 @@ class ReportsModulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<ModuleModel> modules = [
       const ModuleModel(
-          name: StringsManager.selling,
-          image: 'https://erpcloud.systems/files/selling.png'),
-      const ModuleModel(
           name: StringsManager.stock,
           image: 'https://erpcloud.systems/files/stock.png'),
       const ModuleModel(
-          name: StringsManager.buying,
-          image: 'https://erpcloud.systems/files/buying.png'),
-      const ModuleModel(
           name: StringsManager.accounts,
-          image: 'https://erpcloud.systems/files/accounts.png'),
-      const ModuleModel(
-          name: StringsManager.hr,
-          image: 'https://erpcloud.systems/files/hr.png'),
-      const ModuleModel(
-          name: StringsManager.projects,
           image: 'https://erpcloud.systems/files/accounts.png'),
     ];
     return Scaffold(
