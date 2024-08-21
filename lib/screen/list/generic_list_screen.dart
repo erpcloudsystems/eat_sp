@@ -1,4 +1,5 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -307,8 +308,8 @@ class _GenericListScreenState<T> extends State<GenericListScreen> {
               elevation: 0,
               title: Text(
                 widget.title != null
-                    ? widget.title!
-                    : moduleProvider.currentModule.title,
+                    ? widget.title!.tr()
+                    : moduleProvider.currentModule.title.tr(),
               ),
               actions: [
                 if (widget.createForm != null)

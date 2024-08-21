@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,8 @@ class ReportsPage extends StatelessWidget {
         .add(GetAllReportsEvent(moduleName: moduleName));
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          StringsManager.selectReport,
+        title: Text(
+          StringsManager.selectReport.tr(),
         ),
       ),
       body: BlocConsumer<GeneralReportsBloc, GeneralReportsState>(
@@ -49,7 +50,7 @@ class ReportsPage extends StatelessWidget {
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.all(DoublesManager.d_8),
                 child: SingleValueTile(
-                  state.getReportData[index].reportName,
+                  state.getReportData[index].reportName.tr(),
                   onTap: (context) {
                     if (state.getReportData[index].reportName ==
                         'General Ledger') {
@@ -58,7 +59,7 @@ class ReportsPage extends StatelessWidget {
                         arguments: state.getReportData[index].reportName,
                       );
                     } else if (state.getReportData[index].reportName ==
-                        StringsManager.accountsReceivable) {
+                        StringsManager.accountsReceivable.tr()) {
                       Navigator.of(context).pushNamed(
                         Routes.accountReceivableReportFilterScreen,
                         arguments: state.getReportData[index].reportName,

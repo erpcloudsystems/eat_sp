@@ -169,4 +169,5 @@ class StringsManager {
   static const String date = 'Date';
   static const String customer = 'Customer';
   static const String applyFilters = 'Apply Filters';
+  static const String filters = 'Filters';
 }

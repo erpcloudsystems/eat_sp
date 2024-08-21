@@ -343,5 +343,16 @@
     "Job Card": "Job Card",
     "Work Order": "Work Order",
     "BOM": "BOM"
-  }
+  },
+  "Select Report": "Select Report",
+  "Accounts Receivable": "Accounts Receivable",
+  "Warehouse Balance" : "Warehouse Balance",
+  "Accounts Reports" : "Accounts Reports",
+  "Stock Reports" : "Stock Reports",
+  "Sales Invoice" : "Sales Invoice",
+  "Filters" :  "Filters",
+  "Apply Filters":"Apply Filters",
+  "Select Warehouse" : "Select Warehouse",
+  "type" : "type",
+  "Select Item Group" : "Select Item Group"
 }
