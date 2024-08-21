@@ -641,6 +641,20 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
       );
     });
 
+    Widget salesPersonScreen() => GenericListScreen<Map<String, String?>>(
+      title: 'Select Sales Person',
+      service: APIService.SALES_PERSON,
+      listItem: (value) => SingleValueTileReturnMap(value,
+          onTap: (context) => Navigator.of(context).pop(value)),
+      serviceParser: (data) {
+        List<Map<String, String?>> list = [];
+        for (var element in List.from(data['message'])) {
+          list.add(Map<String, String?>.from(element));
+        }
+        return ListModel<Map<String, String?>>(list);
+      },
+    );
+
 // selected item
 Widget newItemsScreen() => Builder(builder: (context) {
       return CustomListScreen<ItemSelectModel>(

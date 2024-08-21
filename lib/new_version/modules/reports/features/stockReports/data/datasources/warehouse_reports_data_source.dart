@@ -1,9 +1,9 @@
-import 'package:NextApp/new_version/core/network/api_constance.dart';
-import 'package:NextApp/new_version/core/network/dio_helper.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/warehouse_report_model.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../../../core/network/api_constance.dart';
+import '../../../../../../core/network/dio_helper.dart';
 import '../models/warehouse_filters.dart';
+import '../models/warehouse_report_model.dart';
 
 abstract class BaseWarehouseDataSource {
   Future<List<WarehouseReportModel>> getWarehouseReports(

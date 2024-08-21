@@ -1,9 +1,9 @@
-import 'package:NextApp/new_version/core/network/dio_helper.dart';
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/data/models/report_entity.dart';
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/domain/entities/report_entity.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../../core/network/api_constance.dart';
+import '../../../../../../core/network/dio_helper.dart';
+import '../../domain/entities/report_entity.dart';
+import '../models/report_entity.dart';
 
 abstract class BaseReportsDataSource {
   Future<List<ReportEntity>> getAllReports(String doctypeName);

@@ -1,8 +1,9 @@
-import 'package:NextApp/new_version/core/global/base_use_case.dart';
-import 'package:NextApp/new_version/core/network/failure.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/stock_ledger_entity.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../../../../core/global/base_use_case.dart';
+import '../../../../../../core/network/failure.dart';
+import '../../data/models/stock_ledger_filter.dart';
+import '../entities/stock_ledger_entity.dart';
 import '../repositories/stock_reports_base_repo.dart';
 
 class GetStockLedgerUseCase

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/constants.dart';
+import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import '../service/gps_services.dart';
 import 'drawer/drawer_screen.dart';
 import 'sub_category_screen.dart';
@@ -14,7 +15,6 @@ import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
 import '../service/local_notification_service.dart';
 import '../new_version/modules/dashboard/presentation/pages/dashpoard_screen.dart';
-import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      const ReportsModulePage(),
+      const  ReportModulesPage(),
       ModulesPage(userProvider: userProvider),
       const DashboardScreen(),
       const NotificationScreen(),

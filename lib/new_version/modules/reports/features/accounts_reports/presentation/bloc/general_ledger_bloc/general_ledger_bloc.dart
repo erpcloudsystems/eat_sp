@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/use_cases/get_general_ledger_report_use_case.dart';
+import '../../../data/models/general_ledger_filter.dart';
+import '../../../domain/use_cases/get_general_ledger_report_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-
+import '../../domain/entities/account_receivable_entity.dart';
+import '../models/accounts_receivable_filters.dart';
 import '../models/general_ledger_filter.dart';
 import '../../../../../../core/network/failure.dart';
 import '../../../../../../core/network/exceptions.dart';
@@ -35,6 +36,23 @@ class AccountReportsRepo implements AccountReportBaseRepo {
           errorMessage: StringsManager.offlineFailureMessage,
         ),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<AccountReceivableReportEntity>>>
+      getAccountReceivableReport(AccountReceivableFilters filters) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final result =
+            await _accountReportDataSource.getAccountReceivableReport(filters);
+        return Right(result);
+      } on PrimaryServerException catch (error) {
+        return Left(ServerFailure(errorMessage: error.message));
+      }
+    } else {
+      return const Left(
+          OfflineFailure(errorMessage: StringsManager.offlineFailureMessage));
     }
   }
 }

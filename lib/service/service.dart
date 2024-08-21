@@ -92,7 +92,7 @@ class APIService {
   static const CAMPAIGN = 'Campaign';
   static const MARKET_SEGMENT = 'Market Segment';
   static const INDUSTRY = 'Industry Type';
-
+  static const SALES_PERSON = 'Sales Person';
   static const USER_TYPE = 'User';
   static const SALES_PARTNER = 'Sales Partner';
   static const DEPARTMENT = 'Department';
@@ -189,7 +189,7 @@ class APIService {
       if (data.message == 'Domain Is Inactive') {
         return false;
       }
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       log(error.message ?? StringsManager.unknownError,
           name: 'check url error');
       throw ServerException(error.message ?? StringsManager.unknownError);
@@ -224,11 +224,11 @@ class APIService {
       }
     } on ServerException catch (e) {
       rethrow;
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       print(ex.type);
-      if (ex.type == DioErrorType.connectionTimeout) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
         throw const ServerException("Connection Timeout");
-      } else if (ex.type == DioErrorType.unknown) {
+      } else if (ex.type == DioExceptionType.unknown) {
         throw const ServerException("Connection Timeout");
       }
 
@@ -238,6 +238,7 @@ class APIService {
       print("login Exception occurred: $error stackTrace: $stacktrace");
       throw Exception("something went wrong");
     }
+    return null;
   }
 
   Future<ListModel<T>?> getList<T>(
@@ -277,7 +278,7 @@ class APIService {
         return dataParser(myMap);
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "getList Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -287,6 +288,7 @@ class APIService {
         }
       }
     }
+    return null;
   }
 
   Future<String> getListCount<T>({
@@ -342,7 +344,7 @@ class APIService {
         return {};
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -374,7 +376,7 @@ class APIService {
         return dataParser(myMap);
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "getCustomList Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -384,6 +386,7 @@ class APIService {
         }
       }
     }
+    return null;
   }
 
   Future<Map<String, dynamic>> genericGet(String url,
@@ -406,7 +409,7 @@ class APIService {
         return {};
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "genericGet Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -435,7 +438,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -463,7 +466,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -493,7 +496,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -521,7 +524,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -562,7 +565,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -579,12 +582,12 @@ class APIService {
       var response = await dio
           .put(SUBMIT_DOC, queryParameters: {'doctype': docType, 'name': id});
 
-      print("request " + response.realUri.path.toString());
+      print("request ${response.realUri.path}");
       print(response.statusCode);
-      print("response" + response.toString());
+      print("response$response");
 
       if (response.statusCode == 200) {
-        print("request" + response.realUri.path.toString());
+        print("request${response.realUri.path}");
 
         final data = Map<String, dynamic>.from(response.data);
 
@@ -628,7 +631,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -638,6 +641,7 @@ class APIService {
         }
       }
     }
+    return null;
   }
 
   void printInvoice({
@@ -725,11 +729,11 @@ class APIService {
           ),
         );
       }
-      throw ServerException('something went wrong :(');
+      throw const ServerException('something went wrong :(');
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -739,6 +743,7 @@ class APIService {
         }
       }
     }
+    return null;
   }
 
   /// Download file into private folder not visible to user
@@ -820,7 +825,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -861,7 +866,7 @@ class APIService {
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -901,7 +906,7 @@ class APIService {
       } on ServerException catch (e) {
         throw ServerException(e.message);
       } catch (error, stacktrace) {
-        if (error is DioError) {
+        if (error is DioException) {
           if (error.response?.data != null) {
             print(
                 "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");
@@ -944,7 +949,7 @@ class APIService {
         return [];
       }
     } catch (error, stacktrace) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response?.data != null) {
           print(
               "Exception occurred: ${error.response?.data.toString()} stackTrace: $stacktrace");

@@ -1,5 +1,5 @@
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/presentation/bloc/stock_ledger_bloc/stock_ledger_bloc.dart';
+import '../../data/models/stock_ledger_filter.dart';
+import '../bloc/stock_ledger_bloc/stock_ledger_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +17,7 @@ class StockLedgerReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<StockLedgerBloc>(context);
-    bloc.add(const ResetStockLedgerEvent());
+    bloc.add(ResetStockLedgerEvent());
 
     final stockLedgerFilter =
         ModalRoute.of(context)!.settings.arguments as StockLedgerFilters;
@@ -46,7 +46,7 @@ class StockLedgerReport extends StatelessWidget {
             current.getStockLedgerReportData,
         builder: (context, state) {
           if (state.getStockLedgerReportsState == RequestState.loading) {
-            return const CustomLoadingWithImage();
+            return CustomLoadingWithImage();
           }
           if (state.getStockLedgerReportsState == RequestState.success) {
             /// Waiting..............
@@ -88,7 +88,7 @@ class StockLedgerReport extends StatelessWidget {
               body: ReportTable(
                 tableWidth: 910.w,
                 appBarName: 'Stock Ledger',
-                mainRowList: const [
+                mainRowList: [
                   'Item Code',
                   'Date',
                   'Item Name',
@@ -112,7 +112,7 @@ class StockLedgerReport extends StatelessWidget {
               ),
             );
           }
-          return const SizedBox();
+          return SizedBox();
         },
       ),
     );

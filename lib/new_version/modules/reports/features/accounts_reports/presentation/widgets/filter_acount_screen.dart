@@ -1,14 +1,15 @@
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_bloc.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_state.dart';
-import 'package:NextApp/screen/list/otherLists.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../../core/resources/routes.dart';
+import '../../data/models/general_ledger_filter.dart';
 import '../../../../../../../widgets/form_widgets.dart';
 import '../../../../../../core/resources/app_radius.dart';
-import '../../../../../../core/resources/routes.dart';
+import '../../../../../../../screen/list/otherLists.dart';
+import '../bloc/general_ledger_bloc/general_ledger_bloc.dart';
+import '../bloc/general_ledger_bloc/general_ledger_state.dart';
 
 class FilterAccountScreen extends StatelessWidget {
   const FilterAccountScreen({Key? key}) : super(key: key);
@@ -40,10 +41,7 @@ class FilterAccountScreen extends StatelessWidget {
                   'account_name',
                   'Account',
                   clearButton: true,
-                  onSave: (key, value) {
-                    print(value);
-                    accountName = value;
-                  },
+                  onSave: (key, value) => accountName = value,
                   onPressed: () async {
                     final res = await Navigator.of(context).push(
                       MaterialPageRoute(
@@ -71,25 +69,19 @@ class FilterAccountScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Flexible(
-                      child: DatePicker(
-                        'delivery_date',
-                        'To Date',
-                        clear: true,
-                        disableValidation: false,
-                        onChanged: (value) {
-                          toDate = value;
-                          print(toDate);
-                        },
-                      ),
+                      child: DatePicker('delivery_date', 'To Date',
+                          clear: true,
+                          disableValidation: false,
+                          onChanged: (value) => toDate = value),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Flexible(
@@ -99,7 +91,7 @@ class FilterAccountScreen extends StatelessWidget {
                   clearButton: true,
                   onClear: () {
                     BlocProvider.of<GeneralLedgerBloc>(context)
-                        .add(ChangePartyTypeEvent(false));
+                        .add(const ChangePartyTypeEvent(false));
                     partyType = null;
                   },
                   disableValidation: true,
@@ -110,20 +102,20 @@ class FilterAccountScreen extends StatelessWidget {
                       ),
                     );
                     BlocProvider.of<GeneralLedgerBloc>(context)
-                        .add(ChangePartyTypeEvent(true));
+                        .add(const ChangePartyTypeEvent(true));
                     partyType = res;
                     return res;
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
               Flexible(
                 child: BlocBuilder<GeneralLedgerBloc, GeneralLedgerState>(
                   builder: (context, state) {
-                    if (state.isPartyType == true)
+                    if (state.isPartyType == true) {
                       return CustomTextField(
                         'party',
                         'Party',
@@ -144,7 +136,8 @@ class FilterAccountScreen extends StatelessWidget {
                           return res['name'];
                         },
                       );
-                    return SizedBox();
+                    }
+                    return const SizedBox();
                   },
                 ),
               ),
@@ -173,7 +166,7 @@ class FilterAccountScreen extends StatelessWidget {
                     color: Colors.blue,
                     borderRadius: AppRadius.radius10,
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Apply Filter',
                       style: TextStyle(
@@ -185,7 +178,7 @@ class FilterAccountScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
             ],

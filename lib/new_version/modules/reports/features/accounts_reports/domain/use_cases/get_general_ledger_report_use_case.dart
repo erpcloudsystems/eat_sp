@@ -1,5 +1,5 @@
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/entities/general_ledger_report_entity.dart';
+import '../../data/models/general_ledger_filter.dart';
+import '../entities/general_ledger_report_entity.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../../../core/global/base_use_case.dart';
 import '../../../../../../core/network/failure.dart';

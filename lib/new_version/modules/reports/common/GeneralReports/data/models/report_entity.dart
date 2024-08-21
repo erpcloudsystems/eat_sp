@@ -1,4 +1,5 @@
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/domain/entities/report_entity.dart';
+
+import '../../domain/entities/report_entity.dart';
 
 class ReportModel extends ReportEntity {
   const ReportModel({

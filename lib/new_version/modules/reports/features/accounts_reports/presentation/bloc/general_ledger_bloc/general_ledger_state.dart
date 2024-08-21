@@ -1,4 +1,4 @@
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/entities/general_ledger_report_entity.dart';
+import '../../../domain/entities/general_ledger_report_entity.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../../../../core/utils/request_state.dart';
 

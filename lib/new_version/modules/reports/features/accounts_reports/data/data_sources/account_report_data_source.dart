@@ -1,13 +1,18 @@
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/data/models/general_ledger_report_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../../core/network/api_constance.dart';
 import '../../../../../../core/network/dio_helper.dart';
+import '../models/account_receivable_report_model.dart';
+import '../models/accounts_receivable_filters.dart';
+import '../models/general_ledger_filter.dart';
+import '../models/general_ledger_report_model.dart';
 
 abstract class BaseAccountReportDataSource {
   Future<List<GeneralLedgerModel>> getGeneralLedgerReports(
       GeneralLedgerFilters filters);
+
+  Future<List<AccountReceivableReportModel>> getAccountReceivableReport(
+      AccountReceivableFilters filters);
 }
 
 class AccountReportDataSourceByDio implements BaseAccountReportDataSource {
@@ -31,10 +36,30 @@ class AccountReportDataSourceByDio implements BaseAccountReportDataSource {
       },
     ) as Response;
 
-    final _generalLedgerReport = List.from(response.data['message']['data'])
+    final generalLedgerReport = List.from(response.data['message']['data'])
         .map((e) => GeneralLedgerModel.fromJson(e))
         .toList();
 
-    return _generalLedgerReport;
+    return generalLedgerReport;
+  }
+
+  @override
+  Future<List<AccountReceivableReportModel>> getAccountReceivableReport(
+      AccountReceivableFilters filters) async {
+    final response = await _dio
+        .get(endPoint: ApiConstance.getAccountReceivableReport, query: {
+      'page_length': ApiConstance.pageLength,
+      'start': filters.startKey,
+      if (filters.customerCode != null) 'customer_code': filters.customerCode,
+      if (filters.customerName != null) 'customer_name': filters.customerName,
+      if (filters.salesPersonName != null)
+        'sales_person_name': filters.salesPersonName,
+      if (filters.toDate != null) 'to_date': filters.toDate,
+    }) as Response;
+
+    final accountReceivableReport = List.from(response.data['message'])
+        .map((e) => AccountReceivableReportModel.fromJson(e))
+        .toList();
+    return accountReceivableReport;
   }
 }

@@ -17,7 +17,7 @@ class WarehouseReports extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<StockReportsBloc>(context);
-    bloc.add(const ResetWarehouseEvent());
+    bloc.add(ResetWarehouseEvent());
 
     final wareHouseFilter =
         ModalRoute.of(context)!.settings.arguments as WarehouseFilters;

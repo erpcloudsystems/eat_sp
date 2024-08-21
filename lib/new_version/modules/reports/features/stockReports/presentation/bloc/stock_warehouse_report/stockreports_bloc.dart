@@ -16,7 +16,7 @@ part 'stockreports_state.dart';
 class StockReportsBloc extends Bloc<StockReportsEvent, StockReportsState> {
   final GetWarehouseReportsUseCase _warehouseReportsUseCase;
 
-  StockReportsBloc(this._warehouseReportsUseCase) : super(const StockReportsState()) {
+  StockReportsBloc(this._warehouseReportsUseCase) : super(StockReportsState()) {
     on<GetWarehouseEvent>(_getWarehouseReports, transformer: droppable());
     on<ResetWarehouseEvent>(_resetWarehouseReports);
   }

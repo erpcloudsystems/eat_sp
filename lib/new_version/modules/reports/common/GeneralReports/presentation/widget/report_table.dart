@@ -89,16 +89,16 @@ class ReportTable extends StatelessWidget {
             height: DoublesManager.d_1,
           ),
           horizontalScrollPhysics:
-              isHorizontal ? const NeverScrollableScrollPhysics() : null,
-          leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-          rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+              isHorizontal ? NeverScrollableScrollPhysics() : null,
+          leftHandSideColBackgroundColor: Color(0xFFFFFFFF),
+          rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
           htdRefreshController: _hdtRefreshController,
           onLoad: onRefresh,
           onRefresh: refreshFun,
           enablePullToLoadNewData: true,
           enablePullToRefresh: false,
-          loadIndicator: const ClassicFooter(),
-          refreshIndicator: const ClassicHeader(),
+          loadIndicator: ClassicFooter(),
+          refreshIndicator: ClassicHeader(),
           isFixedHeader: true,
         ),
       ),
@@ -111,12 +111,6 @@ class ReportTable extends StatelessWidget {
 
   Widget _getTitleItemWidget(String label) {
     return Container(
-      width: mainTableBlockWidth,
-      height: DoublesManager.d_56.h,
-      padding: const EdgeInsets.only(
-        left: DoublesManager.d_5,
-      ),
-      alignment: Alignment.center,
       child: Text(
         label,
         style: GoogleFonts.cairo(
@@ -124,18 +118,24 @@ class ReportTable extends StatelessWidget {
           color: APPBAR_COLOR,
         ),
       ),
+      width: mainTableBlockWidth,
+      height: DoublesManager.d_56.h,
+      padding: EdgeInsets.only(
+        left: DoublesManager.d_5,
+      ),
+      alignment: Alignment.center,
     );
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
-      width: mainTableBlockWidth,
-      height: mainTableBlockHeight,
-      padding: const EdgeInsets.only(left: DoublesManager.d_20),
-      alignment: Alignment.centerLeft,
       child: Text(
         leftColumnData(index),
       ),
+      width: mainTableBlockWidth,
+      height: mainTableBlockHeight,
+      padding: EdgeInsets.only(left: DoublesManager.d_20),
+      alignment: Alignment.centerLeft,
     );
   }
 }

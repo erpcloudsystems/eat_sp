@@ -33,7 +33,9 @@ import '../../modules/reports/common/GeneralReports/presentation/bloc/generalrep
 import '../../modules/reports/features/accounts_reports/data/data_sources/account_report_data_source.dart';
 import '../../modules/reports/features/accounts_reports/data/repositories/account_report_repo.dart';
 import '../../modules/reports/features/accounts_reports/domain/repositories/account_report_base_repo.dart';
+import '../../modules/reports/features/accounts_reports/domain/use_cases/get_account_receivable_reports_use_case.dart';
 import '../../modules/reports/features/accounts_reports/domain/use_cases/get_general_ledger_report_use_case.dart';
+import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/bloc/accounts_receivable_bloc_bloc.dart';
 import '../../modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_bloc.dart';
 import '../../modules/reports/features/stockReports/data/datasources/stock_reports_data_source.dart';
 import '../../modules/reports/features/stockReports/data/repositories/warehouse_reports_repo.dart';
@@ -59,6 +61,7 @@ Future<void> init() async {
   /// Bloc
 
   // Reports
+   sl.registerFactory(() => AccountsReceivableBloc(sl()));
   sl.registerFactory(() => GeneralReportsBloc(sl()));
   sl.registerFactory(() => StockReportsBloc(sl()));
   sl.registerFactory(() => StockLedgerBloc(sl()));
@@ -82,6 +85,7 @@ Future<void> init() async {
   /// Use cases
 
   // Reports
+  sl.registerLazySingleton(() => GetAccountReceivableReportsUseCase(sl()));
   sl.registerLazySingleton(() => GetAllReportsUseCase(sl()));
   sl.registerLazySingleton(() => GetWarehouseReportsUseCase(sl()));
   sl.registerLazySingleton(() => GetStockLedgerUseCase(sl()));

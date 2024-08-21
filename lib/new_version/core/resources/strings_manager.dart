@@ -47,8 +47,10 @@ class StringsManager {
       'Set rate of sub-assembly item based on BOM';
   static const String userDataUpdatedSuccessfully =
       'Your Data Updated Successfully';
-  static const String locationNotificationTitle = 'The application will continue to receive your location even when you aren\'t using it';
-  static const String userPermissionForLocationMessage = 'user permission for location message';
+  static const String locationNotificationTitle =
+      'The application will continue to receive your location even when you aren\'t using it';
+  static const String userPermissionForLocationMessage =
+      'user permission for location message';
   static const String offlineFailureMessage = 'There is no internet connection';
   static const String qualityInspectionTemplate = 'Quality Inspection Template';
   static const String qualityInspectionRequired = 'Quality Inspection Required';
@@ -159,4 +161,12 @@ class StringsManager {
   static const String paid = 'Paid';
   static const String faq = 'FAQ';
   static const String hr = 'HR';
+  static const String accountsReceivable = 'Accounts Receivable';
+  static const String customerName = 'Customer Name';
+  static const String customerCode = 'Customer Code';
+  static const String outstandingAmount = 'Outstanding Amount';
+  static const String salesPerson = 'Sales Person';
+  static const String date = 'Date';
+  static const String customer = 'Customer';
+  static const String applyFilters = 'Apply Filters';
 }

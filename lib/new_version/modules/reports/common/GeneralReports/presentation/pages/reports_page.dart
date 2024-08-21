@@ -1,13 +1,14 @@
-import '../../../../../../core/resources/strings_manager.dart';
-import '../bloc/generalreports_bloc.dart';
-import '../../../../../../../screen/list/otherLists.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../../widgets/custom_loading.dart';
-import '../../../../../../core/resources/app_values.dart';
+import 'package:flutter/material.dart';
+
+import '../bloc/generalreports_bloc.dart';
 import '../../../../../../core/resources/routes.dart';
 import '../../../../../../core/utils/error_dialog.dart';
 import '../../../../../../core/utils/request_state.dart';
+import '../../../../../../core/resources/app_values.dart';
+import '../../../../../../../screen/list/otherLists.dart';
+import '../../../../../../../widgets/custom_loading.dart';
+import '../../../../../../core/resources/strings_manager.dart';
 
 class ReportsPage extends StatelessWidget {
   const ReportsPage({super.key});
@@ -54,6 +55,12 @@ class ReportsPage extends StatelessWidget {
                         'General Ledger') {
                       Navigator.of(context).pushNamed(
                         Routes.accountReportFilterScreen,
+                        arguments: state.getReportData[index].reportName,
+                      );
+                    } else if (state.getReportData[index].reportName ==
+                        StringsManager.accountsReceivable) {
+                      Navigator.of(context).pushNamed(
+                        Routes.accountReceivableReportFilterScreen,
                         arguments: state.getReportData[index].reportName,
                       );
                     } else {

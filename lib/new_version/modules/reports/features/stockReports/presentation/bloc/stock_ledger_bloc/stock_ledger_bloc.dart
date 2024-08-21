@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../../../../core/network/api_constance.dart';
 import '../../../../../../../core/utils/request_state.dart';
@@ -17,7 +17,7 @@ part 'stock_ledger_state.dart';
 class StockLedgerBloc extends Bloc<StockLedgerEvent, StockLedgerState> {
   final GetStockLedgerUseCase _getStockLedgerUseCase;
 
-  StockLedgerBloc(this._getStockLedgerUseCase) : super(const StockLedgerState()) {
+  StockLedgerBloc(this._getStockLedgerUseCase) : super(StockLedgerState()) {
     on<GetStockLedgerEvent>(_getStockLedgerReports, transformer: droppable());
     on<ResetStockLedgerEvent>(_resetStockLedgerReports);
   }

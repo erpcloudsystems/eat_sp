@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
-import '../../../../../../../widgets/custom_loading.dart';
 import '../../../../../../core/resources/routes.dart';
+import '../../data/models/general_ledger_filter.dart';
 import '../../../../../../core/utils/error_dialog.dart';
 import '../../../../../../core/utils/request_state.dart';
-import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
-import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
-import '../../data/models/general_ledger_filter.dart';
+import '../../../../../../../widgets/custom_loading.dart';
 import '../bloc/general_ledger_bloc/general_ledger_bloc.dart';
 import '../bloc/general_ledger_bloc/general_ledger_state.dart';
+import '../../../../common/GeneralReports/presentation/widget/report_table.dart';
+import '../../../../common/GeneralReports/presentation/widget/right_hand_data_table.dart';
 
 class GeneralLedgerReportScreen extends StatelessWidget {
   const GeneralLedgerReportScreen({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<GeneralLedgerBloc>(context);
-    bloc.add(ResetGeneralLedgerEvent());
+    bloc.add(const ResetGeneralLedgerEvent());
 
     final generalLedgerFilters =
         ModalRoute.of(context)!.settings.arguments as GeneralLedgerFilters;
@@ -48,7 +48,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
             current.getGeneralLedgerReportData,
         builder: (context, state) {
           if (state.getGeneralLedgerReportsState == RequestState.loading) {
-            return CustomLoadingWithImage();
+            return const CustomLoadingWithImage();
           }
           if (state.getGeneralLedgerReportsState == RequestState.success) {
             Widget _generateRightHandSideColumnRow(
@@ -103,7 +103,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
               body: ReportTable(
                 tableWidth: 1500.w,
                 appBarName: 'General Ledger',
-                mainRowList: [
+                mainRowList: const [
                   'Posting Date',
                   'Account',
                   'Party Type',
@@ -134,7 +134,7 @@ class GeneralLedgerReportScreen extends StatelessWidget {
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

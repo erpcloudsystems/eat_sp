@@ -53,4 +53,6 @@ class ApiConstance {
       'method/eat_mobile.general.get_item_list';
 
   static const String getItemGroup = 'method/eat_mobile.itemGroup.itemList';
+  static const String getAccountReceivableReport =
+      'method/eat_mobile.reports.accounts.accounts_receivable';
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
+import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/screens/account_receivable_report_screen.dart';
+import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/screens/accounts_receivable_filter.dart';
 import '../utils/no_data_screen.dart';
 import '../../modules/user_profile/presentation/pages/user_profile_screen.dart';
 import '../../modules/user_profile/presentation/pages/edit_user_profile_screen.dart';
-import '../../modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import '../../modules/reports/common/GeneralReports/presentation/pages/reports_page.dart';
 import '../../modules/reports/features/accounts_reports/presentation/pages/general_ledger_report_screen.dart';
 import '../../modules/reports/features/accounts_reports/presentation/widgets/filter_acount_screen.dart';
@@ -17,6 +19,11 @@ class Routes {
       '/account_reports_filter_screen';
   static const String generalLedgerReportScreen =
       '/general_ledger_reports_screen';
+  static const String accountReceivableReportFilterScreen =
+      '/account_receivable_report_filter_screen';
+  static const String accountReceivableReportScreen =
+      '/account_receivable_report_screen';
+
   static const String stockLedgerReportScreen = '/stock_ledger_reports_screen';
   static const String priceListReportScreen = '/price_list_reports_screen';
   static const String reportFilterScreen = '/reports_filter_screen';
@@ -30,7 +37,7 @@ class Routes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-      modulesScreen: (context) => const ReportsModulePage(),
+      modulesScreen: (context) => const ReportModulesPage(),
       reportsScreen: (context) => const ReportsPage(),
       noDataScreen: (context) => const NoDataScreen(),
       reportFilterScreen: (context) => const FilterScreen(),
@@ -41,6 +48,10 @@ class Routes {
       editUserProfileScreen: (context) => const EditUserProfileScreen(),
       accountReportFilterScreen: (context) => const FilterAccountScreen(),
       generalLedgerReportScreen: (context) => const GeneralLedgerReportScreen(),
+      accountReceivableReportScreen: (_) =>
+          const AccountReceivableReportScreen(),
+      accountReceivableReportFilterScreen: (_) =>
+          const AccountsReceivableFilterScreen(),
     };
   }
 }

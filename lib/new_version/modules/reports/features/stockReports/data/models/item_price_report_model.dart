@@ -1,4 +1,4 @@
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/item_price_entity.dart';
+import '../../domain/entities/item_price_entity.dart';
 
 class ItemPriceReportModel extends ItemPriceEntity {
   const ItemPriceReportModel({

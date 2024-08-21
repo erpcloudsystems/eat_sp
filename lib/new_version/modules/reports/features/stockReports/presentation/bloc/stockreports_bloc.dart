@@ -11,13 +11,12 @@ import '../../domain/entities/warehouse_report_entity.dart';
 import '../../domain/usecases/get_warehouse_reports_use_case.dart';
 
 part 'stockreports_event.dart';
-
 part 'stockreports_state.dart';
 
 class StockReportsBloc extends Bloc<StockReportsEvent, StockReportsState> {
   final GetWarehouseReportsUseCase _warehouseReportsUseCase;
 
-  StockReportsBloc(this._warehouseReportsUseCase) : super(const StockReportsState()) {
+  StockReportsBloc(this._warehouseReportsUseCase) : super(StockReportsState()) {
     on<GetWarehouseEvent>(_getWarehouseReports, transformer: droppable());
     on<ResetWarehouseEvent>(_resetWarehouseReports);
   }

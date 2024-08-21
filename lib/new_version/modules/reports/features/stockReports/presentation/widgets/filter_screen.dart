@@ -1,17 +1,16 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-import '../../../../../../../service/service.dart';
-import '../../../../../../core/utils/custom_drop_down_form_feild.dart';
 import '../../data/models/warehouse_filters.dart';
 import '../../data/models/item_price_filters.dart';
 import '../../data/models/stock_ledger_filter.dart';
 import '../../../../../../core/resources/routes.dart';
 import '../../../../../../../widgets/form_widgets.dart';
-import '../../../../../../../screen/list/otherLists.dart';
 import '../../../../../../core/resources/app_radius.dart';
+import '../../../../../../../screen/list/otherLists.dart';
+import '../../../../../../core/resources/app_values.dart';
 import '../../../../../../../provider/module/module_type.dart';
 import '../../../../../../core/resources/strings_manager.dart';
 import '../../../../../../../provider/module/module_provider.dart';
@@ -25,77 +24,54 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  late final reportType;
-  String? wareHouseName;
-  String? itemCode;
-  String? itemGroup;
-  String? priceList;
-  var formKey = GlobalKey<FormState>();
-  String? fromDate;
-  String? toDate;
+  String? itemCode, itemGroup, priceList, fromDate, toDate, wareHouseName;
+  final formKey = GlobalKey<FormState>();
+  late final String reportType;
+  // We put this flag due to a duplicated error.
+  bool isReportTypeInitialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        reportType = ModalRoute.of(context)!.settings.arguments;
-      });
-    });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isReportTypeInitialized) {
+      reportType = ModalRoute.of(context)!.settings.arguments as String;
+      isReportTypeInitialized = true;
+    }
+    Provider.of<ModuleProvider>(context).setCurrentModule = ModuleType.item;
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ModuleProvider>(context).setCurrentModule = ModuleType.item;
-
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          '$reportType Filters',
-        ),
+        title: Text('$reportType Filters'),
       ),
       body: Form(
         key: formKey,
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(DoublesManager.d_12),
           child: Column(
             children: [
               /// Warehouse list
               if (reportType != StringsManager.priceList)
-                CustomDropDownFromField(
-                    defaultValue: wareHouseName,
-                    docType: APIService.WAREHOUSE,
-                    nameResponse: 'name',
-                    title: 'Warehouse'.tr(),
-                    keys: const {
-                      'subTitle': 'warehouse_name',
-                      'trailing': 'warehouse_type',
+                Flexible(
+                  child: CustomTextField(
+                    'warehouse_name',
+                    'Warehouse',
+                    clearButton: true,
+                    onSave: (key, value) => wareHouseName = value,
+                    initialValue: wareHouseName,
+                    onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => warehouseScreen(),
+                        ),
+                      );
+                      wareHouseName = res;
+                      return res;
                     },
-                    onChange: (value) {
-                      setState(() {
-                        wareHouseName = value['name'];
-                      });
-                    }),
-              // Flexible(
-              //   child: CustomTextField(
-              //     'warehouse_name',
-              //     'Warehouse',
-              //     clearButton: true,
-              //     onSave: (key, value) {
-              //       wareHouseName = value;
-              //     },
-              //     onPressed: () async {
-              //       final res = await Navigator.of(context).push(
-              //         MaterialPageRoute(
-              //           builder: (_) => warehouseScreen(),
-              //         ),
-              //       );
-
-              //       return res;
-              //     },
-              //   ),
-              // ),
+                  ),
+                ),
 
               /// From date and to date in stock ledger Report
               if (reportType == StringsManager.stockLedger)
@@ -103,31 +79,17 @@ class _FilterScreenState extends State<FilterScreen> {
                   child: Row(
                     children: [
                       Flexible(
-                        child: DatePicker(
-                          'transaction_date',
-                          'From Date'.tr(),
-                          disableValidation: false,
-                          clear: true,
-                          onChanged: (value) {
-                            fromDate = value;
-                            print(fromDate);
-                          },
-                        ),
+                        child: DatePicker('transaction_date', 'From Date'.tr(),
+                            disableValidation: false,
+                            clear: true,
+                            onChanged: (value) => fromDate = value),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: DoublesManager.d_10),
                       Flexible(
-                        child: DatePicker(
-                          'delivery_date',
-                          'To Date',
-                          clear: true,
-                          disableValidation: false,
-                          onChanged: (value) {
-                            toDate = value;
-                            print(toDate);
-                          },
-                        ),
+                        child: DatePicker('delivery_date', 'To Date',
+                            clear: true,
+                            disableValidation: false,
+                            onChanged: (value) => toDate = value),
                       ),
                     ],
                   ),
@@ -135,37 +97,24 @@ class _FilterScreenState extends State<FilterScreen> {
 
               ///Price List
               if (reportType == StringsManager.priceList)
-                CustomDropDownFromField(
-                    defaultValue: priceList,
-                    docType: APIService.PRICE_LIST,
-                    nameResponse: 'name',
-                    title: 'Price List'.tr(),
-                    onChange: (value) {
-                      setState(() {
-                        priceList = value['name'];
-                      });
-                    }),
-              // Flexible(
-              //   child: CustomTextField(
-              //     'price_list',
-              //     'Price List',
-              //     clearButton: true,
-              //     onSave: (key, value) {
-              //       priceList = value;
-              //     },
-              //     onPressed: () async {
-              //       final res = await Navigator.of(context).push(
-              //         MaterialPageRoute(
-              //           builder: (_) => priceListScreen(),
-              //         ),
-              //       );
-              //       return res['name'];
-              //     },
-              //   ),
-              // ),
+                Flexible(
+                  child: CustomTextField(
+                    'price_list',
+                    'Price List',
+                    clearButton: true,
+                    onSave: (key, value) => priceList = value,
+                    onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => priceListScreen(),
+                        ),
+                      );
+                      return res['name'];
+                    },
+                  ),
+                ),
 
               /// Item code list
-
               Flexible(
                 child: CustomTextField(
                   'item_code',
@@ -187,46 +136,31 @@ class _FilterScreenState extends State<FilterScreen> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: DoublesManager.d_10),
 
               /// Item group list
               if (reportType != StringsManager.wareHouseReport)
-                CustomDropDownFromField(
-                    defaultValue: itemGroup,
-                    docType: APIService.ITEM_GROUP,
-                    nameResponse: 'name',
-                    title: 'Item Group'.tr(),
-                    onChange: (value) {
-                      setState(() {
-                        itemGroup = value['name'];
-                      });
-                    }),
-              // Flexible(
-              //   child: CustomTextField(
-              //     'item_group',
-              //     'Item Group',
-              //     clearButton: true,
-              //     disableValidation: true,
-              //     onClear: () {
-              //       itemGroup = null;
-              //     },
-              //     onPressed: () async {
-              //       final res = await Navigator.of(context).push(
-              //         MaterialPageRoute(
-              //           builder: (_) => itemGroupScreen(),
-              //         ),
-              //       );
-              //       itemGroup = res;
-              //       print(itemGroup);
-              //       return res;
-              //     },
-              //   ),
-              // ),
-              const SizedBox(
-                height: 20,
-              ),
+                Flexible(
+                  child: CustomTextField(
+                    'item_group',
+                    'Item Group',
+                    clearButton: true,
+                    disableValidation: true,
+                    onClear: () {
+                      itemGroup = null;
+                    },
+                    onPressed: () async {
+                      final res = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => itemGroupScreen(),
+                        ),
+                      );
+                      itemGroup = res;
+                      return res;
+                    },
+                  ),
+                ),
+              const SizedBox(height: DoublesManager.d_20),
 
               /// Apply filter button
               InkWell(
@@ -273,10 +207,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     color: Colors.blue,
                     borderRadius: AppRadius.radius10,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Apply Filter',
-                      style: TextStyle(
+                      StringsManager.applyFilters.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -285,9 +219,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: DoublesManager.d_10),
             ],
           ),
         ),

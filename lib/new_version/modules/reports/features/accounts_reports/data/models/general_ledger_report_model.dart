@@ -1,7 +1,7 @@
-import 'package:NextApp/new_version/modules/reports/features/accounts_reports/domain/entities/general_ledger_report_entity.dart';
+import '../../domain/entities/general_ledger_report_entity.dart';
 
 class GeneralLedgerModel extends GeneralLedgerReportEntity {
-  GeneralLedgerModel({
+  const GeneralLedgerModel({
     required super.name,
     required super.postingDate,
     required super.account,

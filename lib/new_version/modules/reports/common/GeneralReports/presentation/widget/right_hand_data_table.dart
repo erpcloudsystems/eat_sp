@@ -16,13 +16,13 @@ class RightHandDetailWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(text),
       width: mainTableBlockWidth,
       height: mainTableBlockHeight,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: DoublesManager.d_20,
       ),
       alignment: Alignment.center,
+      child: Text(text),
     );
   }
 }

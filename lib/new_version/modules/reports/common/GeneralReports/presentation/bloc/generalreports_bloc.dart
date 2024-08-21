@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/domain/entities/report_entity.dart';
-import 'package:NextApp/new_version/modules/reports/common/GeneralReports/domain/usecases/get_all_reports_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../../core/utils/request_state.dart';
+import '../../domain/entities/report_entity.dart';
+import '../../domain/usecases/get_all_reports_use_case.dart';
 
 part 'generalreports_event.dart';
 part 'generalreports_state.dart';

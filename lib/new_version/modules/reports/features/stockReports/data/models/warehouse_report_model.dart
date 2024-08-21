@@ -1,4 +1,5 @@
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/warehouse_report_entity.dart';
+
+import '../../domain/entities/warehouse_report_entity.dart';
 
 class WarehouseReportModel extends WarehouseReportEntity {
   const WarehouseReportModel({

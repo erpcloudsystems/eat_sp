@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +70,7 @@ class _PaymentFormState extends State<PaymentForm> {
     for (var k in data.keys) {
       print("➡️ $k: ${data[k]}");
     }
+    log(data.toString());
 
     final res = await handleRequest(
         () async => provider.isEditing
@@ -178,8 +181,8 @@ class _PaymentFormState extends State<PaymentForm> {
               "reference_doctype": "Sales Invoice",
               "reference_name": data["sales_invoice"],
               "total_amount": data["grand_total"],
-              "outstanding_amount": data["grand_total"],
-              "allocated_amount": data["grand_total"],
+              "outstanding_amount": data["outstanding_amount"],
+              "allocated_amount": data["outstanding_amount"],
             }
           ];
         }
@@ -242,6 +245,7 @@ class _PaymentFormState extends State<PaymentForm> {
         data['doctype'] = "Payment Entry";
 
         data.remove('print_formats');
+        data.remove('logs');
         data.remove('conn');
         data.remove('comments');
         data.remove('attachments');

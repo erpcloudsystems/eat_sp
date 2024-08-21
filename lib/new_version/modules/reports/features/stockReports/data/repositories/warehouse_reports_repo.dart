@@ -1,15 +1,16 @@
-import 'package:NextApp/new_version/core/network/exceptions.dart';
-import 'package:NextApp/new_version/core/network/failure.dart';
-import 'package:NextApp/new_version/core/network/network_info.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/item_price_filters.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/data/models/stock_ledger_filter.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/item_price_entity.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/stock_ledger_entity.dart';
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/warehouse_report_entity.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../../../../core/network/exceptions.dart';
+import '../../../../../../core/network/failure.dart';
+import '../../../../../../core/network/network_info.dart';
 import '../../../../../../core/resources/strings_manager.dart';
+import '../../domain/entities/item_price_entity.dart';
+import '../../domain/entities/stock_ledger_entity.dart';
+import '../../domain/entities/warehouse_report_entity.dart';
 import '../../domain/repositories/stock_reports_base_repo.dart';
 import '../datasources/stock_reports_data_source.dart';
+import '../models/item_price_filters.dart';
+import '../models/stock_ledger_filter.dart';
 import '../models/warehouse_filters.dart';
 
 class StockReportsRepo implements StockReportsBaseRepo {

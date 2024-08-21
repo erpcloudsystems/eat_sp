@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+
 import '../../../../../../../widgets/form_widgets.dart';
 
 class FromDataToDateWidget extends StatelessWidget {
@@ -28,7 +29,7 @@ class FromDataToDateWidget extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: 10,
           ),
           Flexible(

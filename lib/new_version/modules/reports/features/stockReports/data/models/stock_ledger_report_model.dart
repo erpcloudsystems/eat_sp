@@ -1,4 +1,4 @@
-import 'package:NextApp/new_version/modules/reports/features/stockReports/domain/entities/stock_ledger_entity.dart';
+import '../../domain/entities/stock_ledger_entity.dart';
 
 class StockLedgerReportModel extends StockLedgerEntity {
   const StockLedgerReportModel({
