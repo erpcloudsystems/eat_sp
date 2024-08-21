@@ -42,11 +42,9 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           left: 10,
           bottom: 10,
         ),
-
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        crossAxisCount: 2, childAspectRatio: 1.2,
-        // Generate 100 widgets that display their index in the List.
+        crossAxisCount: 2,
+        childAspectRatio: 1.1,
+        crossAxisSpacing: 8,
         children: List.generate(
             userProvider.modules[widget.moduleIndex]['docs'].keys.length,
             (index) {
@@ -76,7 +74,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                     onComplete: (index, key) {
                       userProvider.setShowcaseProgress('list_tut');
                     },
-                    builder:(ctx)=> Builder(
+                    builder: (ctx) => Builder(
                         builder: (context) => GenericListScreen.module()),
                   ),
                 ),
@@ -132,8 +130,8 @@ class HomeItem extends StatelessWidget {
     required this.title,
     required this.imageUrl,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

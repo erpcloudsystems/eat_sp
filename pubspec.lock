@@ -502,6 +502,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_adaptive_scaffold:
+    dependency: transitive
+    description:
+      name: flutter_adaptive_scaffold
+      sha256: "3b8f56e0282659db2ebb2edacf61332c1178e8dc03d933709c5af88f92f31dd5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   flutter_barcode_scanner:
     dependency: "direct main"
     description:
@@ -518,6 +526,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.6"
+  flutter_gutter:
+    dependency: "direct main"
+    description:
+      name: flutter_gutter
+      sha256: "22d898d2ffafd686a1df82725ddcc1012c0418afbf0804347e656b0be03cc91c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:

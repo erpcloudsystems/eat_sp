@@ -1,13 +1,8 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-
 import '../bloc/dasboard_bloc.dart';
 import '../widgets/get_total_widget.dart';
-import '../widgets/dashboard_tap_view.dart';
 import '../bloc/total_bloc/total_bloc.dart';
-import '../../../../../core/constants.dart';
 import '../widgets/chart_dashboard_widget.dart';
 import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
@@ -54,125 +49,89 @@ class DashboardScreen extends StatelessWidget {
         tabViewBloc.add(const GetAttendanceRequestEvent());
         return Future.delayed(const Duration(seconds: 3), () {});
       },
-      child: Scaffold(
-        body: BlocConsumer<DashboardBloc, DashboardState>(
-          listener: (context, state) {
-            if (state.getDashboardState == RequestState.error) {
-
-              showDialog(
-                context: context,
-                builder: (context) => ErrorDialog(
-                  errorMessage: state.getDashboardMessage,
-                ),
-              );
-            }
-          },
-          buildWhen: (previous, current) =>
-              previous.dashboardEntity != current.dashboardEntity,
-          builder: (context, state) {
-            return Stack(
-              children: [
-                /// Const background image
-                Container(
-                  height: 230,
+      child: BlocConsumer<DashboardBloc, DashboardState>(
+        listener: (context, state) {
+          if (state.getDashboardState == RequestState.error) {
+            showDialog(
+              context: context,
+              builder: (context) => ErrorDialog(
+                errorMessage: state.getDashboardMessage,
+              ),
+            );
+          }
+        },
+        buildWhen: (previous, current) =>
+            previous.dashboardEntity != current.dashboardEntity,
+        builder: (context, state) {
+          return CustomScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            slivers: [
+              SliverAppBar(
+                elevation: 0,
+                title: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: APPBAR_COLOR,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 40,
-                    right: 10,
-                    left: 10,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
                     children: [
-                      Row(
-                        children: [
-                          /// User profile
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(
-                              "${context.read<UserProvider>().url}${state.dashboardEntity.userImage!}",
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                state.dashboardEntity.userFullName!,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "Let's go back to work.".tr(),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const UserProfileScreen();
-                                  },
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 100.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.amberAccent,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Profile'.tr(),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Expanded(
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-                            const GetTotalWidget(),
-                            const SizedBox(height: 10),
-                            ChartDashboardWidget(
-                                data: state.dashboardEntity.barChart!,),
-                            const SizedBox(
-                              height: 700,
-                              child: DashboardTapView(),
-                            ),
-                          ],
+                      /// User profile
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                          "${context.read<UserProvider>().url}${state.dashboardEntity.userImage!}",
                         ),
                       ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        state.dashboardEntity.userFullName!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const UserProfileScreen();
+                                },
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.person,
+                            size: 30,
+                          )),
                     ],
                   ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const GetTotalWidget(),
+                    const SizedBox(height: 10),
+                    ChartDashboardWidget(
+                      data: state.dashboardEntity.barChart!,
+                    ),
+                    // const SizedBox(
+                    //   height: 700,
+                    //   child: DashboardTapView(),
+                    // ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

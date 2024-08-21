@@ -8,17 +8,17 @@ import '../../screen/list/generic_list_screen.dart';
 
 class IncomeWidget extends StatelessWidget {
   const IncomeWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.count,
-   this.total,
+    this.total,
     required this.arrowIcon,
     required this.color,
     this.status,
     this.isCounted = false,
     required this.docType,
     this.filters = const {},
-  }) : super(key: key);
+  });
   final Map<String, dynamic>? filters;
   final String? status;
   final String docType;
@@ -50,93 +50,86 @@ class IncomeWidget extends StatelessWidget {
           ),
         ).whenComplete(() => provider.filter.clear());
       },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              blurRadius: 4,
-              spreadRadius: 0.5,
-              offset: const Offset(0, 0),
-            ),
-          ],
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Flexible(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                if (count != null)
-                  Text(
-                    '$count ',
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-              ],
-            ),
-            FittedBox(
-              child: Flex(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Flex(
                 direction: Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    !isCounted ? 'EGP  ' : tr('Count  '),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    margin: const EdgeInsets.only(left: 5, bottom: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.grey[100],
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          '$total ',
-                          style: TextStyle(color: color, fontSize: 18),
-                        ),
-                        Icon(
-                          arrowIcon,
-                          size: 18,
-                          color: color,
-                        )
-                      ],
-                    ),
+                  const SizedBox(
+                    width: 10,
                   ),
+                  if (count != null)
+                    Text(
+                      '$count ',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
                 ],
               ),
-            ),
-            Text(
-              '${tr(StringsManager.theLatest)} $title',
-              style: const TextStyle(
-                color: Colors.black45,
-                fontSize: 14,
+              FittedBox(
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      !isCounted ? 'EGP  ' : tr('Count  '),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      margin: const EdgeInsets.only(left: 5, bottom: 3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.grey[100],
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            '$total ',
+                            style: TextStyle(color: color, fontSize: 18),
+                          ),
+                          Icon(
+                            arrowIcon,
+                            size: 18,
+                            color: color,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Text(
+                '${tr(StringsManager.theLatest)} $title',
+                style: const TextStyle(
+                  color: Colors.black45,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

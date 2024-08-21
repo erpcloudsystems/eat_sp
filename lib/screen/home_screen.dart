@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      const  ReportModulesPage(),
+      const ReportModulesPage(),
       ModulesPage(userProvider: userProvider),
       const DashboardScreen(),
       const NotificationScreen(),
@@ -102,24 +102,20 @@ class ModulesPage extends StatelessWidget {
           left: 6,
           bottom: 50,
         ),
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        crossAxisCount: 2, childAspectRatio: 1.2,
-        // Generate 100 widgets that display their index in the List.
+        crossAxisCount: 2,
+        childAspectRatio: 1.1,
+        crossAxisSpacing: 8,
         children: List.generate(userProvider.modules.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(4),
-            child: HomeItemTest(
-              title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
-              imageUrl: userProvider.modules[index].values.first,
-              onPressed: () => Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) =>
-                    SubCategoryScreen(
-                  userProvider.modules[index].keys.first,
-                  index,
-                ),
-              )),
-            ),
+          return HomeItemTest(
+            title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
+            imageUrl: userProvider.modules[index].values.first,
+            onPressed: () => Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  SubCategoryScreen(
+                userProvider.modules[index].keys.first,
+                index,
+              ),
+            )),
           );
         }),
       ),

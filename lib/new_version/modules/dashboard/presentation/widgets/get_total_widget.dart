@@ -14,7 +14,7 @@ import '../../data/models/get_total_sales_invoice_filters.dart';
 import '../../../../../widgets/new_widgets/test_text_field.dart';
 
 class GetTotalWidget extends StatelessWidget {
-  const GetTotalWidget({Key? key}) : super(key: key);
+  const GetTotalWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,100 +47,89 @@ class GetTotalWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    insetPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.4,
-                    ),
-                    content: SizedBox(
-                      height: 240,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          //____________________________________ Start Date______________________________________________
-                          Flexible(
-                            child: DatePickerTest(
-                              'from',
-                              'From Date',
-                              initialValue: null,
-                              onChanged: (value) {
-                                var date = DateTime.parse(value);
-                                fromDate = date;
-                              },
-                            ),
-                          ),
-                          //____________________________________End Date______________________________________________
-                          Flexible(
-                            child: DatePickerTest(
-                              'to',
-                              'TO Date',
-                              onChanged: (value) {
-                                var date = DateTime.parse(value);
-                                toDate = date;
-                              },
-                              initialValue: null,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              dashboardBloc.add(GetDashboardDataEvent(
-                                dateFilter: TotalFilters(
-                                  fromDate: fromDate.toString(),
-                                  toDate: toDate.toString(),
-                                ),
-                              ));
-
-                              totalBloc.add(GetTotalEvent(
-                                totalSalesInvoiceFilters: TotalFilters(
-                                  fromDate: fromDate.toString(),
-                                  toDate: toDate.toString(),
-                                ),
-                              ));
-
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'Apply'.tr(),
-                              textAlign: TextAlign.end,
-                              style: const TextStyle(
-                                fontSize: 22,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Filter'.tr(),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                );
-              },
-              child: Container(
-                width: 90,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                margin: const EdgeInsets.only(bottom: 8, right: 6),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.white)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Filter'.tr(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          insetPadding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height * 0.4,
+                          ),
+                          content: SizedBox(
+                            height: 240,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                //____________________________________ Start Date______________________________________________
+                                Flexible(
+                                  child: DatePickerTest(
+                                    'from',
+                                    'From Date',
+                                    initialValue: null,
+                                    onChanged: (value) {
+                                      var date = DateTime.parse(value);
+                                      fromDate = date;
+                                    },
+                                  ),
+                                ),
+                                //____________________________________End Date______________________________________________
+                                Flexible(
+                                  child: DatePickerTest(
+                                    'to',
+                                    'TO Date',
+                                    onChanged: (value) {
+                                      var date = DateTime.parse(value);
+                                      toDate = date;
+                                    },
+                                    initialValue: null,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    dashboardBloc.add(GetDashboardDataEvent(
+                                      dateFilter: TotalFilters(
+                                        fromDate: fromDate.toString(),
+                                        toDate: toDate.toString(),
+                                      ),
+                                    ));
+
+                                    totalBloc.add(GetTotalEvent(
+                                      totalSalesInvoiceFilters: TotalFilters(
+                                        fromDate: fromDate.toString(),
+                                        toDate: toDate.toString(),
+                                      ),
+                                    ));
+
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Apply'.tr(),
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.sort,
+                      size: 25,
                     ),
-                    const Icon(
-                      Icons.filter_alt_outlined,
-                      size: 20,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
             SizedBox(

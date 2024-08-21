@@ -12,8 +12,8 @@ class HomeItemTest extends StatelessWidget {
     required this.title,
     required this.imageUrl,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class HomeItemTest extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-              height: 110,
               width: double.infinity,
-              margin: const EdgeInsets.all(5),
+              height: 120.h,
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -46,11 +46,13 @@ class HomeItemTest extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: ORANGE_COLOR,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: ORANGE_COLOR,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               )),
           Align(
