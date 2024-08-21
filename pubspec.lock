@@ -130,7 +130,7 @@ packages:
     source: hosted
     version: "1.1.1"
   change_app_package_name:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: change_app_package_name
       sha256: f734e127d334053873733fb61b1ecae73c09abb694b759a4afd26aa9c9547850

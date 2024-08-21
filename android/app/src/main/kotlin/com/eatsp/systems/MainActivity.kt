@@ -1,4 +1,4 @@
-package com.eatsp.eatsp
+package com.eatsp.systems
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

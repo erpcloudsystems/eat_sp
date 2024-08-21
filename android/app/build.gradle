@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.eatsp.eatsp"
+        applicationId "com.eatsp.systems"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
