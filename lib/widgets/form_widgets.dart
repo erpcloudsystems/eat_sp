@@ -18,13 +18,13 @@ const List<String> requestTypeList = [
 ];
 
 /// Sorting List
-const List<String> SortingFieldList = [
+ List<String> SortingFieldList = [
   'creation',
   'modified',
   'name',
 ];
 
-const List<String> SortingType = [
+ List<String> SortingType = [
   'desc',
   'asc',
 ];

@@ -10,7 +10,7 @@ import 'package:showcaseview/showcaseview.dart';
 import '../core/constants.dart';
 
 class SortingScreen extends StatefulWidget {
-  const SortingScreen({Key? key}) : super(key: key);
+  const SortingScreen({super.key});
 
   static _SortingScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<_SortingScreenState>()!;
@@ -51,7 +51,7 @@ class _SortingScreenState extends State<SortingScreen> {
       onFinish: () {
         context.read<UserProvider>().setShowcaseProgress('filter_tut');
       },
-      builder:(context)=> Builder(builder: (context) {
+      builder: (context) => Builder(builder: (context) {
         showCaseContext = context;
         return Scaffold(
           appBar: AppBar(
@@ -63,8 +63,8 @@ class _SortingScreenState extends State<SortingScreen> {
                       .contains('filter_tut'))
                   ? CustomShowCase(
                       globalKey: clearFiltersGK,
-                      title: 'Clear Sort',
-                      description: 'Click here to clear all sorting',
+                      title: 'Clear Sort'.tr(),
+                      description: 'Click here to clear all sorting'.tr(),
                       child: IconButton(
                         splashRadius: 20,
                         icon: const Icon(Icons.clear, color: Colors.black),
@@ -156,12 +156,12 @@ class _SortingScreenState extends State<SortingScreen> {
                           description: 'Click here to get results',
                           overlayPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Apply Sorting',
-                                style: TextStyle(
+                                'Apply Sorting'.tr(),
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16.5,
                                 ),
@@ -169,12 +169,12 @@ class _SortingScreenState extends State<SortingScreen> {
                             ],
                           ),
                         )
-                      : const Row(
+                      : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Apply Sorting',
-                              style: TextStyle(
+                              'Apply Sorting'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.5,

@@ -145,8 +145,8 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
                     const TextStyle(color: Colors.black, fontSize: 18),
                 title: Text(
                   widget.title != null
-                      ? widget.title!
-                      : moduleProvider.currentModule.title,
+                      ? widget.title!.tr()
+                      : moduleProvider.currentModule.title.tr(),
                 ),
                 actions: [
                   IconButton(

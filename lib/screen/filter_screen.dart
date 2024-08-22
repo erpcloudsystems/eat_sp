@@ -143,23 +143,23 @@ class _FilterScreenState extends State<FilterScreen> {
                           description: 'Click here to get results',
                           overlayPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Apply Filter',
-                                style: TextStyle(
+                                'Apply Filter'.tr(),
+                                style: const TextStyle(
                                     color: Colors.black, fontSize: 14.5),
                               ),
                             ],
                           ),
                         )
-                      : const Row(
+                      : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Apply Filter',
-                              style: TextStyle(
+                              'Apply Filter'.tr(),
+                              style: const TextStyle(
                                   color: Colors.black, fontSize: 14.5),
                             ),
                           ],
