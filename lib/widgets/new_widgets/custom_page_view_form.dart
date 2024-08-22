@@ -1,6 +1,7 @@
 import 'package:NextApp/widgets/custom-button.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,14 +80,14 @@ class _CustomPageViewFormState extends State<CustomPageViewForm> {
           ),
           title: (context.read<ModuleProvider>().isEditing)
               ? Text(
-                  "Edit $currentModule",
+                  "Edit $currentModule".tr(),
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                   ),
                 )
               : Text(
-                  "Create $currentModule",
+                  "Create $currentModule".tr(),
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -132,7 +133,7 @@ class _CustomPageViewFormState extends State<CustomPageViewForm> {
                     if (_currentPage < widget.widgetGroup.length - 1)
                       Expanded(
                         child: CustomButton(
-                          text: "Next",
+                          text: "Next".tr(),
                           color: APPBAR_COLOR,
                           onPressed: () {
                             if (_currentPage < widget.widgetGroup.length - 1) {
@@ -149,7 +150,7 @@ class _CustomPageViewFormState extends State<CustomPageViewForm> {
                     if (_currentPage == widget.widgetGroup.length - 1)
                       Expanded(
                         child: CustomButton(
-                          text: "Save",
+                          text: "Save".tr(),
                           color: APPBAR_COLOR,
                           onPressed: () {
                             if (_formKeys[_currentPage]

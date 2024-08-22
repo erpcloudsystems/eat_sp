@@ -252,7 +252,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                       const SizedBox(height: 8),
-                      const Row(
+                       Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

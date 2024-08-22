@@ -367,5 +367,10 @@
   "Apply Sorting": "تطبيق الترتيب",
   "Sort Type": "نوع الترتيب",
   "Payment Entry": "إدخال الدفع",
-  "Apply Filter": "تطبيق الفلتر"
+  "Apply Filter": "تطبيق الفلتر",
+  "Create Sales Invoice": "إنشاء فاتورة مبيعات",
+  "Save": "حفظ",
+  "Next": "التالي",
+  "Tax Type": "نوع الضريبة",
+  "Location will be submitted to approve current location": "سيتم تقديم الموقع للموافقة على الموقع الحالي"
 }

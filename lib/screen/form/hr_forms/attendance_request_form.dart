@@ -19,7 +19,7 @@ import '../../../provider/module/module_provider.dart';
 import '../../../widgets/dialog/loading_dialog.dart';
 
 class AttendanceRequestForm extends StatefulWidget {
-  const AttendanceRequestForm({Key? key}) : super(key: key);
+  const AttendanceRequestForm({super.key});
 
   @override
   _AttendanceRequestFormState createState() => _AttendanceRequestFormState();
@@ -176,7 +176,7 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                         docType: APIService.EMPLOYEE,
                         nameResponse: 'name',
                         title: 'Employee'.tr(),
-                         keys: const {
+                        keys: const {
                           'subTitle': 'employee_name',
                           'trailing': 'department',
                         },
@@ -309,11 +309,11 @@ class _AttendanceRequestFormState extends State<AttendanceRequestForm> {
                       onSave: (key, value) => data[key] = value,
                     ),
                     const SizedBox(height: 8),
-                    const Row(
+                    Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(right: 6),
                           child: Icon(Icons.warning_amber,
                               color: Colors.amber, size: 22),

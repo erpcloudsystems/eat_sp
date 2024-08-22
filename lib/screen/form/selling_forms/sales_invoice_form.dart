@@ -429,7 +429,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                         Flexible(
                             child: DatePickerTest(
                           'due_date',
-                          'Due Date',
+                          'Due Date'.tr(),
                           onChanged: (value) => Future.delayed(Duration.zero,
                               () => setState(() => data['due_date'] = value)),
                           firstDate: DateTime.parse(data['posting_date'] ?? ''),
@@ -734,11 +734,11 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             });
                           }),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(right: 6),
                             child: Icon(Icons.warning_amber,
                                 color: Colors.amber, size: 22),

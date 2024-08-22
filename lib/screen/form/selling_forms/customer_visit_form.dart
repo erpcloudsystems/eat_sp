@@ -22,7 +22,7 @@ import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/model_functions.dart';
 
 class CustomerVisitForm extends StatefulWidget {
-  const CustomerVisitForm({Key? key}) : super(key: key);
+  const CustomerVisitForm({super.key});
 
   @override
   State<CustomerVisitForm> createState() => _CustomerVisitFormState();
@@ -286,11 +286,11 @@ class _CustomerVisitFormState extends State<CustomerVisitForm> {
                         disableValidation: true,
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(right: 6),
                             child: Icon(Icons.warning_amber,
                                 color: Colors.amber, size: 22),

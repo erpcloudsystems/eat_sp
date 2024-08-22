@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 const int PAGINATION_PAGE_LENGTH = 20;
@@ -30,8 +31,8 @@ const String KEnableGpsSnackBar =
 const String KPermanentlyDeniedSnackBar =
     'Allow Location Permission form app settings';
 const String KLocationGrantedSnackBar = 'Location Granted';
-const String KLocationNotifySnackBar =
-    'Location will be submitted to approve current location';
+String KLocationNotifySnackBar =
+    'Location will be submitted to approve current location'.tr();
 const String KFillRequiredSnackBar = 'Fill required fields and submit';
 
 String mapStatus(int status) {
