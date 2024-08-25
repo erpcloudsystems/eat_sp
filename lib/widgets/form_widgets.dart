@@ -18,13 +18,13 @@ const List<String> requestTypeList = [
 ];
 
 /// Sorting List
- List<String> SortingFieldList = [
+List<String> SortingFieldList = [
   'creation',
   'modified',
   'name',
 ];
 
- List<String> SortingType = [
+List<String> SortingType = [
   'desc',
   'asc',
 ];
@@ -1129,7 +1129,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                     ? widget.itemBuilder!(e)
                     : DropdownMenuItem(
                         value: e,
-                        child: Text(e, overflow: TextOverflow.ellipsis)))
+                        child: Text(e.tr(), overflow: TextOverflow.ellipsis)))
                 .toList()),
         if (widget.clear && _value != null)
           Material(

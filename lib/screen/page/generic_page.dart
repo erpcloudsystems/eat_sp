@@ -1,4 +1,5 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ import 'common_page_widgets/page_actions_pop_menu.dart';
 import '../../widgets/workflow_widgets/action_widget.dart';
 
 class GenericPage extends StatefulWidget {
-  const GenericPage({Key? key}) : super(key: key);
+  const GenericPage({super.key});
 
   @override
   State<GenericPage> createState() => _GenericPageState();
@@ -27,63 +28,60 @@ class _GenericPageState extends State<GenericPage> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: AppBar(
-              iconTheme: const IconThemeData(
-                color: Colors.black,
+          child: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {
+                final provider = context.read<ModuleProvider>();
+                // We use this method to navigate back to "List Screen",
+                //and only in "Amended Mode".
+                if (provider.isAmended) {
+                  provider.pushPage(provider.previousPageId);
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => const GenericPage(),
+                    ),
+                  );
+                  provider.NotifyAmended = false;
+                }
+                setState(
+                    () => context.read<ModuleProvider>().getWorkflow = false);
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
               ),
-              backgroundColor: Colors.white,
-              leading: IconButton(
+            ),
+            title: Text(
+              context.watch<ModuleProvider>().currentModule.title.tr(),
+              style: const TextStyle(
+                color: Colors.black,
+                overflow: TextOverflow.visible,
+                height: 1,
+              ),
+            ),
+            actions: [
+              // if we put "const" it will make a bug when entering the page
+              // for the first time in editing.
+              // ignore: prefer_const_constructors
+              EditPageButton(),
+              IconButton(
                 onPressed: () {
-                  final provider = context.read<ModuleProvider>();
-                  // We use this method to navigate back to "List Screen",
-                  //and only in "Amended Mode".
-                  if (provider.isAmended) {
-                    provider.pushPage(provider.previousPageId);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => const GenericPage(),
-                      ),
-                    );
-                    provider.NotifyAmended = false;
-                  }
-                  setState(
-                      () => context.read<ModuleProvider>().getWorkflow = false);
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return const HomeScreen();
+                  }));
                 },
                 icon: const Icon(
-                  Icons.arrow_back_ios_new,
+                  Icons.home_outlined,
+                  size: 30,
                 ),
               ),
-              title: Text(
-                context.watch<ModuleProvider>().currentModule.title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  overflow: TextOverflow.visible,
-                  height: 1,
-                ),
-              ),
-              actions: [
-                  // if we put "const" it will make a bug when entering the page
-                  // for the first time in editing.
-                 // ignore: prefer_const_constructors
-                 EditPageButton(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const HomeScreen();
-                    }));
-                  },
-                  icon: const Icon(
-                    Icons.home_outlined,
-                    size: 30,
-                  ),
-                ),
-                const PageActionPopMenu(),
-              ],
-            ),
+              const PageActionPopMenu(),
+            ],
           ),
         ),
         body: const _GenericPageBody(),
@@ -104,7 +102,7 @@ class _GenericPageState extends State<GenericPage> {
 }
 
 class _GenericPageBody extends StatefulWidget {
-  const _GenericPageBody({Key? key}) : super(key: key);
+  const _GenericPageBody({super.key});
 
   @override
   State<_GenericPageBody> createState() => _GenericPageBodyState();

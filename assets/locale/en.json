@@ -418,5 +418,17 @@
   "Template" : "Template",
   "Completed" : "Completed",
   "Edit User Profile" : "Edit User Profile",
-  "Change your photo" : "Change your photo"
+  "Change your photo" : "Change your photo",
+  "Cancelled" : "Cancelled",
+  "Draft" : "Draft",
+  "Credit Note Issued" : "Credit Note Issued",
+  "Submitted" : "Submitted",
+  "Partly Paid" : "Partly Paid",
+  "Unpaid and Discounted" : "Unpaid and Discounted",
+  "Partly Paid and Discounted" : "Partly Paid and Discounted",
+  "Overdue and Discounted" : "Overdue and Discounted",
+  "Assigned To":"Assigned To",
+  "Shared With":"Shared With",
+  "Attachments":"Attachments",
+  "Logs":"Logs"
 }

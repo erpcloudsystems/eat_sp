@@ -13,22 +13,21 @@ class ListCard extends StatelessWidget {
   final void Function(BuildContext context)? onPressed;
 
   const ListCard({
-    Key? key,
+    super.key,
     required this.id,
     this.title = '',
     this.status = '',
     required this.names,
     required this.values,
     this.onPressed,
-  })  : assert(names.length == values.length),
-        super(key: key);
+  }) : assert(names.length == values.length);
 
   @override
   Widget build(BuildContext context) {
     List<Widget> secondRow = [];
     for (int i = 3; i < names.length; i++) {
       secondRow.add(ListTitle(title: names[i], value: values[i]));
-      if (i < names.length - 1)
+      if (i < names.length - 1) {
         secondRow.add(
           Container(
             width: 1,
@@ -36,6 +35,7 @@ class ListCard extends StatelessWidget {
             height: 42,
           ),
         );
+      }
     }
 
     return Container(
@@ -109,12 +109,12 @@ class ListCard extends StatelessWidget {
                                             child: Text(id, maxLines: 1))),
                                   )),
                                   if (statusColor(status) != Colors.transparent)
-                                    SizedBox(width: 6)
+                                    const SizedBox(width: 6)
                                 ],
                               ),
                             ),
                             if (names.isNotEmpty)
-                              Divider(
+                              const Divider(
                                 thickness: 1,
                                 color: Colors.white,
                                 height: 0,
@@ -132,11 +132,11 @@ class ListCard extends StatelessWidget {
                                     ListTitle(
                                         title: names[2], value: values[2]),
                                   if (statusColor(status) != Colors.transparent)
-                                    SizedBox(width: 6)
+                                    const SizedBox(width: 6)
                                 ],
                               ),
                             if (secondRow.isNotEmpty || status.isNotEmpty)
-                              Divider(
+                              const Divider(
                                 thickness: 1,
                                 color: Colors.white,
                                 height: 8,
@@ -155,7 +155,7 @@ class ListCard extends StatelessWidget {
                                 if (status != '' && status != 'Random')
                                   StatusWidget(status),
                                 if (statusColor(status) != Colors.transparent)
-                                  SizedBox(width: 6)
+                                  const SizedBox(width: 6)
                               ],
                             ),
                           ],
@@ -182,7 +182,8 @@ class ListTitle extends StatelessWidget {
   final int flex;
   final Widget? child;
 
-  const ListTitle({required this.title, this.value, this.flex = 1, this.child})
+  const ListTitle(
+      {super.key, required this.title, this.value, this.flex = 1, this.child})
       : assert(value != null || child != null);
 
   @override
@@ -235,7 +236,7 @@ String formatTime(TimeOfDay date) =>
 class StatusWidget extends StatelessWidget {
   final String status;
 
-  const StatusWidget(this.status);
+  const StatusWidget(this.status, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -243,28 +244,17 @@ class StatusWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        // Text(
-        //   'Status',
-        //   style: const TextStyle(
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
         statusColor(status) != Colors.transparent
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Icon(Icons.circle, color: statusColor(status), size: 12),
-                  // SizedBox(width: 8),
                   FittedBox(
-                    child: Text(
-                      status,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16
-                      ),
-                    ),
                     fit: BoxFit.fitHeight,
+                    child: Text(
+                      status.tr(),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ],
               )

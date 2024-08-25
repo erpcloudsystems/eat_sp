@@ -416,5 +416,17 @@
   "Template": "نموذج",
   "Completed": "مكتمل",
   "Edit User Profile": "تعديل الملف الشخصي للمستخدم",
-  "Change your photo" : "تغيير صورتك"
+  "Change your photo" : "تغيير صورتك",
+  "Cancelled": "ألغيت",
+  "Draft": "مسودة",
+  "Credit Note Issued": "تم إصدار إشعار دائن",
+  "Submitted": "مقدم",
+  "Partly Paid": "مدفوع جزئيًا",
+  "Unpaid and Discounted": "غير مدفوع ومخفض",
+  "Partly Paid and Discounted": "مدفوع جزئيًا ومخفض",
+  "Overdue and Discounted": "متأخر ومخفض",
+  "Assigned To": "مخصص لـ",
+  "Shared With": "مشارك مع",
+  "Attachments": "المرفقات",
+  "Logs": "السجلات"
 }

@@ -494,6 +494,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             docType: APIService.FILTERED_ADDRESS,
                             nameResponse: 'name',
                             title: 'Customer Address'.tr(),
+                            isValidate: false,
                             filters: {
                               'cur_nam': data['customer'],
                             },
@@ -675,9 +676,9 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             nameResponse: 'name',
                             title: 'Source Warehouse'.tr(),
                             enable: data['set_warehouse'] == null,
-                            filters: const {
-                              'filter1': DocTypesName.salesInvoice
-                            },
+                            // filters: const {
+                            //   'filter1': DocTypesName.salesInvoice
+                            // },
                             keys: const {
                               'subTitle': 'warehouse_name',
                               'trailing': 'warehouse_type',

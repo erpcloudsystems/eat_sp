@@ -1,13 +1,14 @@
 import 'package:NextApp/core/constants.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsWidget extends StatelessWidget {
   const StatisticsWidget({
-    Key? key,
+    super.key,
     required this.text,
     this.color = APPBAR_COLOR,
     required this.number,
-  }) : super(key: key);
+  });
   final String number;
   final String text;
   final Color color;
@@ -42,7 +43,7 @@ class StatisticsWidget extends StatelessWidget {
             ),
           ),
           Text(
-            text,
+            text.tr(),
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 16,
