@@ -18,13 +18,13 @@ const List<String> requestTypeList = [
 ];
 
 /// Sorting List
-const List<String> SortingFieldList = [
+ List<String> SortingFieldList = [
   'creation',
   'modified',
   'name',
 ];
 
-const List<String> SortingType = [
+ List<String> SortingType = [
   'desc',
   'asc',
 ];
@@ -317,7 +317,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Expanded(
             child: Text(
-          widget.title,
+          widget.title.tr(),
           style: TextStyle(fontSize: widget.fontSize),
         )),
         Checkbox(
@@ -1103,7 +1103,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Row(children: [
         Text(
-          tr(widget.title),
+          widget.title.tr(),
           style: TextStyle(
             fontSize: widget.fontSize,
           ),

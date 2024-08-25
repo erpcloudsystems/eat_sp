@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_loading.dart';
@@ -255,7 +256,7 @@ class _SearchBarState extends State<SearchBar> {
             },
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
-              hintText: "Search",
+              hintText: "Search".tr(),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

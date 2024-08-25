@@ -282,7 +282,7 @@ class _PurchaseInvoiceFormState extends State<PurchaseInvoiceForm> {
     return WillPopScope(
       onWillPop: () async {
         InheritedForm.of(context).data['buying_price_list'] = null;
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack = await checkDialog(context, '?');
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);

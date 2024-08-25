@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../models/list_models/list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +68,7 @@ class _CustomListScreenState<T> extends State<CustomListScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
-        title: Text(widget.title),
+        title: Text(widget.title.tr()),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
           child: pagination.SearchBar(search: _search),

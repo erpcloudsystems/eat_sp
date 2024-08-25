@@ -44,7 +44,7 @@ class _FilterScreenState extends State<FilterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$reportType Filters'),
+        title: Text('${reportType.tr()} ${StringsManager.filters.tr()}'),
       ),
       body: Form(
         key: formKey,

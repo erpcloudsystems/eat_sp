@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class BirthDateField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          StringsManager.birthDate,
+          StringsManager.birthDate.tr(),
           style: TextStyle(
               fontSize: DoublesManager.d_15.sp, fontWeight: FontWeight.bold),
         ),

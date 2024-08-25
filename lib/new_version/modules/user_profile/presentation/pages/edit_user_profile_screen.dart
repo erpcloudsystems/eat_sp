@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class EditUserProfileScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(
           DoublesManager.d_50.h,
         ),
-        child: const UserProfileAppBar(title: StringsManager.editUserProfile),
+        child:  UserProfileAppBar(title: StringsManager.editUserProfile.tr()),
       ),
       body: BlocListener<UserProfileBloc, UserProfileState>(
         listenWhen: (previous, current) =>

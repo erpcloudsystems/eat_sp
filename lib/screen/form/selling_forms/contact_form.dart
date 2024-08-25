@@ -138,7 +138,8 @@ class _ContactFormState extends State<ContactForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             InheritedContactForm.of(context).data.clear();

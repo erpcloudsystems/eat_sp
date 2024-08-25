@@ -279,7 +279,8 @@ class _SalesOrderFormState extends State<SalesOrderForm> {
     final provider = context.read<ModuleProvider>();
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             InheritedForm.of(context).data['selling_price_list'] = null;

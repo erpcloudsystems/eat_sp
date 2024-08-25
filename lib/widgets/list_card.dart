@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../core/cloud_system_widgets.dart';
@@ -197,7 +198,7 @@ class ListTitle extends StatelessWidget {
             FittedBox(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Text(title,
+                child: Text(title.tr(),
                     style: const TextStyle(fontWeight: FontWeight.w600),
                     maxLines: 1),
               ),

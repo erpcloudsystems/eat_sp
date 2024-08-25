@@ -192,7 +192,7 @@ class HomeItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(title,
+                Text(title.tr(),
                     style: const TextStyle(
                         fontSize: 15.5,
                         color: Colors.black,

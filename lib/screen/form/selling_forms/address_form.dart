@@ -18,7 +18,7 @@ import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 
 class AddressForm extends StatefulWidget {
-  const AddressForm({Key? key}) : super(key: key);
+  const AddressForm({super.key});
 
   @override
   _AddressFormState createState() => _AddressFormState();
@@ -158,7 +158,8 @@ class _AddressFormState extends State<AddressForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);
@@ -278,11 +279,11 @@ class _AddressFormState extends State<AddressForm> {
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
                     const SizedBox(height: 8),
-                    const Row(
+                    Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(right: 6),
                           child: Icon(Icons.warning_amber,
                               color: Colors.amber, size: 22),

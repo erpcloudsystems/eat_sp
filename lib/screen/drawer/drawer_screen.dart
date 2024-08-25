@@ -28,7 +28,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
 
   void logout(BuildContext context) async {
     final res =
-        await checkDialog(context, 'Are you sure do you want to logout ?');
+        await checkDialog(context, 'Are you sure do you want to logout ?'.tr());
     if (res == true) context.read<UserProvider>().logout();
   }
 

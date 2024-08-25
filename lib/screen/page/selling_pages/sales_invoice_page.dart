@@ -15,7 +15,7 @@ import '../../../widgets/create_from_page/create_from_page_consts.dart';
 import '../../../models/page_models/selling_page_model/sales_invoice_page_model.dart';
 
 class SalesInvoicePage extends StatelessWidget {
-  const SalesInvoicePage({Key? key}) : super(key: key);
+  const SalesInvoicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +177,7 @@ class SalesInvoicePage extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        
+
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,
           child: DefaultTabController(

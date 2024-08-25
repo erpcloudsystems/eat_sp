@@ -20,7 +20,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   var userNameController = TextEditingController();
   var passwordController = TextEditingController();
-  var urlController = TextEditingController(text: 'https://eat.erpcloud.systems');
+  var urlController =
+      TextEditingController(text: 'https://eat.erpcloud.systems');
 
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;
@@ -87,9 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         )),
                     child: Column(
                       children: [
-                        const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("Welcome")),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Welcome".tr())),
                         const Text(ConstantStrings.appName),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
@@ -97,14 +98,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: urlController,
                                 enabled: false,
                                 decoration: textFieldDecoration.copyWith(
-                                  labelText: "Url",
+                                  labelText: "Url".tr(),
                                 ))),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextField(
                                 controller: userNameController,
                                 decoration: textFieldDecoration.copyWith(
-                                  labelText: "User Name",
+                                  labelText: "User Name".tr(),
                                 ))),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
