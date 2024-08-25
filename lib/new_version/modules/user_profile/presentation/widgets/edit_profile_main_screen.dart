@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_profile_text_field.dart';
@@ -61,20 +62,22 @@ class EditUserProfileMainScreen extends StatelessWidget {
             //_________________________First Name______________________
             UserProfileTextField(
               controller: firstNameController,
-              fieldName: StringsManager.firstName,
+              fieldName: StringsManager.firstName.tr(),
             ),
             const SizedBox(height: DoublesManager.d_20),
             //__________________________Last Name______________________
             UserProfileTextField(
               controller: lastNameController,
-              fieldName: StringsManager.lastName,
+              fieldName: StringsManager.lastName.tr(),
             ),
             const SizedBox(height: DoublesManager.d_20),
             //_______________________Birth Date________________________
-            BirthDateField(
-                userBirthDate: userOldData.birthDate,
-                newBirthDate: (String newBirthDate) =>
-                    updatedBirthDate = newBirthDate),
+            userOldData.birthDate == 'none'
+                ? const SizedBox()
+                : BirthDateField(
+                    userBirthDate: userOldData.birthDate,
+                    newBirthDate: (String newBirthDate) =>
+                        updatedBirthDate = newBirthDate),
             const SizedBox(height: DoublesManager.d_20),
             //_______________________Gender____________________________
             GenderRadio(

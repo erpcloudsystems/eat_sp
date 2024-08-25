@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -162,7 +163,8 @@ class _BomFormState extends State<BomForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);

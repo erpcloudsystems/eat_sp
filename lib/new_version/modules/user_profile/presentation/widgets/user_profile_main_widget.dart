@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class UserProfileMainWidget extends StatelessWidget {
               TextButton(
                   onPressed: () => Navigator.of(context)
                       .pushNamed(Routes.editUserProfileScreen, arguments: user),
-                  child: const Text('Update Profile')),
+                  child:  Text('Update Profile'.tr())),
             ],
           ),
           // ________________________________User Email________________________________

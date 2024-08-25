@@ -242,7 +242,8 @@ class _SupplierQuotationFormState extends State<SupplierQuotationForm> {
     InheritedForm.of(context).data['selling_price_list'] = '';
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);

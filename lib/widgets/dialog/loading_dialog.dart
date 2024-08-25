@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cool_alert/cool_alert.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants.dart';
@@ -54,11 +55,11 @@ Future<bool?> checkDialog([
     type: CoolAlertType.custom,
     barrierDismissible: true,
     showCancelBtn: true,
-    confirmBtnText: 'Yes',
-    cancelBtnText: 'No',
+    confirmBtnText: 'Yes'.tr(),
+    cancelBtnText: 'No'.tr(),
     title: (title != '') ? title : null,
     widget: Text(
-      message,
+      message.tr(),
       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       textAlign: TextAlign.center,
     ),

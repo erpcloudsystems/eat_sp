@@ -88,9 +88,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Select Item',
-            style: TextStyle(
+          title: Text(
+            'Select Item'.tr(),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 22,
             ),

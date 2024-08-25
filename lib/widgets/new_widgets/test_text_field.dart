@@ -124,7 +124,7 @@ class _CustomTextFieldTestState extends State<CustomTextFieldTest> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.title,
+            widget.title.tr(),
             style: const TextStyle(
               fontSize: 16,
             ),
@@ -238,7 +238,7 @@ class _CustomTextFieldTestState extends State<CustomTextFieldTest> {
                       if (value == null || value.isEmpty) {
                         return widget.disableError
                             ? ''
-                            : 'This field is required';
+                            : 'This field is required'.tr();
                       }
                       return null;
                     },

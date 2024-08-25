@@ -59,7 +59,7 @@ class StringsManager {
   static const String textFieldValidation = "This field can't be empty";
   static const String allowAlternativeItem = 'Allow Alternative Item';
   static const String addItemAtLeast = 'Please add an item at least';
-  static const String areYouSureToGoBack = 'Are you sure to go back';
+  static const String areYouSureToGoBack = 'Are you sure to go back?';
   static const String expectedStartTime = 'Expected Start Date';
   static const String selectWorkstation = 'Select Workstation';
   static const String completedQuantity = 'Completed Quantity';

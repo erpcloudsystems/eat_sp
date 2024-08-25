@@ -157,7 +157,8 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);
@@ -252,7 +253,7 @@ class _EmployeeCheckinFromState extends State<EmployeeCheckinFrom> {
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                       const SizedBox(height: 8),
-                       Row(
+                      Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/app_values.dart';
@@ -29,7 +30,7 @@ class UserProfileCard extends StatelessWidget {
           child: Icon(icon),
         ),
         title: Text(
-          title,
+          title.tr(),
           style: TextStyle(
               color: const Color.fromARGB(255, 99, 96, 96),
               fontSize: titleFontSize ?? DoublesManager.d_15),

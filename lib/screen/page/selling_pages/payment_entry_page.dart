@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/selling_page_model/payment_entry_page_model.dart';
 
 class PaymentEntryPage extends StatelessWidget {
-  const PaymentEntryPage({Key? key}) : super(key: key);
+  const PaymentEntryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class PaymentEntryPage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  const Text('Payment Entry',
-                      style: TextStyle(
+                  Text('Payment Entry'.tr(),
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16)),
                   if (data['docstatus'] != null && data['amended_to'] == null)
                     Align(

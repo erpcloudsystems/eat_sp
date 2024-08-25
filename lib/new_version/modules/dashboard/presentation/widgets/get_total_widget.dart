@@ -64,7 +64,7 @@ class GetTotalWidget extends StatelessWidget {
                           Flexible(
                             child: DatePickerTest(
                               'from',
-                              'From Date',
+                              'From Date'.tr(),
                               initialValue: null,
                               onChanged: (value) {
                                 var date = DateTime.parse(value);
@@ -76,7 +76,7 @@ class GetTotalWidget extends StatelessWidget {
                           Flexible(
                             child: DatePickerTest(
                               'to',
-                              'TO Date',
+                              'To Date'.tr(),
                               onChanged: (value) {
                                 var date = DateTime.parse(value);
                                 toDate = date;

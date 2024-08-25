@@ -249,7 +249,8 @@ class _DeliveryNoteFormState extends State<DeliveryNoteForm> {
     final userProvider = context.read<UserProvider>();
     return WillPopScope(
       onWillPop: () async {
-        bool? isGoBack = await checkDialog(context, 'Are you sure to go back?');
+        bool? isGoBack =
+            await checkDialog(context, 'Are you sure to go back?'.tr());
         if (isGoBack != null) {
           if (isGoBack) {
             return Future.value(true);
