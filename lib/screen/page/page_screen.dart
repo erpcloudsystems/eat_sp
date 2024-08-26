@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
@@ -44,8 +45,8 @@ class SubmitButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () => context.read<ModuleProvider>().submitDocument(context),
-        child: const Text('Submit',
-            style: TextStyle(color: Colors.white, fontSize: 15)));
+        child: Text('Submit'.tr(),
+            style: const TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
@@ -61,8 +62,8 @@ class CancelButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS))),
         onPressed: () =>
             context.read<ModuleProvider>().cancelledDocument(context),
-        child: const Text('Cancel',
-            style: TextStyle(color: Colors.white, fontSize: 15)));
+        child: Text('Cancel'.tr(),
+            style: const TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
@@ -82,7 +83,7 @@ class AmendButton extends StatelessWidget {
               builder: (_) =>
                   context.read<ModuleProvider>().currentModule.createForm!));
         },
-        child: const Text('Amend',
+        child: Text('Amend'.tr(),
             style: TextStyle(color: Colors.white, fontSize: 15)));
   }
 }

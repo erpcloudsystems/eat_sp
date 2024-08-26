@@ -12,13 +12,13 @@ class CreateFromPageButton extends StatefulWidget {
   final bool? disableCreate;
 
   const CreateFromPageButton({
-    Key? key,
+    super.key,
     required this.items,
     required this.data,
     required this.doctype,
     this.disableCreate = false,
     this.defaultValue,
-  }) : super(key: key);
+  });
 
   @override
   _CreateFromPageButtonState createState() => _CreateFromPageButtonState();
@@ -46,7 +46,7 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
     return Container(
       height: 30,
       width: 110,
-      margin: EdgeInsets.only(top: 0, left: 4),
+      margin: const EdgeInsets.only(top: 0, left: 4),
       padding: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -57,7 +57,7 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
         child: DropdownButton<String>(
             value: _value,
             borderRadius: BorderRadius.circular(5),
-            underline: SizedBox(),
+            underline: const SizedBox(),
             alignment: Alignment.centerLeft,
             menuMaxHeight: 300,
             iconSize: 26,
@@ -94,7 +94,7 @@ class _CreateFromPageButtonState extends State<CreateFromPageButton> {
                 .map((e) => DropdownMenuItem(
                     value: e,
                     child: FittedBox(
-                      child: Text(e, overflow: TextOverflow.ellipsis),
+                      child: Text(e.tr(), overflow: TextOverflow.ellipsis),
                     )))
                 .toList()),
       ),

@@ -39,7 +39,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
 
   Map<String, dynamic> data = {
     "doctype": "Stock Entry",
-    'stock_entry_type': stockEntryType[0],
+    'stock_entry_type': stockEntryType[2],
     "posting_date": DateTime.now().toIso8601String(),
   };
   double totalAmount = 0;
@@ -137,10 +137,10 @@ class _StockEntryFormState extends State<StockEntryForm> {
       Future.delayed(Duration.zero, () {
         data = provider.updateData;
 
-        final items = StockEntryPageModel(data).items;
-        for (var element in items) {
-          provider.setItemToList(element);
-        }
+        // final items = StockEntryPageModel(data).items;
+        data['items'].forEach((element) {
+          provider.newItemList.add(element);
+        });
 
         if (provider.isAmendingMode) {
           data.remove('amended_to');
@@ -223,7 +223,8 @@ class _StockEntryFormState extends State<StockEntryForm> {
                     CustomDropDown('stock_entry_type', 'Stock Entry Type'.tr(),
                         items: stockEntryType,
                         defaultValue:
-                            data['stock_entry_type'] ?? stockEntryType[0],
+                            data['stock_entry_type'] ?? stockEntryType[2],
+                        enable: false,
                         onChanged: (value) => setState(() {
                               data['stock_entry_type'] = value;
                               if (value == stockEntryType[1]) {
@@ -238,47 +239,47 @@ class _StockEntryFormState extends State<StockEntryForm> {
                         initialValue: data['posting_date'],
                         onChanged: (value) =>
                             setState(() => data['posting_date'] = value)),
-                    if (data['stock_entry_type'] != stockEntryType[1])
-                      CustomDropDownFromField(
-                          defaultValue: data['from_warehouse'],
-                          docType: APIService.WAREHOUSE,
-                          nameResponse: 'name',
-                          title: 'Source Warehouse'.tr(),
-                          keys: const {
-                            'subTitle': 'warehouse_name',
-                            'trailing': 'warehouse_type',
-                          },
-                          onChange: (value) async {
-                            log('value $value');
-                            if (value != null) {
-                              data['from_warehouse'] = value['name'];
-                            }
 
-                            // to update Actual Qty for each item
-                            for (var value in _items) {
-                              final actualQty = await _getActualQty(
-                                  data['from_warehouse'].toString(),
-                                  value.itemCode);
-                              value.actualQty = actualQty.toString();
-                              log('Actual Qty (at source/target) $actualQty');
-                            }
-                            setState(() {});
-                          }),
-                    if (data['stock_entry_type'] != stockEntryType[0])
-                      CustomDropDownFromField(
-                          defaultValue: data['to_warehouse'],
-                          docType: APIService.WAREHOUSE,
-                          nameResponse: 'name',
-                          title: 'Target Warehouse'.tr(),
-                          keys: const {
-                            'subTitle': 'warehouse_name',
-                            'trailing': 'warehouse_type',
-                          },
-                          onChange: (value) async {
-                            setState(() {
-                              data['to_warehouse'] = value['name'];
-                            });
-                          }),
+                    CustomDropDownFromField(
+                        defaultValue: data['from_warehouse'],
+                        docType: APIService.WAREHOUSE,
+                        nameResponse: 'name',
+                        title: 'Source Warehouse'.tr(),
+                        keys: const {
+                          'subTitle': 'warehouse_name',
+                          'trailing': 'warehouse_type',
+                        },
+                        onChange: (value) async {
+                          log('value $value');
+                          if (value != null) {
+                            data['from_warehouse'] = value['name'];
+                          }
+
+                          // to update Actual Qty for each item
+                          for (var value in _items) {
+                            final actualQty = await _getActualQty(
+                                data['from_warehouse'].toString(),
+                                value.itemCode);
+                            value.actualQty = actualQty.toString();
+                            log('Actual Qty (at source/target) $actualQty');
+                          }
+                          setState(() {});
+                        }),
+
+                    CustomDropDownFromField(
+                        defaultValue: data['to_warehouse'],
+                        docType: APIService.WAREHOUSE,
+                        nameResponse: 'name',
+                        title: 'Target Warehouse'.tr(),
+                        keys: const {
+                          'subTitle': 'warehouse_name',
+                          'trailing': 'warehouse_type',
+                        },
+                        onChange: (value) async {
+                          setState(() {
+                            data['to_warehouse'] = value['name'];
+                          });
+                        }),
                     // CustomDropDownFromField(
                     //     defaultValue: data['project'],
                     //     docType: APIService.PROJECT,

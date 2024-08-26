@@ -265,6 +265,7 @@
   "Can Write": "يستطيع التعديل",
   "Can Share": "يمكنه المشاركة",
   "Can Submit": "يمكن إرسالها",
+  "Submit": "إرسال",
   "Language": "اللغه",
   "Logout": "تسجيل الخروج",
   "FAQ": "التعليمات",
@@ -420,7 +421,7 @@
   "Cancelled": "ألغيت",
   "Draft": "مسودة",
   "Credit Note Issued": "تم إصدار إشعار دائن",
-  "Submitted": "مقدم",
+  "Submitted": "مسجله",
   "Partly Paid": "مدفوع جزئيًا",
   "Unpaid and Discounted": "غير مدفوع ومخفض",
   "Partly Paid and Discounted": "مدفوع جزئيًا ومخفض",
@@ -428,5 +429,10 @@
   "Assigned To": "مخصص لـ",
   "Shared With": "مشارك مع",
   "Attachments": "المرفقات",
-  "Logs": "السجلات"
+  "Logs": "السجلات",
+  "Cancel":"إلغاء",
+  "Amend": "تعديل",
+  "Return / Credit Note": "مرتجع / إشعار دائن",
+  "Edit Stock Entry": "تعديل إدخال المخزون"
+
 }

@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'core/app_local.dart';
 import 'firebase_options.dart';
 import 'screen/other/splash_screen.dart';

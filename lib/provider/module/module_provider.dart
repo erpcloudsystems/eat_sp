@@ -659,18 +659,19 @@ class ModuleProvider extends ChangeNotifier {
           id: _pageId,
           format: pdfFormats[0]);
     } else {
-      await showDialog(
+      // await showDialog(
+      //     context: context,
+      //     builder: (_) => SelectFormatDialog(
+      //         formats: pdfFormats,
+      //         title: 'Select Print Format')).then((format) {
+      //   if (format == null) return;
+
+      // });
+      APIService().printInvoice(
           context: context,
-          builder: (_) => SelectFormatDialog(
-              formats: pdfFormats,
-              title: 'Select Print Format')).then((format) {
-        if (format == null) return;
-        APIService().printInvoice(
-            context: context,
-            docType: _currentModule!.genericListService,
-            id: _pageId,
-            format: format);
-      });
+          docType: _currentModule!.genericListService,
+          id: _pageId,
+          format: 'POS Arabic');
     }
   }
 

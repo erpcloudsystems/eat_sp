@@ -430,5 +430,10 @@
   "Assigned To":"Assigned To",
   "Shared With":"Shared With",
   "Attachments":"Attachments",
-  "Logs":"Logs"
+  "Logs":"Logs",
+  "Submit":"Submit",
+  "Cancel":"Cancel",
+  "Amend":"Amend",
+  "Return / Credit Note":"Return / Credit Note",
+  "Edit Stock Entry":"Edit Stock Entry"
 }

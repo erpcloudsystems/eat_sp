@@ -1,3 +1,4 @@
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,12 +55,12 @@ class SalesInvoicePage extends StatelessWidget {
                   ),
               ],
             ),
-            const Stack(
+            Stack(
               alignment: Alignment.center,
               children: [
                 Text(
-                  'Sales Invoice',
-                  style: TextStyle(
+                  'Sales Invoice'.tr(),
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -76,7 +77,8 @@ class SalesInvoicePage extends StatelessWidget {
               ),
             ),
             Text(
-              'Customer: ' + (data['customer'] ?? 'none'),
+              '${StringsManager.customer.tr()}: ' +
+                  (data['customer'] ?? 'none'),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
