@@ -20,13 +20,12 @@ class PaginationList<T> extends StatefulWidget {
   final Widget Function(T t) listItem;
 
   const PaginationList(
-      {Key? key,
+      {super.key,
       required this.future,
       required this.listItem,
       required this.reset,
       required this.search,
-      required this.listCount})
-      : super(key: key);
+      required this.listCount});
 
   @override
   State<PaginationList> createState() => _PaginationListState<T>(listItem);
@@ -82,7 +81,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 
   void _reset() async {
     if (widget.reset.value != _oldValue) {
-      setState(()  {
+      setState(() {
         pageCount = -20;
         newLoadCount = 0;
         _noMoreItems = false;
@@ -212,7 +211,7 @@ class _PaginationListState<T> extends State<PaginationList> {
 class SearchBar extends StatefulWidget {
   final Function(String value) search;
 
-  const SearchBar({Key? key, required this.search}) : super(key: key);
+  const SearchBar({super.key, required this.search});
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -254,7 +253,7 @@ class _SearchBarState extends State<SearchBar> {
                 });
               });
             },
-            textAlignVertical: TextAlignVertical.bottom,
+            textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               hintText: "Search".tr(),
               border: InputBorder.none,

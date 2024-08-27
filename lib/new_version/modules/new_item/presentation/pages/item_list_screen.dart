@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gutter/flutter_gutter.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/dismiss_keyboard.dart';
@@ -88,43 +88,21 @@ class _ItemListScreenState extends State<ItemListScreen> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
           title: Text(
             'Select Item'.tr(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-            ),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Colors.black,
+                ),
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(40),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: NewSearchWidget(
-                      searchFunction: (value) {
-                        bloc.getAllItems(
-                          itemFilter: ItemsFilter(
-                            priceList: widget.priceList,
-                            searchText: value,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      scanBarcodeNormal();
-                    },
-                    child: const Icon(
-                      Icons.qr_code_outlined,
-                      size: 35,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+          leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              StringsManager.finish.tr(),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -140,8 +118,6 @@ class _ItemListScreenState extends State<ItemListScreen> {
               );
             }
           },
-          // buildWhen: (previous, current) =>
-          //     previous.getItemData != current.getItemData,
           builder: (context, state) {
             if (state is GettingItemsLoadingState) {
               return const CustomLoadingWithImage();
@@ -151,11 +127,39 @@ class _ItemListScreenState extends State<ItemListScreen> {
             }
             return Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: NewSearchWidget(
+                          searchFunction: (value) {
+                            bloc.getAllItems(
+                              itemFilter: ItemsFilter(
+                                priceList: widget.priceList,
+                                searchText: value,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const Gutter.small(),
+                      InkWell(
+                        onTap: () {
+                          scanBarcodeNormal();
+                        },
+                        child: const Icon(
+                          Icons.qr_code_outlined,
+                          size: 35,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Flexible(
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (scrollNotification) {
                       if (scrollNotification is ScrollEndNotification) {
-                        // Detect when the user has reached the end of the list.
                         setState(() {
                           isLoading = true;
                         });
@@ -225,29 +229,6 @@ class _ItemListScreenState extends State<ItemListScreen> {
               ],
             );
           },
-        ),
-        floatingActionButton: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Container(
-            width: 90.w,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: APPBAR_COLOR,
-            ),
-            child: Center(
-              child: Text(
-                'Finish'.tr(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );
