@@ -1,3 +1,5 @@
+import 'package:NextApp/screen/form/selling_forms/sales_invoic_return_form.dart';
+
 import '../../models/list_models/manufacturing_list_model/bom_model.dart';
 import '../../models/list_models/manufacturing_list_model/job_card_model.dart';
 import '../../models/list_models/project_list_models/issue_list_model.dart';
@@ -293,18 +295,6 @@ class ModuleType {
           rightIcon: Icons.date_range,
           rightText:
               '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
-          // names: [
-          //   'Opportunity'.tr(),
-          //   'Date'.tr(),
-          //   'Type'.tr(),
-          //   'Sales Stage'.tr()
-          // ],
-          // values: [
-          //   item.opportunityFrom,
-          //   '${item.transactionDate.day}/${item.transactionDate.month}/${item.transactionDate.year}',
-          //   item.opportunityType,
-          //   item.salesStage
-          // ],
           onPressed: (context) => _onListCardPressed(context, item.id),
         );
       },
@@ -335,26 +325,10 @@ class ModuleType {
         id: item.id,
         title: item.name,
         status: item.status,
-
         leftIcon: Icons.group,
         leftText: item.customerGroup,
-
         rightIcon: Icons.location_city_outlined,
         rightText: item.territory,
-        // names:
-        //   'Group'.tr(),
-        //   'Type'.tr(),
-        //   'Currency'.tr(),
-        //   'Territory'.tr(),
-        //   'Mobile'.tr()
-        // ],
-        // values: [
-        //   item.customerGroup,
-        //   item.customerType,
-        //   item.currency,
-        //   item.territory,
-        //   item.mobile
-        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
@@ -492,6 +466,40 @@ class ModuleType {
     },
     filter: const SalesInvoiceFilter(),
   );
+  // Sales Invoice Return
+  static final salesInvoiceReturn = ModuleType._(
+    genericListService: 'Return',
+    title: 'Sales Invoice',
+    listItem: (item) {
+      item as SalesInvoiceItemModel;
+      return ListCardTest(
+        id: item.id,
+        title: item.customerName,
+        status: item.status,
+        leftIcon: Icons.edit_location_outlined,
+        leftText: item.customerAddress,
+        rightIcon: Icons.date_range,
+        rightText:
+            '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
+        onPressed: (context) => _onListCardPressed(context, item.id),
+      );
+    },
+    createForm: InheritedForm(child: const SalesInvoiceReturnForm()),
+    serviceParser: (data) => SalesInvoiceListModel.fromJson(data),
+    pageService: SALES_INVOICE_PAGE,
+    pageWidget: const SalesInvoicePage(),
+    editPage: (pageData) {
+      pageData["doctype"] = ["Quotation"];
+      var items;
+      items = List<Map<String, dynamic>>.from(pageData['items']);
+      items = items.map((e) {
+        e['vat_value'] = _calculateVat(e['item_tax_template'], e['net_rate']);
+        e['tax_percent'] = _taxPercent(e['item_tax_template']);
+        return ItemSelectModel.fromJson(e);
+      }).toList();
+    },
+    filter: const SalesInvoiceFilter(),
+  );
 
   static final paymentEntry = ModuleType._(
     genericListService: 'Payment Entry',
@@ -504,22 +512,8 @@ class ModuleType {
         status: item.status,
         leftIcon: Icons.type_specimen_outlined,
         leftText: item.paymentType,
-
         rightIcon: Icons.date_range,
         rightText: formatDate(item.postingDate),
-
-        // names: [
-        //   'Payment Type'.tr(),
-        //   'Mode Of Payment'.tr(),
-        //   'Date'.tr(),
-        //   'Amount '.tr() + '(${item.currency})'
-        // ],
-        // values: [
-        //   item.paymentType,
-        //   item.modeOfPayment,
-        //   formatDate(item.postingDate),
-        //   currency(item.paidAmount)
-        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
@@ -551,23 +545,11 @@ class ModuleType {
         id: item.id,
         title: item.customer,
         status: item.status.convertStatusToString(),
-
         leftIcon: Icons.edit_location_alt_outlined,
         leftText: item.customerAddress,
-
         rightIcon: Icons.date_range,
         rightText:
             '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-        // names: [
-        //   'Customer Address'.tr(),
-        //   'Posting Date'.tr(),
-        //   'Time'.tr(),
-        // ],
-        // values: [
-        //   item.customerAddress,
-        //   '${item.postingDate.day}/${item.postingDate.month}/${item.postingDate.year}',
-        //   item.time,
-        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
@@ -590,28 +572,10 @@ class ModuleType {
         id: item.id,
         title: item.addressTitle,
         status: item.status,
-
         leftIcon: Icons.edit_location_alt_outlined,
         leftText: item.addressLine1,
-
         rightIcon: Icons.location_city_outlined,
         rightText: item.city,
-        // names: [
-        //   'Address Type'.tr(),
-        //   'Address Line1'.tr(),
-        //   'city'.tr(),
-        //   'Country'.tr(),
-        //   'Link Doctype'.tr(),
-        //   'Link Name'.tr(),
-        // ],
-        // values: [
-        //   item.addressType,
-        //   item.addressLine1,
-        //   item.city,
-        //   item.country,
-        //   item.linkDocType,
-        //   item.linkName,
-        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },
@@ -677,12 +641,7 @@ class ModuleType {
       item as ItemModel;
       return ItemCard(
         imageUrl: item.imageUrl,
-        values: [
-          item.itemName,
-          item.itemCode,
-          item.group,
-          item.stockUom
-        ],
+        values: [item.itemName, item.itemCode, item.group, item.stockUom],
         onPressed: (context) => _onListCardPressed(context, item.itemCode),
       );
     },

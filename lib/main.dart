@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/app_local.dart';
-import 'firebase_options.dart';
 import 'screen/other/splash_screen.dart';
 import 'new_version/core/resources/routes.dart';
 import 'new_version/core/resources/app_theme.dart';
@@ -42,7 +41,9 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
   await di.init();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

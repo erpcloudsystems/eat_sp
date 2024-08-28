@@ -433,6 +433,7 @@
   "Cancel":"إلغاء",
   "Amend": "تعديل",
   "Return / Credit Note": "مرتجع / إشعار دائن",
-  "Edit Stock Entry": "تعديل إدخال المخزون"
-
+  "Edit Stock Entry": "تعديل إدخال المخزون",
+  "SAR":"ريال",
+  "Return Invoice":"فاتورة مرتجع"
 }

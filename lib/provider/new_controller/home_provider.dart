@@ -11,7 +11,7 @@ class HomeProvider extends ChangeNotifier {
     try {
       print(data);
       final response = await service.genericGet(
-        'method/eat_mobile.share.share',
+        'method/elkhabaz_mobile.share.share',
         {
           "share_doctype": data['docType'],
           "share_name": data['docId'],
@@ -36,7 +36,7 @@ class HomeProvider extends ChangeNotifier {
     required Map<String, dynamic> filters,
   }) async {
     final response = await service.genericGet(
-      'method/eat_mobile.general.general_service',
+      'method/elkhabaz_mobile.general.general_service',
       filters,
     );
     notifyListeners();

@@ -82,6 +82,7 @@ class APIService {
   static const ADDRESS = 'Address';
   static const FILTERED_CONTACT = 'Filtered Contact';
   static const CONTACT = 'Contact';
+  static const RETURN = 'Return';
   static const COST_CENTER = 'Cost Center';
   static const MODE_OF_PAYMENT = 'Mode of Payment';
   static const ASSET_CATEGORY = 'Asset Category';
@@ -255,7 +256,7 @@ class APIService {
     if (search != null && search.isNotEmpty) print('search: $search');
     try {
       var response = await dio.get(
-          customServiceURL ?? 'method/eat_mobile.general.general_service',
+          customServiceURL ?? 'method/elkhabaz_mobile.general.general_service',
           queryParameters: {
             if (customServiceURL == null) 'doctype': service,
             if (filterById != null) "cur_nam": filterById,
@@ -298,7 +299,7 @@ class APIService {
   }) async {
     try {
       var response = await dio
-          .get('method/eat_mobile.count.general_service', queryParameters: {
+          .get('method/elkhabaz_mobile.count.general_service', queryParameters: {
         'doctype': service,
         "page_length": 0,
         if (search != null && search.isNotEmpty) 'search_text': '%$search%',
@@ -482,7 +483,7 @@ class APIService {
   Future hasWorkflow({String? docTypeName}) async {
     try {
       final response = await dio.post(
-        'method/eat_mobile.workflow.has_workflow',
+        'method/elkhabaz_mobile.workflow.has_workflow',
         data: {
           'doctype': docTypeName,
         },
@@ -715,7 +716,7 @@ class APIService {
   Future<List<StatisticsModel>?> getStatisticsList({String? docType}) async {
     try {
       final response = await dio.get(
-        'method/eat_mobile.doctype_statistics.doc_stats',
+        'method/elkhabaz_mobile.doctype_statistics.doc_stats',
         queryParameters: {
           'doctype': docType,
         },

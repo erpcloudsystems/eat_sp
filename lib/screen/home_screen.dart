@@ -1,7 +1,6 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/constants.dart';
@@ -24,8 +23,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _page = 2;
-  int indexNow = 2;
+  int _page = 0;
+  int indexNow = 0;
 
   final GlobalKey _bottomNavigationKey = GlobalKey();
 
@@ -40,12 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of(context, listen: false);
+    // final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      const ReportModulesPage(),
-      ModulesPage(userProvider: userProvider),
       const DashboardScreen(),
+      const ReportModulesPage(),
+      //ModulesPage(userProvider: userProvider),
+
       const NotificationScreen(),
       const SettingsMenu(),
     ];

@@ -137,7 +137,7 @@ class ModuleProvider extends ChangeNotifier {
 
   Future<void> getUOM({required String itemCode}) async {
     var response = await APIService().genericGet(
-      'method/eat_mobile.general.get_item_uoms',
+      'method/elkhabaz_mobile.general.get_item_uoms',
       {
         'item_code': itemCode,
       },
@@ -299,6 +299,10 @@ class ModuleProvider extends ChangeNotifier {
         break;
       case APIService.CONTACT:
         _currentModule = ModuleType.contact;
+        break;
+
+      case APIService.RETURN:
+        _currentModule = ModuleType.salesInvoiceReturn;
         break;
 
       // Stock

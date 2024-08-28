@@ -641,7 +641,7 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
       );
     });
 
-    Widget salesPersonScreen() => GenericListScreen<Map<String, String?>>(
+Widget salesPersonScreen() => GenericListScreen<Map<String, String?>>(
       title: 'Select Sales Person',
       service: APIService.SALES_PERSON,
       listItem: (value) => SingleValueTileReturnMap(value,
@@ -963,7 +963,7 @@ Widget filteredUOMListScreen(String itemCode) =>
     GenericListScreen<Map<String, dynamic>>(
       title: 'Select UoM',
       service: 'UOM',
-      customServiceURL: 'method/eat_mobile.general.get_item_uoms',
+      customServiceURL: 'method/elkhabaz_mobile.general.get_item_uoms',
       filters: {'item_code': itemCode},
       listItem: (value) => SingleValueTile(value['uom'],
           onTap: (context) => Navigator.of(context).pop(value)),

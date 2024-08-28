@@ -170,4 +170,6 @@ class StringsManager {
   static const String applyFilters = 'Apply Filters';
   static const String filters = 'Filters';
   static const String finish = 'Finish';
+  static const String sar = 'SAR';
+  static const String returnInvoice = 'Return Invoice';
 }

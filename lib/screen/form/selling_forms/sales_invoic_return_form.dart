@@ -26,20 +26,20 @@ import '../../../models/page_models/selling_page_model/sales_invoice_page_model.
 
 const List<String> grandTotalList = ['Grand Total', 'Net Total'];
 
-class SalesInvoiceForm extends StatefulWidget {
-  const SalesInvoiceForm({super.key});
+class SalesInvoiceReturnForm extends StatefulWidget {
+  const SalesInvoiceReturnForm({super.key});
 
   @override
-  State<SalesInvoiceForm> createState() => _SalesInvoiceFormState();
+  State<SalesInvoiceReturnForm> createState() => _SalesInvoiceReturnFormState();
 }
 
-class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
+class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
   String? _terms;
 
   Map<String, dynamic> data = {
     "doctype": "Sales Invoice",
     "posting_date": DateTime.now().toIso8601String(),
-    "is_return": 0,
+    "is_return": 1,
     "update_stock": 1,
     "conversion_rate": 1,
     "latitude": 0.0,
@@ -331,9 +331,22 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
       },
       child: DismissKeyboard(
         child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: Colors.white,
+              iconTheme: const IconThemeData(
+                color: Colors.black,
+              ),
+              title: Text(
+                StringsManager.returnInvoice.tr(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              )),
           body: Form(
             key: _formKey,
             child: CustomPageViewForm(
+              isAppBar: false,
               submit: () => submit(),
               widgetGroup: [
                 Group(
@@ -599,6 +612,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                       const SizedBox(height: 4),
                       CheckBoxWidget('is_return', 'Is Return',
                           initialValue: data['is_return'] == 1 ? true : false,
+                          enable: false,
                           onChanged: (id, value) =>
                               setState(() => data[id] = value ? 1 : 0)),
                       CustomDropDown('tax_type', 'Tax Type'.tr(),
@@ -675,10 +689,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             docType: APIService.WAREHOUSE,
                             nameResponse: 'name',
                             title: 'Source Warehouse'.tr(),
-
-                            // filters: const {
-                            //   'filter1': DocTypesName.salesInvoice
-                            // },
+                            filters: const {'filter1': 'Return'},
                             keys: const {
                               'subTitle': 'warehouse_name',
                               'trailing': 'warehouse_type',

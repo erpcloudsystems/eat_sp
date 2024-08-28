@@ -10,12 +10,12 @@ import '../../core/constants.dart';
 import '../../provider/module/module_provider.dart';
 
 class CustomPageViewForm extends StatefulWidget {
-  const CustomPageViewForm({
-    Key? key,
-    required this.submit,
-    required this.widgetGroup,
-  }) : super(key: key);
-
+  const CustomPageViewForm(
+      {super.key,
+      required this.submit,
+      required this.widgetGroup,
+      this.isAppBar = true});
+  final bool isAppBar;
   final Function submit;
   final List<Widget> widgetGroup;
 
@@ -69,31 +69,35 @@ class _CustomPageViewFormState extends State<CustomPageViewForm> {
 
   @override
   Widget build(BuildContext context) {
-    String currentModule = context.read<ModuleProvider>().currentModule.title;
+    final moduleProvider = context.read<ModuleProvider>();
+    String currentModule = moduleProvider.currentModule.title;
+
     return ColorfulSafeArea(
       color: APPBAR_COLOR,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
-          title: (context.read<ModuleProvider>().isEditing)
-              ? Text(
-                  "Edit $currentModule".tr(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                )
-              : Text(
-                  "Create $currentModule".tr(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
+        appBar: widget.isAppBar
+            ? AppBar(
+                backgroundColor: Colors.white,
+                iconTheme: const IconThemeData(
+                  color: Colors.black,
                 ),
-        ),
+                title: (moduleProvider.isEditing)
+                    ? Text(
+                        "Edit $currentModule".tr(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      )
+                    : Text(
+                        "Create $currentModule".tr(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+              )
+            : null,
         body: Stack(
           children: [
             Padding(

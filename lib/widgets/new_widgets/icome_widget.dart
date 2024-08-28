@@ -24,7 +24,7 @@ class IncomeWidget extends StatelessWidget {
   final String docType;
   final String title;
   final String? total;
-  final String? count;
+  final int? count;
   final bool isCounted;
   final IconData arrowIcon;
   final Color color;
@@ -91,7 +91,7 @@ class IncomeWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      !isCounted ? 'EGP  ' : tr('Count  '),
+                      !isCounted ? '${StringsManager.sar}  ' : tr('Count  '),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

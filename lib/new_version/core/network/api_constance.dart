@@ -13,46 +13,47 @@ class ApiConstance {
 
   /// Here we use this getter to give it a docType name and it return with full end point for (General 'get' call) in the API
   static String generalGet({required String docType, required int startKey}) =>
-      'method/eat_mobile.general.general_service?start=$startKey&doctype=$docType&page_length=2';
+      'method/elkhabaz_mobile.general.general_service?start=$startKey&doctype=$docType&page_length=2';
 
   static const String getWarehouseReports =
-      'method/eat_mobile.reports.stock.warehouse_balance';
+      'method/elkhabaz_mobile.reports.stock.warehouse_balance';
 
-  static const String getReports = 'method/eat_mobile.general.get_reports';
+  static const String getReports = 'method/elkhabaz_mobile.general.get_reports';
 
   static const String getStockLedgerReport =
-      'method/eat_mobile.reports.stock.stock_ledger';
+      'method/elkhabaz_mobile.reports.stock.stock_ledger';
 
   static const String getItemPriceReport =
-      'method/eat_mobile.reports.stock.item_price';
+      'method/elkhabaz_mobile.reports.stock.item_price';
 
   static const String getGeneralLedgerReport =
-      'method/eat_mobile.reports.accounts.general_ledger';
+      'method/elkhabaz_mobile.reports.accounts.general_ledger';
 
   static const String getUserProfileData =
-      'method/eat_mobile.user_profile.user_profile';
+      'method/elkhabaz_mobile.user_profile.user_profile';
 
   static const String updateUserProfileData =
-      'method/eat_mobile.user_profile.update_user_profile';
+      'method/elkhabaz_mobile.user_profile.update_user_profile';
 
   static const String getDashboardData =
-      'method/eat_mobile.home_dashboard.get_home_data';
+      'method/elkhabaz_mobile.home_dashboard.get_home_data';
 
-  static const String getFaqs = 'method/eat_mobile.general.get_faqs';
+  static const String getFaqs = 'method/elkhabaz_mobile.general.get_faqs';
 
   static const String getTransactionList =
-      'method/eat_mobile.general.get_activity_log';
+      'method/elkhabaz_mobile.general.get_activity_log';
 
   static const String getTotal =
-      'method/eat_mobile.dashboard.get_dashboard_data';
+      'method/elkhabaz_mobile.dashboard.get_dashboard_data';
 
   static const String generalListEndPoint =
-      'method/eat_mobile.general.general_service';
+      'method/elkhabaz_mobile.general.general_service';
 
   static const String generalItemListEndPoint =
-      'method/eat_mobile.general.get_item_list';
+      'method/elkhabaz_mobile.general.get_item_list';
 
-  static const String getItemGroup = 'method/eat_mobile.itemGroup.itemList';
+  static const String getItemGroup =
+      'method/elkhabaz_mobile.itemGroup.itemList';
   static const String getAccountReceivableReport =
-      'method/eat_mobile.reports.accounts.accounts_receivable';
+      'method/elkhabaz_mobile.reports.accounts.accounts_receivable';
 }

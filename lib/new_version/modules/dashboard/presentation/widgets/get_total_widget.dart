@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../bloc/dasboard_bloc.dart';
 import '../bloc/total_bloc/total_bloc.dart';
-import '../../../../../core/constants.dart';
 import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
 import '../../../../core/resources/strings_manager.dart';
@@ -133,28 +132,27 @@ class GetTotalWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 290,
+              height: 150,
               child: GridView.count(
                 scrollDirection: Axis.horizontal,
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 childAspectRatio: .9,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 children: [
-                  IncomeWidget(
-                    docType: DocTypesName.customerVisit,
-                    isCounted: true,
-                    title: 'DocType.${DocTypesName.customerVisit}'.tr(),
-                    arrowIcon: Icons.person_outline_rounded,
-                    color: APPBAR_COLOR,
-                    total: state.totalEntity.customerVisitEntity['count']
-                        .toString(),
-                  ),
+                  // IncomeWidget(
+                  //   docType: DocTypesName.customerVisit,
+                  //   isCounted: true,
+                  //   title: 'DocType.${DocTypesName.customerVisit}'.tr(),
+                  //   arrowIcon: Icons.person_outline_rounded,
+                  //   color: APPBAR_COLOR,
+                  //   total: state.totalEntity.customerVisitEntity['count']
+                  //       .toString(),
+                  // ),
                   IncomeWidget(
                     docType: DocTypesName.salesInvoice,
-                    title: StringsManager.sales.tr(),
-                    count: state.totalEntity.paidSalesInvoiceEntity['count']
-                        .toString(),
+                    title: DocTypesName.salesInvoice.tr(),
+                    count: state.totalEntity.paidSalesInvoiceEntity['count'],
                     arrowIcon: Icons.arrow_upward,
                     color: Colors.green,
                     total:
@@ -162,71 +160,68 @@ class GetTotalWidget extends StatelessWidget {
                                 0.00)
                             .toStringAsFixed(2),
                   ),
+                  // IncomeWidget(
+                  //   docType: DocTypesName.quotation,
+                  //   title: 'DocType.${StringsManager.quotation}'.tr(),
+                  //   arrowIcon: Icons.money,
+                  //   color: Colors.green,
+                  //   total:
+                  //       (state.totalEntity.quotationsEntity?['total'] ?? 0.00)
+                  //           .toStringAsFixed(2),
+                  //   count:
+                  //       state.totalEntity.quotationsEntity['count'].toString(),
+                  // ),
                   IncomeWidget(
-                    docType: DocTypesName.quotation,
-                    title: 'DocType.${StringsManager.quotation}'.tr(),
-                    arrowIcon: Icons.money,
-                    color: Colors.green,
-                    total:
-                        (state.totalEntity.quotationsEntity?['total'] ?? 0.00)
-                            .toStringAsFixed(2),
-                    count:
-                        state.totalEntity.quotationsEntity['count'].toString(),
-                  ),
-                  IncomeWidget(
-                    docType: DocTypesName.salesInvoice,
-                    filters: const {
-                      'filter1': 'Return',
-                    },
+                    docType: 'Return',
                     title: StringsManager.returns.tr(),
                     total: (state.totalEntity
                                 .returnedSalesInvoiceEntity?['total'] ??
                             0.00)
                         .toStringAsFixed(2),
-                    count: state.totalEntity.returnedSalesInvoiceEntity['count']
-                        .toString(),
+                    count:
+                        state.totalEntity.returnedSalesInvoiceEntity['count'] ??
+                            0,
                     arrowIcon: Icons.arrow_downward,
                     color: Colors.red,
                   ),
-                  IncomeWidget(
-                    docType: DocTypesName.salesOrder,
-                    title: 'DocType.${DocTypesName.salesOrder}'.tr(),
-                    total:
-                        (state.totalEntity.salesOrderEntity?['total'] ?? 0.00)
-                            .toStringAsFixed(2),
-                    count:
-                        state.totalEntity.salesOrderEntity['count'].toString(),
-                    arrowIcon: Icons.request_quote_outlined,
-                    color: APPBAR_COLOR,
-                  ),
+                  // IncomeWidget(
+                  //   docType: DocTypesName.salesOrder,
+                  //   title: 'DocType.${DocTypesName.salesOrder}'.tr(),
+                  //   total:
+                  //       (state.totalEntity.salesOrderEntity?['total'] ?? 0.00)
+                  //           .toStringAsFixed(2),
+                  //   count:
+                  //       state.totalEntity.salesOrderEntity['count'].toString(),
+                  //   arrowIcon: Icons.request_quote_outlined,
+                  //   color: APPBAR_COLOR,
+                  // ),
                   IncomeWidget(
                     docType: DocTypesName.paymentEntry,
                     title: 'DocType.${DocTypesName.paymentEntry}'.tr(),
-                    count: state.totalEntity.paymentEntriesEntity['count']
-                        .toString(),
+                    count: state.totalEntity.paymentEntriesEntity['count'] ?? 0,
                     arrowIcon: Icons.arrow_upward,
                     color: Colors.green,
                     total: (state.totalEntity.paymentEntriesEntity?['total'] ??
                             0.00)
                         .toStringAsFixed(2),
                   ),
-                  IncomeWidget(
-                    docType: DocTypesName.stockEntry,
-                    isCounted: true,
-                    title: 'DocType.${DocTypesName.stockEntry}'.tr(),
-                    arrowIcon: Icons.input,
-                    color: APPBAR_COLOR,
-                    total: state.totalEntity.stockEntries['count'].toString(),
-                  ),
-                  IncomeWidget(
-                    docType: DocTypesName.deliveryNote,
-                    title: 'DocType.${DocTypesName.deliveryNote}'.tr(),
-                    arrowIcon: Icons.money,
-                    color: Colors.green,
-                    total: (state.totalEntity.deliveryNotes['total'] ?? 0.00)
-                        .toStringAsFixed(2),
-                    count: state.totalEntity.deliveryNotes['count'].toString(),
-                  ),
+                  // IncomeWidget(
+                  //   docType: DocTypesName.stockEntry,
+                  //   isCounted: true,
+                  //   title: 'DocType.${DocTypesName.stockEntry}'.tr(),
+                  //   arrowIcon: Icons.input,
+                  //   color: APPBAR_COLOR,
+                  //   total: state.totalEntity.stockEntries['count'].toString(),
+                  // ),
+                  // IncomeWidget(
+                  //   docType: DocTypesName.deliveryNote,
+                  //   title: 'DocType.${DocTypesName.deliveryNote}'.tr(),
+                  //   arrowIcon: Icons.money,
+                  //   color: Colors.green,
+                  //   total: (state.totalEntity.deliveryNotes['total'] ?? 0.00)
+                  //       .toStringAsFixed(2),
+                  //   count: state.totalEntity.deliveryNotes['count'].toString(),
+                  // ),
                 ],
               ),
             ),

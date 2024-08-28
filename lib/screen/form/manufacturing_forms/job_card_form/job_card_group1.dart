@@ -22,7 +22,7 @@ class _JobCardGroup1State extends State<JobCardGroup1> {
   /// This function gets the [WorkOrder] data by ID.
   Future<void> _getWorkOrderData(String id) async {
     final String url =
-        'method/eat_mobile.general.general_service?search_text=$id&doctype=Work Order';
+        'method/elkhabaz_mobile.general.general_service?search_text=$id&doctype=Work Order';
     final response =
         Map<String, dynamic>.from(await APIService().genericGet(url))['message']
             [0];

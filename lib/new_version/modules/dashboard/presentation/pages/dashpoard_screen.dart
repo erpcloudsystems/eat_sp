@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gutter/flutter_gutter.dart';
 import '../bloc/dasboard_bloc.dart';
 import '../widgets/get_total_widget.dart';
 import '../bloc/total_bloc/total_bloc.dart';
@@ -118,7 +119,7 @@ class DashboardScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const GetTotalWidget(),
-                    const SizedBox(height: 10),
+                    const Gutter.large(),
                     ChartDashboardWidget(
                       data: state.dashboardEntity.barChart!,
                     ),

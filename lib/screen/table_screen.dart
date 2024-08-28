@@ -15,8 +15,8 @@ class TableScreen extends StatefulWidget {
     required this.title,
     required this.columnsName,
     required this.table,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<TableScreen> createState() => _TableScreenState();
@@ -41,7 +41,7 @@ class _TableScreenState extends State<TableScreen> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: HorizontalDataTable(
           leftHandSideColumnWidth: KLeftColumnWidth,
@@ -58,8 +58,8 @@ class _TableScreenState extends State<TableScreen> {
           itemCount: table.length,
           rowSeparatorWidget:
               const Divider(color: Colors.black54, height: 1.0, thickness: 0.0),
-          leftHandSideColBackgroundColor: Color(0xFFFFFFFF),
-          rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
+          leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+          rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
           verticalScrollbarStyle: const ScrollbarStyle(
             isAlwaysShown: true,
             thickness: 4.0,
@@ -114,18 +114,26 @@ class _TableScreenState extends State<TableScreen> {
   Widget _getTitleItemWidget(String label, double width,
       [AlignmentGeometry? alignment]) {
     return Container(
-      child: Text(label,
-          style: TextStyle(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center),
       width: width,
       height: 56,
       alignment: alignment ?? Alignment.center,
+      child: Text(label,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center),
     );
   }
 
   ///left side item builder
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
+      width: KLeftColumnWidth,
+      constraints: const BoxConstraints(
+          minHeight: KRowHeight,
+          maxWidth: KLeftColumnWidth,
+          minWidth: KLeftColumnWidth),
+      // height: KRowHeight,
+      padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+      alignment: Alignment.centerLeft,
       child: RichText(
         text: TextSpan(
           text: table[index].values.first.toString(),
@@ -134,14 +142,6 @@ class _TableScreenState extends State<TableScreen> {
           ),
         ),
       ),
-      width: KLeftColumnWidth,
-      constraints: BoxConstraints(
-          minHeight: KRowHeight,
-          maxWidth: KLeftColumnWidth,
-          minWidth: KLeftColumnWidth),
-      // height: KRowHeight,
-      padding: EdgeInsets.fromLTRB(12, 4, 4, 4),
-      alignment: Alignment.centerLeft,
     );
   }
 
@@ -166,18 +166,19 @@ class _TableScreenState extends State<TableScreen> {
     // generates row widgets
     final List<Widget> children = [];
     // starts from 1 to avoid first item
-    for (int i = 1; i < widget.columnsName.length; i++)
+    for (int i = 1; i < widget.columnsName.length; i++) {
       children.add(
         Container(
+          width: KColumnWidth,
+          padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+          alignment: Alignment.center,
           child: Text(
             table[index].values.toList()[i].toString(),
             textAlign: TextAlign.center,
           ),
-          width: KColumnWidth,
-          padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-          alignment: Alignment.center,
         ),
       );
+    }
 
     return SizedBox(
       height: textHeight <= KRowHeight ? KRowHeight : textHeight,
