@@ -1,16 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 const int PAGINATION_PAGE_LENGTH = 20;
 const double SEARCH_BAR_HEIGHT = 50;
 
 ///*** COLORS ***///
-const APPBAR_COLOR = Color(0xffef7b00);
-const APP_MAIN_COLOR = Color(0xff010101);
+const APPBAR_COLOR = Color(0xff0099ff);
+const APP_MAIN_COLOR = Color(0xff0099ff);
 const APPBAR_ICONS_COLOR = Colors.white;
 const FORM_SUBMIT_BTN_COLOR = Colors.white;
-const LOADING_PROGRESS_COLOR = Color(0xffef7b00);
-const CIRCULAR_PROGRESS_COLOR = Color(0xffef7b00);
+const LOADING_PROGRESS_COLOR = Color(0xff0066ff);
+const CIRCULAR_PROGRESS_COLOR = Color(0xff0066ff);
 const CONNECTION_ROUTE = 'CONNECTION_ROUTE';
 
 /// New Const
@@ -31,8 +30,8 @@ const String KEnableGpsSnackBar =
 const String KPermanentlyDeniedSnackBar =
     'Allow Location Permission form app settings';
 const String KLocationGrantedSnackBar = 'Location Granted';
-String KLocationNotifySnackBar =
-    'Location will be submitted to approve current location'.tr();
+const String KLocationNotifySnackBar =
+    'Location will be submitted to approve current location';
 const String KFillRequiredSnackBar = 'Fill required fields and submit';
 
 String mapStatus(int status) {

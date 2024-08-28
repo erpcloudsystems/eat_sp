@@ -134,8 +134,8 @@ class UserProvider extends ChangeNotifier {
         url = url.replaceRange(url.length - 1, url.length, '');
       }
       service.changeUrl(url); // to set baseUrl for all app
-      final res = await service.login(
-          "method/eat_mobile.api.login", {"usr": username, "pwd": password});
+      final res = await service.login("method/elkhabaz_mobile.api.login",
+          {"usr": username, "pwd": password});
 
       if (res != null &&
           res['message']['success_key'].toString().toLowerCase() == 'true') {

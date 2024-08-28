@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var userNameController = TextEditingController();
   var passwordController = TextEditingController();
   var urlController =
-      TextEditingController(text: 'https://eat.erpcloud.systems');
+      TextEditingController(text: 'https://elkhabaz.erpnext.cloud');
 
   final textFieldFocusNode = FocusNode();
   bool _passwordVisible = false;

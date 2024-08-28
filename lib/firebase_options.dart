@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCQNd3VRh_8edWlk_qCRkFxAZSbs5d2gJU',
-    appId: '1:89927184410:android:65a7fed6b1f0e49fb6a1a3',
-    messagingSenderId: '89927184410',
-    projectId: 'eat-sp',
-    storageBucket: 'eat-sp.appspot.com',
+    apiKey: 'AIzaSyDDO59fSLWAfxXxfgN4hIbJQcQvRD4gpA8',
+    appId: '1:491194293975:android:f2d86d3b4fe540fb7ada92',
+    messagingSenderId: '491194293975',
+    projectId: 'elkhabaz-c944e',
+    storageBucket: 'elkhabaz-c944e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCHKK_PqB6-_Fc9dKZAirLEXvJXuZAbtYk',
-    appId: '1:89927184410:ios:aff8e090db293080b6a1a3',
-    messagingSenderId: '89927184410',
-    projectId: 'eat-sp',
-    storageBucket: 'eat-sp.appspot.com',
-    iosBundleId: 'mobi.nextapp.nextapp',
+    apiKey: 'AIzaSyA9EVwC5q8Btaj38JKhcuds46xwO8U-xmY',
+    appId: '1:491194293975:ios:32f5591804e353f17ada92',
+    messagingSenderId: '491194293975',
+    projectId: 'elkhabaz-c944e',
+    storageBucket: 'elkhabaz-c944e.appspot.com',
+    iosBundleId: 'com.alkhbbaz.system',
   );
 
 }

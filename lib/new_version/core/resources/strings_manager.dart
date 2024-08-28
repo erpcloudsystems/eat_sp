@@ -1,6 +1,6 @@
 class ConstantStrings {
   static const String newVersion = 'newVersion';
-  static const String appName = 'EAT SP';
+  static const String appName = 'Alkhabbaz';
 }
 
 class DocTypesName {

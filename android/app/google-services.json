@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "89927184410",
-    "project_id": "eat-sp",
-    "storage_bucket": "eat-sp.appspot.com"
+    "project_number": "491194293975",
+    "project_id": "elkhabaz-c944e",
+    "storage_bucket": "elkhabaz-c944e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:89927184410:android:65a7fed6b1f0e49fb6a1a3",
+        "mobilesdk_app_id": "1:491194293975:android:f2d86d3b4fe540fb7ada92",
         "android_client_info": {
-          "package_name": "com.eatsp.systems"
+          "package_name": "com.alkhbbaz.system"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCQNd3VRh_8edWlk_qCRkFxAZSbs5d2gJU"
+          "current_key": "AIzaSyDDO59fSLWAfxXxfgN4hIbJQcQvRD4gpA8"
         }
       ],
       "services": {

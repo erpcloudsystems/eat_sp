@@ -99,7 +99,7 @@ flutter_launcher_icons:
 flutter_native_splash:
   color: "#ffffff"
   android_12:
-    image: assets/logo.png
+    image: assets/logo-elhabazz.png
 
 
 flutter:
