@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../new_version/core/resources/strings_manager.dart';
 import '../../service/service.dart';
 import '../../core/shared_pref.dart';
 import '../../service/server_exception.dart';
@@ -140,6 +141,17 @@ class UserProvider extends ChangeNotifier {
       if (res != null &&
           res['message']['success_key'].toString().toLowerCase() == 'true') {
         _modules = List<Map<String, dynamic>>.from(res['message']['modules']);
+        _modules = [
+          ..._modules,
+          {
+            '${StringsManager.stock} Reports':
+                'https://erpcloud.systems/files/stock.png',
+          },
+          {
+            '${StringsManager.accounts} Reports':
+                'https://erpcloud.systems/files/accounts.png'
+          }
+        ];
 
         _username = res['full_name'] ?? 'none';
         _userId = res['message']['user_id'] ?? 'none';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/screens/account_receivable_report_screen.dart';
 import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/screens/accounts_receivable_filter.dart';
 import '../utils/no_data_screen.dart';
@@ -37,7 +36,6 @@ class Routes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-      modulesScreen: (context) => const ReportModulesPage(),
       reportsScreen: (context) => const ReportsPage(),
       noDataScreen: (context) => const NoDataScreen(),
       reportFilterScreen: (context) => const FilterScreen(),

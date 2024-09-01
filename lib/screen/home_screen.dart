@@ -5,12 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/constants.dart';
-import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
+import '../new_version/core/resources/routes.dart';
 import '../service/gps_services.dart';
 import 'drawer/drawer_screen.dart';
 import 'sub_category_screen.dart';
 import '../widgets/new_widgets/home_item_test.dart';
-import 'other/notification_screen.dart';
 import '../provider/user/user_provider.dart';
 import '../widgets/botton_navigation_bar.dart';
 import '../service/local_notification_service.dart';
@@ -24,8 +23,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _page = 2;
-  int indexNow = 2;
+  int _page = 1;
+  int indexNow = 1;
 
   final GlobalKey _bottomNavigationKey = GlobalKey();
 
@@ -43,10 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final UserProvider userProvider = Provider.of(context, listen: false);
 
     List<Widget?> pages = [
-      const ReportModulesPage(),
       ModulesPage(userProvider: userProvider),
       const DashboardScreen(),
-      const NotificationScreen(),
       const SettingsMenu(),
     ];
     return UpgradeAlert(
@@ -87,7 +84,7 @@ class ModulesPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'Modules.Modules'.tr(),
+          'Modules and Reports'.tr(),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -105,17 +102,29 @@ class ModulesPage extends StatelessWidget {
         crossAxisCount: 2,
         childAspectRatio: 1.1,
         crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
         children: List.generate(userProvider.modules.length, (index) {
           return HomeItemTest(
-            title: 'Modules.${userProvider.modules[index].keys.first}'.tr(),
+            title: userProvider.modules[index].keys.first.tr(),
             imageUrl: userProvider.modules[index].values.first,
-            onPressed: () => Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) =>
-                  SubCategoryScreen(
-                userProvider.modules[index].keys.first,
-                index,
-              ),
-            )),
+            onPressed: () {
+              if (userProvider.modules[index].keys.first.contains('Reports')) {
+                final reportsList =
+                    userProvider.modules[index].keys.first.split(' ');
+                Navigator.of(context).pushNamed(
+                  Routes.reportsScreen,
+                  arguments: reportsList[0],
+                );
+                return;
+              }
+              Navigator.of(context).push(PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) =>
+                    SubCategoryScreen(
+                  userProvider.modules[index].keys.first,
+                  index,
+                ),
+              ));
+            },
           );
         }),
       ),

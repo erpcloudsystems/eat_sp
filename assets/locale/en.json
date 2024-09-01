@@ -435,5 +435,7 @@
   "Cancel":"Cancel",
   "Amend":"Amend",
   "Return / Credit Note":"Return / Credit Note",
-  "Edit Stock Entry":"Edit Stock Entry"
+  "Edit Stock Entry":"Edit Stock Entry",
+  "Modules and Reports":"Modules and Reports",
+  "Selling" : "Selling"
 }

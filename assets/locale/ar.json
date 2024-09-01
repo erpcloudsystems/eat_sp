@@ -417,7 +417,7 @@
   "Template": "نموذج",
   "Completed": "مكتمل",
   "Edit User Profile": "تعديل الملف الشخصي للمستخدم",
-  "Change your photo" : "تغيير صورتك",
+  "Change your photo": "تغيير صورتك",
   "Cancelled": "ألغيت",
   "Draft": "مسودة",
   "Credit Note Issued": "تم إصدار إشعار دائن",
@@ -430,9 +430,10 @@
   "Shared With": "مشارك مع",
   "Attachments": "المرفقات",
   "Logs": "السجلات",
-  "Cancel":"إلغاء",
+  "Cancel": "إلغاء",
   "Amend": "تعديل",
   "Return / Credit Note": "مرتجع / إشعار دائن",
-  "Edit Stock Entry": "تعديل إدخال المخزون"
-
+  "Edit Stock Entry": "تعديل إدخال المخزون",
+  "Modules and Reports": "المستندات والتقارير",
+  "Selling" : "المبيعات"
 }

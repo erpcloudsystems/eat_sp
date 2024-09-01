@@ -1,3 +1,4 @@
+import 'package:NextApp/screen/other/notification_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import '../bloc/dasboard_bloc.dart';
@@ -76,38 +77,56 @@ class DashboardScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       /// User profile
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          "${context.read<UserProvider>().url}${state.dashboardEntity.userImage!}",
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const UserProfileScreen();
+                              },
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                "${context.read<UserProvider>().url}${state.dashboardEntity.userImage!}",
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              state.dashboardEntity.userFullName!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        state.dashboardEntity.userFullName!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                      ),
+
                       const Spacer(),
+
                       IconButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return const UserProfileScreen();
+                                  return const NotificationScreen();
                                 },
                               ),
                             );
                           },
                           icon: const Icon(
-                            Icons.person,
+                            Icons.notifications,
                             size: 30,
                           )),
                     ],

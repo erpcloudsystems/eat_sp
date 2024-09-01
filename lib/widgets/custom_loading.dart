@@ -9,45 +9,30 @@ class CustomLoadingWithImage extends StatefulWidget {
 
 class _CustomLoadingWithImageState extends State<CustomLoadingWithImage>
     with SingleTickerProviderStateMixin {
-  double curtain = 1.0;
-  bool selected = false;
-
-  late AnimationController controller;
-  late Animation<double> animation;
-
-  void load() {
-    controller =
-        AnimationController(duration: const Duration(seconds: 3), vsync: this);
-    animation = Tween(begin: 0.0, end: 1.0).animate(controller)
-      ..addListener(() {
-        // Do something
-        setState(() {});
-      });
-    controller.forward();
-    // changeColors();
-  }
-
-  Future changeColors() async {
-    while (true) {
-      await Future.delayed(const Duration(seconds: 0), () {
-        if (controller.status == AnimationStatus.completed) {
-          controller.reverse();
-        } else {
-          controller.forward();
-        }
-      });
-    }
-  }
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    load();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 25),  // Flicker out
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 10),  // Flicker in quickly
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 25),  // Flicker out
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 40),  // Stay on longer
+    ]).animate(_controller);
+
+    _controller.forward();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -63,17 +48,16 @@ class _CustomLoadingWithImageState extends State<CustomLoadingWithImage>
           children: [
             Stack(
               children: [
-                Image.asset(
-                  'assets/logo.png',
-                  color: Colors.grey,
+                Opacity(
+                  opacity: 0.1,
+                  child: Image.asset(
+                    'assets/logo.png',
+                  ),
                 ),
-                ClipRect(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: animation.value,
-                    child: Image.asset(
-                      'assets/logo.png',
-                    ),
+                FadeTransition(
+                  opacity: _animation,
+                  child: Image.asset(
+                    'assets/logo.png',
                   ),
                 ),
               ],

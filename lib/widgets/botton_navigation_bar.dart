@@ -6,7 +6,7 @@ import '../core/constants.dart';
 Widget getBottomNavigationBar({
   required GlobalKey key,
   void Function(int)? onTap,
-  int index = 2,
+  int index = 1,
 }) {
   return CurvedNavigationBar(
     key: key,
@@ -14,22 +14,12 @@ Widget getBottomNavigationBar({
     height: 55.0,
     items: const [
       Icon(
-        Icons.receipt_long_outlined,
-        size: 25,
-        color: APPBAR_COLOR,
-      ),
-      Icon(
         Icons.category_outlined,
         size: 25,
         color: APPBAR_COLOR,
       ),
       Icon(
         Icons.home_outlined,
-        size: 25,
-        color: APPBAR_COLOR,
-      ),
-      Icon(
-        Icons.notifications_active_outlined,
         size: 25,
         color: APPBAR_COLOR,
       ),

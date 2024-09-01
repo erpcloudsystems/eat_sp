@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gif_view/gif_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/user/user_provider.dart';
@@ -39,7 +40,13 @@ class LoadingWidget extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Center(
-          child: Image.asset("assets/logo.png"),
+          child: GifView.asset(
+            "assets/welcome.gif",
+            frameRate: 30,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
