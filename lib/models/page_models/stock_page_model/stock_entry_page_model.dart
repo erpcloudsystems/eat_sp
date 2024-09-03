@@ -1,3 +1,4 @@
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../model_functions.dart';
@@ -26,7 +27,11 @@ class StockEntryPageModel {
         tr("From Warehouse"): data['from_warehouse'] ?? tr('none'),
         tr("To Warehouse"): data['to_warehouse'] ?? tr('none')
       },
-      {tr("Project"): data['project'] ?? tr('none')}
+      {tr(StringsManager.customer): data['custom_customer_name'] ?? tr('none')},
+      {
+        tr(StringsManager.vehicle): data['custom_vehicle'] ?? tr('none'),
+        tr(StringsManager.driver): data['custom_driver'] ?? tr('none'),
+      }
     ];
   }
 

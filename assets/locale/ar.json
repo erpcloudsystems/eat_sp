@@ -440,5 +440,7 @@
   "Customer Visit": "زيارة العميل",
   "Quotation": "عرض أسعار",
   "Sales Order": "أمر مبيعات",
-  "Delivery Note": "مذكرة تسليم"
+  "Delivery Note": "مذكرة تسليم",
+  "Driver": "سائق",
+  "Vehicle": "مركبة"
 }

@@ -235,11 +235,24 @@ class _StockEntryFormState extends State<StockEntryForm> {
                             })),
                     const Divider(
                         color: Colors.grey, height: 1, thickness: 0.7),
+                    CustomDropDownFromField(
+                        defaultValue: data['custom_customer_name'],
+                        docType: 'Customer',
+                        nameResponse: 'name',
+                        title: 'Customer'.tr(),
+                        keys: const {
+                          'subTitle': 'customer_group',
+                          'trailing': 'territory',
+                        },
+                        onChange: (value) async {
+                          setState(() {
+                            data['custom_customer_name'] = value['name'];
+                          });
+                        }),
                     DatePickerTest('posting_date', 'Date'.tr(),
                         initialValue: data['posting_date'],
                         onChanged: (value) =>
                             setState(() => data['posting_date'] = value)),
-
                     CustomDropDownFromField(
                         defaultValue: data['from_warehouse'],
                         docType: APIService.WAREHOUSE,
@@ -265,7 +278,6 @@ class _StockEntryFormState extends State<StockEntryForm> {
                           }
                           setState(() {});
                         }),
-
                     CustomDropDownFromField(
                         defaultValue: data['to_warehouse'],
                         docType: APIService.WAREHOUSE,
@@ -280,21 +292,34 @@ class _StockEntryFormState extends State<StockEntryForm> {
                             data['to_warehouse'] = value['name'];
                           });
                         }),
-                    // CustomDropDownFromField(
-                    //     defaultValue: data['project'],
-                    //     docType: APIService.PROJECT,
-                    //     nameResponse: 'name',
-                    //     isValidate: false,
-                    //     keys: const {
-                    //       "subTitle": 'project_name',
-                    //       "trailing": 'status',
-                    //     },
-                    //     title: 'Project'.tr(),
-                    //     onChange: (value) {
-                    //       setState(() {
-                    //         data['project'] = value['name'];
-                    //       });
-                    //     }),
+                    CustomDropDownFromField(
+                        defaultValue: data['custom_vehicle'],
+                        docType: APIService.VEHICLE,
+                        nameResponse: 'name',
+                        title: StringsManager.vehicle.tr(),
+                        keys: const {
+                          'subTitle': 'employee',
+                          'trailing': 'model',
+                        },
+                        onChange: (value) async {
+                          setState(() {
+                            data['custom_vehicle'] = value['name'];
+                          });
+                        }),
+                    CustomDropDownFromField(
+                        defaultValue: data['custom_driver'],
+                        docType: APIService.DRIVER,
+                        nameResponse: 'name',
+                        title: StringsManager.driver.tr(),
+                        keys: const {
+                          'subTitle': 'full_name',
+                          'trailing': 'status',
+                        },
+                        onChange: (value) async {
+                          setState(() {
+                            data['custom_driver'] = value['name'];
+                          });
+                        }),
                     const SizedBox(height: 8),
                   ],
                 ),

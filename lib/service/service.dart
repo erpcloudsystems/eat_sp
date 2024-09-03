@@ -29,9 +29,6 @@ import '../../widgets/dialog/loading_dialog.dart';
 import '../../core/constants.dart';
 import '../models/list_models/list_model.dart';
 
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-
 class APIService {
   //Selling model
   static const LEAD = 'Lead';
@@ -51,6 +48,8 @@ class APIService {
   static const DELIVERY_NOTE = 'Delivery Note';
   static const PURCHASE_RECEIPT = 'Purchase Receipt';
   static const MATERIAL_REQUEST = 'Material Request';
+  static const DRIVER = 'Driver';
+  static const VEHICLE = 'Vehicle';
 
   //Buying module
   static const SUPPLIER = 'Supplier';
