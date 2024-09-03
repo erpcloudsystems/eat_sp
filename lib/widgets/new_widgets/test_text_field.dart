@@ -27,7 +27,7 @@ class CustomTextFieldTest extends StatefulWidget {
   final bool enabled;
 
   const CustomTextFieldTest._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.maxLines = 1,
       this.minLines = 1,
       this.keyboardType,
@@ -45,8 +45,7 @@ class CustomTextFieldTest extends StatefulWidget {
       required this.disableError,
       this.clearValue,
       this.onClear,
-      this.onChanged})
-      : super(key: key);
+      this.onChanged});
 
   factory CustomTextFieldTest(String id, String title,
           {Key? key,
@@ -271,8 +270,7 @@ class CustomDropDownTest extends StatefulWidget {
       this.enable = true,
       this.fontSize = 14.0,
       this.onClear,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   _CustomDropDownTestState createState() => _CustomDropDownTestState();
@@ -371,7 +369,7 @@ class DatePickerTest extends StatefulWidget {
   final bool removeUnderLine;
 
   const DatePickerTest._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.onChanged,
       this.initialValue,
       this.lastDate,
@@ -380,8 +378,7 @@ class DatePickerTest extends StatefulWidget {
       this.enable = true,
       required this.disableValidation,
       this.removeUnderLine = false,
-      this.onClear})
-      : super(key: key);
+      this.onClear});
 
   factory DatePickerTest(
     id,
@@ -477,6 +474,7 @@ class _DatePickerTestState extends State<DatePickerTest> {
           TextFormField(
             readOnly: true,
             controller: controller,
+            enabled: widget.enable,
             decoration: InputDecoration(
               filled: true,
               //<-- SEE HERE
@@ -488,6 +486,15 @@ class _DatePickerTestState extends State<DatePickerTest> {
               isCollapsed: false,
               contentPadding: const EdgeInsets.all(2),
               border: widget.removeUnderLine ? InputBorder.none : null,
+              disabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.transparent,
+                ),
+              ),
               enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
@@ -598,15 +605,14 @@ class TimePickerTest extends StatefulWidget {
   final bool disableValidation;
 
   const TimePickerTest._(this.id, this.title,
-      {Key? key,
+      {super.key,
       this.onChanged,
       this.initialValue,
       this.clear = false,
       this.enable = true,
       this.removeUnderLine = false,
       required this.disableValidation,
-      this.onClear})
-      : super(key: key);
+      this.onClear});
 
   factory TimePickerTest(
     id,

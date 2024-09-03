@@ -172,11 +172,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     final provider = context.read<ModuleProvider>();
     final userProvider = context.read<UserProvider>();
 
-    // Default Warehouse
-    if (userProvider.sellingWarehouse != null) {
-      data['set_warehouse'] = userProvider.sellingWarehouse;
-    }
-
     //Editing Mode and Amending Mode
     if (provider.isEditing ||
         provider.isAmendingMode ||
@@ -291,6 +286,13 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
         data.remove('organization_lead');
         print('${data['items']}');
         setState(() {});
+      });
+    }
+
+    // Default Warehouse
+    if (userProvider.sellingWarehouse != null) {
+      Future.delayed(Duration.zero, () {
+        data['set_warehouse'] = userProvider.sellingWarehouse;
       });
     }
   }
@@ -417,6 +419,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           'posting_date',
                           'Date'.tr(),
                           initialValue: data['posting_date'] ?? 'none',
+                          enable: false,
                           onChanged: (value) =>
                               setState(() => data['posting_date'] = value),
                           lastDate: DateTime.tryParse(data['due_date'] ??
@@ -434,6 +437,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                           'Due Date'.tr(),
                           onChanged: (value) => Future.delayed(Duration.zero,
                               () => setState(() => data['due_date'] = value)),
+                          enable: false,
                           firstDate: DateTime.parse(data['posting_date'] ?? ''),
                           initialValue: data['due_date'] ??
                               ((selectedCstData['name'].toString() !=
@@ -599,10 +603,6 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   child: ListView(
                     children: [
                       const SizedBox(height: 4),
-                      CheckBoxWidget('is_return', 'Is Return',
-                          initialValue: data['is_return'] == 1 ? true : false,
-                          onChanged: (id, value) =>
-                              setState(() => data[id] = value ? 1 : 0)),
                       CustomDropDown('tax_type', 'Tax Type'.tr(),
                           items: taxType,
                           defaultValue: data['tax_type'] ?? taxType[0],

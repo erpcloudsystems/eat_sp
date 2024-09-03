@@ -115,11 +115,6 @@ class _PaymentFormState extends State<PaymentForm> {
 
     final userProvider = context.read<UserProvider>();
 
-    // Default Warehouse
-    if (userProvider.modeOfPayment != null) {
-      data['mode_of_payment'] = userProvider.modeOfPayment;
-    }
-
     //Editing Mode & Amending Mode & Duplicate Mode
     if (provider.isEditing ||
         provider.isAmendingMode ||
@@ -269,6 +264,15 @@ class _PaymentFormState extends State<PaymentForm> {
         setState(() {});
       });
     }
+
+    // Default Warehouse
+    if (userProvider.modeOfPayment != null) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          data['mode_of_payment'] = userProvider.modeOfPayment;
+        });
+      });
+    }
   }
 
   @override
@@ -387,7 +391,7 @@ class _PaymentFormState extends State<PaymentForm> {
                         ),
                       DatePickerTest('posting_date', 'Date'.tr(),
                           initialValue: data['posting_date'],
-                          onChanged: (value) {
+                          enable: false, onChanged: (value) {
                         setState(() {
                           data['posting_date'] = value;
                         });

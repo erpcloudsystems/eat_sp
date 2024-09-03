@@ -28,7 +28,9 @@ class NewItemModel extends ItemEntity {
         itemTaxTemplate: json['item_tax_template'] ?? '',
         netRate: json['net_rate'] ?? 0,
         taxPercent: json['tax_percent'] ?? 0,
-        priceListRate: json['price_list_rate'] ?? 0,
+        priceListRate: json['price_list_rate'] != null
+            ? double.parse(json['price_list_rate'])
+            : 0,
         uomList: List.from(
           json['uom_list'].map(
             (e) => UomModel.fromJson(e),

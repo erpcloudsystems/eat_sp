@@ -172,11 +172,6 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
     final provider = context.read<ModuleProvider>();
     final userProvider = context.read<UserProvider>();
 
-    // Default Warehouse
-    if (userProvider.returnWarehouse != null) {
-      data['set_warehouse'] = userProvider.returnWarehouse;
-    }
-
     //Editing Mode and Amending Mode
     if (provider.isEditing ||
         provider.isAmendingMode ||
@@ -291,6 +286,14 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
         data.remove('organization_lead');
         print('${data['items']}');
         setState(() {});
+      });
+    }
+    // Default Warehouse
+    if (userProvider.returnWarehouse != null) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          data['set_warehouse'] = userProvider.returnWarehouse;
+        });
       });
     }
   }
@@ -428,6 +431,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                           'posting_date',
                           'Date'.tr(),
                           initialValue: data['posting_date'] ?? 'none',
+                          enable: false,
                           onChanged: (value) =>
                               setState(() => data['posting_date'] = value),
                           lastDate: DateTime.tryParse(data['due_date'] ??
@@ -443,6 +447,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                             child: DatePickerTest(
                           'due_date',
                           'Due Date'.tr(),
+                          enable: false,
                           onChanged: (value) => Future.delayed(Duration.zero,
                               () => setState(() => data['due_date'] = value)),
                           firstDate: DateTime.parse(data['posting_date'] ?? ''),

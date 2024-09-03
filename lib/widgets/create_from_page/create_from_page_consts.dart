@@ -4,6 +4,7 @@ import 'package:NextApp/screen/form/project_forms/timesheet_form.dart';
 import 'package:NextApp/screen/form/stock_forms/stock_entry_form.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../screen/form/selling_forms/sales_invoic_return_form.dart';
 import '../inherited_widgets/select_items_list.dart';
 import '../../screen/form/selling_forms/customer_form.dart';
 import '../../screen/form/selling_forms/quotation_form.dart';
@@ -54,10 +55,10 @@ Map<String, Widget> fromQuotation = {
 //Sales Invoice
 Map<String, Widget> fromSalesInvoice = {
   'Payment Entry': const PaymentForm(),
-  'Return / Credit Note': InheritedForm(child: const SalesInvoiceForm()),
+  'Return / Credit Note': InheritedForm(child: const SalesInvoiceReturnForm()),
 };
 Map<String, Widget> fromSalesInvoice2 = {
-  'Return / Credit Note': InheritedForm(child: const SalesInvoiceForm()),
+  'Return / Credit Note': InheritedForm(child: const SalesInvoiceReturnForm()),
 };
 
 //Delivery Note
