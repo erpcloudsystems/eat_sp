@@ -435,5 +435,10 @@
   "Return / Credit Note": "مرتجع / إشعار دائن",
   "Edit Stock Entry": "تعديل إدخال المخزون",
   "Modules and Reports": "المستندات والتقارير",
-  "Selling" : "المبيعات"
+  "Selling": "المبيعات",
+  "Selling Reports": "تقارير المبيعات",
+  "Customer Visit": "زيارة العميل",
+  "Quotation": "عرض أسعار",
+  "Sales Order": "أمر مبيعات",
+  "Delivery Note": "مذكرة تسليم"
 }

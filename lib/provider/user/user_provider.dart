@@ -144,13 +144,9 @@ class UserProvider extends ChangeNotifier {
         _modules = [
           ..._modules,
           {
-            '${StringsManager.stock} Reports':
-                'https://erpcloud.systems/files/stock.png',
+            '${StringsManager.selling} Reports':
+                'https://eat.erpcloud.systems/files/selling_reports.png',
           },
-          {
-            '${StringsManager.accounts} Reports':
-                'https://erpcloud.systems/files/accounts.png'
-          }
         ];
 
         _username = res['full_name'] ?? 'none';

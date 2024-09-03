@@ -437,5 +437,10 @@
   "Return / Credit Note":"Return / Credit Note",
   "Edit Stock Entry":"Edit Stock Entry",
   "Modules and Reports":"Modules and Reports",
-  "Selling" : "Selling"
+  "Selling" : "Selling",
+  "Selling Reports" : "Selling Reports",
+  "Customer Visit" : "Customer Visit",
+  "Quotation" : "Quotation",
+  "Sales Order" :"Sales Order",
+  "Delivery Note" :"Delivery Note"
 }

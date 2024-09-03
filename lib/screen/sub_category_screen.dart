@@ -45,6 +45,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         crossAxisCount: 2,
         childAspectRatio: 1.1,
         crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
         children: List.generate(
             userProvider.modules[widget.moduleIndex]['docs'].keys.length,
             (index) {
