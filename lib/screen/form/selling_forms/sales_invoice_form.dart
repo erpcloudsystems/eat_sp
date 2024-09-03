@@ -173,8 +173,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     final userProvider = context.read<UserProvider>();
 
     // Default Warehouse
-    if (userProvider.warehouseList.isNotEmpty) {
-      data['set_warehouse'] = userProvider.warehouseList.first.docName;
+    if (userProvider.sellingWarehouse != null) {
+      data['set_warehouse'] = userProvider.sellingWarehouse;
     }
 
     //Editing Mode and Amending Mode
@@ -300,6 +300,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
     super.didChangeDependencies();
     Future.delayed(Duration.zero, () async {
       location = await gpsService.getCurrentLocation(context);
+      setState(() {});
     });
   }
 
@@ -340,6 +341,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                   child: ListView(
                     children: [
                       const SizedBox(height: 4),
+
                       // New customer list
                       CustomDropDownFromField(
                           defaultValue: data['customer'],
@@ -679,6 +681,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             // filters: const {
                             //   'filter1': DocTypesName.salesInvoice
                             // },
+                            enable: data['set_warehouse'] == null,
                             keys: const {
                               'subTitle': 'warehouse_name',
                               'trailing': 'warehouse_type',

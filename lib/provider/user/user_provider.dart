@@ -124,7 +124,9 @@ class UserProvider extends ChangeNotifier {
   }
 
   // Warehouses list
-  List<WarehouseModel> warehouseList = [];
+  String? sellingWarehouse;
+  String? returnWarehouse;
+  String? modeOfPayment;
 
   Future<void> login(
       String username, String password, String url, bool rememberMe) async {
@@ -144,12 +146,14 @@ class UserProvider extends ChangeNotifier {
         _username = res['full_name'] ?? 'none';
         _userId = res['message']['user_id'] ?? 'none';
         try {
-          // ignore: prefer_interpolation_to_compose_strings
-          if (res['message']['user_permissions']['Warehouse'] != null) {
-            warehouseList = List<WarehouseModel>.from(
-                List.from(res['message']['user_permissions']['Warehouse'])
-                    .map((e) => WarehouseModel.fromJson(e))
-                    .toList());
+          if (res['message']['selling_warehouse'] != null) {
+            sellingWarehouse = res['message']['selling_warehouse'];
+          }
+          if (res['message']['return_warehouse'] != null) {
+            returnWarehouse = res['message']['return_warehouse'];
+          }
+          if (res['message']['mode_of_payment'] != null) {
+            modeOfPayment = res['message']['mode_of_payment'];
           }
           _defaultCurrency =
               res['message']['company_defaults'][0]['default_currency'];

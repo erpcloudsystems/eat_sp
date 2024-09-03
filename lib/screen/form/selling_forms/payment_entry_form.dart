@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
+import '../../../provider/user/user_provider.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
 import '../../../widgets/dismiss_keyboard.dart';
@@ -111,6 +112,13 @@ class _PaymentFormState extends State<PaymentForm> {
   void initState() {
     super.initState();
     final provider = context.read<ModuleProvider>();
+
+    final userProvider = context.read<UserProvider>();
+
+    // Default Warehouse
+    if (userProvider.modeOfPayment != null) {
+      data['mode_of_payment'] = userProvider.modeOfPayment;
+    }
 
     //Editing Mode & Amending Mode & Duplicate Mode
     if (provider.isEditing ||
@@ -390,6 +398,7 @@ class _PaymentFormState extends State<PaymentForm> {
                           defaultValue: data['mode_of_payment'],
                           docType: 'Mode of Payment',
                           nameResponse: 'name',
+                          enable: data['mode_of_payment'] == null,
                           title: data['payment_type'] == paymentType[2]
                               ? 'Payment From'
                               : 'Mode Of Payment',

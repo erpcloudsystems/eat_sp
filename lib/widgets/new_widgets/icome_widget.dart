@@ -91,7 +91,9 @@ class IncomeWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      !isCounted ? '${StringsManager.sar}  ' : tr('Count  '),
+                      !isCounted
+                          ? '${StringsManager.sar.tr()}  '
+                          : tr('Count  '),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -121,12 +123,20 @@ class IncomeWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                '${tr(StringsManager.theLatest)} $title',
-                style: const TextStyle(
-                  color: Colors.black45,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      '${tr(StringsManager.theLatest)} $title',
+                      style: const TextStyle(
+                        color: Colors.black45,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.add)
+                ],
               ),
             ],
           ),

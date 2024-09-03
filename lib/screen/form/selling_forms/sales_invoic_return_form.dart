@@ -173,8 +173,8 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
     final userProvider = context.read<UserProvider>();
 
     // Default Warehouse
-    if (userProvider.warehouseList.isNotEmpty) {
-      data['set_warehouse'] = userProvider.warehouseList.first.docName;
+    if (userProvider.returnWarehouse != null) {
+      data['set_warehouse'] = userProvider.returnWarehouse;
     }
 
     //Editing Mode and Amending Mode
@@ -689,6 +689,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                             docType: APIService.WAREHOUSE,
                             nameResponse: 'name',
                             title: 'Source Warehouse'.tr(),
+                            enable: data['set_warehouse'] == null,
                             filters: const {'filter1': 'Return'},
                             keys: const {
                               'subTitle': 'warehouse_name',

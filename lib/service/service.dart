@@ -298,13 +298,14 @@ class APIService {
     Map<String, dynamic>? filters,
   }) async {
     try {
-      var response = await dio
-          .get('method/elkhabaz_mobile.count.general_service', queryParameters: {
-        'doctype': service,
-        "page_length": 0,
-        if (search != null && search.isNotEmpty) 'search_text': '%$search%',
-        if (filters != null) ...filters
-      });
+      var response = await dio.get(
+          'method/elkhabaz_mobile.count.general_service',
+          queryParameters: {
+            'doctype': service,
+            "page_length": 0,
+            if (search != null && search.isNotEmpty) 'search_text': '%$search%',
+            if (filters != null) ...filters
+          });
       print("getListCount request ${response.realUri}");
       print(response.data);
       if (response.statusCode == 200) {
@@ -979,6 +980,13 @@ Future<dynamic> handleRequest(
     );
   } on ServerException catch (e) {
     print('HttpException: $e');
+    if (e.message.contains('message')) {
+      final text = e.message.split(':')[1].trim();
+      showErrorSnackBar(text.split('}').first, text.split('}').first, context,
+          color: Colors.red);
+      return;
+    }
+
     showErrorSnackBar(
         e.message.split('!!').first, e.message.substring(22), context,
         color: Colors.red);

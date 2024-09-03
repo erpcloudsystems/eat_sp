@@ -112,8 +112,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                             ),
                           ),
                           Text(
-                            (newRate ?? widget.priceListRate)
-                                .toStringAsFixed(2),
+                            (newRate ?? widget.priceListRate).toString(),
                             //widget.rate.toString(),
                             style: const TextStyle(
                               fontSize: 16,
