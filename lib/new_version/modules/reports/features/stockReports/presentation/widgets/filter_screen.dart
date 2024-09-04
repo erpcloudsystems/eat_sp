@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../new_item/data/models/item_model.dart';
 import '../../data/models/warehouse_filters.dart';
 import '../../data/models/item_price_filters.dart';
 import '../../data/models/stock_ledger_filter.dart';
@@ -14,8 +15,6 @@ import '../../../../../../core/resources/app_values.dart';
 import '../../../../../../../provider/module/module_type.dart';
 import '../../../../../../core/resources/strings_manager.dart';
 import '../../../../../../../provider/module/module_provider.dart';
-import '../../../../../../../models/list_models/stock_list_model/item_table_model.dart';
-
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
 
@@ -125,10 +124,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     itemCode = null;
                   },
                   onPressed: () async {
-                    final ItemSelectModel res =
-                        await Navigator.of(context).push(
+                    final NewItemModel res = await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => itemListScreen(''),
+                        builder: (_) => newItemsScreen(),
                       ),
                     );
                     itemCode = res.itemCode;

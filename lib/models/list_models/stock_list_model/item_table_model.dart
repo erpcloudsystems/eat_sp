@@ -1,20 +1,20 @@
 import '../list_model.dart';
 
 class ItemTableModel extends ListModel<ItemModel> {
-  ItemTableModel(List<ItemModel>? list) : super(list);
+  ItemTableModel(List<ItemModel>? super.list);
 
   factory ItemTableModel.fromJson(Map<String, dynamic> json) {
-    var _list = <ItemModel>[];
+    var list = <ItemModel>[];
     if (json['message'] != null) {
       json['message'].forEach((v) {
-        _list.add(new ItemModel.fromJson(v));
+        list.add(ItemModel.fromJson(v));
       });
     }
-    return ItemTableModel(_list);
+    return ItemTableModel(list);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['data'] = super.list.map((v) => v.toJson).toList();
     return data;
   }
@@ -35,7 +35,6 @@ class ItemModel {
       required this.group});
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
-    print(json);
     return ItemModel(
       itemCode: json['item_code'] ?? 'none',
       itemName: json['item_name'] ?? 'none',
@@ -46,24 +45,24 @@ class ItemModel {
   }
 
   Map<String, dynamic> get toJson {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['item_code'] = this.itemCode;
-    data['item_name'] = this.itemName;
-    data['uom'] = this.stockUom;
-    data['item_group'] = this.group;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['item_code'] = itemCode;
+    data['item_name'] = itemName;
+    data['uom'] = stockUom;
+    data['item_group'] = group;
     return data;
   }
 
   @override
   bool operator ==(Object other) =>
-      other is ItemModel && this.itemCode == other.itemCode;
+      other is ItemModel && itemCode == other.itemCode;
 
   @override
   int get hashCode => itemCode.hashCode;
 }
 
 class ItemSelectModel extends ItemModel {
-  num rate;
+  double rate;
   double netRate;
   double priceListRate;
   double vat;
@@ -88,8 +87,12 @@ class ItemSelectModel extends ItemModel {
               (json['tax_percent'] ?? 0).toString())) ??
           0,
       netRate: json['net_rate'] ?? 9999999999,
-      rate: json['price_list_rate'] ?? 88888888,
-      priceListRate: json['price_list_rate'] ?? 77777777,
+      rate: json['price_list_rate'] != null
+          ? double.parse(json['price_list_rate'].toString())
+          : 0.0,
+      priceListRate: json['price_list_rate'] != null
+          ? double.parse(json['price_list_rate'].toString())
+          : 0.0,
       taxPercent: double.tryParse((json['item_tax_template'] ??
               (json['tax_percent'] ?? 0).toString())) ??
           0,
@@ -121,7 +124,7 @@ class ItemSelectModel extends ItemModel {
         "qty": _qty,
         "uom": stockUom,
         "rate": rate,
-        "image":imageUrl
+        "image": imageUrl
       };
 
   @override

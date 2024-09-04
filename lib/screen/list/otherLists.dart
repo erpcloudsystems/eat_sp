@@ -21,7 +21,7 @@ class SingleValueTile extends StatelessWidget {
   final String value;
   final void Function(BuildContext context)? onTap;
 
-  const SingleValueTile(this.value, {Key? key, this.onTap}) : super(key: key);
+  const SingleValueTile(this.value, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,7 @@ class SingleValueTileReturnMap extends StatelessWidget {
   final Map<String, String?> value;
   final void Function(BuildContext context)? onTap;
 
-  const SingleValueTileReturnMap(this.value, {Key? key, this.onTap})
-      : super(key: key);
+  const SingleValueTileReturnMap(this.value, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +103,7 @@ class AddressTile extends StatelessWidget {
   final Map<String, String?> data;
   final void Function(BuildContext context)? onTap;
 
-  const AddressTile(this.data, {Key? key, this.onTap}) : super(key: key);
+  const AddressTile(this.data, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +188,7 @@ class CurrencyTile extends StatelessWidget {
   final String circleValue;
   final void Function(BuildContext context)? onTap;
 
-  const CurrencyTile(this.value, this.circleValue, {Key? key, this.onTap})
-      : super(key: key);
+  const CurrencyTile(this.value, this.circleValue, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -641,7 +639,7 @@ Widget itemListScreen(String priceList) => Builder(builder: (context) {
       );
     });
 
-    Widget salesPersonScreen() => GenericListScreen<Map<String, String?>>(
+Widget salesPersonScreen() => GenericListScreen<Map<String, String?>>(
       title: 'Select Sales Person',
       service: APIService.SALES_PERSON,
       listItem: (value) => SingleValueTileReturnMap(value,

@@ -31,8 +31,9 @@ class CustomListScreen<T> extends StatefulWidget {
   /// scaffold background color
   final Color? backgroundColor;
 
-  CustomListScreen(
-      {required this.title,
+  const CustomListScreen(
+      {super.key,
+      required this.title,
       required this.service,
       required this.listItem,
       required this.serviceParser,
@@ -62,6 +63,14 @@ class _CustomListScreenState<T> extends State<CustomListScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      _search('');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.backgroundColor ?? Colors.white,
@@ -70,13 +79,13 @@ class _CustomListScreenState<T> extends State<CustomListScreen> {
         elevation: 0,
         title: Text(widget.title.tr()),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(SEARCH_BAR_HEIGHT),
+          preferredSize: const Size.fromHeight(SEARCH_BAR_HEIGHT),
           child: pagination.SearchBar(search: _search),
         ),
       ),
       body: pagination.PaginationList<T>(
-        future: (_page) => service.getCustomList<T>(
-            widget.service, _page, serviceParser,
+        future: (page) => service.getCustomList<T>(
+            widget.service, page, serviceParser,
             search: searchText),
         listCount: () =>
             context.read<ModuleProvider>().listCount(search: searchText.trim()),

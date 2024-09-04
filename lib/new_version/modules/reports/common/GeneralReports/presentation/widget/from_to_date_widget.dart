@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../widgets/form_widgets.dart';
 
+// ignore: must_be_immutable
 class FromDataToDateWidget extends StatelessWidget {
   FromDataToDateWidget({
-    Key? key,
+    super.key,
     this.fromData,
     this.toDate,
-  }) : super(key: key);
+  });
   String? fromData;
   String? toDate;
 
@@ -29,7 +30,7 @@ class FromDataToDateWidget extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Flexible(
