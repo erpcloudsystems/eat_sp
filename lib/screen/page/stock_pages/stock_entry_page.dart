@@ -9,9 +9,8 @@ import '../../../provider/module/module_provider.dart';
 import '../../../widgets/dialog/page_details_dialog.dart';
 import '../../../models/page_models/stock_page_model/stock_entry_page_model.dart';
 
-
 class StockEntryPage extends StatelessWidget {
-  const StockEntryPage({Key? key}) : super(key: key);
+  const StockEntryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +26,13 @@ class StockEntryPage extends StatelessWidget {
         PageCard(
           color: color,
           header: [
-            Stack(
+            const Stack(
               alignment: Alignment.center,
               children: [
-                const Text('Stock Entry',
+                Text('Stock Entry',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                if (data['docstatus'] != null && data['amended_to'] == null)
+                /*if (data['docstatus'] != null && data['amended_to'] == null)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
@@ -41,7 +40,7 @@ class StockEntryPage extends StatelessWidget {
                       child:
                           context.read<ModuleProvider>().submitDocumentWidget(),
                     ),
-                  )
+                  )*/
               ],
             ),
             Padding(
