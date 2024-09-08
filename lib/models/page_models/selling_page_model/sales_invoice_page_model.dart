@@ -19,9 +19,9 @@ class SalesInvoicePageModel {
 
   final List<Tab> tabs = const [
     Tab(text: 'Items'),
-    Tab(text: 'Taxes'),
-    Tab(text: 'Payment'),
-    Tab(child: FittedBox(child: Text('Connections'))),
+    // Tab(text: 'Taxes'),
+    // Tab(text: 'Payment'),
+    // Tab(child: FittedBox(child: Text('Connections'))),
   ];
 
   List<Map<String, String>> get card1Items {
@@ -30,36 +30,40 @@ class SalesInvoicePageModel {
         tr("Date"): data['posting_date'] != null
             ? reverse(data['posting_date'])
             : tr('none'),
-        tr("Due Date"):
-            data['due_date'] != null ? reverse(data['due_date']) : tr('none')
+        // tr("Due Date"):
+        //     data['due_date'] != null ? reverse(data['due_date']) : tr('none')
       },
       {
         tr("Status"): data['status'] ?? tr('none'),
-        tr("Tax Id"): data['tax_id'] ?? tr('none')
+        //    tr("Tax Id"): data['tax_id'] ?? tr('none')
       },
       {
-        tr("Customer Group"): data['customer_group'] ?? tr('none'),
-        tr("Territory"): data['territory'] ?? tr('none')
+        tr("Total Quantity"): data['total_qty'].toString(),
+        tr("Grand Total"): data['grand_total'].toString(),
       },
-      {
-        tr("Customer Address"): data['customer_address'] != null
-            ? formatDescription(data['customer_address'])
-            : tr('none')
-      },
-      {
-        tr("Address"): data['address_display'] != null
-            ? formatDescription(data['address_display'])
-            : tr('none')
-      },
-      {
-        tr("City"): data['city'] ?? tr('none'),
-        tr("Country"): data['country'] ?? tr('none')
-      },
-      {
-        tr("Contact"): data['contact_display'] ?? tr('none'),
-        tr("Mobile No"): data['contact_mobile'] ?? tr('none')
-      },
-      {tr("Contact Email"): data['contact_email'] ?? tr('none')}
+      // {
+      //   tr("Customer Group"): data['customer_group'] ?? tr('none'),
+      //   tr("Territory"): data['territory'] ?? tr('none')
+      // },
+      // {
+      //   tr("Customer Address"): data['customer_address'] != null
+      //       ? formatDescription(data['customer_address'])
+      //       : tr('none')
+      // },
+      // {
+      //   tr("Address"): data['address_display'] != null
+      //       ? formatDescription(data['address_display'])
+      //       : tr('none')
+      // },
+      // {
+      //   tr("City"): data['city'] ?? tr('none'),
+      //   tr("Country"): data['country'] ?? tr('none')
+      // },
+      // {
+      //   tr("Contact"): data['contact_display'] ?? tr('none'),
+      //   tr("Mobile No"): data['contact_mobile'] ?? tr('none')
+      // },
+      // {tr("Contact Email"): data['contact_email'] ?? tr('none')}
     ];
   }
 

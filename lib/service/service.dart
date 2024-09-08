@@ -5,7 +5,8 @@ import 'dart:io';
 
 import 'package:NextApp/new_version/core/extensions/html_reponse.dart';
 import 'package:NextApp/new_version/core/network/api_constance.dart';
-
+import 'package:NextApp/service/bluetooth_manager.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import '../models/list_models/statistics_model.dart';
 import '../models/new_version_models/check_url_validation_model.dart';
 import '../new_version/core/global/global_variables.dart';
@@ -646,50 +647,139 @@ class APIService {
     return null;
   }
 
+  // Bluetooth print
+
   void printInvoice({
     required BuildContext context,
     required String docType,
     required String id,
     required String format,
   }) async {
-    showLoadingDialog(context, 'Printing ...');
+    await showLoadingDialog(context, 'Fetching invoice data...');
 
     try {
+      // Fetch the invoice data from the backend
       final response = await dio.get(
         PRINT_INVOICE,
         queryParameters: {'doctype': docType, 'name': id, 'format': format},
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: ApiConstance.receiveTimeOut, // 30 seconds
+          receiveTimeout: ApiConstance.receiveTimeOut,
           validateStatus: (status) {
             if (status == null) return false;
             return status < 500;
           },
         ),
       );
+
       Navigator.pop(context);
 
-      debugPrint(response.realUri.origin);
-      debugPrint(response.realUri.path);
-      debugPrint({'doctype': docType, 'name': id, 'format': format}.toString());
+      // Check for already connected devices
+      FlutterBlue flutterBlue = FlutterBlue.instance;
+      List<BluetoothDevice> connectedDevices =
+          await flutterBlue.connectedDevices;
 
-      await Printing.layoutPdf(
-          onLayout: (format) async => response.data, format: PdfPageFormat.a4);
+      if (connectedDevices.isNotEmpty) {
+        await connectAndPrintToBluetoothPrinter(
+            connectedDevices.first, response.data);
+      } else {
+        await showDeviceSelectionDialog(context, response.data);
+      }
     } catch (e) {
       Navigator.pop(context);
-      debugPrint(e.toString());
-      if (e is DioException &&
-          (e.type == DioExceptionType.receiveTimeout ||
-              e.type == DioExceptionType.connectionTimeout ||
-              e.type == DioExceptionType.sendTimeout)) {
-        Fluttertoast.showToast(msg: 'connection time out');
-      } else {
-        Fluttertoast.showToast(msg: 'something went wrong :(');
-      }
+      debugPrint('Error while printing: $e');
+      Fluttertoast.showToast(msg: 'Error occurred: $e');
     }
   }
 
+  Future<void> showDeviceSelectionDialog(
+      BuildContext context, List<int> invoiceData) async {
+    FlutterBlue flutterBlue = FlutterBlue.instance;
+    print(await flutterBlue.connectedDevices);
+    List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
+
+    // If there are already connected devices, print to the first one
+    if (connectedDevices.isNotEmpty) {
+      await connectAndPrintToBluetoothPrinter(
+          connectedDevices.first, invoiceData);
+      return;
+    } else {
+      flutterBlue.startScan(timeout: const Duration(seconds: 5));
+
+      List<ScanResult> devices = [];
+
+      flutterBlue.scanResults.listen((results) {
+        devices = results; // Store available devices
+      });
+
+      await Future.delayed(const Duration(seconds: 6));
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Select Bluetooth Device'),
+            content: SizedBox(
+              width: double.maxFinite,
+              height: 300,
+              child: devices.isEmpty
+                  ? const Center(
+                      child: Text('No Bluetooth Devices Available'),
+                    )
+                  : ListView.builder(
+                      itemCount: devices.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(devices[index].device.name.isEmpty
+                              ? 'Unknown Device'
+                              : devices[index].device.name),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            await connectAndPrintToBluetoothPrinter(
+                                devices[index].device, invoiceData);
+                            BluetoothManager().addDevice(devices[index].device);
+                          },
+                        );
+                      },
+                    ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> connectAndPrintToBluetoothPrinter(
+      BluetoothDevice device, List<int> invoiceData) async {
+    try {
+      bool isDeviceConnected = BluetoothManager().isDeviceConnected(device);
+
+      if (!isDeviceConnected) {
+        // Connect if not already connected
+        await device.connect();
+        BluetoothManager().addDevice(device);
+      }
+
+      List<BluetoothService> services = await device.discoverServices();
+
+      for (BluetoothService service in services) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.properties.write) {
+            await characteristic.write(invoiceData);
+            Fluttertoast.showToast(msg: 'Invoice sent to printer');
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error while printing to Bluetooth: $e');
+      Fluttertoast.showToast(msg: 'Failed to print');
+    }
+  }
+
+//-------------------------------------------------------------
   Future<void> openFile(
       {required String url,
       required String fileName,

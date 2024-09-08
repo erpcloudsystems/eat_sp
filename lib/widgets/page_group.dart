@@ -13,8 +13,7 @@ class PageGroup extends StatelessWidget {
   final Widget child;
   final Color? color;
 
-  const PageGroup({Key? key, required this.child, this.color})
-      : super(key: key);
+  const PageGroup({super.key, required this.child, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +60,11 @@ class PageCard extends StatelessWidget {
   //number where status should be, must be bigger then 0
 
   const PageCard(
-      {Key? key,
+      {super.key,
       required this.items,
       this.header = const [],
       this.swapWidgets = const <SwapWidget>[],
-      this.color})
-      : super(key: key);
+      this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -139,15 +137,16 @@ class PageCard extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class PageExpandableCardItem extends StatefulWidget {
   PageExpandableCardItem({
-    Key? key,
+    super.key,
     required this.items,
     this.title = '',
     this.width = 250,
     this.hideArrow = false,
     this.titleAlign = TextAlign.left,
-  }) : super(key: key);
+  });
 
   final String title;
   final List<Map<String, dynamic>> items;
@@ -167,7 +166,6 @@ class _PageExpandableCardItemState extends State<PageExpandableCardItem> {
     List<String> keys;
 
     for (int i = 0; i < widget.items.length; i++) {
-
       keys = widget.items[i].keys.toList();
       for (int j = 0; j < keys.length; j++) {
         columnChildren.add(
@@ -245,8 +243,7 @@ class ConnectionCard extends StatelessWidget {
       {required this.imageUrl,
       required this.docTypeId,
       required this.count,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   final String imageUrl, docTypeId, count;
 
@@ -359,12 +356,11 @@ class ItemCard3 extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ItemCard3(
-      {Key? key,
+      {super.key,
       required this.id,
       this.status = '',
       required this.values,
-      this.onPressed})
-      : super(key: key);
+      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -470,13 +466,12 @@ class ItemWithImageCard extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ItemWithImageCard(
-      {Key? key,
+      {super.key,
       required this.id,
       required this.itemName,
       required this.imageUrl,
       required this.names,
-      this.onPressed})
-      : super(key: key);
+      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -575,23 +570,23 @@ class ItemWithImageCard extends StatelessWidget {
                                       color: Colors.grey.shade400,
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 25)),
-                                  ListTitle(
-                                      title: names[1].key,
-                                      child: Text(names[1].value,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis)),
-                                  if (start > 2)
-                                    Container(
-                                        width: 1,
-                                        color: Colors.grey.shade400,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 25)),
-                                  if (start > 2)
-                                    ListTitle(
-                                        title: names[2].key,
-                                        child: Text(names[2].value,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis))
+                                  // ListTitle(
+                                  //     title: names[1].key,
+                                  //     child: Text(names[1].value,
+                                  //         maxLines: 1,
+                                  //         overflow: TextOverflow.ellipsis)),
+                                  // if (start > 2)
+                                  //   Container(
+                                  //       width: 1,
+                                  //       color: Colors.grey.shade400,
+                                  //       padding: const EdgeInsets.symmetric(
+                                  //           vertical: 25)),
+                                  // if (start > 2)
+                                  //   ListTitle(
+                                  //       title: names[2].key,
+                                  //       child: Text(names[2].value,
+                                  //           maxLines: 1,
+                                  //           overflow: TextOverflow.ellipsis))
                                 ],
                               ),
                               Divider(

@@ -1,11 +1,8 @@
 import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:maps_launcher/maps_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../core/cloud_system_widgets.dart';
@@ -117,68 +114,68 @@ class SalesInvoicePage extends StatelessWidget {
         ),
 
         /// second card ///
-        PageCard(
-          color: color,
-          items: model.card2Items,
-          swapWidgets: [
-            SwapWidget(
-                1,
-                SizedBox(
-                    height: 30,
-                    child: Checkbox(
-                        value: (data['is_return'] ?? 0) == 0 ? false : true,
-                        onChanged: null))),
-            SwapWidget(
-              5,
-              SizedBox(
-                height: 30,
-                child: Checkbox(
-                  value: (data['ignore_pricing_rule'] ?? 0) == 0 ? false : true,
-                  onChanged: null,
-                ),
-              ),
-            ),
-            SwapWidget(
-              5,
-              SizedBox(
-                height: 30,
-                child: Checkbox(
-                  value: (data['update_stock'] ?? 0) == 0 ? false : true,
-                  onChanged: null,
-                ),
-              ),
-              widgetNumber: 2,
-            ),
-          ],
-        ),
+        // PageCard(
+        //   color: color,
+        //   items: model.card2Items,
+        //   swapWidgets: [
+        //     SwapWidget(
+        //         1,
+        //         SizedBox(
+        //             height: 30,
+        //             child: Checkbox(
+        //                 value: (data['is_return'] ?? 0) == 0 ? false : true,
+        //                 onChanged: null))),
+        //     SwapWidget(
+        //       5,
+        //       SizedBox(
+        //         height: 30,
+        //         child: Checkbox(
+        //           value: (data['ignore_pricing_rule'] ?? 0) == 0 ? false : true,
+        //           onChanged: null,
+        //         ),
+        //       ),
+        //     ),
+        //     SwapWidget(
+        //       5,
+        //       SizedBox(
+        //         height: 30,
+        //         child: Checkbox(
+        //           value: (data['update_stock'] ?? 0) == 0 ? false : true,
+        //           onChanged: null,
+        //         ),
+        //       ),
+        //       widgetNumber: 2,
+        //     ),
+        //   ],
+        // ),
 
         ///third card
-        PageCard(color: color, items: model.card3Items),
+        // PageCard(color: color, items: model.card3Items),
 
-        Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: CustomMapView(
-            latitude: data['latitude'] ?? 0.0,
-            longitude: data['longitude'] ?? 0.0,
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(6.0),
+        //   child: CustomMapView(
+        //     latitude: data['latitude'] ?? 0.0,
+        //     longitude: data['longitude'] ?? 0.0,
+        //   ),
+        // ),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
-          child: ElevatedButton(
-            onPressed: () {
-              MapsLauncher.launchCoordinates(
-                  data['latitude'], data['longitude']);
-            },
-            child: const Text(
-              "Open in Maps",
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5),
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       MapsLauncher.launchCoordinates(
+        //           data['latitude'], data['longitude']);
+        //     },
+        //     child: const Text(
+        //       "Open in Maps",
+        //       style: TextStyle(fontWeight: FontWeight.w600),
+        //     ),
+        //   ),
+        // ),
+        // const SizedBox(
+        //   height: 8,
+        // ),
 
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.70,

@@ -7,6 +7,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gutter/flutter_gutter.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/dismiss_keyboard.dart';
 import '../../../../core/resources/strings_manager.dart';
@@ -111,16 +112,13 @@ class _ItemListScreenState extends State<ItemListScreen> {
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
             if (state is GettingAllItemsFailedState) {
-              showDialog(
-                context: context,
-                builder: (context) => ErrorDialog(
-                  errorMessage: StringsManager.noItemAvailable.tr(),
-                ),
+              Fluttertoast.showToast(
+                msg: StringsManager.noItemAvailable.tr(),
               );
             }
           },
           builder: (context, state) {
-            if (state is GettingAllItemsFailedState) {
+            if (state is GettingAllItemsFailedState && bloc.items.isEmpty) {
               return const NothingHere();
             }
             return Column(

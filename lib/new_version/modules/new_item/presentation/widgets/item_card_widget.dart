@@ -57,17 +57,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
         child: Form(
           key: formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                widget.itemName,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
               Row(
                 children: [
                   SizedBox(
@@ -98,49 +88,40 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(
-                            'Rate: '.tr(),
-                            style: const TextStyle(
-                              fontSize: 18,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.itemName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Rate: '.tr(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          Text(
-                            (newRate ?? widget.priceListRate).toString(),
-                            //widget.rate.toString(),
-                            style: const TextStyle(
-                              fontSize: 16,
+                            Text(
+                              (newRate ?? widget.priceListRate).toString(),
+                              //widget.rate.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(
-                            'Group: '.tr(),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            widget.itemGroup,
-                            //widget.rate.toString(),
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -161,96 +142,96 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                       },
                     ),
                   ),
-                  const Gutter.medium(),
+                  const Gutter.extraLarge(),
 
                   ///UOM List
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'UOM'.tr(),
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  insetPadding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.height *
-                                        0.1,
-                                  ),
-                                  content: SizedBox(
-                                    width: 20,
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: widget.uomList.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onTap: () async {
-                                            setState(() {
-                                              UOM = widget.uomList[index].uom;
+                  // const Flexible(
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       // Text(
+                  //       //   'UOM'.tr(),
+                  //       //   overflow: TextOverflow.ellipsis,
+                  //       //   style: const TextStyle(
+                  //       //     fontSize: 16,
+                  //       //   ),
+                  //       // ),
+                  //       // SizedBox(
+                  //       //   height: 40,
+                  //       //   child: InkWell(
+                  //       //     onTap: () {
+                  //       //       showDialog(
+                  //       //         context: context,
+                  //       //         builder: (ctx) => AlertDialog(
+                  //       //           insetPadding: EdgeInsets.only(
+                  //       //             bottom: MediaQuery.of(context).size.height *
+                  //       //                 0.1,
+                  //       //           ),
+                  //       //           content: SizedBox(
+                  //       //             width: 20,
+                  //       //             child: ListView.builder(
+                  //       //               shrinkWrap: true,
+                  //       //               itemCount: widget.uomList.length,
+                  //       //               itemBuilder: (context, index) {
+                  //       //                 return InkWell(
+                  //       //                   onTap: () async {
+                  //       //                     setState(() {
+                  //       //                       UOM = widget.uomList[index].uom;
 
-                                              newRate = widget.uomList[index]
-                                                      .conversionFactor *
-                                                  widget.priceListRate;
-                                            });
+                  //       //                       newRate = widget.uomList[index]
+                  //       //                               .conversionFactor *
+                  //       //                           widget.priceListRate;
+                  //       //                     });
 
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: APPBAR_COLOR,
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                widget.uomList[index].uom,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: APPBAR_COLOR,
-                                  )),
-                              child: Center(
-                                child: Text(
-                                  UOM ?? widget.uom,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  //       //                     Navigator.pop(context);
+                  //       //                   },
+                  //       //                   child: Container(
+                  //       //                     margin: const EdgeInsets.all(5),
+                  //       //                     decoration: BoxDecoration(
+                  //       //                       borderRadius:
+                  //       //                           BorderRadius.circular(12),
+                  //       //                       border: Border.all(
+                  //       //                         color: APPBAR_COLOR,
+                  //       //                       ),
+                  //       //                     ),
+                  //       //                     child: Center(
+                  //       //                       child: Text(
+                  //       //                         widget.uomList[index].uom,
+                  //       //                         style: const TextStyle(
+                  //       //                           fontSize: 18,
+                  //       //                           color: Colors.black,
+                  //       //                         ),
+                  //       //                       ),
+                  //       //                     ),
+                  //       //                   ),
+                  //       //                 );
+                  //       //               },
+                  //       //             ),
+                  //       //           ),
+                  //       //         ),
+                  //       //       );
+                  //       //     },
+                  //       //     child: Container(
+                  //       //       decoration: BoxDecoration(
+                  //       //           borderRadius: BorderRadius.circular(12),
+                  //       //           border: Border.all(
+                  //       //             color: APPBAR_COLOR,
+                  //       //           )),
+                  //       //       child: Center(
+                  //       //         child: Text(
+                  //       //           UOM ?? widget.uom,
+                  //       //           style: const TextStyle(
+                  //       //               color: Colors.black,
+                  //       //               fontSize: 16,
+                  //       //               fontWeight: FontWeight.bold),
+                  //       //         ),
+                  //       //       ),
+                  //       //     ),
+                  //       //   ),
+                  //       // ),
+                  //     ],
+                  //   ),
+                  // ),
 
                   Flexible(
                     child: Column(
