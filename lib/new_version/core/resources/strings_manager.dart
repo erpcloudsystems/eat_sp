@@ -172,4 +172,7 @@ class StringsManager {
   static const String finish = 'Finish';
   static const String sar = 'SAR';
   static const String returnInvoice = 'Return Invoice';
+  static const String printerSettings = 'Printer Settings';
+  static const String printers = 'Printers';
+  static const String connectedPrinter = 'Connected Printer:';
 }

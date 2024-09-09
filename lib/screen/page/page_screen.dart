@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:NextApp/new_version/modules/printer/controller/cubit/printer_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,7 +85,7 @@ class AmendButton extends StatelessWidget {
                   context.read<ModuleProvider>().currentModule.createForm!));
         },
         child: Text('Amend'.tr(),
-            style: TextStyle(color: Colors.white, fontSize: 15)));
+            style: const TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
@@ -189,11 +190,11 @@ class _PageAppBarState extends State<PageAppBar> {
   Widget build(BuildContext context) {
     void printPdf() async {
       if (widget.pdfFormats.value.length == 1) {
-        APIService().printInvoice(
+        context.read<PrinterCubit>().printInvoiceServices(
             context: context,
             docType: widget.docType,
             id: widget.id,
-            format: widget.pdfFormats.value[0]);
+            format: 'POS Arabic');
       } else {
         final format = await showDialog(
             context: context,
@@ -201,7 +202,7 @@ class _PageAppBarState extends State<PageAppBar> {
                 formats: widget.pdfFormats.value,
                 title: 'Select Print Format'));
         if (format == null) return;
-        APIService().printInvoice(
+        context.read<PrinterCubit>().printInvoiceServices(
             context: context,
             docType: widget.docType,
             id: widget.id,

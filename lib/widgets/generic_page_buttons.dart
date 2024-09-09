@@ -1,3 +1,4 @@
+import 'package:NextApp/new_version/modules/printer/controller/cubit/printer_cubit.dart';
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:NextApp/core/constants.dart';
@@ -127,10 +128,16 @@ class PrintPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moduleProvider = context.read<ModuleProvider>();
     return IconButton(
       onPressed: context
               .select<ModuleProvider, bool>((value) => value.availablePdfFormat)
-          ? () => context.read<ModuleProvider>().printPdf(context)
+          ? () => context.read<PrinterCubit>().printInvoiceServices(
+                context: context,
+                id: moduleProvider.pageId,
+                docType: moduleProvider.currentModule.title,
+                format: 'POS Arabic',
+              )
           : null,
       splashRadius: DoublesManager.d_20,
       icon: const Icon(

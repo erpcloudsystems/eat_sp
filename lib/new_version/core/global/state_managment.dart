@@ -3,6 +3,7 @@ import 'package:NextApp/provider/new_controller/home_provider.dart';
 
 import '../../modules/dashboard/presentation/bloc/dasboard_bloc.dart';
 import '../../modules/dashboard/presentation/bloc/total_bloc/total_bloc.dart';
+import '../../modules/printer/controller/cubit/printer_cubit.dart';
 import '../../modules/reports/features/accounts_reports/presentation/accounts_receivable/bloc/accounts_receivable_bloc_bloc.dart';
 import '../../modules/reports/features/accounts_reports/presentation/bloc/general_ledger_bloc/general_ledger_bloc.dart';
 import '../../modules/reports/features/stockReports/presentation/bloc/item_price_bloc/item_price_bloc.dart';
@@ -36,6 +37,7 @@ class StateManagement {
     BlocProvider(create: (_) => di.sl<ItemPriceBloc>()),
     BlocProvider(create: (_) => di.sl<FaqBloc>()),
     BlocProvider(create: (_) => ItemsCubit()),
+    BlocProvider(create: (_) => PrinterCubit()),
     BlocProvider(
         create: (context) => di.sl<UserProfileBloc>()
           ..add(GetUserProfileDataEvent(

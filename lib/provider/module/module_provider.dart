@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -657,54 +656,24 @@ class ModuleProvider extends ChangeNotifier {
     return null;
   }
 
-  Future<void> requestBluetoothPermissions() async {
-    // Request Bluetooth scan permission
-    PermissionStatus bluetoothScanStatus =
-        await Permission.bluetoothScan.request();
-    PermissionStatus bluetoothConnectStatus =
-        await Permission.bluetoothConnect.request();
-    PermissionStatus? locationStatus ;
-    if(locationStatus!.isDenied){
-     locationStatus = await Permission.location.request();
-    }
 
-    // Check if any permission is denied
-    if (bluetoothScanStatus.isDenied ||
-        bluetoothConnectStatus.isDenied ||
-        locationStatus.isDenied) {
-      Fluttertoast.showToast(
-          msg:
-              "Permissions denied. Please grant Bluetooth and Location permissions.");
-      return;
-    }
 
-    // Handle permanently denied permissions
-    if (bluetoothScanStatus.isPermanentlyDenied ||
-        bluetoothConnectStatus.isPermanentlyDenied ||
-        locationStatus.isPermanentlyDenied) {
-      Fluttertoast.showToast(
-          msg:
-              "Permissions permanently denied. Please go to settings to enable them.");
-      openAppSettings();
-    }
-  }
-
-  void printPdf(BuildContext context) async {
-    requestBluetoothPermissions();
-    if (pdfFormats.length == 1) {
-      APIService().printInvoice(
-          context: context,
-          docType: _currentModule!.genericListService,
-          id: _pageId,
-          format: pdfFormats[0]);
-    } else {
-      APIService().printInvoice(
-          context: context,
-          docType: _currentModule!.genericListService,
-          id: _pageId,
-          format: 'POS Arabic');
-    }
-  }
+  // void printPdf(BuildContext context) async {
+  //   requestBluetoothPermissions();
+  //   if (pdfFormats.length == 1) {
+  //     APIService().printInvoice(
+  //         context: context,
+  //         docType: _currentModule!.genericListService,
+  //         id: _pageId,
+  //         format: pdfFormats[0]);
+  //   } else {
+  //     APIService().printInvoice(
+  //         context: context,
+  //         docType: _currentModule!.genericListService,
+  //         id: _pageId,
+  //         format: 'POS Arabic');
+  //   }
+  // }
 
   void downloadPdf(BuildContext context) async {
     final userProvider = context.read<UserProvider>();

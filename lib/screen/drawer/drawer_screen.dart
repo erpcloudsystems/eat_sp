@@ -1,7 +1,9 @@
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../new_version/modules/printer/view/screens/printer_screen.dart';
 import 'aboutus_screen.dart';
 import '../../core/app_local.dart';
 import '../other/app_settings.dart';
@@ -10,17 +12,24 @@ import '../../widgets/dialog/loading_dialog.dart';
 import '../../new_version/modules/faq/presentation/pages/faq_screen.dart';
 
 class SettingsMenu extends StatefulWidget {
-  const SettingsMenu({Key? key}) : super(key: key);
+  const SettingsMenu({super.key});
 
   @override
   State<SettingsMenu> createState() => _SettingsMenuState();
 }
 
 class _SettingsMenuState extends State<SettingsMenu> {
-  final menuPages = [const AppSettings(), const AboutUs(), const FAQ(), null];
+  final menuPages = [
+    const AppSettings(),
+    const PrinterScreen(),
+    const AboutUs(),
+    const FAQ(),
+    null
+  ];
 
   final menuIcons = [
     Icons.settings,
+    Icons.print_outlined,
     Icons.info,
     Icons.question_answer,
     Icons.logout,
@@ -46,6 +55,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
   Widget build(BuildContext context) {
     List<String> menuNames = [
       'App Settings'.tr(),
+      StringsManager.printerSettings.tr(),
       'About Us'.tr(),
       'FAQ'.tr(),
       'Logout'.tr()

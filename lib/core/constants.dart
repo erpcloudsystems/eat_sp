@@ -34,6 +34,8 @@ const String KLocationNotifySnackBar =
     'Location will be submitted to approve current location';
 const String KFillRequiredSnackBar = 'Fill required fields and submit';
 
+const String connectedPrinterKey = 'connectedDeviceId';
+
 String mapStatus(int status) {
   switch (status) {
     case 0:

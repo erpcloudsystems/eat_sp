@@ -437,5 +437,8 @@
   "Return / Credit Note":"Return / Credit Note",
   "Edit Stock Entry":"Edit Stock Entry",
   "SAR":"SAR",
-  "Return Invoice":"Return Invoice"
+  "Return Invoice":"Return Invoice",
+  "Printer Settings":"Printer Settings",
+  "Printers":"Printers",
+  "Connected Printer:":"Connected Printer:"
 }
