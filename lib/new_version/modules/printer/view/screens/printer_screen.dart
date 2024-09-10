@@ -15,15 +15,6 @@ class PrinterScreen extends StatefulWidget {
 
 class _PrinterScreenState extends State<PrinterScreen> {
   @override
-  void initState() {
-    super.initState();
-    // Load the saved device when the screen is initialized
-    Future.delayed(Duration.zero, () {
-      context.read<PrinterCubit>().loadDevice();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -52,16 +43,8 @@ class _PrinterScreenState extends State<PrinterScreen> {
               ],
             ),
             const Gutter(),
-            Flexible(
-              child: BlocBuilder<PrinterCubit, PrinterState>(
-                builder: (context, state) {
-                  // if (state is PrinterLoading) {
-                  //   return const Center(child: CircularProgressIndicator());
-                  // }
-
-                  return const ScanBluetoothDevicesWidget();
-                },
-              ),
+            const Flexible(
+              child: ScanBluetoothDevicesWidget(),
             ),
           ],
         ),

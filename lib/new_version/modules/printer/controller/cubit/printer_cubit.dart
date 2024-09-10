@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:NextApp/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -37,33 +39,58 @@ class PrinterCubit extends Cubit<PrinterState> {
   }
 
   // Load connected device ID
+  List<BluetoothDevice> connectedDevices = [];
   Future<void> loadDevice() async {
     requestBluetoothPermissions();
     emit(PrinterLoading());
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString(connectedPrinterKey);
-    print('--------------------------------');
-    print(deviceId);
-    print(deviceId != null);
 
-    // if (deviceId != null) {
-    //   print(deviceId);
-    //   FlutterBlue flutterBlue = FlutterBlue.instance;
-    //   List<BluetoothDevice> connectedDevices =
-    //       await flutterBlue.connectedDevices;
-    //   print(connectedDevices);
+    FlutterBlue flutterBlue = FlutterBlue.instance;
 
-    //   for (var device in connectedDevices) {
-    //     print(device.name);
-    //     if (device.id.toString() == deviceId) {
-    //       print(device.name);
-    //       defaultDevice = device;
-    //       emit(PrinterConnected(defaultDevice!));
-    //       return;
-    //     }
-    //   }
-    // }
-    // emit(PrinterError());
+    print('Cached printer found with ID: $deviceId');
+
+    // Check if the device is already connected
+    connectedDevices = await flutterBlue.connectedDevices;
+
+    bool deviceFound = false;
+    for (var device in connectedDevices) {
+      if (device.id.toString() == deviceId) {
+        defaultDevice = device;
+        emit(PrinterConnected(defaultDevice!));
+        deviceFound = true;
+        break;
+      }
+    }
+
+    if (!deviceFound) {
+      // If not found in connected devices, start scanning
+      flutterBlue.startScan(timeout: const Duration(seconds: 10));
+
+      // Listen to scan results
+      flutterBlue.scanResults.listen((results) {
+        for (var result in results) {
+          if (!(connectedDevices.contains(result.device))) {
+            connectedDevices.add(result.device);
+          }
+
+          if (result.device.id.toString() == deviceId) {
+            defaultDevice = result.device;
+            result.device.connect().then((_) {
+              emit(PrinterConnected(defaultDevice!));
+            }).catchError((error) {
+              emit(PrinterError());
+              Fluttertoast.showToast(
+                msg: 'Failed to connect to the printer.',
+              );
+            });
+            return;
+          }
+        }
+        emit(PrinterDisconnected());
+      });
+    }
   }
 
   // Clear saved device
@@ -81,12 +108,14 @@ class PrinterCubit extends Cubit<PrinterState> {
   }) async {
     try {
       emit(PrinterLoading());
-      await loadDevice();
 
       if (defaultDevice != null) {
         // Connect and print using the saved device
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
+        await Printing.layoutPdf(
+            onLayout: (format) async => Uint8List.fromList(invoiceData),
+            format: PdfPageFormat.a4);
       } else {
         Fluttertoast.showToast(
           msg: 'No printer connected. Please set a printer in the settings.',
@@ -103,11 +132,13 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> connectAndPrintToBluetoothPrinter(
       BluetoothDevice device, List<int> invoiceData) async {
     try {
-      if (defaultDevice == null || device.id != defaultDevice?.id) {
+      // Check if device is already connected
+      if (device.id.toString() != defaultDevice!.id.toString()) {
         await device.connect();
-        await saveDevice(device); // Save device when connected
+        //  await saveDevice(device); // Save device when connected
       }
 
+      // Discover services after ensuring the device is connected
       List<BluetoothService> services = await device.discoverServices();
       for (BluetoothService service in services) {
         for (BluetoothCharacteristic characteristic
@@ -121,7 +152,7 @@ class PrinterCubit extends Cubit<PrinterState> {
       }
     } catch (e) {
       debugPrint('Error while printing to Bluetooth: $e');
-      Fluttertoast.showToast(msg: 'Failed to print');
+
       emit(PrinterError());
     }
   }
@@ -157,8 +188,6 @@ class PrinterCubit extends Cubit<PrinterState> {
         context: context,
         invoiceData: response.data,
       );
-      await Printing.layoutPdf(
-          onLayout: (format) async => response.data, format: PdfPageFormat.a4);
     } catch (e) {
       Navigator.pop(context);
       debugPrint('Error while printing: $e');

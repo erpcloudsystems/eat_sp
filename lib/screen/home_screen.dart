@@ -1,9 +1,11 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/constants.dart';
+import '../new_version/modules/printer/controller/cubit/printer_cubit.dart';
 import '../new_version/modules/reports/common/GeneralReports/presentation/pages/modules_page.dart';
 import '../service/gps_services.dart';
 import 'drawer/drawer_screen.dart';
@@ -35,6 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     notificationConfig(context);
     GPSService.trackUserLocation(context);
+    Future.delayed(Duration.zero, () {
+      context.read<PrinterCubit>().loadDevice();
+    });
   }
 
   @override
