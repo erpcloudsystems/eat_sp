@@ -49,7 +49,8 @@ class StringsManager {
       'Your Data Updated Successfully';
   static const String locationNotificationTitle =
       'The application will continue to receive your location even when you aren\'t using it';
-  static const String userPermissionForLocationMessage =   "Why We Need Your Location in the Background\n\nThank you for using EAT SP! Your safety and efficient service are our top priorities.\n\nWhy Background Location Access Is Essential:\nAccurate Deliveries: Continuous location tracking helps us provide the best delivery routes and ensure timely service.\nEnhanced Safety: It allows us to quickly assist you in emergencies and monitor your well-being.\nReliable Service: It ensures effective delivery coordination and prevents delays.\n\nUser Expectations and Alternatives:\n User Expectations: As a delivery app, users expect us to track locations in the background to optimize service.\nThis feature is crucial for a smooth and efficient delivery experience.\nNo Alternatives: Without background location access, you’d need to manually update your location, which isn’t practical and could disrupt service.\n\nThis feature is vital for the app’s functionality and your delivery experience. We only use your location data for these purposes and protect your privacy.";
+  static const String userPermissionForLocationMessage =
+      "Why We Need Your Location in the Background\n\nThank you for using EAT SP! Your safety and efficient service are our top priorities.\n\nWhy Background Location Access Is Essential:\nAccurate Deliveries: Continuous location tracking helps us provide the best delivery routes and ensure timely service.\nEnhanced Safety: It allows us to quickly assist you in emergencies and monitor your well-being.\nReliable Service: It ensures effective delivery coordination and prevents delays.\n\nUser Expectations and Alternatives:\n User Expectations: As a delivery app, users expect us to track locations in the background to optimize service.\nThis feature is crucial for a smooth and efficient delivery experience.\nNo Alternatives: Without background location access, you’d need to manually update your location, which isn’t practical and could disrupt service.\n\nThis feature is vital for the app’s functionality and your delivery experience. We only use your location data for these purposes and protect your privacy.";
   static const String offlineFailureMessage = 'There is no internet connection';
   static const String qualityInspectionTemplate = 'Quality Inspection Template';
   static const String qualityInspectionRequired = 'Quality Inspection Required';
@@ -175,4 +176,7 @@ class StringsManager {
   static const String printerSettings = 'Printer Settings';
   static const String printers = 'Printers';
   static const String connectedPrinter = 'Connected Printer:';
+  static const String seeAll = 'See All';
+  static const String print = 'Print';
+  static const String download = 'Download';
 }

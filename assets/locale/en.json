@@ -440,5 +440,8 @@
   "Return Invoice":"Return Invoice",
   "Printer Settings":"Printer Settings",
   "Printers":"Printers",
-  "Connected Printer:":"Connected Printer:"
+  "Connected Printer:":"Connected Printer:",
+  "See All":"See All",
+  "Download":"Download",
+  "Print":"Print"
 }

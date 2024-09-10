@@ -5,7 +5,6 @@ import '../bloc/dasboard_bloc.dart';
 import '../widgets/get_total_widget.dart';
 import '../bloc/total_bloc/total_bloc.dart';
 import '../widgets/chart_dashboard_widget.dart';
-import '../../../../core/utils/error_dialog.dart';
 import '../../../../core/utils/request_state.dart';
 import '../bloc/transaction_bloc/transaction_bloc.dart';
 import '../../../../../provider/user/user_provider.dart';
@@ -53,12 +52,12 @@ class DashboardScreen extends StatelessWidget {
       child: BlocConsumer<DashboardBloc, DashboardState>(
         listener: (context, state) {
           if (state.getDashboardState == RequestState.error) {
-            showDialog(
-              context: context,
-              builder: (context) => ErrorDialog(
-                errorMessage: state.getDashboardMessage,
-              ),
-            );
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => ErrorDialog(
+            //     errorMessage: state.getDashboardMessage,
+            //   ),
+            // );
           }
         },
         buildWhen: (previous, current) =>

@@ -1,4 +1,6 @@
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:NextApp/new_version/modules/printer/controller/cubit/printer_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:NextApp/core/constants.dart';
@@ -107,18 +109,34 @@ class DownloadPdfButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: context
-              .select<ModuleProvider, bool>((value) => value.availablePdfFormat)
-          ? () => context.read<ModuleProvider>().downloadPdf(context)
-          : null,
-      splashRadius: DoublesManager.d_20,
-      icon: const Icon(
-        Icons.download,
-        color: Colors.black,
-        size: 35,
+    return Card(
+      color: APPBAR_COLOR,
+      child: InkWell(
+        onTap: context.select<ModuleProvider, bool>(
+                (value) => value.availablePdfFormat)
+            ? () => context.read<ModuleProvider>().downloadPdf(context)
+            : null,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                StringsManager.download.tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              const Icon(
+                Icons.download,
+                color: Colors.black,
+                size: 30,
+              ),
+            ],
+          ),
+        ),
       ),
-      tooltip: 'Download PDF',
     );
   }
 }
@@ -129,23 +147,39 @@ class PrintPageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final moduleProvider = context.read<ModuleProvider>();
-    return IconButton(
-      onPressed: context
-              .select<ModuleProvider, bool>((value) => value.availablePdfFormat)
-          ? () => context.read<PrinterCubit>().printInvoiceServices(
-                context: context,
-                id: moduleProvider.pageId,
-                docType: moduleProvider.currentModule.title,
-                format: 'POS Arabic',
-              )
-          : null,
-      splashRadius: DoublesManager.d_20,
-      icon: const Icon(
-        Icons.print_sharp,
-        color: Colors.black,
-        size: 35,
+    return Card(
+      color: APPBAR_COLOR,
+      child: InkWell(
+        onTap: context.select<ModuleProvider, bool>(
+                (value) => value.availablePdfFormat)
+            ? () => context.read<PrinterCubit>().printInvoiceServices(
+                  context: context,
+                  id: moduleProvider.pageId,
+                  docType: moduleProvider.currentModule.title,
+                  format: 'POS Arabic',
+                )
+            : null,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                StringsManager.print.tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              const Icon(
+                Icons.print_sharp,
+                color: Colors.black,
+                size: 30,
+              ),
+            ],
+          ),
+        ),
       ),
-      tooltip: 'Print',
     );
   }
 }

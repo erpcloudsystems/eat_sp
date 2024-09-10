@@ -1,3 +1,5 @@
+import 'package:flutter_gutter/flutter_gutter.dart';
+
 import '../../new_version/core/resources/strings_manager.dart';
 import '../../widgets/dismiss_keyboard.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? pass;
   String? url;
   bool _isLoading = false;
-  bool rememberMe = false;
+  bool rememberMe = true;
 
   void _login() async {
     if (userNameController.text.isEmpty ||
@@ -92,14 +94,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Welcome".tr())),
                         const Text(ConstantStrings.appName),
-                        Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: TextField(
-                                controller: urlController,
-                                enabled: false,
-                                decoration: textFieldDecoration.copyWith(
-                                  labelText: "Url".tr(),
-                                ))),
+                        const Gutter.large(),
+                        // Padding(
+                        //     padding: const EdgeInsets.all(20.0),
+                        //     child: TextField(
+                        //         controller: urlController,
+                        //         enabled: false,
+                        //         decoration: textFieldDecoration.copyWith(
+                        //           labelText: "Url".tr(),
+                        //         ))),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextField(
@@ -109,59 +112,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ))),
                         Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    controller: passwordController,
-                                    obscureText: !_passwordVisible,
-                                    //This will obscure text dynamically
-                                    decoration: textFieldDecoration.copyWith(
-                                      labelText: tr("Password"),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          // Based on passwordVisible state choose the icon
-                                          _passwordVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                        ),
-                                        onPressed: () {
-                                          // Update the state i.e. toogle the state of passwordVisible variable
-                                          setState(() {
-                                            _passwordVisible =
-                                                !_passwordVisible;
-                                          });
-                                        },
-                                      ),
-                                    )),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                            value: rememberMe,
-                                            onChanged: (value) => setState(() =>
-                                                rememberMe = !rememberMe)),
-                                        Text(tr("remember_me"))
-                                      ],
+                            child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: passwordController,
+                                obscureText: !_passwordVisible,
+                                //This will obscure text dynamically
+                                decoration: textFieldDecoration.copyWith(
+                                  labelText: tr("Password"),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      // Based on passwordVisible state choose the icon
+                                      _passwordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Theme.of(context).primaryColorDark,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Text(
-                                        tr("for_pass"),
-                                        style: const TextStyle(
-                                            color: APPBAR_COLOR),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )),
+                                    onPressed: () {
+                                      // Update the state i.e. toogle the state of passwordVisible variable
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
+                                  ),
+                                ))),
                         !_isLoading
                             ? InkWell(
                                 onTap: _login,
@@ -200,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const Gutter.extraLarge(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -217,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const Gutter.small(),
                 ],
               ),
             ),

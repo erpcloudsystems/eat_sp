@@ -64,37 +64,35 @@ class _SettingsMenuState extends State<SettingsMenu> {
         child: Scaffold(
       body: ListView(
         children: [
-          SizedBox(
-            height: 240,
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(top: 10),
-              itemCount: menuNames.length,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(
-                height: 0,
-                color: Colors.grey,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(
-                    menuNames[index],
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  trailing: Icon(menuIcons[index]),
-                  onTap: () async {
-                    if (menuNames[index] == 'Logout'.tr()) {
-                      logout(context);
-                      return;
-                    }
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => menuPages[index]!));
-                  },
-                );
-              },
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: menuNames.length,
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(
+              height: 0,
+              color: Colors.grey,
             ),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(
+                  menuNames[index],
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                trailing: Icon(menuIcons[index]),
+                onTap: () async {
+                  if (menuNames[index] == 'Logout'.tr()) {
+                    logout(context);
+                    return;
+                  }
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => menuPages[index]!));
+                },
+              );
+            },
           ),
           const Divider(
             height: 0,

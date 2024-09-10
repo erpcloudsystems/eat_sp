@@ -438,5 +438,8 @@
   "Return Invoice": "فاتورة مرتجع",
   "Printer Settings": "إعدادات الطابعة",
   "Printers":"الطابعات",
-  "Connected Printer:":"الطابعة المتصلة:"
+  "Connected Printer:":"الطابعة المتصلة:",
+  "See All":"انظر الكل",
+  "Download":"تنزيل",
+  "Print":"طباعة"
 }

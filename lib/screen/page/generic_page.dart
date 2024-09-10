@@ -1,5 +1,6 @@
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_gutter/flutter_gutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -85,16 +86,12 @@ class _GenericPageState extends State<GenericPage> {
           ),
         ),
         body: const _GenericPageBody(),
-        floatingActionButton: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
-          child: ExpandableFab(
-            distance: 112,
-            children: [
-              DownloadPdfButton(),
-              PrintPageButton(),
-              DuplicatePageButton(),
-            ],
-          ),
+        bottomNavigationBar: const Row(
+          children: [
+            Flexible(child: DownloadPdfButton()),
+            Gutter.medium(),
+            Flexible(child: PrintPageButton()),
+          ],
         ),
       ),
     );
