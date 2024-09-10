@@ -499,7 +499,7 @@ class ItemWithImageCard extends StatelessWidget {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
           child: Ink(
-            height: 226,
+            height: 150,
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(GLOBAL_BORDER_RADIUS),
@@ -555,14 +555,12 @@ class ItemWithImageCard extends StatelessWidget {
                       Flexible(
                           flex: 8,
                           child: Column(
-                            // mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Row(
                                 children: [
                                   ListTitle(
-                                      title: names[0].key,
-                                      child: Text(names[0].value,
+                                      title: tr('Item Name'),
+                                      child: Text(itemName,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis)),
                                   Container(
@@ -600,17 +598,6 @@ class ItemWithImageCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Divider(
-                    color: Colors.grey.shade400,
-                    thickness: 1,
-                    endIndent: 20,
-                    indent: 20),
-                Row(children: [
-                  ListTitle(
-                      title: tr('Item Name'),
-                      child: Text(itemName,
-                          maxLines: 1, overflow: TextOverflow.ellipsis))
-                ]),
               ],
             ),
           ),

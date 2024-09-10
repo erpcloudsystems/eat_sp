@@ -13,6 +13,7 @@ class DocTypesName {
   static const String customerVisit = 'Customer Visit';
   static const String paymentEntry = 'Payment Entry';
   static const String salesInvoice = 'Sales Invoice';
+  static const String returnD = 'Return';
   static const String salesOrder = 'Sales Order';
   static const String quotation = 'Quotation';
   static const String selling = 'Selling';

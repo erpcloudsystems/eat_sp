@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../core/constants.dart';
@@ -12,12 +13,11 @@ class ItemCard extends StatelessWidget {
   final void Function(BuildContext context)? onPressed;
 
   const ItemCard(
-      {Key? key,
+      {super.key,
       this.names = const ['Code', 'Group', 'UOM'],
       required this.values,
       required this.imageUrl,
-      this.onPressed})
-      : super(key: key);
+      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -35,72 +35,84 @@ class ItemCard extends StatelessWidget {
               border: Border.all(width: 1, color: Colors.blueAccent.shade100)),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(values[0], textAlign: TextAlign.center),
-              ),
-              const Divider(color: Colors.blueAccent, height: 1),
               Row(
                 children: [
-                  Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Image.network(
-                          context.read<UserProvider>().url + imageUrl,
-                          headers: APIService().getHeaders,
-                          fit: BoxFit.fitWidth,
-                          // width: 45,
-                          // height: 45,
-                          loadingBuilder: (context, child, progress) {
-                            return progress != null
-                                ? const SizedBox(
-                                    child: Icon(Icons.image,
-                                        color: Colors.grey, size: 40))
-                                : child;
-                          },
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return const SizedBox(
-                              child: Icon(
-                                Icons.image,
-                                color: Colors.grey,
-                                size: 40,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        // AspectRatio(
+                        //  aspectRatio: 1,
+                        Image.network(
+                      context.read<UserProvider>().url + imageUrl,
+                      headers: APIService().getHeaders,
+                      fit: BoxFit.fitWidth,
+                      // width: 45,
+                      height: 50.h,
+                      loadingBuilder: (context, child, progress) {
+                        return progress != null
+                            ? const SizedBox(
+                                child: Icon(Icons.image,
+                                    color: Colors.grey, size: 40))
+                            : child;
+                      },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return const SizedBox(
+                          child: Icon(
+                            Icons.image,
+                            color: Colors.grey,
+                            size: 40,
+                          ),
+                        );
+                      },
                     ),
                   ),
-                  //Divider(endIndent: BORDER_RADIUS, indent: BORDER_RADIUS, ),
-                  Flexible(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Text(values[0]),
-                            // Divider(color: Colors.grey),
-                            for (int i = 1; i < values.length; i++)
-                              Wrap(
-                                children: [
-                                  _CardItem(
-                                      title: names[i - 1], value: values[i]),
-                                  if (i != values.length - 1)
-                                    const Divider(color: Colors.grey),
-                                ],
-                              ),
-                          ],
-                        ),
-                      ))
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(values[0], textAlign: TextAlign.center),
+                      ),
+                      //Flexible(
+                      //  flex: 5,
+                      //  child:
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text(values[0]),
+                          // Divider(color: Colors.grey),
+                          for (int i = 1; i < values.length; i++)
+                            Wrap(
+                              children: [
+                                _CardItem(
+                                    title: names[i - 1], value: values[i]),
+                                if (i != values.length - 1)
+                                  const Divider(color: Colors.grey),
+                              ],
+                            ),
+                        ],
+                      )
+                      // )
+                    ],
+                  ),
+
+                  //const Divider(color: Colors.blueAccent, height: 1),
+                  //Row(
+                  //  children: [
+                  //  Flexible(
+                  //    flex: 2,
+                  //    child:
+
+                  //  ),
+                  // ),
                 ],
               ),
+              // Divider(endIndent: BORDER_RADIUS, indent: BORDER_RADIUS, ),
             ],
           ),
+          //],
+          // ),
         ),
       ),
     );
@@ -110,22 +122,19 @@ class ItemCard extends StatelessWidget {
 class _CardItem extends StatelessWidget {
   final String title, value;
 
-  const _CardItem({Key? key, required this.title, required this.value})
-      : super(key: key);
+  const _CardItem({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Text('${title.tr()}:  '),
-        Flexible(
-          child: Text(
-            value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            // textAlign: TextAlign.center,
-            // textDirection: TextDirection.rtl,
-          ),
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          // textAlign: TextAlign.center,
+          // textDirection: TextDirection.rtl,
         ),
       ],
     );

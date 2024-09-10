@@ -315,441 +315,423 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
   String discountValue = 'Percentage';
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        bool? isGoBack =
-            await checkDialog(context, 'Are you sure to go back?'.tr());
-        if (isGoBack != null) {
-          if (isGoBack) {
-            InheritedForm.of(context).data['selling_price_list'] = null;
-            return Future.value(true);
-          } else {
-            return Future.value(false);
-          }
-        }
-        return Future.value(false);
-      },
-      child: DismissKeyboard(
-        child: Scaffold(
-          body: Form(
-            key: _formKey,
-            child: CustomPageViewForm(
-              submit: () => submit(),
-              widgetGroup: [
-                Group(
-                  child: ListView(
-                    children: [
-                      const SizedBox(height: 4),
+    return DismissKeyboard(
+      child: Scaffold(
+        body: Form(
+          key: _formKey,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
 
-                      // New customer list
-                      CustomDropDownFromField(
-                          defaultValue: data['customer'],
-                          docType: 'Customer',
-                          nameResponse: 'name',
-                          title: 'Customer'.tr(),
-                          keys: const {
-                            'subTitle': 'customer_group',
-                            'trailing': 'territory',
-                          },
-                          onChange: (value) async {
-                            if (value != null) {
-                              await _getCustomerData(value['name']);
+                    // New customer list
+                    CustomDropDownFromField(
+                        defaultValue: data['customer'],
+                        docType: 'Customer',
+                        nameResponse: 'name',
+                        title: 'Customer'.tr(),
+                        keys: const {
+                          'subTitle': 'customer_group',
+                          'trailing': 'territory',
+                        },
+                        onChange: (value) async {
+                          if (value != null) {
+                            await _getCustomerData(value['name']);
 
-                              setState(() {
-                                data['due_date'] = DateTime.now()
-                                    .add(Duration(
-                                        days: int.parse(
-                                            selectedCstData['credit_days']
-                                                .toString())))
-                                    .toIso8601String();
-                                data['customer'] = value['name'];
-                                data['customer_name'] = value['customer_name'];
-                                data['territory'] = value['territory'];
-                                data['customer_group'] =
-                                    value['customer_group'];
-                                data['customer_address'] =
-                                    value["customer_primary_address"];
-                                data['contact_person'] =
-                                    value["customer_primary_contact"];
-                                data['currency'] = value['default_currency'];
-                                data['price_list_currency'] =
-                                    value['default_currency'];
-                                if (data['selling_price_list'] !=
-                                    value['default_price_list']) {
-                                  data['selling_price_list'] =
-                                      value['default_price_list'];
-                                  InheritedForm.of(context).items.clear();
-                                  InheritedForm.of(context)
-                                          .data['selling_price_list'] =
-                                      value['default_price_list'];
-                                }
-                                data['payment_terms_template'] =
-                                    value['payment_terms'];
-                                data['sales_partner'] =
-                                    value['default_sales_partner'];
-                                data['tax_id'] = value['tax_id'];
-                              });
-                            }
-                          }),
-
-                      Row(children: [
-                        Flexible(
-                            child: DatePickerTest(
-                          'posting_date',
-                          'Date'.tr(),
-                          initialValue: data['posting_date'] ?? 'none',
-                          enable: false,
-                          onChanged: (value) =>
-                              setState(() => data['posting_date'] = value),
-                          lastDate: DateTime.tryParse(data['due_date'] ??
-                              DateTime.now()
+                            setState(() {
+                              data['due_date'] = DateTime.now()
                                   .add(Duration(
                                       days: int.parse(
                                           selectedCstData['credit_days']
                                               .toString())))
-                                  .toIso8601String()),
-                        )),
-                        const SizedBox(width: 10),
-                        Flexible(
-                            child: DatePickerTest(
-                          'due_date',
-                          'Due Date'.tr(),
-                          onChanged: (value) => Future.delayed(Duration.zero,
-                              () => setState(() => data['due_date'] = value)),
-                          enable: false,
-                          firstDate: DateTime.parse(data['posting_date'] ?? ''),
-                          initialValue: data['due_date'] ??
-                              ((selectedCstData['name'].toString() !=
-                                          'noName' &&
-                                      selectedCstData['credit_days']
-                                              .toString() !=
-                                          'null')
-                                  ? DateTime.now()
-                                      .add(Duration(
-                                          days: int.parse(
-                                              (selectedCstData['credit_days']
-                                                  .toString()))))
-                                      .toIso8601String()
-                                  : null),
-                        )),
-                      ]),
-                      // if (data['tax_id'] != null)
-                      //   Align(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: Padding(
-                      //         padding:
-                      //             const EdgeInsets.symmetric(horizontal: 2),
-                      //         child: Text(data['tax_id']!,
-                      //             style: const TextStyle(
-                      //                 fontSize: 16, color: Colors.black)),
-                      //       )),
-                      // if (data['tax_id'] != null)
-                      //   const Padding(
-                      //     padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
-                      //     child: Divider(
-                      //         color: Colors.grey, height: 1, thickness: 0.7),
-                      //   ),
-                      // // New customer group
-                      // CustomDropDownFromField(
-                      //     defaultValue: data['customer_group'],
-                      //     docType: 'Customer Group',
-                      //     nameResponse: 'name',
-                      //     title: 'Customer Group'.tr(),
-                      //     onChange: (value) {
-                      //       setState(() {
-                      //         data['customer_group'] = value['name'];
-                      //       });
-                      //     }),
-                      // // New territory
-                      // CustomDropDownFromField(
-                      //     defaultValue: data['territory'],
-                      //     docType: APIService.TERRITORY,
-                      //     nameResponse: 'name',
-                      //     title: 'Territory'.tr(),
-                      //     onChange: (value) {
-                      //       setState(() {
-                      //         data['territory'] = value['name'];
-                      //       });
-                      //     }),
-                      // // New customer address
-                      // CustomExpandableTile(
-                      //   hideArrow: data['customer'] == null,
-                      //   title: CustomDropDownFromField(
-                      //       defaultValue: data['customer_address'],
-                      //       docType: APIService.FILTERED_ADDRESS,
-                      //       nameResponse: 'name',
-                      //       title: 'Customer Address'.tr(),
-                      //       isValidate: false,
-                      //       filters: {
-                      //         'cur_nam': data['customer'],
-                      //       },
-                      //       onChange: (value) async {
-                      //         if (data['customer'] == null) {
-                      //           return showSnackBar(
-                      //               'Please select a customer to first',
-                      //               context);
-                      //         }
+                                  .toIso8601String();
+                              data['customer'] = value['name'];
+                              data['customer_name'] = value['customer_name'];
+                              data['territory'] = value['territory'];
+                              data['customer_group'] = value['customer_group'];
+                              data['customer_address'] =
+                                  value["customer_primary_address"];
+                              data['contact_person'] =
+                                  value["customer_primary_contact"];
+                              data['currency'] = value['default_currency'];
+                              data['price_list_currency'] =
+                                  value['default_currency'];
+                              if (data['selling_price_list'] !=
+                                  value['default_price_list']) {
+                                data['selling_price_list'] =
+                                    value['default_price_list'];
+                                InheritedForm.of(context).items.clear();
+                                InheritedForm.of(context)
+                                        .data['selling_price_list'] =
+                                    value['default_price_list'];
+                              }
+                              data['payment_terms_template'] =
+                                  value['payment_terms'];
+                              data['sales_partner'] =
+                                  value['default_sales_partner'];
+                              data['tax_id'] = value['tax_id'];
+                            });
+                          }
+                        }),
 
-                      //         setState(() {
-                      //           data['customer_address'] = value['name'];
-                      //           selectedCstData['address_line1'] =
-                      //               value['address_line1'];
-                      //           selectedCstData['city'] = value['city'];
-                      //           selectedCstData['country'] = value['country'];
-                      //         });
-                      //       }),
-                      //   children: (data['customer_address'] != null)
-                      //       ? <Widget>[
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.location_on),
-                      //             title: Text(
-                      //                 selectedCstData['address_line1'] ?? ''),
-                      //           ),
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.location_city),
-                      //             title: Text(selectedCstData['city'] ?? ''),
-                      //           ),
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.flag),
-                      //             title: Text(selectedCstData['country'] ?? ''),
-                      //           )
-                      //         ]
-                      //       : null,
-                      // ),
+                    Row(children: [
+                      Flexible(
+                          child: DatePickerTest(
+                        'posting_date',
+                        'Date'.tr(),
+                        initialValue: data['posting_date'] ?? 'none',
+                        enable: false,
+                        onChanged: (value) =>
+                            setState(() => data['posting_date'] = value),
+                        lastDate: DateTime.tryParse(data['due_date'] ??
+                            DateTime.now()
+                                .add(Duration(
+                                    days: int.parse(
+                                        selectedCstData['credit_days']
+                                            .toString())))
+                                .toIso8601String()),
+                      )),
+                      const SizedBox(width: 10),
+                      Flexible(
+                          child: DatePickerTest(
+                        'due_date',
+                        'Due Date'.tr(),
+                        onChanged: (value) => Future.delayed(Duration.zero,
+                            () => setState(() => data['due_date'] = value)),
+                        enable: false,
+                        firstDate: DateTime.parse(data['posting_date'] ?? ''),
+                        initialValue: data['due_date'] ??
+                            ((selectedCstData['name'].toString() != 'noName' &&
+                                    selectedCstData['credit_days'].toString() !=
+                                        'null')
+                                ? DateTime.now()
+                                    .add(Duration(
+                                        days: int.parse(
+                                            (selectedCstData['credit_days']
+                                                .toString()))))
+                                    .toIso8601String()
+                                : null),
+                      )),
+                    ]),
+                    // if (data['tax_id'] != null)
+                    //   Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Padding(
+                    //         padding:
+                    //             const EdgeInsets.symmetric(horizontal: 2),
+                    //         child: Text(data['tax_id']!,
+                    //             style: const TextStyle(
+                    //                 fontSize: 16, color: Colors.black)),
+                    //       )),
+                    // if (data['tax_id'] != null)
+                    //   const Padding(
+                    //     padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                    //     child: Divider(
+                    //         color: Colors.grey, height: 1, thickness: 0.7),
+                    //   ),
+                    // // New customer group
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['customer_group'],
+                    //     docType: 'Customer Group',
+                    //     nameResponse: 'name',
+                    //     title: 'Customer Group'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['customer_group'] = value['name'];
+                    //       });
+                    //     }),
+                    // // New territory
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['territory'],
+                    //     docType: APIService.TERRITORY,
+                    //     nameResponse: 'name',
+                    //     title: 'Territory'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['territory'] = value['name'];
+                    //       });
+                    //     }),
+                    // // New customer address
+                    // CustomExpandableTile(
+                    //   hideArrow: data['customer'] == null,
+                    //   title: CustomDropDownFromField(
+                    //       defaultValue: data['customer_address'],
+                    //       docType: APIService.FILTERED_ADDRESS,
+                    //       nameResponse: 'name',
+                    //       title: 'Customer Address'.tr(),
+                    //       isValidate: false,
+                    //       filters: {
+                    //         'cur_nam': data['customer'],
+                    //       },
+                    //       onChange: (value) async {
+                    //         if (data['customer'] == null) {
+                    //           return showSnackBar(
+                    //               'Please select a customer to first',
+                    //               context);
+                    //         }
 
-                      // // New contact person
-                      // CustomExpandableTile(
-                      //   hideArrow: data['contact_person'] == null,
-                      //   title: CustomDropDownFromField(
-                      //       defaultValue: data['contact_person'],
-                      //       docType: APIService.FILTERED_CONTACT,
-                      //       nameResponse: 'name',
-                      //       isValidate: false,
-                      //       title: 'Contact Person'.tr(),
-                      //       filters: {
-                      //         'cur_nam': data['customer'],
-                      //       },
-                      //       onChange: (value) {
-                      //         if (data['customer'] == null) {
-                      //           showSnackBar(
-                      //               'Please select a customer', context);
-                      //           return null;
-                      //         }
-                      //         setState(() {
-                      //           data['contact_person'] = value['name'];
-                      //           selectedCstData['contact_display'] =
-                      //               value['contact_display'];
-                      //           selectedCstData['phone'] = value['phone'];
-                      //           selectedCstData['mobile_no'] =
-                      //               value['mobile_no'];
-                      //           selectedCstData['email_id'] = value['email_id'];
-                      //         });
-                      //       }),
-                      //   children: (data['contact_person'] != null)
-                      //       ? <Widget>[
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.person),
-                      //             title: Text('' +
-                      //                 (selectedCstData['contact_display'] ??
-                      //                     '')),
-                      //           ),
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.phone_iphone),
-                      //             title: Text('Mobile :  ' +
-                      //                 (selectedCstData['mobile_no'] ?? 'none')),
-                      //           ),
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.call),
-                      //             title: Text('Phone :  ' +
-                      //                 (selectedCstData['phone'] ?? 'none')),
-                      //           ),
-                      //           ListTile(
-                      //             trailing: const Icon(Icons.alternate_email),
-                      //             title: Text('' +
-                      //                 (selectedCstData['email_id'] ?? 'none')),
-                      //           )
-                      //         ]
-                      //       : null,
-                      // ),
+                    //         setState(() {
+                    //           data['customer_address'] = value['name'];
+                    //           selectedCstData['address_line1'] =
+                    //               value['address_line1'];
+                    //           selectedCstData['city'] = value['city'];
+                    //           selectedCstData['country'] = value['country'];
+                    //         });
+                    //       }),
+                    //   children: (data['customer_address'] != null)
+                    //       ? <Widget>[
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.location_on),
+                    //             title: Text(
+                    //                 selectedCstData['address_line1'] ?? ''),
+                    //           ),
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.location_city),
+                    //             title: Text(selectedCstData['city'] ?? ''),
+                    //           ),
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.flag),
+                    //             title: Text(selectedCstData['country'] ?? ''),
+                    //           )
+                    //         ]
+                    //       : null,
+                    // ),
 
-                      SizedBox(
-                        height: 500.h,
-                        child: AddItemsWidget(
-                          priceList: data['selling_price_list'] ??
-                              context
-                                  .read<UserProvider>()
-                                  .defaultSellingPriceList,
-                        ),
+                    // // New contact person
+                    // CustomExpandableTile(
+                    //   hideArrow: data['contact_person'] == null,
+                    //   title: CustomDropDownFromField(
+                    //       defaultValue: data['contact_person'],
+                    //       docType: APIService.FILTERED_CONTACT,
+                    //       nameResponse: 'name',
+                    //       isValidate: false,
+                    //       title: 'Contact Person'.tr(),
+                    //       filters: {
+                    //         'cur_nam': data['customer'],
+                    //       },
+                    //       onChange: (value) {
+                    //         if (data['customer'] == null) {
+                    //           showSnackBar(
+                    //               'Please select a customer', context);
+                    //           return null;
+                    //         }
+                    //         setState(() {
+                    //           data['contact_person'] = value['name'];
+                    //           selectedCstData['contact_display'] =
+                    //               value['contact_display'];
+                    //           selectedCstData['phone'] = value['phone'];
+                    //           selectedCstData['mobile_no'] =
+                    //               value['mobile_no'];
+                    //           selectedCstData['email_id'] = value['email_id'];
+                    //         });
+                    //       }),
+                    //   children: (data['contact_person'] != null)
+                    //       ? <Widget>[
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.person),
+                    //             title: Text('' +
+                    //                 (selectedCstData['contact_display'] ??
+                    //                     '')),
+                    //           ),
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.phone_iphone),
+                    //             title: Text('Mobile :  ' +
+                    //                 (selectedCstData['mobile_no'] ?? 'none')),
+                    //           ),
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.call),
+                    //             title: Text('Phone :  ' +
+                    //                 (selectedCstData['phone'] ?? 'none')),
+                    //           ),
+                    //           ListTile(
+                    //             trailing: const Icon(Icons.alternate_email),
+                    //             title: Text('' +
+                    //                 (selectedCstData['email_id'] ?? 'none')),
+                    //           )
+                    //         ]
+                    //       : null,
+                    // ),
+
+                    SizedBox(
+                      height: 500.h,
+                      child: AddItemsWidget(
+                        priceList: data['selling_price_list'] ??
+                            context
+                                .read<UserProvider>()
+                                .defaultSellingPriceList,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
 
-                // Old comment fields
-                ///
-                /// group 2
-                ///
-                // Group(
-                //   child: ListView(
-                //     children: [
-                //       const SizedBox(height: 4),
-                //       CustomDropDown('tax_type', 'Tax Type'.tr(),
-                //           items: taxType,
-                //           defaultValue: data['tax_type'] ?? taxType[0],
-                //           onChanged: (value) => setState(() {
-                //                 data['tax_type'] = value;
-                //               })),
-                //       CustomDropDownFromField(
-                //           defaultValue:
-                //               data['currency'] ?? userProvider.defaultCurrency,
-                //           docType: APIService.CURRENCY,
-                //           enable: false,
-                //           nameResponse: 'name',
-                //           title: 'Currency'.tr(),
-                //           onChange: (value) {
-                //             setState(() {
-                //               data['currency'] = value['name'];
-                //             });
-                //           }),
-                //       CustomDropDownFromField(
-                //           defaultValue: data['selling_price_list'] ??
-                //               userProvider.defaultSellingPriceList,
-                //           docType: APIService.PRICE_LIST,
-                //           enable: false,
-                //           nameResponse: 'name',
-                //           title: 'Price List'.tr(),
-                //           onChange: (value) {
-                //             if (value != null && value.isNotEmpty) {
-                //               setState(() {
-                //                 if (data['selling_price_list'] !=
-                //                     value['name']) {
-                //                   provider.newItemList.clear();
-                //                   InheritedForm.of(context)
-                //                           .data['selling_price_list'] =
-                //                       value['name'];
-                //                   data['selling_price_list'] = value['name'];
-                //                 }
-                //                 data['price_list_currency'] = value['currency'];
-                //               });
-                //             }
-                //           }),
-                //       if (data['price_list_currency'] != null)
-                //         Align(
-                //             alignment: Alignment.centerLeft,
-                //             child: Padding(
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 2),
-                //               child: Text(tr('Price List Currency'),
-                //                   style: const TextStyle(
-                //                       fontSize: 15, color: Colors.grey)),
-                //             )),
-                //       if (data['price_list_currency'] != null)
-                //         Align(
-                //             alignment: Alignment.centerLeft,
-                //             child: Padding(
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 2),
-                //               child: Text(data['price_list_currency']!,
-                //                   style: const TextStyle(
-                //                       fontSize: 16, color: Colors.black)),
-                //             )),
-                //       if (data['price_list_currency'] != null)
-                //         const Divider(
-                //             color: Colors.grey, height: 1, thickness: 0.7),
-                //       CheckBoxWidget('update_stock', 'Update Stock',
-                //           initialValue:
-                //               data['update_stock'] == 1 ? true : false,
-                //           onChanged: (id, value) =>
-                //               setState(() => data[id] = value ? 1 : 0)),
-                //       if (data['update_stock'] == 1)
-                //         CustomDropDownFromField(
-                //             defaultValue: data['set_warehouse'],
-                //             docType: APIService.WAREHOUSE,
-                //             nameResponse: 'name',
-                //             title: 'Source Warehouse'.tr(),
+              // Old comment fields
+              ///
+              /// group 2
+              ///
+              // Group(
+              //   child: ListView(
+              //     children: [
+              //       const SizedBox(height: 4),
+              //       CustomDropDown('tax_type', 'Tax Type'.tr(),
+              //           items: taxType,
+              //           defaultValue: data['tax_type'] ?? taxType[0],
+              //           onChanged: (value) => setState(() {
+              //                 data['tax_type'] = value;
+              //               })),
+              //       CustomDropDownFromField(
+              //           defaultValue:
+              //               data['currency'] ?? userProvider.defaultCurrency,
+              //           docType: APIService.CURRENCY,
+              //           enable: false,
+              //           nameResponse: 'name',
+              //           title: 'Currency'.tr(),
+              //           onChange: (value) {
+              //             setState(() {
+              //               data['currency'] = value['name'];
+              //             });
+              //           }),
+              //       CustomDropDownFromField(
+              //           defaultValue: data['selling_price_list'] ??
+              //               userProvider.defaultSellingPriceList,
+              //           docType: APIService.PRICE_LIST,
+              //           enable: false,
+              //           nameResponse: 'name',
+              //           title: 'Price List'.tr(),
+              //           onChange: (value) {
+              //             if (value != null && value.isNotEmpty) {
+              //               setState(() {
+              //                 if (data['selling_price_list'] !=
+              //                     value['name']) {
+              //                   provider.newItemList.clear();
+              //                   InheritedForm.of(context)
+              //                           .data['selling_price_list'] =
+              //                       value['name'];
+              //                   data['selling_price_list'] = value['name'];
+              //                 }
+              //                 data['price_list_currency'] = value['currency'];
+              //               });
+              //             }
+              //           }),
+              //       if (data['price_list_currency'] != null)
+              //         Align(
+              //             alignment: Alignment.centerLeft,
+              //             child: Padding(
+              //               padding:
+              //                   const EdgeInsets.symmetric(horizontal: 2),
+              //               child: Text(tr('Price List Currency'),
+              //                   style: const TextStyle(
+              //                       fontSize: 15, color: Colors.grey)),
+              //             )),
+              //       if (data['price_list_currency'] != null)
+              //         Align(
+              //             alignment: Alignment.centerLeft,
+              //             child: Padding(
+              //               padding:
+              //                   const EdgeInsets.symmetric(horizontal: 2),
+              //               child: Text(data['price_list_currency']!,
+              //                   style: const TextStyle(
+              //                       fontSize: 16, color: Colors.black)),
+              //             )),
+              //       if (data['price_list_currency'] != null)
+              //         const Divider(
+              //             color: Colors.grey, height: 1, thickness: 0.7),
+              //       CheckBoxWidget('update_stock', 'Update Stock',
+              //           initialValue:
+              //               data['update_stock'] == 1 ? true : false,
+              //           onChanged: (id, value) =>
+              //               setState(() => data[id] = value ? 1 : 0)),
+              //       if (data['update_stock'] == 1)
+              //         CustomDropDownFromField(
+              //             defaultValue: data['set_warehouse'],
+              //             docType: APIService.WAREHOUSE,
+              //             nameResponse: 'name',
+              //             title: 'Source Warehouse'.tr(),
 
-                //             // filters: const {
-                //             //   'filter1': DocTypesName.salesInvoice
-                //             // },
-                //             enable: data['set_warehouse'] == null,
-                //             keys: const {
-                //               'subTitle': 'warehouse_name',
-                //               'trailing': 'warehouse_type',
-                //             },
-                //             onChange: (value) {
-                //               setState(() {
-                //                 data['set_warehouse'] = value['name'];
-                //               });
-                //             }),
-                //       CustomDropDownFromField(
-                //           defaultValue: data['payment_terms_template'],
-                //           isValidate: false,
-                //           docType: APIService.PAYMENT_TERMS,
-                //           nameResponse: 'name',
-                //           title: 'Payment Terms Template'.tr(),
-                //           onChange: (value) {
-                //             setState(() {
-                //               data['payment_terms_template'] = value['name'];
-                //             });
-                //           }),
-                //       CustomDropDownFromField(
-                //           defaultValue: data['tc_name'],
-                //           isValidate: false,
-                //           docType: APIService.TERMS_CONDITION,
-                //           nameResponse: 'name',
-                //           title: 'Terms & Conditions'.tr(),
-                //           onChange: (value) {
-                //             setState(() {
-                //               data['tc_name'] = value['name'];
-                //             });
-                //           }),
-                //       if (_terms != null)
-                //         Align(
-                //             alignment: Alignment.centerLeft,
-                //             child: Padding(
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 2),
-                //               child: Text(_terms!,
-                //                   style: const TextStyle(
-                //                       fontSize: 16, color: Colors.black)),
-                //             )),
-                //       if (_terms != null)
-                //         const Divider(
-                //             color: Colors.grey, height: 1, thickness: 0.7),
-                //       CustomDropDownFromField(
-                //           defaultValue: data['sales_partner'],
-                //           docType: APIService.SALES_PARTNER,
-                //           nameResponse: 'name',
-                //           isValidate: false,
-                //           title: 'Sales Partner'.tr(),
-                //           onChange: (value) {
-                //             setState(() {
-                //               data['sales_partner'] = value['name'];
-                //             });
-                //           }),
-                //       const SizedBox(height: 8),
-                //       const Row(
-                //         mainAxisSize: MainAxisSize.min,
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Padding(
-                //             padding: EdgeInsets.only(right: 6),
-                //             child: Icon(Icons.warning_amber,
-                //                 color: Colors.amber, size: 22),
-                //           ),
-                //           Flexible(
-                //               child: Text(
-                //             KLocationNotifySnackBar,
-                //             textAlign: TextAlign.start,
-                //           )),
-                //         ],
-                //       ),
-                //       const SizedBox(height: 8),
-                //     ],
-                //   ),
-                // ),
-              ],
-            ),
+              //             // filters: const {
+              //             //   'filter1': DocTypesName.salesInvoice
+              //             // },
+              //             enable: data['set_warehouse'] == null,
+              //             keys: const {
+              //               'subTitle': 'warehouse_name',
+              //               'trailing': 'warehouse_type',
+              //             },
+              //             onChange: (value) {
+              //               setState(() {
+              //                 data['set_warehouse'] = value['name'];
+              //               });
+              //             }),
+              //       CustomDropDownFromField(
+              //           defaultValue: data['payment_terms_template'],
+              //           isValidate: false,
+              //           docType: APIService.PAYMENT_TERMS,
+              //           nameResponse: 'name',
+              //           title: 'Payment Terms Template'.tr(),
+              //           onChange: (value) {
+              //             setState(() {
+              //               data['payment_terms_template'] = value['name'];
+              //             });
+              //           }),
+              //       CustomDropDownFromField(
+              //           defaultValue: data['tc_name'],
+              //           isValidate: false,
+              //           docType: APIService.TERMS_CONDITION,
+              //           nameResponse: 'name',
+              //           title: 'Terms & Conditions'.tr(),
+              //           onChange: (value) {
+              //             setState(() {
+              //               data['tc_name'] = value['name'];
+              //             });
+              //           }),
+              //       if (_terms != null)
+              //         Align(
+              //             alignment: Alignment.centerLeft,
+              //             child: Padding(
+              //               padding:
+              //                   const EdgeInsets.symmetric(horizontal: 2),
+              //               child: Text(_terms!,
+              //                   style: const TextStyle(
+              //                       fontSize: 16, color: Colors.black)),
+              //             )),
+              //       if (_terms != null)
+              //         const Divider(
+              //             color: Colors.grey, height: 1, thickness: 0.7),
+              //       CustomDropDownFromField(
+              //           defaultValue: data['sales_partner'],
+              //           docType: APIService.SALES_PARTNER,
+              //           nameResponse: 'name',
+              //           isValidate: false,
+              //           title: 'Sales Partner'.tr(),
+              //           onChange: (value) {
+              //             setState(() {
+              //               data['sales_partner'] = value['name'];
+              //             });
+              //           }),
+              //       const SizedBox(height: 8),
+              //       const Row(
+              //         mainAxisSize: MainAxisSize.min,
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Padding(
+              //             padding: EdgeInsets.only(right: 6),
+              //             child: Icon(Icons.warning_amber,
+              //                 color: Colors.amber, size: 22),
+              //           ),
+              //           Flexible(
+              //               child: Text(
+              //             KLocationNotifySnackBar,
+              //             textAlign: TextAlign.start,
+              //           )),
+              //         ],
+              //       ),
+              //       const SizedBox(height: 8),
+              //     ],
+              //   ),
+              // ),
+            ],
           ),
         ),
       ),

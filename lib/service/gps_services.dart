@@ -46,8 +46,7 @@ class GPSService {
 
     try {
       Position position = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.best)
-          .whenComplete(() => showSnackBar(KLocationGrantedSnackBar, context));
+          desiredAccuracy: LocationAccuracy.best);
 
       latitude = position.latitude;
       longitude = position.longitude;

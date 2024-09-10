@@ -42,7 +42,7 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
   final formKey = GlobalKey<FormState>();
   double? newRate;
   String? UOM;
-  int QTY = 1;
+  int? QTY = 1;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ModuleProvider>(context);
@@ -133,12 +133,21 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                     child: CustomTextFieldTest(
                       'qty',
                       'QTY'.tr(),
-                      initialValue: QTY.toString(),
                       keyboardType: TextInputType.number,
                       disableError: true,
-                      onSave: (_, value) => QTY = int.parse(value),
+                      onSave: (_, value) {
+                        if (int.tryParse(value) == null ||
+                            int.tryParse(value)! < 0) {
+                          return;
+                        }
+                        QTY = int.tryParse(value);
+                      },
                       onChanged: (value) {
-                        QTY = int.parse(value);
+                        if (int.tryParse(value) == null ||
+                            int.tryParse(value)! < 0) {
+                          return;
+                        }
+                        QTY = int.tryParse(value);
                       },
                     ),
                   ),

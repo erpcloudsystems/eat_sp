@@ -225,8 +225,8 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                                     },
                                                   ),
                                                 ),
-                                              const SizedBox(width: 6),
-                                              Expanded(
+                                              // const SizedBox(width: 6),
+                                              /*Expanded(
                                                   child: CustomTextField(
                                                 'uom',
                                                 'UOM',
@@ -234,7 +234,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                                 enabled: false,
                                                 initialValue: provider
                                                     .newItemList[index]['uom'],
-                                              )),
+                                              )),*/
                                             ],
                                           ),
                                         ],
@@ -267,20 +267,19 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                         ),
                                         child: ItemCard(
                                           names: const [
-                                            'Code',
+                                            //  'Code',
                                             'Group',
-                                            'UoM',
-                                            '',
+                                            //  'UoM',
+                                            //  '',
                                           ],
                                           values: [
                                             provider.newItemList[index]
                                                 ['item_name'],
-                                            provider.newItemList[index]
-                                                ['item_code'],
+                                            // provider.newItemList[index]['item_code'],
                                             provider.newItemList[index]
                                                     ['item_group'] ??
                                                 'none',
-                                            provider.newItemList[index]['uom'],
+                                            //  provider.newItemList[index]['uom'],
                                           ],
                                           imageUrl: provider.newItemList[index]
                                                   ['image'] ??

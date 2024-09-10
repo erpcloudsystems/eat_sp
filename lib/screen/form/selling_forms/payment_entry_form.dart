@@ -283,203 +283,187 @@ class _PaymentFormState extends State<PaymentForm> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        bool? isGoBack =
-            await checkDialog(context, 'Are you sure to go back?'.tr());
-        if (isGoBack != null) {
-          if (isGoBack) {
-            return Future.value(true);
-          } else {
-            return Future.value(false);
-          }
-        }
-        return Future.value(false);
-      },
-      child: DismissKeyboard(
-        child: Scaffold(
-          body: Form(
-            key: _formKey,
-            child: CustomPageViewForm(
-              submit: () => submit(),
-              widgetGroup: [
-                Group(
-                  child: ListView(
-                    children: [
-                      const SizedBox(height: 4),
-                      CustomDropDown('payment_type', 'Payment Type'.tr(),
-                          items: paymentType,
-                          defaultValue: data['payment_type'] ?? paymentType[0],
-                          onChanged: (value) => setState(() {
-                                data['party'] = null;
-                                data['party_name'] = null;
-                                data['payment_type'] = value;
-                                if (value == paymentType[0]) {
-                                  data['party_type'] = KPaymentPartyList[0];
-                                  data['mode_of_payment_2'] = null;
-                                } else if (value == paymentType[1]) {
-                                  data['party_type'] = KPaymentPartyList[1];
-                                  data['mode_of_payment_2'] = null;
-                                } else {
-                                  data['party_type'] = null;
-                                }
-                              })),
-                      CustomDropDown(
-                        'party_type',
-                        'Party Type'.tr(),
-                        items: KPaymentPartyList,
-                        defaultValue:
-                            data['party_type'] ?? KPaymentPartyList[0],
-                        enable: false,
+    return DismissKeyboard(
+      child: Scaffold(
+        body: Form(
+          key: _formKey,
+          child: CustomPageViewForm(
+            submit: () => submit(),
+            widgetGroup: [
+              Group(
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 4),
+                    CustomDropDown('payment_type', 'Payment Type'.tr(),
+                        items: paymentType,
+                        defaultValue: data['payment_type'] ?? paymentType[0],
                         onChanged: (value) => setState(() {
-                          data['party'] = null;
-                          data['party_name'] = null;
-                          data['party_type'] = value;
-                        }),
+                              data['party'] = null;
+                              data['party_name'] = null;
+                              data['payment_type'] = value;
+                              if (value == paymentType[0]) {
+                                data['party_type'] = KPaymentPartyList[0];
+                                data['mode_of_payment_2'] = null;
+                              } else if (value == paymentType[1]) {
+                                data['party_type'] = KPaymentPartyList[1];
+                                data['mode_of_payment_2'] = null;
+                              } else {
+                                data['party_type'] = null;
+                              }
+                            })),
+                    CustomDropDown(
+                      'party_type',
+                      'Party Type'.tr(),
+                      items: KPaymentPartyList,
+                      defaultValue: data['party_type'] ?? KPaymentPartyList[0],
+                      enable: false,
+                      onChanged: (value) => setState(() {
+                        data['party'] = null;
+                        data['party_name'] = null;
+                        data['party_type'] = value;
+                      }),
+                    ),
+                    // -----------------
+                    if (data['party_type'] == KPaymentPartyList[0] &&
+                        data['party_type'] != null)
+                      CustomDropDownFromField(
+                        defaultValue: data['party'],
+                        docType: 'Customer',
+                        nameResponse: 'name',
+                        keys: const {
+                          'subTitle': 'customer_group',
+                          'trailing': 'territory',
+                        },
+                        title: data['party_type'] ?? 'Customer',
+                        onChange: (value) {
+                          setState(() {
+                            data['party'] = value['name'];
+                            data['party_name'] = value['customer_name'];
+                          });
+                        },
                       ),
-                      // -----------------
-                      if (data['party_type'] == KPaymentPartyList[0] &&
-                          data['party_type'] != null)
-                        CustomDropDownFromField(
+                    if (data['party_type'] != KPaymentPartyList[0] &&
+                        data['party_type'] != null)
+                      CustomDropDownFromField(
                           defaultValue: data['party'],
-                          docType: 'Customer',
-                          nameResponse: 'name',
+                          docType: 'Supplier',
                           keys: const {
-                            'subTitle': 'customer_group',
-                            'trailing': 'territory',
+                            'subTitle': 'supplier_group',
+                            'trailing': 'country',
                           },
-                          title: data['party_type'] ?? 'Customer',
+                          nameResponse: 'name',
+                          title: data['party_type'] ?? "Supplier",
                           onChange: (value) {
                             setState(() {
                               data['party'] = value['name'];
-                              data['party_name'] = value['customer_name'];
-                            });
-                          },
-                        ),
-                      if (data['party_type'] != KPaymentPartyList[0] &&
-                          data['party_type'] != null)
-                        CustomDropDownFromField(
-                            defaultValue: data['party'],
-                            docType: 'Supplier',
-                            keys: const {
-                              'subTitle': 'supplier_group',
-                              'trailing': 'country',
-                            },
-                            nameResponse: 'name',
-                            title: data['party_type'] ?? "Supplier",
-                            onChange: (value) {
-                              setState(() {
-                                data['party'] = value['name'];
-                                data['party_name'] = value['supplier_name'];
-                              });
-                            }),
-                      if (data['party_name'] != null)
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              child: Text(data['party_name']!,
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black)),
-                            )),
-                      if (data['party_name'] != null)
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
-                          child: Divider(
-                              color: Colors.grey, height: 1, thickness: 0.7),
-                        ),
-                      DatePickerTest('posting_date', 'Date'.tr(),
-                          initialValue: data['posting_date'],
-                          enable: false, onChanged: (value) {
-                        setState(() {
-                          data['posting_date'] = value;
-                        });
-                      }),
-
-                      /// New mode of payment
-                      CustomDropDownFromField(
-                          defaultValue: data['mode_of_payment'],
-                          docType: 'Mode of Payment',
-                          nameResponse: 'name',
-                          enable: data['mode_of_payment'] == null,
-                          title: data['payment_type'] == paymentType[2]
-                              ? 'Payment From'
-                              : 'Mode Of Payment',
-                          onChange: (value) {
-                            setState(() {
-                              bankType = value['type'];
-                              data['mode_of_payment'] = value['name'];
+                              data['party_name'] = value['supplier_name'];
                             });
                           }),
+                    if (data['party_name'] != null)
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Text(data['party_name']!,
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.black)),
+                          )),
+                    if (data['party_name'] != null)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                        child: Divider(
+                            color: Colors.grey, height: 1, thickness: 0.7),
+                      ),
+                    DatePickerTest('posting_date', 'Date'.tr(),
+                        initialValue: data['posting_date'],
+                        enable: false, onChanged: (value) {
+                      setState(() {
+                        data['posting_date'] = value;
+                      });
+                    }),
 
-                      if (bankType == 'Bank')
-                        CustomTextFieldTest(
-                          'reference_no',
-                          'Reference Number'.tr(),
-                          initialValue: data['reference_no'],
-                          onChanged: (value) {
-                            data['reference_no'] = value;
-                          },
-                          onSave: (key, value) => data[key] = value,
-                          keyboardType: TextInputType.number,
-                          disableError: false,
-                          validator: (value) => numberValidationToast(
-                              value, 'Reference Number'.tr()),
-                          disableValidation: true,
-                        ),
-                      if (data['payment_type'] == paymentType[2])
-                        CustomTextFieldTest(
-                          'mode_of_payment_2',
-                          'Payment To',
-                          initialValue: data['mode_of_payment_2'],
-                          clearButton: true,
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => modeOfPaymentScreen(
-                                        data['mode_of_payment'])));
-                            if (res != null) {
-                              data['mode_of_payment_2'] = res['name'];
-                            }
-                            return res['name'];
-                          },
-                        ),
+                    /// New mode of payment
+                    CustomDropDownFromField(
+                        defaultValue: data['mode_of_payment'],
+                        docType: 'Mode of Payment',
+                        nameResponse: 'name',
+                        enable: data['mode_of_payment'] == null,
+                        title: data['payment_type'] == paymentType[2]
+                            ? 'Payment From'
+                            : 'Mode Of Payment',
+                        onChange: (value) {
+                          setState(() {
+                            bankType = value['type'];
+                            data['mode_of_payment'] = value['name'];
+                          });
+                        }),
+
+                    if (bankType == 'Bank')
                       CustomTextFieldTest(
-                        'paid_amount',
-                        'Paid Amount',
-                        initialValue: '${data['paid_amount'] ?? ''}',
-                        clearButton: true,
-                        keyboardType: TextInputType.number,
-                        validator: numberValidation,
-                        onSave: (key, value) =>
-                            data[key] = double.tryParse(value) ?? 0,
+                        'reference_no',
+                        'Reference Number'.tr(),
+                        initialValue: data['reference_no'],
                         onChanged: (value) {
-                          data['paid_amount'] = double.tryParse(value) ?? 0;
-                          data['received_amount'] = double.tryParse(value) ?? 0;
-                          if (data.containsKey('references')) {
-                            data['references'] = [
-                              {
-                                "reference_doctype": data['references'][0]
-                                    ["reference_doctype"],
-                                "reference_name": data['references'][0]
-                                    ["reference_name"],
-                                "total_amount": data['references'][0]
-                                    ["total_amount"],
-                                "outstanding_amount": data['references'][0]
-                                    ["outstanding_amount"],
-                                "allocated_amount": data['paid_amount'],
-                              }
-                            ];
+                          data['reference_no'] = value;
+                        },
+                        onSave: (key, value) => data[key] = value,
+                        keyboardType: TextInputType.number,
+                        disableError: false,
+                        validator: (value) => numberValidationToast(
+                            value, 'Reference Number'.tr()),
+                        disableValidation: true,
+                      ),
+                    if (data['payment_type'] == paymentType[2])
+                      CustomTextFieldTest(
+                        'mode_of_payment_2',
+                        'Payment To',
+                        initialValue: data['mode_of_payment_2'],
+                        clearButton: true,
+                        onPressed: () async {
+                          final res = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => modeOfPaymentScreen(
+                                      data['mode_of_payment'])));
+                          if (res != null) {
+                            data['mode_of_payment_2'] = res['name'];
                           }
+                          return res['name'];
                         },
                       ),
-                      const SizedBox(height: 8),
-                    ],
-                  ),
+                    CustomTextFieldTest(
+                      'paid_amount',
+                      'Paid Amount',
+                      initialValue: '${data['paid_amount'] ?? ''}',
+                      clearButton: true,
+                      keyboardType: TextInputType.number,
+                      validator: numberValidation,
+                      onSave: (key, value) =>
+                          data[key] = double.tryParse(value) ?? 0,
+                      onChanged: (value) {
+                        data['paid_amount'] = double.tryParse(value) ?? 0;
+                        data['received_amount'] = double.tryParse(value) ?? 0;
+                        if (data.containsKey('references')) {
+                          data['references'] = [
+                            {
+                              "reference_doctype": data['references'][0]
+                                  ["reference_doctype"],
+                              "reference_name": data['references'][0]
+                                  ["reference_name"],
+                              "total_amount": data['references'][0]
+                                  ["total_amount"],
+                              "outstanding_amount": data['references'][0]
+                                  ["outstanding_amount"],
+                              "allocated_amount": data['paid_amount'],
+                            }
+                          ];
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

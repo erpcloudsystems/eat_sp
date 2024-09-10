@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -513,8 +514,11 @@ class ModuleProvider extends ChangeNotifier {
           context, 'Submitting ${_currentModule!.genericListService}');
 
       final response = await handleRequest(
-          () => APIService()
-              .submitDoc(_pageId, _currentModule!.genericListService),
+          () => APIService().submitDoc(
+              _pageId,
+              _currentModule!.genericListService == DocTypesName.returnD
+                  ? DocTypesName.salesInvoice
+                  : _currentModule!.genericListService),
           context);
 
       if (response != null && response == true) {
@@ -655,8 +659,6 @@ class ModuleProvider extends ChangeNotifier {
     }
     return null;
   }
-
-
 
   // void printPdf(BuildContext context) async {
   //   requestBluetoothPermissions();
