@@ -761,6 +761,7 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                 ),
 
                 AddItemsWidget(
+                  allowSales: 1,
                   priceList: data['selling_price_list'] ??
                       context.read<UserProvider>().defaultSellingPriceList,
                 ),

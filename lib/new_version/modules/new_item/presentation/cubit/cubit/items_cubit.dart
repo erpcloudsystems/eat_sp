@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import '../../../../../../service/service.dart';
 import '../../../../../core/network/api_constance.dart';
@@ -26,7 +25,9 @@ class ItemsCubit extends Cubit<ItemsState> {
               'item_group': itemFilter.itemGroup,
             'price_list': itemFilter.priceList,
             'page_length': ApiConstance.pageLength,
-            if(itemFilter.startKey != 0)'start': itemFilter.startKey,
+            if (itemFilter.allowSales != null)
+              'allow_sales': itemFilter.allowSales,
+            if (itemFilter.startKey != 0) 'start': itemFilter.startKey,
             if (itemFilter.searchText != null)
               'search_text': itemFilter.searchText,
           },
@@ -45,7 +46,7 @@ class ItemsCubit extends Cubit<ItemsState> {
           {
             'price_list': itemFilter.priceList,
             'page_length': ApiConstance.pageLength,
-            if(itemFilter.startKey != 0)'start': items.length + 1,
+            if (itemFilter.startKey != 0) 'start': items.length + 1,
             if (itemFilter.searchText != null)
               'search_text': itemFilter.searchText,
           },
