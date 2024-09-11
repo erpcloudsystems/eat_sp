@@ -1,13 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class ItemsFilter extends Equatable {
-  String? itemGroup;
+  final String? itemGroup;
   final int startKey;
-  String? searchText;
-  String? priceList;
+  final String? searchText;
+  final String? priceList;
+  final int? allowSales;
 
-  ItemsFilter(
-      {this.itemGroup, this.startKey = 0, this.searchText, this.priceList});
+  const ItemsFilter(
+      {this.itemGroup,
+      this.startKey = 0,
+      this.searchText,
+      this.priceList,
+      this.allowSales});
 
   @override
   List<Object?> get props => [
@@ -15,5 +20,6 @@ class ItemsFilter extends Equatable {
         startKey,
         searchText,
         priceList,
+        allowSales,
       ];
 }

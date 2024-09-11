@@ -12,10 +12,12 @@ class AddItemsWidget extends StatefulWidget {
   const AddItemsWidget({
     super.key,
     this.haveRate = true,
+    this.allowSales,
     required this.priceList,
   });
   final bool haveRate;
   final String priceList;
+  final int? allowSales;
 
   @override
   State<AddItemsWidget> createState() => _AddItemsWidgetState();
@@ -61,6 +63,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                 builder: (context) {
                                   return ItemListScreen(
                                     priceList: widget.priceList,
+                                    allowSales: widget.allowSales,
                                   );
                                 },
                               ),

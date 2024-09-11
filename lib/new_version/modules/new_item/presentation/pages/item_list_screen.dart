@@ -11,7 +11,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/dismiss_keyboard.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../../../core/utils/error_dialog.dart';
 import '../../data/models/item_filter.dart';
 import '../cubit/cubit/items_cubit.dart';
 import '../widgets/item_card_widget.dart';
@@ -21,10 +20,12 @@ class ItemListScreen extends StatefulWidget {
   const ItemListScreen({
     super.key,
     this.itemGroup,
+    this.allowSales,
     required this.priceList,
   });
   final String priceList;
   final String? itemGroup;
+  final int? allowSales;
 
   @override
   State<ItemListScreen> createState() => _ItemListScreenState();
@@ -56,7 +57,10 @@ class _ItemListScreenState extends State<ItemListScreen> {
     final bloc = BlocProvider.of<ItemsCubit>(context);
     bloc.resetItem();
     bloc.getAllItems(
-      itemFilter: ItemsFilter(priceList: widget.priceList, startKey: 1),
+      itemFilter: ItemsFilter(
+          priceList: widget.priceList,
+          startKey: 1,
+          allowSales: widget.allowSales),
     );
   }
 
@@ -77,9 +81,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
     if (!mounted) return;
     bloc.getAllItems(
       itemFilter: ItemsFilter(
-        priceList: widget.priceList,
-        searchText: barcodeScanRes,
-      ),
+          priceList: widget.priceList,
+          searchText: barcodeScanRes,
+          allowSales: widget.allowSales),
     );
   }
 
@@ -132,9 +136,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
                           searchFunction: (value) {
                             bloc.getAllItems(
                               itemFilter: ItemsFilter(
-                                priceList: widget.priceList,
-                                searchText: value,
-                              ),
+                                  priceList: widget.priceList,
+                                  searchText: value,
+                                  allowSales: widget.allowSales),
                             );
                           },
                         ),
@@ -171,9 +175,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                 // Load more data here by dispatching a new GetItemEvent with pagination information.
                                 bloc.getAllItems(
                                   itemFilter: ItemsFilter(
-                                    priceList: widget.priceList,
-                                    startKey: bloc.items.length + 1,
-                                  ),
+                                      priceList: widget.priceList,
+                                      startKey: bloc.items.length + 1,
+                                      allowSales: widget.allowSales),
                                 );
                               }
                             }

@@ -590,6 +590,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                     SizedBox(
                       height: 500.h,
                       child: AddItemsWidget(
+                        allowSales: 1,
                         priceList: data['selling_price_list'] ??
                             context
                                 .read<UserProvider>()

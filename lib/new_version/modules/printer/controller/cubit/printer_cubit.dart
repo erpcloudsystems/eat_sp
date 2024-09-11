@@ -39,11 +39,15 @@ class PrinterCubit extends Cubit<PrinterState> {
   }
 
   // Load connected device ID
-  List<BluetoothDevice> connectedDevices = [];
+  List<BluetoothDevice> allDevices = [];
+
   Future<void> loadDevice() async {
-    requestBluetoothPermissions();
+    // Request Bluetooth permissions
+    allDevices.clear();
+    await requestBluetoothPermissions();
     emit(PrinterLoading());
 
+    // Load saved device ID from SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString(connectedPrinterKey);
 
@@ -52,10 +56,11 @@ class PrinterCubit extends Cubit<PrinterState> {
     print('Cached printer found with ID: $deviceId');
 
     // Check if the device is already connected
-    connectedDevices = await flutterBlue.connectedDevices;
-
+    List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
     bool deviceFound = false;
+
     for (var device in connectedDevices) {
+      allDevices.add(device); // Add connected devices to the list
       if (device.id.toString() == deviceId) {
         defaultDevice = device;
         emit(PrinterConnected(defaultDevice!));
@@ -65,14 +70,14 @@ class PrinterCubit extends Cubit<PrinterState> {
     }
 
     if (!deviceFound) {
-      // If not found in connected devices, start scanning
+      // If device not found in connected devices, start scanning for new devices
       flutterBlue.startScan(timeout: const Duration(seconds: 10));
 
-      // Listen to scan results
+      // Listen to scan results and populate the allDevices list
       flutterBlue.scanResults.listen((results) {
         for (var result in results) {
-          if (!(connectedDevices.contains(result.device))) {
-            connectedDevices.add(result.device);
+          if (!allDevices.any((d) => d.id == result.device.id)) {
+            allDevices.add(result.device); // Add only unique devices
           }
 
           if (result.device.id.toString() == deviceId) {
@@ -88,6 +93,8 @@ class PrinterCubit extends Cubit<PrinterState> {
             return;
           }
         }
+
+        // If no matching device found, emit PrinterDisconnected
         emit(PrinterDisconnected());
       });
     }

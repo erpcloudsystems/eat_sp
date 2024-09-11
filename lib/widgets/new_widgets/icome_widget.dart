@@ -47,7 +47,7 @@ class IncomeWidget extends StatelessWidget {
         );
       },
       child: SizedBox(
-        width: 180.w,
+        width: 175.w,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
