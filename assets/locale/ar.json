@@ -442,5 +442,7 @@
   "Sales Order": "أمر مبيعات",
   "Delivery Note": "مذكرة تسليم",
   "Driver": "سائق",
-  "Vehicle": "مركبة"
+  "Vehicle": "مركبة",
+  "Remark" :"ملاحظة"
+
 }

@@ -174,7 +174,11 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
 
     // Default Warehouse
     if (userProvider.warehouseList.isNotEmpty) {
-      data['set_warehouse'] = userProvider.warehouseList.first.docName;
+      for (var warehouse in userProvider.warehouseList) {
+        if (warehouse.isDefault == 1) {
+          data['set_warehouse'] = warehouse.docName;
+        }
+      }
     }
 
     //Editing Mode and Amending Mode

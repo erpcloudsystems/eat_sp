@@ -90,6 +90,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
+          centerTitle: true,
           title: Text(
             'Select Item'.tr(),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -110,21 +111,15 @@ class _ItemListScreenState extends State<ItemListScreen> {
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
             if (state is GettingAllItemsFailedState) {
-              showDialog(
-                context: context,
-                builder: (context) => ErrorDialog(
-                  errorMessage: StringsManager.noItemAvailable.tr(),
-                ),
-              );
+              // showDialog(
+              //   context: context,
+              //   builder: (context) => ErrorDialog(
+              //     errorMessage: StringsManager.noItemAvailable.tr(),
+              //   ),
+              // );
             }
           },
           builder: (context, state) {
-            if (state is GettingItemsLoadingState) {
-              return const CustomLoadingWithImage();
-            }
-            if (state is GettingAllItemsFailedState) {
-              return const NothingHere();
-            }
             return Column(
               children: [
                 Padding(
@@ -134,6 +129,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
                       Flexible(
                         child: NewSearchWidget(
                           searchFunction: (value) {
+                            bloc.resetItem();
                             bloc.getAllItems(
                               itemFilter: ItemsFilter(
                                 priceList: widget.priceList,
@@ -157,63 +153,77 @@ class _ItemListScreenState extends State<ItemListScreen> {
                   ),
                 ),
                 Flexible(
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (scrollNotification) {
-                      if (scrollNotification is ScrollEndNotification) {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        Future.delayed(const Duration(seconds: 2), () {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        });
-                        if (scrollNotification.metrics.pixels ==
-                            scrollNotification.metrics.maxScrollExtent) {
-                          // Load more data here by dispatching a new GetItemEvent with pagination information.
-                          bloc.getAllItems(
-                            itemFilter: ItemsFilter(
-                              priceList: widget.priceList,
-                              startKey: bloc.items.length + 1,
-                            ),
-                          );
-                        }
-                      }
+                  child: state is GettingItemsLoadingState
+                      ? const CustomLoadingWithImage()
+                      : state is GettingAllItemsFailedState &&
+                              bloc.items.isEmpty
+                          ? const NothingHere()
+                          : NotificationListener<ScrollNotification>(
+                              onNotification: (scrollNotification) {
+                                if (scrollNotification
+                                    is ScrollEndNotification) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  });
+                                  if (scrollNotification.metrics.pixels ==
+                                      scrollNotification
+                                          .metrics.maxScrollExtent) {
+                                    // Load more data here by dispatching a new GetItemEvent with pagination information.
+                                    bloc.getAllItems(
+                                      itemFilter: ItemsFilter(
+                                        priceList: widget.priceList,
+                                        startKey: bloc.items.length + 1,
+                                      ),
+                                    );
+                                  }
+                                }
 
-                      return false;
-                    },
-                    child: AnimationLimiter(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: bloc.items.length,
-                        itemBuilder: (context, index) {
-                          return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 1500),
-                            child: SlideAnimation(
-                              verticalOffset: 100.0,
-                              child: FadeInAnimation(
-                                child: ItemCardWidget(
-                                  itemTaxTemplate:
-                                      bloc.items[index].itemTaxTemplate,
-                                  taxPercent: bloc.items[index].taxPercent,
-                                  itemCode: bloc.items[index].itemCode,
-                                  itemName: bloc.items[index].itemName,
-                                  itemGroup: bloc.items[index].itemGroup,
-                                  rate: bloc.items[index].netRate,
-                                  uom: bloc.items[index].uom,
-                                  imageUrl: bloc.items[index].imageUrl,
-                                  uomList: bloc.items[index].uomList,
-                                  priceListRate:
-                                      bloc.items[index].priceListRate,
+                                return false;
+                              },
+                              child: AnimationLimiter(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: bloc.items.length,
+                                  itemBuilder: (context, index) {
+                                    return AnimationConfiguration.staggeredList(
+                                      position: index,
+                                      duration:
+                                          const Duration(milliseconds: 1500),
+                                      child: SlideAnimation(
+                                        verticalOffset: 100.0,
+                                        child: FadeInAnimation(
+                                          child: ItemCardWidget(
+                                            itemTaxTemplate: bloc
+                                                .items[index].itemTaxTemplate,
+                                            taxPercent:
+                                                bloc.items[index].taxPercent,
+                                            itemCode:
+                                                bloc.items[index].itemCode,
+                                            itemName:
+                                                bloc.items[index].itemName,
+                                            itemGroup:
+                                                bloc.items[index].itemGroup,
+                                            rate: bloc.items[index].netRate,
+                                            uom: bloc.items[index].uom,
+                                            imageUrl:
+                                                bloc.items[index].imageUrl,
+                                            uomList: bloc.items[index].uomList,
+                                            priceListRate:
+                                                bloc.items[index].priceListRate,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
                 ),
                 if (!bloc.hasReachedMax && isLoading)
                   const Align(

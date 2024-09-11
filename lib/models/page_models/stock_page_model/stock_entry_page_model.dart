@@ -31,7 +31,8 @@ class StockEntryPageModel {
       {
         tr(StringsManager.vehicle): data['custom_vehicle'] ?? tr('none'),
         tr(StringsManager.driver): data['custom_driver'] ?? tr('none'),
-      }
+      },
+      {tr(StringsManager.remarks): data['custom_remark'] ?? tr('none')},
     ];
   }
 

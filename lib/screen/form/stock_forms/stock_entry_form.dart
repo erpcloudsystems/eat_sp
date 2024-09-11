@@ -40,6 +40,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
     "doctype": "Stock Entry",
     'stock_entry_type': stockEntryType[2],
     "posting_date": DateTime.now().toIso8601String(),
+    'custom_is_return': 0,
   };
   double totalAmount = 0;
 
@@ -307,6 +308,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
                         docType: APIService.VEHICLE,
                         nameResponse: 'name',
                         title: StringsManager.vehicle.tr(),
+                        isValidate: false,
                         keys: const {
                           'subTitle': 'employee',
                           'trailing': 'model',
@@ -321,6 +323,7 @@ class _StockEntryFormState extends State<StockEntryForm> {
                         docType: APIService.DRIVER,
                         nameResponse: 'name',
                         title: StringsManager.driver.tr(),
+                        isValidate: false,
                         keys: const {
                           'subTitle': 'full_name',
                           'trailing': 'status',
@@ -330,6 +333,23 @@ class _StockEntryFormState extends State<StockEntryForm> {
                             data['custom_driver'] = value['name'];
                           });
                         }),
+                    CheckBoxWidget('custom_is_return', 'Is Return'.tr(),
+                        initialValue:
+                            data['custom_is_return'] == 1 ? true : false,
+                        onChanged: (id, value) =>
+                            setState(() => data[id] = value ? 1 : 0)),
+                    CustomTextFieldTest(
+                      'custom_remark',
+                      'Remark'.tr(),
+                      disableValidation: true,
+                      onSave: (key, value) => data[key] = value,
+                      onChanged: (value) {
+                        setState(() {
+                          data['custom_remark'] = value;
+                        });
+                      },
+                      initialValue: data['custom_remark'] ?? '',
+                    ),
                     const SizedBox(height: 8),
                   ],
                 ),

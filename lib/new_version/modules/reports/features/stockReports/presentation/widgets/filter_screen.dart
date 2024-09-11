@@ -1,3 +1,4 @@
+import 'package:NextApp/provider/user/user_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ import '../../../../../../core/resources/app_values.dart';
 import '../../../../../../../provider/module/module_type.dart';
 import '../../../../../../core/resources/strings_manager.dart';
 import '../../../../../../../provider/module/module_provider.dart';
+
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
 
@@ -32,6 +34,15 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final userProvider = context.read<UserProvider>();
+    // Default Warehouse
+    if (userProvider.warehouseList.isNotEmpty) {
+      for (var warehouse in userProvider.warehouseList) {
+        if (warehouse.isDefault == 1) {
+          wareHouseName = warehouse.docName;
+        }
+      }
+    }
     if (!isReportTypeInitialized) {
       reportType = ModalRoute.of(context)!.settings.arguments as String;
       isReportTypeInitialized = true;
@@ -60,6 +71,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     clearButton: true,
                     onSave: (key, value) => wareHouseName = value,
                     initialValue: wareHouseName,
+                    enabled: wareHouseName == null,
                     onPressed: () async {
                       final res = await Navigator.of(context).push(
                         MaterialPageRoute(

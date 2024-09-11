@@ -444,5 +444,6 @@
   "Sales Order" :"Sales Order",
   "Delivery Note" :"Delivery Note",
   "Driver" :"Driver",
-  "Vehicle" :"Vehicle"
+  "Vehicle" :"Vehicle", 
+  "Remark" :"Remark"
 }
