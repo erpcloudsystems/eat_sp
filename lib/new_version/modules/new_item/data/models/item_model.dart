@@ -11,10 +11,11 @@ class NewItemModel extends ItemEntity {
     required super.itemGroup,
     required super.netRate,
     required super.priceListRate,
-    required super.uomList,
     required super.barCode,
     required super.itemTaxTemplate,
     required super.taxPercent,
+    required super.qty,
+    required super.stockUom,
   });
 
   factory NewItemModel.fromJson(Map<String, dynamic> json) => NewItemModel(
@@ -29,13 +30,10 @@ class NewItemModel extends ItemEntity {
         netRate: json['net_rate'] ?? 0,
         taxPercent: json['tax_percent'] ?? 0,
         priceListRate: json['price_list_rate'] != null
-            ? double.parse(json['price_list_rate'])
+            ? double.parse(json['price_list_rate'].toString())
             : 0,
-        uomList: List.from(
-          json['uom_list'].map(
-            (e) => UomModel.fromJson(e),
-          ),
-        ),
+        qty: json['actual_qty'] ?? 0.0,
+        stockUom: json['stock_uom'] ?? 'none'
       );
 
   @override
@@ -49,6 +47,7 @@ class NewItemModel extends ItemEntity {
         netRate,
         priceListRate,
         barCode,
+        stockUom,
       ];
 }
 

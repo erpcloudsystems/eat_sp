@@ -437,9 +437,11 @@
   "SAR": "ريال",
   "Return Invoice": "فاتورة مرتجع",
   "Printer Settings": "إعدادات الطابعة",
-  "Printers":"الطابعات",
-  "Connected Printer:":"الطابعة المتصلة:",
-  "See All":"انظر الكل",
-  "Download":"تنزيل",
-  "Print":"طباعة"
+  "Printers": "الطابعات",
+  "Connected Printer:": "الطابعة المتصلة:",
+  "See All": "انظر الكل",
+  "Download": "تنزيل",
+  "Print": "طباعة",
+  "Update customer location": "تحديث موقع العميل",
+  "Available stock": "المخزون المتاح"
 }

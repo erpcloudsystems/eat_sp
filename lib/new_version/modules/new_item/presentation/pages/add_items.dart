@@ -14,10 +14,12 @@ class AddItemsWidget extends StatefulWidget {
     this.haveRate = true,
     this.allowSales,
     required this.priceList,
+     this.warehouse
   });
   final bool haveRate;
   final String priceList;
   final int? allowSales;
+  final String? warehouse;
 
   @override
   State<AddItemsWidget> createState() => _AddItemsWidgetState();
@@ -64,6 +66,7 @@ class _AddItemsWidgetState extends State<AddItemsWidget> {
                                   return ItemListScreen(
                                     priceList: widget.priceList,
                                     allowSales: widget.allowSales,
+                                    warehouse: widget.warehouse,
                                   );
                                 },
                               ),

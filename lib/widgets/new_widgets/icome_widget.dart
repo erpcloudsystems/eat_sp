@@ -37,14 +37,32 @@ class IncomeWidget extends StatelessWidget {
     final provider = Provider.of<ModuleProvider>(context);
     return InkWell(
       onTap: () {
-        provider.setModule = title;
-        provider.iAmCreatingAForm();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => provider.currentModule.createForm!,
-          ),
-        );
+        if (docType == DocTypesName.customer) {
+          /// Set Module
+          provider.setModule = docType;
+
+          /// Apply filter
+          if (filters != null) {
+            provider.filter.addAll(filters!);
+          }
+
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return GenericListScreen.module();
+              },
+            ),
+          ).whenComplete(() => provider.filter.clear());
+        } else {
+          provider.setModule = title;
+          provider.iAmCreatingAForm();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => provider.currentModule.createForm!,
+            ),
+          );
+        }
       },
       child: SizedBox(
         width: 175.w,

@@ -165,6 +165,16 @@ class GetTotalWidget extends StatelessWidget {
                       (state.totalEntity.paymentEntriesEntity?['total'] ?? 0.00)
                           .toStringAsFixed(2),
                 ),
+                IncomeWidget(
+                  docType: DocTypesName.customer,
+                  title: 'DocType.${DocTypesName.customer}'.tr(),
+                  count: state.totalEntity.paymentEntriesEntity['count'] ?? 0,
+                  arrowIcon: Icons.arrow_upward,
+                  color: Colors.green,
+                  total:
+                      (state.totalEntity.paymentEntriesEntity?['total'] ?? 0.00)
+                          .toStringAsFixed(2),
+                ),
               ],
             ),
           ],

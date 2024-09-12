@@ -41,6 +41,8 @@ class DocTypesName {
 
   static const String jobCard = 'Job Card';
   static const String bom = 'BOM';
+
+  static const String customer = 'Customer';
 }
 
 class StringsManager {

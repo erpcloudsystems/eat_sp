@@ -17,15 +17,16 @@ import '../widgets/item_card_widget.dart';
 import '../widgets/new_search_widget.dart';
 
 class ItemListScreen extends StatefulWidget {
-  const ItemListScreen({
-    super.key,
-    this.itemGroup,
-    this.allowSales,
-    required this.priceList,
-  });
+  const ItemListScreen(
+      {super.key,
+      this.itemGroup,
+      this.allowSales,
+      required this.priceList,
+      this.warehouse});
   final String priceList;
   final String? itemGroup;
   final int? allowSales;
+  final String? warehouse;
 
   @override
   State<ItemListScreen> createState() => _ItemListScreenState();
@@ -58,9 +59,10 @@ class _ItemListScreenState extends State<ItemListScreen> {
     bloc.resetItem();
     bloc.getAllItems(
       itemFilter: ItemsFilter(
-          priceList: widget.priceList,
-          startKey: 1,
-          allowSales: widget.allowSales),
+        priceList: widget.priceList,
+        startKey: 1,
+        allowSales: widget.allowSales,
+      ),
     );
   }
 
@@ -204,11 +206,11 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                         itemName: bloc.items[index].itemName,
                                         itemGroup: bloc.items[index].itemGroup,
                                         rate: bloc.items[index].netRate,
-                                        uom: bloc.items[index].uom,
+                                        uom: bloc.items[index].stockUom,
                                         imageUrl: bloc.items[index].imageUrl,
-                                        uomList: bloc.items[index].uomList,
                                         priceListRate:
                                             bloc.items[index].priceListRate,
+                                            qty:  bloc.items[index].qty,
                                       ),
                                     ),
                                   ),
