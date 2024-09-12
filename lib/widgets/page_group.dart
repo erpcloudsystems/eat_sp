@@ -68,7 +68,7 @@ class PageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> columnChildren = [...header];
+    List<Widget> columnChildren = [...header,];
     List<Widget> rowChildren = [];
     List<String> keys;
 
