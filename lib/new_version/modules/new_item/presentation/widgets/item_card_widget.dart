@@ -13,27 +13,27 @@ import '../../../../../widgets/new_widgets/test_text_field.dart';
 
 // ignore: must_be_immutable
 class ItemCardWidget extends StatefulWidget {
-  ItemCardWidget({
-    super.key,
-    required this.itemName,
-    required this.rate,
-    required this.uom,
-    required this.imageUrl,
-    required this.itemCode,
-    required this.uomList,
-    required this.itemGroup,
-    required this.priceListRate,
-    this.itemTaxTemplate,
-    this.taxPercent,
-  });
+  ItemCardWidget(
+      {super.key,
+      required this.itemName,
+      required this.rate,
+      required this.uom,
+      required this.imageUrl,
+      required this.itemCode,
+       this.uomList,
+      required this.itemGroup,
+      required this.priceListRate,
+      this.itemTaxTemplate,
+      this.taxPercent,
+      required this.qty});
   final String itemName, imageUrl, itemCode, itemGroup;
   final String? itemTaxTemplate;
 
   final double? taxPercent;
   final double rate, priceListRate;
   String uom;
-  final List<UomModel> uomList;
-
+  final List<UomModel>? uomList;
+  final double qty;
   @override
   State<ItemCardWidget> createState() => _ItemCardWidgetState();
 }
@@ -114,6 +114,24 @@ class _ItemCardWidgetState extends State<ItemCardWidget> {
                             Text(
                               (newRate ?? widget.priceListRate).toString(),
                               //widget.rate.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              '${'Available stock'.tr()}: ',
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              widget.qty.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

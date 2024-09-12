@@ -6,13 +6,15 @@ class ItemsFilter extends Equatable {
   final String? searchText;
   final String? priceList;
   final int? allowSales;
+  final String? warehouse;
 
   const ItemsFilter(
       {this.itemGroup,
       this.startKey = 0,
       this.searchText,
       this.priceList,
-      this.allowSales});
+      this.allowSales,
+      this.warehouse});
 
   @override
   List<Object?> get props => [
@@ -21,5 +23,6 @@ class ItemsFilter extends Equatable {
         searchText,
         priceList,
         allowSales,
+        warehouse,
       ];
 }

@@ -30,6 +30,7 @@ class ItemsCubit extends Cubit<ItemsState> {
             if (itemFilter.startKey != 0) 'start': itemFilter.startKey,
             if (itemFilter.searchText != null)
               'search_text': itemFilter.searchText,
+            if (itemFilter.warehouse != null) 'warehouse': itemFilter.warehouse
           },
         );
 
@@ -63,6 +64,7 @@ class ItemsCubit extends Cubit<ItemsState> {
       }
     } catch (error) {
       emit(GettingAllItemsFailedState(error.toString()));
+      print(error.toString());
     }
   }
 

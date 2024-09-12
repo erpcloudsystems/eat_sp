@@ -563,6 +563,8 @@ class _SalesInvoiceFormState extends State<SalesInvoiceForm> {
                             context
                                 .read<UserProvider>()
                                 .defaultSellingPriceList,
+                        warehouse: data['set_warehouse'],
+                                
                       ),
                     ),
                   ],

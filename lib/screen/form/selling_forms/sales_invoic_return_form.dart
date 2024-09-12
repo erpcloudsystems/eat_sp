@@ -595,6 +595,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                             context
                                 .read<UserProvider>()
                                 .defaultSellingPriceList,
+                                warehouse: data['set_warehouse'],
                       ),
                     )
                   ],
