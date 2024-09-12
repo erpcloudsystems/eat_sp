@@ -126,11 +126,11 @@ class DownloadPdfButton extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const Icon(
                 Icons.download,
-                color: Colors.black,
+                color: Colors.white,
                 size: 30,
               ),
             ],
@@ -155,7 +155,7 @@ class PrintPageButton extends StatelessWidget {
             ? () => context.read<PrinterCubit>().printInvoiceServices(
                   context: context,
                   id: moduleProvider.pageId,
-                  docType: moduleProvider.currentModule.title,
+                  docType: moduleProvider.currentModule.genericListService,
                   format: 'POS Arabic',
                 )
             : null,
@@ -169,11 +169,11 @@ class PrintPageButton extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const Icon(
                 Icons.print_sharp,
-                color: Colors.black,
+                color: Colors.white,
                 size: 30,
               ),
             ],

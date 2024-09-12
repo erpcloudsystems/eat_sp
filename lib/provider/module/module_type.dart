@@ -468,8 +468,8 @@ class ModuleType {
   );
   // Sales Invoice Return
   static final salesInvoiceReturn = ModuleType._(
-    genericListService: 'Return',
-    title: 'Sales Invoice',
+    genericListService: DocTypesName.returnD,
+    title: DocTypesName.salesInvoice,
     listItem: (item) {
       item as SalesInvoiceItemModel;
       return ListCardTest(

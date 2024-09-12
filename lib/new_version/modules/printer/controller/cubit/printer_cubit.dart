@@ -15,6 +15,7 @@ import '../../../../../core/constants.dart';
 import '../../../../../service/service_constants.dart';
 import '../../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../core/network/api_constance.dart';
+import '../../../../core/resources/strings_manager.dart';
 
 part 'printer_state.dart';
 
@@ -44,7 +45,7 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> loadDevice() async {
     // Request Bluetooth permissions
     allDevices.clear();
-    await requestBluetoothPermissions();
+
     emit(PrinterLoading());
 
     // Load saved device ID from SharedPreferences
@@ -60,7 +61,7 @@ class PrinterCubit extends Cubit<PrinterState> {
     bool deviceFound = false;
 
     for (var device in connectedDevices) {
-      allDevices.add(device); // Add connected devices to the list
+      allDevices.add(device);
       if (device.id.toString() == deviceId) {
         defaultDevice = device;
         emit(PrinterConnected(defaultDevice!));
@@ -117,7 +118,6 @@ class PrinterCubit extends Cubit<PrinterState> {
       emit(PrinterLoading());
 
       if (defaultDevice != null) {
-        // Connect and print using the saved device
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
         await Printing.layoutPdf(
@@ -139,27 +139,35 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> connectAndPrintToBluetoothPrinter(
       BluetoothDevice device, List<int> invoiceData) async {
     try {
-      // Check if device is already connected
-      if (device.id.toString() != defaultDevice!.id.toString()) {
+      // Check if the device is already connected
+      if (defaultDevice == null ||
+          device.id.toString() != defaultDevice!.id.toString()) {
         await device.connect();
-        //  await saveDevice(device); // Save device when connected
+        defaultDevice = device;
       }
 
       // Discover services after ensuring the device is connected
       List<BluetoothService> services = await device.discoverServices();
+      bool invoicePrinted = false; // Track if the invoice has been printed
+
       for (BluetoothService service in services) {
         for (BluetoothCharacteristic characteristic
             in service.characteristics) {
-          if (characteristic.properties.write) {
+          if (characteristic.properties.write && !invoicePrinted) {
             await characteristic.write(invoiceData);
             Fluttertoast.showToast(msg: 'Invoice sent to printer');
+            invoicePrinted = true;
             break;
           }
         }
+        if (invoicePrinted) break; // Exit the service loop if printed
       }
+
+      // Ensure the state is updated after successful printing
+      emit(PrinterPrintingSuccess());
     } catch (e) {
       debugPrint('Error while printing to Bluetooth: $e');
-
+      Fluttertoast.showToast(msg: 'Failed to print: $e');
       emit(PrinterError());
     }
   }
@@ -177,7 +185,13 @@ class PrinterCubit extends Cubit<PrinterState> {
       // Fetch the invoice data from the backend
       final response = await APIService().dio.get(
             PRINT_INVOICE,
-            queryParameters: {'doctype': docType, 'name': id, 'format': format},
+            queryParameters: {
+              'doctype': docType == DocTypesName.returnD
+                  ? DocTypesName.salesInvoice
+                  : docType,
+              'name': id,
+              'format': selectPrintFormat(docType),
+            },
             options: Options(
               responseType: ResponseType.bytes,
               followRedirects: false,
@@ -188,6 +202,7 @@ class PrinterCubit extends Cubit<PrinterState> {
               },
             ),
           );
+      print(docType + selectPrintFormat(docType));
 
       Navigator.pop(context);
 
@@ -199,6 +214,17 @@ class PrinterCubit extends Cubit<PrinterState> {
       Navigator.pop(context);
       debugPrint('Error while printing: $e');
       Fluttertoast.showToast(msg: 'Error occurred: $e');
+    }
+  }
+
+  String selectPrintFormat(String docType) {
+    switch (docType) {
+      case DocTypesName.salesInvoice:
+        return 'فاتورة ضريبية';
+      case DocTypesName.returnD:
+        return 'فاتورة مرتجع';
+      default:
+        return 'POS Arabic';
     }
   }
 

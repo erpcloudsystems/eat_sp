@@ -21,9 +21,13 @@ class _ScanBluetoothDevicesWidgetState
 
   @override
   void initState() {
+    final cubit = context.read<PrinterCubit>();
     super.initState();
-    Future.delayed(Duration.zero, () {
-      context.read<PrinterCubit>().loadDevice();
+    Future.delayed(Duration.zero, () async {
+      await cubit.requestBluetoothPermissions();
+      if (mounted) {
+        cubit.loadDevice();
+      }
       // _startScan();
     });
   }
@@ -34,7 +38,7 @@ class _ScanBluetoothDevicesWidgetState
 
     return printerCubit.state is PrinterLoading
         ? const Center(child: CircularProgressIndicator())
-        : printerCubit.allDevices.isEmpty
+        : printerCubit.state is PrinterError
             ? Center(
                 child: Text(
                   StringsManager.noData.tr(),
