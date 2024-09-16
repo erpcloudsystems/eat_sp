@@ -62,6 +62,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
         priceList: widget.priceList,
         startKey: 1,
         allowSales: widget.allowSales,
+        warehouse: widget.warehouse,
       ),
     );
   }
@@ -83,9 +84,11 @@ class _ItemListScreenState extends State<ItemListScreen> {
     if (!mounted) return;
     bloc.getAllItems(
       itemFilter: ItemsFilter(
-          priceList: widget.priceList,
-          searchText: barcodeScanRes,
-          allowSales: widget.allowSales),
+        priceList: widget.priceList,
+        searchText: barcodeScanRes,
+        allowSales: widget.allowSales,
+        warehouse: widget.warehouse,
+      ),
     );
   }
 
@@ -138,9 +141,11 @@ class _ItemListScreenState extends State<ItemListScreen> {
                           searchFunction: (value) {
                             bloc.getAllItems(
                               itemFilter: ItemsFilter(
-                                  priceList: widget.priceList,
-                                  searchText: value,
-                                  allowSales: widget.allowSales),
+                                priceList: widget.priceList,
+                                searchText: value,
+                                allowSales: widget.allowSales,
+                                warehouse: widget.warehouse,
+                              ),
                             );
                           },
                         ),
@@ -177,9 +182,11 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                 // Load more data here by dispatching a new GetItemEvent with pagination information.
                                 bloc.getAllItems(
                                   itemFilter: ItemsFilter(
-                                      priceList: widget.priceList,
-                                      startKey: bloc.items.length + 1,
-                                      allowSales: widget.allowSales),
+                                    priceList: widget.priceList,
+                                    startKey: bloc.items.length + 1,
+                                    allowSales: widget.allowSales,
+                                    warehouse: widget.warehouse,
+                                  ),
                                 );
                               }
                             }
@@ -210,7 +217,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
                                         imageUrl: bloc.items[index].imageUrl,
                                         priceListRate:
                                             bloc.items[index].priceListRate,
-                                            qty:  bloc.items[index].qty,
+                                        qty: bloc.items[index].qty,
                                       ),
                                     ),
                                   ),
