@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:NextApp/service/service.dart';
@@ -180,7 +181,12 @@ class PrinterCubit extends Cubit<PrinterState> {
     required String format,
   }) async {
     await showLoadingDialog(context, 'Fetching invoice data...');
-
+    if (!await requestStoragePermission()) {
+      Fluttertoast.showToast(
+          msg: "Permissions denied. Please grant Storage permissions.");
+      Navigator.pop(context);
+      return;
+    }
     try {
       // Fetch the invoice data from the backend
       final response = await APIService().dio.get(
@@ -235,7 +241,6 @@ class PrinterCubit extends Cubit<PrinterState> {
     PermissionStatus bluetoothConnectStatus =
         await Permission.bluetoothConnect.request();
     PermissionStatus locationStatus = await Permission.location.request();
-
     // Check if any permission is denied
     if (bluetoothScanStatus.isDenied ||
         bluetoothConnectStatus.isDenied ||
@@ -254,6 +259,25 @@ class PrinterCubit extends Cubit<PrinterState> {
           msg:
               "Permissions permanently denied. Please go to settings to enable them.");
       openAppSettings();
+    }
+  }
+
+  Future<bool> requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      if (await Permission.storage.isGranted) {
+        return true;
+      } else {
+        if (Platform.version.compareTo("30") < 0) {
+          PermissionStatus status = await Permission.storage.request();
+          return status == PermissionStatus.granted;
+        } else {
+          PermissionStatus status =
+              await Permission.manageExternalStorage.request();
+          return status == PermissionStatus.granted;
+        }
+      }
+    } else {
+      return true;
     }
   }
 }
