@@ -54,7 +54,7 @@ class IncomeWidget extends StatelessWidget {
             ),
           ).whenComplete(() => provider.filter.clear());
         } else {
-          provider.setModule = title;
+          provider.setModule = docType;
           provider.iAmCreatingAForm();
           Navigator.push(
             context,
