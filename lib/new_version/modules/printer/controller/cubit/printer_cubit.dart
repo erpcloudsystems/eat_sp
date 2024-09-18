@@ -17,6 +17,7 @@ import '../../../../../service/service_constants.dart';
 import '../../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../core/network/api_constance.dart';
 import '../../../../core/resources/strings_manager.dart';
+import '../../view/screens/pdf_viewer_screen.dart';
 
 part 'printer_state.dart';
 
@@ -121,9 +122,14 @@ class PrinterCubit extends Cubit<PrinterState> {
       if (defaultDevice != null) {
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
-        await Printing.layoutPdf(
-            onLayout: (format) async => Uint8List.fromList(invoiceData),
-            format: PdfPageFormat.a4);
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PdfViewerScreen(invoiceData: invoiceData),
+            ),
+          );
+        }
       } else {
         Fluttertoast.showToast(
           msg: 'No printer connected. Please set a printer in the settings.',
