@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:NextApp/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -181,11 +180,11 @@ class PrinterCubit extends Cubit<PrinterState> {
     required String format,
   }) async {
     await showLoadingDialog(context, 'Fetching invoice data...');
-    if (!await requestStoragePermission()) {
-      Fluttertoast.showToast(
-          msg: "Permissions denied. Please grant Storage permissions.");
-      return;
-    }
+    // if (!await requestStoragePermission()) {
+    //   Fluttertoast.showToast(
+    //       msg: "Permissions denied. Please grant Storage permissions.");
+    //   return;
+    // }
     try {
       // Fetch the invoice data from the backend
       final response = await APIService().dio.get(
@@ -240,10 +239,13 @@ class PrinterCubit extends Cubit<PrinterState> {
     PermissionStatus bluetoothConnectStatus =
         await Permission.bluetoothConnect.request();
     PermissionStatus locationStatus = await Permission.location.request();
+    PermissionStatus storageStatus = await Permission.storage.request();
+    await getExternalStorageDirectory();
     // Check if any permission is denied
     if (bluetoothScanStatus.isDenied ||
         bluetoothConnectStatus.isDenied ||
-        locationStatus.isDenied) {
+        locationStatus.isDenied ||
+        storageStatus.isDenied) {
       Fluttertoast.showToast(
           msg:
               "Permissions denied. Please grant Bluetooth and Location permissions.");
@@ -261,35 +263,35 @@ class PrinterCubit extends Cubit<PrinterState> {
     }
   }
 
-  Future<bool> requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      if (await Permission.storage.isGranted ||
-          (Platform.version.compareTo("30") >= 0 &&
-              await Permission.manageExternalStorage.isGranted)) {
-        // Permission is already granted for storage or manage external storage (Android 11+)
-        return true;
-      } else {
-        // For Android 10 and below, request normal storage permissions
-        if (Platform.version.compareTo("30") < 0) {
-          PermissionStatus status = await Permission.storage.request();
-          return status == PermissionStatus.granted;
-        } else {
-          // For Android 11 and above, request MANAGE_EXTERNAL_STORAGE
-          PermissionStatus status =
-              await Permission.manageExternalStorage.request();
-          if (status == PermissionStatus.granted) {
-            return true;
-          } else if (status == PermissionStatus.denied) {
-            // If permission is denied, return false
-            return false;
-          } else if (status == PermissionStatus.permanentlyDenied) {
-            // If permission is permanently denied, open app settings
-            await openAppSettings();
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
+  // Future<bool> requestStoragePermission() async {
+  //   if (Platform.isAndroid) {
+  //     if (await Permission.storage.isGranted ||
+  //         (Platform.version.compareTo("30") >= 0 &&
+  //             await Permission.manageExternalStorage.isGranted)) {
+  //       // Permission is already granted for storage or manage external storage (Android 11+)
+  //       return true;
+  //     } else {
+  //       // For Android 10 and below, request normal storage permissions
+  //       if (Platform.version.compareTo("30") < 0) {
+  //         PermissionStatus status = await Permission.storage.request();
+  //         return status == PermissionStatus.granted;
+  //       } else {
+  //         // For Android 11 and above, request MANAGE_EXTERNAL_STORAGE
+  //         PermissionStatus status =
+  //             await Permission.manageExternalStorage.request();
+  //         if (status == PermissionStatus.granted) {
+  //           return true;
+  //         } else if (status == PermissionStatus.denied) {
+  //           // If permission is denied, return false
+  //           return false;
+  //         } else if (status == PermissionStatus.permanentlyDenied) {
+  //           // If permission is permanently denied, open app settings
+  //           await openAppSettings();
+  //           return false;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
 }
