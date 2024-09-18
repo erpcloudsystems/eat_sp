@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:NextApp/new_version/core/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../controller/cubit/printer_cubit.dart';
@@ -17,8 +17,6 @@ class ScanBluetoothDevicesWidget extends StatefulWidget {
 
 class _ScanBluetoothDevicesWidgetState
     extends State<ScanBluetoothDevicesWidget> {
-  FlutterBlue flutterBlue = FlutterBlue.instance;
-
   @override
   void initState() {
     final cubit = context.read<PrinterCubit>();
@@ -70,19 +68,21 @@ class _ScanBluetoothDevicesWidgetState
                       },
                       onTap: () async {
                         // Check if Bluetooth is turned on
-                        BluetoothState state = await flutterBlue.state.first;
-                        if (state == BluetoothState.on) {
-                          // Save the selected device and load it if Bluetooth is on
-                          await printerCubit.saveDevice(device);
-                          await printerCubit.loadDevice();
-                          setState(() {});
-                        } else {
-                          Fluttertoast.showToast(
-                            msg:
-                                'Please enable Bluetooth to connect to the device.',
-                            toastLength: Toast.LENGTH_SHORT,
-                          );
-                        }
+                        FlutterBluePlus.adapterState
+                            .listen((BluetoothAdapterState state) async {
+                          print(state);
+                          if (state == BluetoothAdapterState.on) {
+                            await printerCubit.saveDevice(device);
+                            await printerCubit.loadDevice();
+                            setState(() {});
+                          } else {
+                            Fluttertoast.showToast(
+                              msg:
+                                  'Please enable Bluetooth to connect to the device.',
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                          }
+                        });
                       },
                     ),
                   );

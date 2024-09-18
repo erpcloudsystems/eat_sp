@@ -1,22 +1,17 @@
-import 'dart:typed_data';
-import 'package:NextApp/service/service.dart';
+import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:printing/printing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import '../../../../../core/constants.dart';
+import '../../../../../service/service.dart';
 import '../../../../../service/service_constants.dart';
 import '../../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../core/network/api_constance.dart';
 import '../../../../core/resources/strings_manager.dart';
-
 part 'printer_state.dart';
 
 class PrinterCubit extends Cubit<PrinterState> {
@@ -29,7 +24,6 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> saveDevice(BluetoothDevice device) async {
     emit(PrinterLoading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(device.id.toString());
     await prefs.setString(connectedPrinterKey, device.id.toString());
     defaultDevice = device;
     emit(PrinterConnected(defaultDevice!));
@@ -52,12 +46,10 @@ class PrinterCubit extends Cubit<PrinterState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString(connectedPrinterKey);
 
-    FlutterBlue flutterBlue = FlutterBlue.instance;
-
     print('Cached printer found with ID: $deviceId');
 
     // Check if the device is already connected
-    List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
+    List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
     bool deviceFound = false;
 
     for (var device in connectedDevices) {
@@ -72,10 +64,10 @@ class PrinterCubit extends Cubit<PrinterState> {
 
     if (!deviceFound) {
       // If device not found in connected devices, start scanning for new devices
-      flutterBlue.startScan(timeout: const Duration(seconds: 10));
+      FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
 
       // Listen to scan results and populate the allDevices list
-      flutterBlue.scanResults.listen((results) {
+      FlutterBluePlus.scanResults.listen((results) {
         for (var result in results) {
           if (!allDevices.any((d) => d.id == result.device.id)) {
             allDevices.add(result.device); // Add only unique devices
@@ -120,9 +112,6 @@ class PrinterCubit extends Cubit<PrinterState> {
       if (defaultDevice != null) {
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
-        await Printing.layoutPdf(
-            onLayout: (format) async => Uint8List.fromList(invoiceData),
-            format: PdfPageFormat.a4);
       } else {
         Fluttertoast.showToast(
           msg: 'No printer connected. Please set a printer in the settings.',
@@ -172,7 +161,7 @@ class PrinterCubit extends Cubit<PrinterState> {
     }
   }
 
-  //connect with backend
+  // Connect with backend
   void printInvoiceServices({
     required BuildContext context,
     required String docType,
@@ -180,11 +169,6 @@ class PrinterCubit extends Cubit<PrinterState> {
     required String format,
   }) async {
     await showLoadingDialog(context, 'Fetching invoice data...');
-    // if (!await requestStoragePermission()) {
-    //   Fluttertoast.showToast(
-    //       msg: "Permissions denied. Please grant Storage permissions.");
-    //   return;
-    // }
     try {
       // Fetch the invoice data from the backend
       final response = await APIService().dio.get(
@@ -206,8 +190,6 @@ class PrinterCubit extends Cubit<PrinterState> {
               },
             ),
           );
-      print(docType + selectPrintFormat(docType));
-
       Navigator.pop(context);
 
       await printInvoice(
@@ -239,13 +221,12 @@ class PrinterCubit extends Cubit<PrinterState> {
     PermissionStatus bluetoothConnectStatus =
         await Permission.bluetoothConnect.request();
     PermissionStatus locationStatus = await Permission.location.request();
-    PermissionStatus storageStatus = await Permission.storage.request();
-    await getExternalStorageDirectory();
+    await Permission.storage.request();
+
     // Check if any permission is denied
     if (bluetoothScanStatus.isDenied ||
         bluetoothConnectStatus.isDenied ||
-        locationStatus.isDenied ||
-        storageStatus.isDenied) {
+        locationStatus.isDenied) {
       Fluttertoast.showToast(
           msg:
               "Permissions denied. Please grant Bluetooth and Location permissions.");
@@ -262,36 +243,4 @@ class PrinterCubit extends Cubit<PrinterState> {
       openAppSettings();
     }
   }
-
-  // Future<bool> requestStoragePermission() async {
-  //   if (Platform.isAndroid) {
-  //     if (await Permission.storage.isGranted ||
-  //         (Platform.version.compareTo("30") >= 0 &&
-  //             await Permission.manageExternalStorage.isGranted)) {
-  //       // Permission is already granted for storage or manage external storage (Android 11+)
-  //       return true;
-  //     } else {
-  //       // For Android 10 and below, request normal storage permissions
-  //       if (Platform.version.compareTo("30") < 0) {
-  //         PermissionStatus status = await Permission.storage.request();
-  //         return status == PermissionStatus.granted;
-  //       } else {
-  //         // For Android 11 and above, request MANAGE_EXTERNAL_STORAGE
-  //         PermissionStatus status =
-  //             await Permission.manageExternalStorage.request();
-  //         if (status == PermissionStatus.granted) {
-  //           return true;
-  //         } else if (status == PermissionStatus.denied) {
-  //           // If permission is denied, return false
-  //           return false;
-  //         } else if (status == PermissionStatus.permanentlyDenied) {
-  //           // If permission is permanently denied, open app settings
-  //           await openAppSettings();
-  //           return false;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // }
 }
