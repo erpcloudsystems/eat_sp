@@ -24,7 +24,8 @@ class _ScanBluetoothDevicesWidgetState
     Future.delayed(Duration.zero, () async {
       await cubit.requestBluetoothPermissions();
       if (mounted) {
-        cubit.loadDevice();
+        print('LOADED');
+        await cubit.loadDevice();
       }
       // _startScan();
     });

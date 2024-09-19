@@ -87,6 +87,7 @@ class GPSService {
             errorMessage: StringsManager.userPermissionForLocationMessage.tr(),
             onPressed: () async {
               Navigator.of(context).pop();
+              await Permission.location.request();
               await Permission.locationAlways.request();
             },
           ),

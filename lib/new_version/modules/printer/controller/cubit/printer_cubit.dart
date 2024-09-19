@@ -54,7 +54,7 @@ class PrinterCubit extends Cubit<PrinterState> {
 
     for (var device in connectedDevices) {
       allDevices.add(device);
-      if (device.id.toString() == deviceId) {
+      if (device.remoteId.toString() == deviceId) {
         defaultDevice = device;
         emit(PrinterConnected(defaultDevice!));
         deviceFound = true;
@@ -64,16 +64,16 @@ class PrinterCubit extends Cubit<PrinterState> {
 
     if (!deviceFound) {
       // If device not found in connected devices, start scanning for new devices
-      FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
+       FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
 
       // Listen to scan results and populate the allDevices list
       FlutterBluePlus.scanResults.listen((results) {
         for (var result in results) {
-          if (!allDevices.any((d) => d.id == result.device.id)) {
+          if (!allDevices.any((d) => d.remoteId == result.device.remoteId)) {
             allDevices.add(result.device); // Add only unique devices
           }
 
-          if (result.device.id.toString() == deviceId) {
+          if (result.device.remoteId.toString() == deviceId) {
             defaultDevice = result.device;
             result.device.connect().then((_) {
               emit(PrinterConnected(defaultDevice!));
@@ -130,7 +130,7 @@ class PrinterCubit extends Cubit<PrinterState> {
     try {
       // Check if the device is already connected
       if (defaultDevice == null ||
-          device.id.toString() != defaultDevice!.id.toString()) {
+          device.remoteId.toString() != defaultDevice!.remoteId.toString()) {
         await device.connect();
         defaultDevice = device;
       }
@@ -154,6 +154,7 @@ class PrinterCubit extends Cubit<PrinterState> {
         }
         if (invoicePrinted) break; // Exit the service loop if printed
       }
+
       // Ensure the state is updated after successful printing
       emit(PrinterPrintingSuccess());
     } catch (e) {
@@ -192,12 +193,12 @@ class PrinterCubit extends Cubit<PrinterState> {
               },
             ),
           );
-      Navigator.pop(context);
 
       await printInvoice(
         context: context,
         invoiceData: response.data,
       );
+      Navigator.pop(context);
     } catch (e) {
       Navigator.pop(context);
       debugPrint('Error while printing: $e');
@@ -248,7 +249,7 @@ class PrinterCubit extends Cubit<PrinterState> {
 
   List<List<int>> splitDataIntoChunks(List<int> data) {
     List<List<int>> chunks = [];
-    int chunkSize = 509;
+    int chunkSize = 245;
     int offset = 0;
 
     while (offset < data.length) {
