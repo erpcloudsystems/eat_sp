@@ -143,7 +143,10 @@ class PrinterCubit extends Cubit<PrinterState> {
         for (BluetoothCharacteristic characteristic
             in service.characteristics) {
           if (characteristic.properties.write && !invoicePrinted) {
-            await characteristic.write(invoiceData);
+            List<List<int>> chunks = splitDataIntoChunks(invoiceData);
+            for (List<int> chunk in chunks) {
+              await characteristic.write(chunk);
+            }
             Fluttertoast.showToast(msg: 'Invoice sent to printer');
             invoicePrinted = true;
             break;
@@ -151,7 +154,6 @@ class PrinterCubit extends Cubit<PrinterState> {
         }
         if (invoicePrinted) break; // Exit the service loop if printed
       }
-
       // Ensure the state is updated after successful printing
       emit(PrinterPrintingSuccess());
     } catch (e) {
@@ -242,5 +244,19 @@ class PrinterCubit extends Cubit<PrinterState> {
               "Permissions permanently denied. Please go to settings to enable them.");
       openAppSettings();
     }
+  }
+
+  List<List<int>> splitDataIntoChunks(List<int> data) {
+    List<List<int>> chunks = [];
+    int chunkSize = 509;
+    int offset = 0;
+
+    while (offset < data.length) {
+      int end =
+          (offset + chunkSize < data.length) ? offset + chunkSize : data.length;
+      chunks.add(data.sublist(offset, end));
+      offset = end;
+    }
+    return chunks;
   }
 }
