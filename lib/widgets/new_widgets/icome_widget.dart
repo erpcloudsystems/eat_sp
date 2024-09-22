@@ -37,7 +37,7 @@ class IncomeWidget extends StatelessWidget {
     final provider = Provider.of<ModuleProvider>(context);
     return InkWell(
       onTap: () {
-        if (docType == DocTypesName.customer) {
+        if (docType == DocTypesName.address) {
           /// Set Module
           provider.setModule = docType;
 
@@ -126,7 +126,7 @@ class IncomeWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              '$total ',
+                              !isCounted ? '$total ' : count.toString(),
                               style: TextStyle(color: color, fontSize: 18),
                             ),
                             Icon(

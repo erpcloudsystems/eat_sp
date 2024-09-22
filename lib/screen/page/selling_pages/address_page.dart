@@ -3,12 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/map_view.dart';
+import '../../../widgets/new_widgets/get_current_loaction.dart';
 import '../../../widgets/page_group.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/selling_page_model/address_page_model.dart';
 
 class AddressPage extends StatelessWidget {
-  const AddressPage({Key? key}) : super(key: key);
+  const AddressPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +37,9 @@ class AddressPage extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: Text(context.read<ModuleProvider>().pageId,
                     style: const TextStyle(fontWeight: FontWeight.bold))),
-            //Text('Employee Id: ' + (data['employee'] ?? 'none')),
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 4),
-            //   child: Text(data['employee_name'] ?? 'none'),
-            // ),
-            //SizedBox(height: 4),
+            GetCurrentLocationButton(
+              docId: data['name'],
+            ),
             const Divider(color: Colors.white, thickness: 1),
           ],
           items: model.card1Items,

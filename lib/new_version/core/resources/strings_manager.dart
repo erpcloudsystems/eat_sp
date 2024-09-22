@@ -26,6 +26,7 @@ class DocTypesName {
   static const String project = 'Project';
   static const String issue = 'Issue';
   static const String task = 'Task';
+  static const String address = 'Address';
 
   static const String attendanceRequest = 'Attendance Request';
   static const String leaveApplication = 'Leave Application';

@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants.dart';
-import '../../../provider/new_controller/home_provider.dart';
 import '../../../widgets/map_view.dart';
 import '../../../widgets/page_group.dart';
 import '../../../widgets/nothing_here.dart';
 import '../../../provider/module/module_provider.dart';
 import '../../../models/page_models/selling_page_model/customer_page_model.dart';
 
+// ignore: must_be_immutable
 class CustomerPage extends StatelessWidget {
   CustomerPage({super.key});
 
@@ -43,28 +43,6 @@ class CustomerPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Consumer<HomeProvider>(
-              builder: (context, homeProvider, child) {
-                return ElevatedButton(
-                  onPressed: homeProvider.customerLocationLoading
-                      ? null
-                      : () async {
-                          await homeProvider.updateCustomerLocation(
-                            customerName: data['customer_name'],
-                          );
-                        },
-                  child: homeProvider.customerLocationLoading
-                      ? const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      :  Text('Update customer location'.tr()),
-                );
-              },
-            ),
             Divider(color: Colors.grey.shade400, thickness: 1),
           ],
           items: model.card1Items,

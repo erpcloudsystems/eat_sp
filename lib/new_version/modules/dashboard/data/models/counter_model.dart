@@ -10,6 +10,7 @@ class CounterModel extends CounterEntity {
     required super.salesOrderEntity,
     required super.deliveryNotes,
     required super.stockEntries,
+    required super.addressEntries,
   });
 
   factory CounterModel.fromJson(Map<String, dynamic> json) => CounterModel(
@@ -21,5 +22,6 @@ class CounterModel extends CounterEntity {
         salesOrderEntity: json['sales_orders'],
         deliveryNotes: json['delivery_notes'],
         stockEntries: json['stock_entries'],
+        addressEntries: json['address'],
       );
 }

@@ -12,6 +12,7 @@ import '../../../../../service/service_constants.dart';
 import '../../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../core/network/api_constance.dart';
 import '../../../../core/resources/strings_manager.dart';
+import '../../view/screens/pdf_viewer_screen.dart';
 part 'printer_state.dart';
 
 class PrinterCubit extends Cubit<PrinterState> {
@@ -60,7 +61,10 @@ class PrinterCubit extends Cubit<PrinterState> {
       }
     }
     if (!deviceFound) {
+      // If device not found in connected devices, start scanning for new devices
       FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
+
+      // Listen to scan results and populate the allDevices list
       FlutterBluePlus.scanResults.listen((results) {
         for (var result in results) {
           if (!allDevices.any((d) => d.remoteId == result.device.remoteId)) {
@@ -103,6 +107,14 @@ class PrinterCubit extends Cubit<PrinterState> {
       if (defaultDevice != null) {
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PdfViewerScreen(invoiceData: invoiceData),
+            ),
+          );
+        }
       } else {
         Fluttertoast.showToast(
           msg: 'No printer connected. Please set a printer in the settings.',
@@ -228,7 +240,7 @@ class PrinterCubit extends Cubit<PrinterState> {
 
   List<List<int>> splitDataIntoChunks(List<int> data) {
     List<List<int>> chunks = [];
-    int chunkSize = 245;
+    int chunkSize = 244;
     int offset = 0;
 
     while (offset < data.length) {

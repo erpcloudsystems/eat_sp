@@ -77,7 +77,7 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
       Position position = await _determinePosition();
       await service.dio.put(ApiConstance.customerLocation, queryParameters: {
-        'customer_name': customerName,
+        'name': customerName,
         'latitude': position.latitude,
         'longitude': position.longitude
       });

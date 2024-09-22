@@ -18,6 +18,7 @@ class TotalState extends Equatable {
       salesOrderEntity: {},
       deliveryNotes: {},
       stockEntries: {},
+      addressEntries: {},
     ),
   });
 

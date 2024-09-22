@@ -9,6 +9,7 @@ class CounterEntity extends Equatable {
   final dynamic salesOrderEntity;
   final dynamic deliveryNotes;
   final dynamic stockEntries;
+  final dynamic addressEntries;
 
   const CounterEntity({
     required this.paidSalesInvoiceEntity,
@@ -19,6 +20,7 @@ class CounterEntity extends Equatable {
     required this.salesOrderEntity,
     required this.deliveryNotes,
     required this.stockEntries,
+    required this.addressEntries,
   });
 
   @override
@@ -31,5 +33,6 @@ class CounterEntity extends Equatable {
     salesOrderEntity,
     deliveryNotes,
     stockEntries,
+    addressEntries,
   ];
 }
