@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:NextApp/new_version/core/resources/strings_manager.dart';
+
 import '../../models/list_models/list_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:file_picker/file_picker.dart';
@@ -654,10 +656,13 @@ class ModuleProvider extends ChangeNotifier {
   void printPdf(BuildContext context) async {
     if (pdfFormats.length == 1) {
       APIService().printInvoice(
-          context: context,
-          docType: _currentModule!.genericListService,
-          id: _pageId,
-          format: pdfFormats[0]);
+        context: context,
+        docType: _currentModule!.genericListService,
+        id: _pageId,
+        format: _currentModule!.genericListService == DocTypesName.salesOrder
+            ? 'Pos'
+            : pdfFormats[0],
+      );
     } else {
       // await showDialog(
       //     context: context,

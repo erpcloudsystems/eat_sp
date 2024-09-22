@@ -1,4 +1,5 @@
 import 'package:NextApp/screen/other/notification_screen.dart';
+import 'package:NextApp/widgets/custom_loading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import '../bloc/dasboard_bloc.dart';
@@ -64,6 +65,9 @@ class DashboardScreen extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.dashboardEntity != current.dashboardEntity,
         builder: (context, state) {
+          if (state.getDashboardState == RequestState.loading) {
+            return const CustomLoadingWithImage();
+          }
           return CustomScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),

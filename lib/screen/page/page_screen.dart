@@ -84,7 +84,7 @@ class AmendButton extends StatelessWidget {
                   context.read<ModuleProvider>().currentModule.createForm!));
         },
         child: Text('Amend'.tr(),
-            style: TextStyle(color: Colors.white, fontSize: 15)));
+            style: const TextStyle(color: Colors.white, fontSize: 15)));
   }
 }
 
@@ -188,12 +188,14 @@ class _PageAppBarState extends State<PageAppBar> {
   @override
   Widget build(BuildContext context) {
     void printPdf() async {
-      if (widget.pdfFormats.value.length == 1) {
+      if (widget.pdfFormats.value.length == 2) {
         APIService().printInvoice(
             context: context,
             docType: widget.docType,
             id: widget.id,
-            format: widget.pdfFormats.value[0]);
+            format: widget.docType == 'Sales Order'
+                ? widget.pdfFormats.value[1]
+                : widget.pdfFormats.value[0]);
       } else {
         final format = await showDialog(
             context: context,
