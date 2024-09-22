@@ -35,11 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     notificationConfig(context);
     GPSService.trackUserLocation(context);
     Future.delayed(Duration.zero, () {
-      context.read<PrinterCubit>().loadDevice();
+      loadBluetoothDevices();
     });
+  }
+
+  Future<void> loadBluetoothDevices() async {
+    final homeCubit = context.read<PrinterCubit>();
+    await homeCubit.requestBluetoothPermissions();
+    await homeCubit.loadDevice();
   }
 
   @override

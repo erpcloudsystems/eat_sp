@@ -24,7 +24,7 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> saveDevice(BluetoothDevice device) async {
     emit(PrinterLoading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(connectedPrinterKey, device.id.toString());
+    await prefs.setString(connectedPrinterKey, device.remoteId.toString());
     defaultDevice = device;
     emit(PrinterConnected(defaultDevice!));
   }
@@ -33,25 +33,23 @@ class PrinterCubit extends Cubit<PrinterState> {
     emit(PrinterConnected(device));
   }
 
-  // Load connected device ID
   List<BluetoothDevice> allDevices = [];
 
   Future<void> loadDevice() async {
-    // Request Bluetooth permissions
     allDevices.clear();
 
     emit(PrinterLoading());
+    var bluetoothState = await FlutterBluePlus.adapterState.first;
 
-    // Load saved device ID from SharedPreferences
+    if (bluetoothState != BluetoothAdapterState.on) {
+      await FlutterBluePlus.turnOn();
+      Fluttertoast.showToast(
+          msg: 'Please turn on Bluetooth to connect to a printer.');
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString(connectedPrinterKey);
-
-    print('Cached printer found with ID: $deviceId');
-
-    // Check if the device is already connected
     List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
     bool deviceFound = false;
-
     for (var device in connectedDevices) {
       allDevices.add(device);
       if (device.remoteId.toString() == deviceId) {
@@ -61,18 +59,13 @@ class PrinterCubit extends Cubit<PrinterState> {
         break;
       }
     }
-
     if (!deviceFound) {
-      // If device not found in connected devices, start scanning for new devices
-       FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
-
-      // Listen to scan results and populate the allDevices list
+      FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
       FlutterBluePlus.scanResults.listen((results) {
         for (var result in results) {
           if (!allDevices.any((d) => d.remoteId == result.device.remoteId)) {
-            allDevices.add(result.device); // Add only unique devices
+            allDevices.add(result.device);
           }
-
           if (result.device.remoteId.toString() == deviceId) {
             defaultDevice = result.device;
             result.device.connect().then((_) {
@@ -86,8 +79,6 @@ class PrinterCubit extends Cubit<PrinterState> {
             return;
           }
         }
-
-        // If no matching device found, emit PrinterDisconnected
         emit(PrinterDisconnected());
       });
     }
@@ -128,16 +119,14 @@ class PrinterCubit extends Cubit<PrinterState> {
   Future<void> connectAndPrintToBluetoothPrinter(
       BluetoothDevice device, List<int> invoiceData) async {
     try {
-      // Check if the device is already connected
       if (defaultDevice == null ||
           device.remoteId.toString() != defaultDevice!.remoteId.toString()) {
         await device.connect();
         defaultDevice = device;
       }
 
-      // Discover services after ensuring the device is connected
       List<BluetoothService> services = await device.discoverServices();
-      bool invoicePrinted = false; // Track if the invoice has been printed
+      bool invoicePrinted = false;
 
       for (BluetoothService service in services) {
         for (BluetoothCharacteristic characteristic
@@ -152,10 +141,8 @@ class PrinterCubit extends Cubit<PrinterState> {
             break;
           }
         }
-        if (invoicePrinted) break; // Exit the service loop if printed
+        if (invoicePrinted) break;
       }
-
-      // Ensure the state is updated after successful printing
       emit(PrinterPrintingSuccess());
     } catch (e) {
       debugPrint('Error while printing to Bluetooth: $e');
@@ -173,7 +160,6 @@ class PrinterCubit extends Cubit<PrinterState> {
   }) async {
     await showLoadingDialog(context, 'Fetching invoice data...');
     try {
-      // Fetch the invoice data from the backend
       final response = await APIService().dio.get(
             PRINT_INVOICE,
             queryParameters: {
@@ -218,28 +204,21 @@ class PrinterCubit extends Cubit<PrinterState> {
   }
 
   Future<void> requestBluetoothPermissions() async {
-    // Request Bluetooth scan permission
     PermissionStatus bluetoothScanStatus =
         await Permission.bluetoothScan.request();
     PermissionStatus bluetoothConnectStatus =
         await Permission.bluetoothConnect.request();
-    PermissionStatus locationStatus = await Permission.location.request();
-    await Permission.storage.request();
 
-    // Check if any permission is denied
-    if (bluetoothScanStatus.isDenied ||
-        bluetoothConnectStatus.isDenied ||
-        locationStatus.isDenied) {
+    await Permission.storage.request();
+    if (bluetoothScanStatus.isDenied || bluetoothConnectStatus.isDenied) {
       Fluttertoast.showToast(
           msg:
               "Permissions denied. Please grant Bluetooth and Location permissions.");
       return;
     }
 
-    // Handle permanently denied permissions
     if (bluetoothScanStatus.isPermanentlyDenied ||
-        bluetoothConnectStatus.isPermanentlyDenied ||
-        locationStatus.isPermanentlyDenied) {
+        bluetoothConnectStatus.isPermanentlyDenied) {
       Fluttertoast.showToast(
           msg:
               "Permissions permanently denied. Please go to settings to enable them.");
