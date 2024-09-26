@@ -57,5 +57,8 @@ class ApiConstance {
   static const String getAccountReceivableReport =
       'method/elkhabaz_mobile.reports.accounts.accounts_receivable';
 
-  static const String customerLocation = 'method/elkhabaz_mobile.customer_location.customer_location';
+  static const String customerLocation =
+      'method/elkhabaz_mobile.customer_location.customer_location';
+  static const String customerBarcodeEdPoint =
+      'method/elkhabaz_mobile.pages.customer_address';
 }

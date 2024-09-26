@@ -27,7 +27,8 @@ class CustomerPage extends StatelessWidget {
         PageCard(
           header: [
             Text(
-              '${tr('Customer Name')}: ${data['customer_name'] ?? tr('none')}',
+              '${tr('Customer Name')}: ${data["customer_name"]} \n ${data["customer_name_in_arabic"]}',
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,

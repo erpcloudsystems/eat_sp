@@ -80,7 +80,9 @@ class SalesInvoicePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(
-                data['customer_name'] ?? 'none',
+                '${data["customer_name"]} \n ${data["customer_name_in_arabic"]}',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             Divider(

@@ -1,4 +1,5 @@
 import 'package:NextApp/new_version/modules/new_item/presentation/bloc/new_item_bloc.dart';
+import 'package:NextApp/new_version/modules/scanner/controller/cubit/scanner_cubit.dart';
 import 'package:NextApp/provider/new_controller/home_provider.dart';
 
 import '../../modules/dashboard/presentation/bloc/dasboard_bloc.dart';
@@ -47,5 +48,6 @@ class StateManagement {
     BlocProvider(create: (_) => di.sl<TransactionBloc>()),
     BlocProvider(create: (_) => di.sl<NewItemBloc>()),
     BlocProvider(create: (_) => di.sl<AccountsReceivableBloc>()),
+    BlocProvider(create: (_) => ScannerCubit()),
   ];
 }

@@ -58,6 +58,7 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
                     nameResponse: widget.nameResponse,
                     subTitleKey: widget.keys?['subTitle'],
                     trailingKey: widget.keys?['trailing'],
+                    thirdKey: widget.keys?['thirdKey'],
                     filter: widget.filters,
                     onPressed: (value) {
                       widget.onChange(value);

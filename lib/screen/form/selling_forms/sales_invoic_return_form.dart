@@ -4,7 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/list_models/selling_list_model/customer_list_model.dart';
 import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
+import '../../../new_version/modules/scanner/view/widgets/customer_scanner_icon_button.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
 import '../../page/generic_page.dart';
@@ -344,54 +346,71 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                   children: [
                     const SizedBox(height: 4),
                     // New customer list
-                    CustomDropDownFromField(
-                        defaultValue: data['customer'],
-                        docType: 'Customer',
-                        nameResponse: 'name',
-                        title: 'Customer'.tr(),
-                        keys: const {
-                          'subTitle': 'customer_group',
-                          'trailing': 'territory',
-                        },
-                        onChange: (value) async {
-                          if (value != null) {
-                            await _getCustomerData(value['name']);
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Flexible(
+                          child: CustomDropDownFromField(
+                              defaultValue: data['customer'],
+                              docType: 'Customer',
+                              nameResponse: 'name',
+                              title: 'Customer'.tr(),
+                              keys: const {
+                                'subTitle': 'customer_group',
+                                'trailing': 'customer_name_in_arabic',
+                                'thirdKey': 'customer_name',
+                              },
+                              onChange: (value) async {
+                                if (value != null) {
+                                  await _getCustomerData(value['name']);
 
-                            setState(() {
-                              data['due_date'] = DateTime.now()
-                                  .add(Duration(
-                                      days: int.parse(
-                                          selectedCstData['credit_days']
-                                              .toString())))
-                                  .toIso8601String();
-                              data['customer'] = value['name'];
-                              data['customer_name'] = value['customer_name'];
-                              data['territory'] = value['territory'];
-                              data['customer_group'] = value['customer_group'];
-                              data['customer_address'] =
-                                  value["customer_primary_address"];
-                              data['contact_person'] =
-                                  value["customer_primary_contact"];
-                              data['currency'] = value['default_currency'];
-                              data['price_list_currency'] =
-                                  value['default_currency'];
-                              if (data['selling_price_list'] !=
-                                  value['default_price_list']) {
-                                data['selling_price_list'] =
-                                    value['default_price_list'];
-                                InheritedForm.of(context).items.clear();
-                                InheritedForm.of(context)
-                                        .data['selling_price_list'] =
-                                    value['default_price_list'];
-                              }
-                              data['payment_terms_template'] =
-                                  value['payment_terms'];
-                              data['sales_partner'] =
-                                  value['default_sales_partner'];
-                              data['tax_id'] = value['tax_id'];
-                            });
-                          }
-                        }),
+                                  setState(() {
+                                    data['due_date'] = DateTime.now()
+                                        .add(Duration(
+                                            days: int.parse(
+                                                selectedCstData['credit_days']
+                                                    .toString())))
+                                        .toIso8601String();
+                                    data['customer'] = value['name'];
+                                    data['customer_name'] =
+                                        value['customer_name'];
+                                    data['territory'] = value['territory'];
+                                    data['customer_group'] =
+                                        value['customer_group'];
+                                    data['customer_address'] =
+                                        value["customer_primary_address"];
+                                    data['contact_person'] =
+                                        value["customer_primary_contact"];
+                                    data['currency'] =
+                                        value['default_currency'];
+                                    data['price_list_currency'] =
+                                        value['default_currency'];
+                                    if (data['selling_price_list'] !=
+                                        value['default_price_list']) {
+                                      data['selling_price_list'] =
+                                          value['default_price_list'];
+                                      InheritedForm.of(context).items.clear();
+                                      InheritedForm.of(context)
+                                              .data['selling_price_list'] =
+                                          value['default_price_list'];
+                                    }
+                                    data['payment_terms_template'] =
+                                        value['payment_terms'];
+                                    data['sales_partner'] =
+                                        value['default_sales_partner'];
+                                    data['tax_id'] = value['tax_id'];
+                                  });
+                                }
+                              }),
+                        ),
+                        CustomerScannerIconButton(
+                          onCustomerFetched: (customerModel) async {
+                            fetchCustomerData(customerModel);
+                          },
+                        ),
+                      ],
+                    ),
 
                     const SizedBox(height: 4),
                     if (data['customer_name'] != null)
@@ -449,44 +468,6 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                                 : null),
                       )),
                     ]),
-                    /*if (data['tax_id'] != null)
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 2),
-                            child: Text(data['tax_id']!,
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black)),
-                          )),
-                    if (data['tax_id'] != null)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
-                        child: Divider(
-                            color: Colors.grey, height: 1, thickness: 0.7),
-                      ),
-                    // New customer group
-                    CustomDropDownFromField(
-                        defaultValue: data['customer_group'],
-                        docType: 'Customer Group',
-                        nameResponse: 'name',
-                        title: 'Customer Group'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['customer_group'] = value['name'];
-                          });
-                        }),
-                    // New territory
-                    CustomDropDownFromField(
-                        defaultValue: data['territory'],
-                        docType: APIService.TERRITORY,
-                        nameResponse: 'name',
-                        title: 'Territory'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['territory'] = value['name'];
-                          });
-                        }),
                     // New customer address
                     CustomExpandableTile(
                       hideArrow: data['customer'] == null,
@@ -502,10 +483,9 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                           onChange: (value) async {
                             if (data['customer'] == null) {
                               return showSnackBar(
-                                  'Please select a customer to first',
-                                  context);
+                                  'Please select a customer to first', context);
                             }
-    
+
                             setState(() {
                               data['customer_address'] = value['name'];
                               selectedCstData['address_line1'] =
@@ -532,61 +512,6 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                             ]
                           : null,
                     ),
-    
-                    // New contact person
-                    CustomExpandableTile(
-                      hideArrow: data['contact_person'] == null,
-                      title: CustomDropDownFromField(
-                          defaultValue: data['contact_person'],
-                          docType: APIService.FILTERED_CONTACT,
-                          nameResponse: 'name',
-                          isValidate: false,
-                          title: 'Contact Person'.tr(),
-                          filters: {
-                            'cur_nam': data['customer'],
-                          },
-                          onChange: (value) {
-                            if (data['customer'] == null) {
-                              showSnackBar(
-                                  'Please select a customer', context);
-                              return null;
-                            }
-                            setState(() {
-                              data['contact_person'] = value['name'];
-                              selectedCstData['contact_display'] =
-                                  value['contact_display'];
-                              selectedCstData['phone'] = value['phone'];
-                              selectedCstData['mobile_no'] =
-                                  value['mobile_no'];
-                              selectedCstData['email_id'] = value['email_id'];
-                            });
-                          }),
-                      children: (data['contact_person'] != null)
-                          ? <Widget>[
-                              ListTile(
-                                trailing: const Icon(Icons.person),
-                                title: Text('' +
-                                    (selectedCstData['contact_display'] ??
-                                        '')),
-                              ),
-                              ListTile(
-                                trailing: const Icon(Icons.phone_iphone),
-                                title: Text('Mobile :  ' +
-                                    (selectedCstData['mobile_no'] ?? 'none')),
-                              ),
-                              ListTile(
-                                trailing: const Icon(Icons.call),
-                                title: Text('Phone :  ' +
-                                    (selectedCstData['phone'] ?? 'none')),
-                              ),
-                              ListTile(
-                                trailing: const Icon(Icons.alternate_email),
-                                title: Text('' +
-                                    (selectedCstData['email_id'] ?? 'none')),
-                              )
-                            ]
-                          : null,
-                    ),*/
                     SizedBox(
                       height: 500.h,
                       child: AddItemsWidget(
@@ -595,181 +520,35 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                             context
                                 .read<UserProvider>()
                                 .defaultSellingPriceList,
-                                warehouse: data['set_warehouse'],
+                        warehouse: data['set_warehouse'],
                       ),
                     )
                   ],
                 ),
               ),
-
-              ///
-              /// group 2
-              ///
-              /*Group(
-                child: ListView(
-                  children: [
-                    const SizedBox(height: 4),
-                    CheckBoxWidget('is_return', 'Is Return',
-                        initialValue: data['is_return'] == 1 ? true : false,
-                        enable: false,
-                        onChanged: (id, value) =>
-                            setState(() => data[id] = value ? 1 : 0)),
-                    CustomDropDown('tax_type', 'Tax Type'.tr(),
-                        items: taxType,
-                        defaultValue: data['tax_type'] ?? taxType[0],
-                        onChanged: (value) => setState(() {
-                              data['tax_type'] = value;
-                            })),
-                    CustomDropDownFromField(
-                        defaultValue:
-                            data['currency'] ?? userProvider.defaultCurrency,
-                        docType: APIService.CURRENCY,
-                        enable: false,
-                        nameResponse: 'name',
-                        title: 'Currency'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['currency'] = value['name'];
-                          });
-                        }),
-                    CustomDropDownFromField(
-                        defaultValue: data['selling_price_list'] ??
-                            userProvider.defaultSellingPriceList,
-                        docType: APIService.PRICE_LIST,
-                        enable: false,
-                        nameResponse: 'name',
-                        title: 'Price List'.tr(),
-                        onChange: (value) {
-                          if (value != null && value.isNotEmpty) {
-                            setState(() {
-                              if (data['selling_price_list'] !=
-                                  value['name']) {
-                                provider.newItemList.clear();
-                                InheritedForm.of(context)
-                                        .data['selling_price_list'] =
-                                    value['name'];
-                                data['selling_price_list'] = value['name'];
-                              }
-                              data['price_list_currency'] = value['currency'];
-                            });
-                          }
-                        }),
-                    if (data['price_list_currency'] != null)
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 2),
-                            child: Text(tr('Price List Currency'),
-                                style: const TextStyle(
-                                    fontSize: 15, color: Colors.grey)),
-                          )),
-                    if (data['price_list_currency'] != null)
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 2),
-                            child: Text(data['price_list_currency']!,
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black)),
-                          )),
-                    if (data['price_list_currency'] != null)
-                      const Divider(
-                          color: Colors.grey, height: 1, thickness: 0.7),
-                    CheckBoxWidget('update_stock', 'Update Stock',
-                        initialValue:
-                            data['update_stock'] == 1 ? true : false,
-                        onChanged: (id, value) =>
-                            setState(() => data[id] = value ? 1 : 0)),
-                    if (data['update_stock'] == 1)
-                      CustomDropDownFromField(
-                          defaultValue: data['set_warehouse'],
-                          docType: APIService.WAREHOUSE,
-                          nameResponse: 'name',
-                          title: 'Source Warehouse'.tr(),
-                          enable: data['set_warehouse'] == null,
-                          filters: const {'filter1': 'Return'},
-                          keys: const {
-                            'subTitle': 'warehouse_name',
-                            'trailing': 'warehouse_type',
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              data['set_warehouse'] = value['name'];
-                            });
-                          }),
-                    CustomDropDownFromField(
-                        defaultValue: data['payment_terms_template'],
-                        isValidate: false,
-                        docType: APIService.PAYMENT_TERMS,
-                        nameResponse: 'name',
-                        title: 'Payment Terms Template'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['payment_terms_template'] = value['name'];
-                          });
-                        }),
-                    CustomDropDownFromField(
-                        defaultValue: data['tc_name'],
-                        isValidate: false,
-                        docType: APIService.TERMS_CONDITION,
-                        nameResponse: 'name',
-                        title: 'Terms & Conditions'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['tc_name'] = value['name'];
-                          });
-                        }),
-                    if (_terms != null)
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 2),
-                            child: Text(_terms!,
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black)),
-                          )),
-                    if (_terms != null)
-                      const Divider(
-                          color: Colors.grey, height: 1, thickness: 0.7),
-                    CustomDropDownFromField(
-                        defaultValue: data['sales_partner'],
-                        docType: APIService.SALES_PARTNER,
-                        nameResponse: 'name',
-                        isValidate: false,
-                        title: 'Sales Partner'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['sales_partner'] = value['name'];
-                          });
-                        }),
-                    const SizedBox(height: 8),
-                    const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 6),
-                          child: Icon(Icons.warning_amber,
-                              color: Colors.amber, size: 22),
-                        ),
-                        Flexible(
-                            child: Text(
-                          KLocationNotifySnackBar,
-                          textAlign: TextAlign.start,
-                        )),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ),*/
             ],
           ),
         ),
       ),
     );
+  }
+
+  void fetchCustomerData(CustomerItemModel customerModel) async {
+    await _getCustomerData(customerModel.id);
+    setState(() {
+      data['due_date'] = DateTime.now()
+          .add(Duration(
+              days: int.parse(selectedCstData['credit_days'].toString())))
+          .toIso8601String();
+      data['customer'] = customerModel.id;
+      data['customer_name'] = customerModel.name;
+      data['territory'] = customerModel.territory;
+      data['customer_group'] = customerModel.customerGroup;
+      data['customer_address'] = customerModel.addressName;
+      data['currency'] = customerModel.currency;
+      data['price_list_currency'] = customerModel.currency;
+
+      InheritedForm.of(context).items.clear();
+    });
   }
 }

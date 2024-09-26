@@ -323,7 +323,7 @@ class ModuleType {
       item as CustomerItemModel;
       return ListCardTest(
         id: item.id,
-        title: item.name,
+        title: '${item.nameAr} \n ${item.name}',
         status: item.status,
         leftIcon: Icons.group,
         leftText: item.customerGroup,

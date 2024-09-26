@@ -37,7 +37,8 @@ class IncomeWidget extends StatelessWidget {
     final provider = Provider.of<ModuleProvider>(context);
     return InkWell(
       onTap: () {
-        if (docType == DocTypesName.address) {
+        if (docType == DocTypesName.address ||
+            docType == DocTypesName.customer) {
           /// Set Module
           provider.setModule = docType;
 

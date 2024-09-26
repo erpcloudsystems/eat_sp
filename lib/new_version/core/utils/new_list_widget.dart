@@ -12,6 +12,7 @@ class NewListWidget extends StatefulWidget {
     required this.nameResponse,
     this.subTitleKey,
     this.trailingKey,
+    this.thirdKey,
     this.filter = const {},
   });
   final String docType;
@@ -19,6 +20,7 @@ class NewListWidget extends StatefulWidget {
   final String nameResponse;
   final String? subTitleKey;
   final String? trailingKey;
+  final String? thirdKey;
   final Map<String, dynamic>? filter;
 
   @override
@@ -39,7 +41,7 @@ class _NewListWidgetState extends State<NewListWidget> {
         .generalGetList(
       filters: {
         'doctype': widget.docType,
-        'page_length': 20,
+        'page_length': 100,
         if (search != null) 'search_text': '%$search%',
       }..addAll(widget.filter ?? {}),
     )
@@ -120,8 +122,27 @@ class _NewListWidgetState extends State<NewListWidget> {
                                   )
                                 : null,
                             trailing: widget.trailingKey != null
-                                ? Text(
-                                    getList[index][widget.trailingKey] ?? '',
+                                ? SizedBox(
+                                    width: size.width / 2,
+                                    child: Column(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            getList[index]
+                                                    [widget.trailingKey] ??
+                                                '',
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                        if (widget.thirdKey != null)
+                                          Text(
+                                            getList[index][widget.thirdKey] ??
+                                                '',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                      ],
+                                    ),
                                   )
                                 : null,
                           ),

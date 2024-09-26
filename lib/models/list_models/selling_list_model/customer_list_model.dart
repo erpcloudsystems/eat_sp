@@ -1,20 +1,20 @@
 import '../list_model.dart';
 
 class CustomerListModel extends ListModel<CustomerItemModel> {
-  CustomerListModel(List<CustomerItemModel>? list) : super(list);
+  CustomerListModel(List<CustomerItemModel>? super.list);
 
   factory CustomerListModel.fromJson(Map<String, dynamic> json) {
-    var _list = <CustomerItemModel>[];
+    var list = <CustomerItemModel>[];
     if (json['message'] != null) {
       json['message'].forEach((v) {
-        _list.add(new CustomerItemModel.fromJson(v));
+        list.add(CustomerItemModel.fromJson(v));
       });
     }
-    return CustomerListModel(_list);
+    return CustomerListModel(list);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['data'] = super.list.map((v) => v.toJson()).toList();
     return data;
   }
@@ -23,12 +23,14 @@ class CustomerListModel extends ListModel<CustomerItemModel> {
 class CustomerItemModel {
   final String id;
   final String name;
+  final String nameAr;
   final String customerGroup;
   final String territory;
   final String customerType;
   final String currency;
   final String mobile;
   final String status;
+  final String addressName;
 
   CustomerItemModel({
     required this.id,
@@ -39,6 +41,8 @@ class CustomerItemModel {
     required this.currency,
     required this.mobile,
     required this.status,
+    required this.nameAr,
+    required this.addressName,
   });
 
   factory CustomerItemModel.fromJson(Map<String, dynamic> json) {
@@ -50,19 +54,21 @@ class CustomerItemModel {
       customerType: json['customer_type'] ?? 'none',
       currency: json['default_currency'] ?? 'none',
       mobile: json['mobile_no'] ?? 'none',
+      nameAr: json['customer_name_in_arabic'] ?? 'none',
+      addressName: json['address_name'] ?? 'none',
       status: 'Random',
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.id;
-    data['customer_name'] = this.name;
-    data['customer_group'] = this.customerGroup;
-    data['territory'] = this.territory;
-    data['customer_type'] = this.customerType;
-    data['default_currency'] = this.currency;
-    data['mobile_no'] = this.mobile;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = id;
+    data['customer_name'] = name;
+    data['customer_group'] = customerGroup;
+    data['territory'] = territory;
+    data['customer_type'] = customerType;
+    data['default_currency'] = currency;
+    data['mobile_no'] = mobile;
     return data;
   }
 }
