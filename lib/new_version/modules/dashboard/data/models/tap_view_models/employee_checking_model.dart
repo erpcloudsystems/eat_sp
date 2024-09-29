@@ -1,6 +1,5 @@
 import 'package:NextApp/new_version/modules/dashboard/domain/entities/tap_view_entity/task_entity.dart';
 import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class EmployeeCheckingModel extends TapViewEntity {
   const EmployeeCheckingModel({

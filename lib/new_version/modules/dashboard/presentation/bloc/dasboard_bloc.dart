@@ -26,6 +26,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   FutureOr<void> _getDashboardData(
       GetDashboardDataEvent event, Emitter<DashboardState> emit) async {
     // if (state.getDashboardState == RequestState.loading) {
+    emit(state.copyWith(getDashboardState: RequestState.loading));
     final result = await _dashboardUseCase(event.dateFilter);
 
     result.fold(

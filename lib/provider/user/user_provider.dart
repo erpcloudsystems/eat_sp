@@ -110,7 +110,7 @@ class UserProvider extends ChangeNotifier {
     _user = null;
     _url = null;
     notifyListeners();
-    await service.logout("method/logout");
+    //await service.logout("method/logout");
   }
 
   Future<void> checkPermission() async {

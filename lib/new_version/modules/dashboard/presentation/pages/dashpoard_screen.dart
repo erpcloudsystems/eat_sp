@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gutter/flutter_gutter.dart';
+import '../../../../../widgets/custom_loading.dart';
 import '../bloc/dasboard_bloc.dart';
 import '../widgets/get_total_widget.dart';
 import '../bloc/total_bloc/total_bloc.dart';
@@ -63,6 +64,9 @@ class DashboardScreen extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.dashboardEntity != current.dashboardEntity,
         builder: (context, state) {
+          if (state.getDashboardState == RequestState.loading) {
+            return const CustomLoadingWithImage();
+          }
           return CustomScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
