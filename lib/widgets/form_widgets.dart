@@ -991,64 +991,100 @@ class _TimePickerState extends State<TimePicker> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: TextFormField(
-        readOnly: true,
-        controller: controller,
-        decoration: InputDecoration(
-            isDense: true,
-            contentPadding: const EdgeInsets.all(2),
-            border: widget.removeUnderLine ? InputBorder.none : null,
-            disabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade300)),
-            enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade300)),
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade300)),
-            suffixIcon: widget.clear && controller.text.isNotEmpty
-                ? Material(
-                    color: Colors.transparent,
-                    shape: const CircleBorder(),
-                    clipBehavior: Clip.hardEdge,
-                    child: IconButton(
-                        icon: const Icon(Icons.clear),
-                        splashRadius: 20,
-                        onPressed: () {
-                          setState(() => controller.text = '');
-                          if (widget.onClear != null) widget.onClear!();
-                        }),
-                  )
-                : const Icon(Icons.schedule),
-            labelText: widget.title),
-        onTap: !widget.enable
-            ? null
-            : () async {
-                FocusScope.of(context).requestFocus(FocusNode());
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          TextFormField(
+            readOnly: true,
+            controller: controller,
+            decoration: InputDecoration(
+              isDense: true,
+              isCollapsed: false,
+              filled: true,
+              fillColor: Colors.grey.shade300,
+              contentPadding: const EdgeInsets.all(2),
+              border: widget.removeUnderLine ? InputBorder.none : null,
+              disabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.transparent,
+                ),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.transparent,
+                ),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.transparent,
+                ),
+              ),
+              suffixIcon: widget.clear && controller.text.isNotEmpty
+                  ? Material(
+                      color: Colors.transparent,
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                          icon: const Icon(Icons.clear),
+                          splashRadius: 20,
+                          onPressed: () {
+                            setState(() => controller.text = '');
+                            if (widget.onClear != null) widget.onClear!();
+                          }),
+                    )
+                  : const Icon(Icons.schedule),
+            ),
+            onTap: !widget.enable
+                ? null
+                : () async {
+                    FocusScope.of(context).requestFocus(FocusNode());
 
-                final selectedTime = await showTimePicker(
-                  context: context,
-                  initialTime: controller.text.isNotEmpty
-                      ? TimeOfDay(
-                          hour: int.parse(controller.text.split(':')[0]),
-                          minute: int.parse(controller.text.split(':')[1]))
-                      : TimeOfDay.now(),
-                );
-                if (selectedTime != null) {
-                  setState(() => controller.text = formatTime(selectedTime));
-                  if (widget.onChanged != null) {
-                    widget.onChanged!(formatTime(selectedTime));
-                  }
-                }
-              },
-        validator: widget.disableValidation
-            ? null
-            : (value) {
-                if (value == null || value.isEmpty) {
-                  showSnackBar('Please enter Required By Date', context);
+                    final selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: controller.text.isNotEmpty
+                          ? TimeOfDay(
+                              hour: int.parse(controller.text.split(':')[0]),
+                              minute: int.parse(controller.text.split(':')[1]))
+                          : TimeOfDay.now(),
+                    );
+                    if (selectedTime != null) {
+                      setState(
+                          () => controller.text = formatTime(selectedTime));
+                      if (widget.onChanged != null) {
+                        widget.onChanged!(formatTime(selectedTime));
+                      }
+                    }
+                  },
+            validator: widget.disableValidation
+                ? null
+                : (value) {
+                    if (value == null || value.isEmpty) {
+                      showSnackBar('Please enter Required By Date', context);
 
-                  return 'Please enter date.';
-                }
-                return null;
-              },
+                      return 'Please enter date.';
+                    }
+                    return null;
+                  },
+          ),
+        ],
       ),
     );
   }

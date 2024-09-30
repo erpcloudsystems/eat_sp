@@ -570,6 +570,7 @@ class ModuleType {
       item as AddressItemModel;
       return ListCardTest(
         id: item.id,
+        anotherTitle: '${item.linkName} - ${item.addressCode}',
         title: item.addressTitle,
         status: item.status,
         leftIcon: Icons.edit_location_alt_outlined,
@@ -707,23 +708,10 @@ class ModuleType {
         id: item.id,
         title: item.customer,
         status: item.status,
-
         leftIcon: Icons.location_city_outlined,
         leftText: item.territory,
         rightIcon: Icons.date_range,
         rightText: formatDate(item.postingDate),
-        // names: [
-        //   'Territory'.tr(),
-        //   'Date'.tr(),
-        //   'Warehouse'.tr(),
-        //   'Currency'.tr()
-        // ],
-        // values: [
-        //   item.territory,
-        //   formatDate(item.postingDate),
-        //   item.setWarehouse,
-        //   item.currency
-        // ],
         onPressed: (context) => _onListCardPressed(context, item.id),
       );
     },

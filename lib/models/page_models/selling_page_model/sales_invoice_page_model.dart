@@ -30,8 +30,7 @@ class SalesInvoicePageModel {
         tr("Date"): data['posting_date'] != null
             ? reverse(data['posting_date'])
             : tr('none'),
-        // tr("Due Date"):
-        //     data['due_date'] != null ? reverse(data['due_date']) : tr('none')
+        tr("Time"): data['posting_time'] ?? tr('none')
       },
       {
         tr("Status"): data['status'] ?? tr('none'),

@@ -12,6 +12,7 @@ class NewListWidget extends StatefulWidget {
     required this.nameResponse,
     this.subTitleKey,
     this.trailingKey,
+    this.anotherTitle,
     this.thirdKey,
     this.filter = const {},
   });
@@ -22,6 +23,7 @@ class NewListWidget extends StatefulWidget {
   final String? trailingKey;
   final String? thirdKey;
   final Map<String, dynamic>? filter;
+  final String? anotherTitle;
 
   @override
   State<NewListWidget> createState() => _NewListWidgetState();
@@ -110,7 +112,9 @@ class _NewListWidgetState extends State<NewListWidget> {
                               borderRadius: BorderRadius.circular(12)),
                           child: ListTile(
                             title: Text(
-                              getList[index]['name'],
+                              widget.anotherTitle != null
+                                  ? getList[index][widget.anotherTitle!] ?? ""
+                                  : getList[index]['name'],
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

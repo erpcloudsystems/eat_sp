@@ -60,7 +60,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
     bloc.getAllItems(
       itemFilter: ItemsFilter(
         priceList: widget.priceList,
-        startKey: 1,
+        startKey: 0,
         allowSales: widget.allowSales,
         warehouse: widget.warehouse,
       ),

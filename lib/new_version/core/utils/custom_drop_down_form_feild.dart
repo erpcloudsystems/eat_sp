@@ -17,6 +17,7 @@ class CustomDropDownFromField extends StatefulWidget {
     this.defaultValue,
     this.keys,
     this.filters,
+    this.anotherTitle,
     this.enable = true,
   });
   final String title;
@@ -29,6 +30,7 @@ class CustomDropDownFromField extends StatefulWidget {
   final Map<String, dynamic>? keys;
   final Map<String, dynamic>? filters;
   final bool? enable;
+  final String? anotherTitle;
 
   @override
   State<CustomDropDownFromField> createState() =>
@@ -56,6 +58,7 @@ class _CustomDropDownFromFieldState extends State<CustomDropDownFromField> {
                   builderWidget: NewListWidget(
                     docType: widget.docType,
                     nameResponse: widget.nameResponse,
+                    anotherTitle: widget.anotherTitle,
                     subTitleKey: widget.keys?['subTitle'],
                     trailingKey: widget.keys?['trailing'],
                     thirdKey: widget.keys?['thirdKey'],

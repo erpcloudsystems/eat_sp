@@ -8,6 +8,11 @@ extension DateTimeExtension on DateTime {
   String formatDateYMD() {
     return DateFormat('yyyy-MM-dd').format(this);
   }
+
+  String formatTimeHM() {
+    return DateFormat('HH:mm').format(this);
+    
+  }
 }
 
 extension FormattedDateTimeFromString on String {

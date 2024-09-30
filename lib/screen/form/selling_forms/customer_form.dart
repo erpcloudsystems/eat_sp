@@ -17,7 +17,7 @@ import '../../../widgets/dialog/loading_dialog.dart';
 import '../../../provider/module/module_provider.dart';
 
 class CustomerForm extends StatefulWidget {
-  const CustomerForm({Key? key}) : super(key: key);
+  const CustomerForm({super.key});
 
   @override
   _CustomerFormState createState() => _CustomerFormState();
@@ -246,27 +246,29 @@ class _CustomerFormState extends State<CustomerForm> {
                           });
                         }),
                     // Market Segment
-                    CustomDropDownFromField(
-                        defaultValue: data['market_segment'],
-                        docType: APIService.MARKET_SEGMENT,
-                        nameResponse: 'name',
-                        title: tr('Market Segment'),
-                        onChange: (value) {
-                          setState(() {
-                            data['market_segment'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['market_segment'],
+                    //     docType: APIService.MARKET_SEGMENT,
+                    //     nameResponse: 'name',
+                    //     isValidate: false,
+                    //     title: tr('Market Segment'),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['market_segment'] = value['name'];
+                    //       });
+                    //     }),
                     // Industry
-                    CustomDropDownFromField(
-                        defaultValue: data['industry'],
-                        docType: APIService.INDUSTRY,
-                        nameResponse: 'name',
-                        title: tr('Industry'),
-                        onChange: (value) {
-                          setState(() {
-                            data['industry'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['industry'],
+                    //     docType: APIService.INDUSTRY,
+                    //     nameResponse: 'name',
+                    //     isValidate: false,
+                    //     title: tr('Industry'),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['industry'] = value['name'];
+                    //       });
+                    //     }),
 
                     ///------------------------------
                     CustomTextFieldTest(
@@ -384,26 +386,28 @@ class _CustomerFormState extends State<CustomerForm> {
                             data['default_price_list'] = value['name'];
                           });
                         }),
-                    CustomDropDownFromField(
-                        defaultValue: data['default_sales_partner'],
-                        docType: APIService.SALES_PARTNER,
-                        nameResponse: 'name',
-                        title: 'Sales Partner'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['default_sales_partner'] = value['name'];
-                          });
-                        }),
-                    CustomDropDownFromField(
-                        defaultValue: data['payment_terms'],
-                        docType: APIService.PAYMENT_TERMS,
-                        nameResponse: 'name',
-                        title: 'Payment Terms Template'.tr(),
-                        onChange: (value) {
-                          setState(() {
-                            data['payment_terms'] = value['name'];
-                          });
-                        }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['default_sales_partner'],
+                    //     docType: APIService.SALES_PARTNER,
+                    //     nameResponse: 'name',
+                    //     title: 'Sales Partner'.tr(),
+                    //     isValidate: false,
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['default_sales_partner'] = value['name'];
+                    //       });
+                    //     }),
+                    // CustomDropDownFromField(
+                    //     defaultValue: data['payment_terms'],
+                    //     docType: APIService.PAYMENT_TERMS,
+                    //     nameResponse: 'name',
+                    //     isValidate: false,
+                    //     title: 'Payment Terms Template'.tr(),
+                    //     onChange: (value) {
+                    //       setState(() {
+                    //         data['payment_terms'] = value['name'];
+                    //       });
+                    //     }),
                   ],
                 ),
               ),

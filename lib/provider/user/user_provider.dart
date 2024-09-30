@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:NextApp/models/list_models/permmision_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -125,6 +126,7 @@ class UserProvider extends ChangeNotifier {
   String? sellingWarehouse;
   String? returnWarehouse;
   String? modeOfPayment;
+  List<PermissionModel> permissionList = [];
 
   Future<void> login(
       String username, String password, String url, bool rememberMe) async {
@@ -144,6 +146,11 @@ class UserProvider extends ChangeNotifier {
         _username = res['full_name'] ?? 'none';
         _userId = res['message']['user_id'] ?? 'none';
         try {
+          if (res['message']['create_permissions'] != null) {
+            permissionList = List.from(res['message']['create_permissions'])
+                .map((map) => PermissionModel.fromJson(map))
+                .toList();
+          }
           if (res['message']['selling_warehouse'] != null) {
             sellingWarehouse = res['message']['selling_warehouse'];
           }

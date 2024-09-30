@@ -1,3 +1,4 @@
+import 'package:NextApp/models/list_models/permmision_model.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,8 @@ class GenericListScreen<T> extends StatefulWidget {
 /// it sends to provider the search text and current page_models and the provider handles the request for the List Screen
 class _GenericListModuleScreenState extends State<GenericListScreen> {
   final APIService service = APIService();
+  PermissionModel permissionModel =
+      PermissionModel(docType: '', permission: true);
 
   String searchText = '';
   ValueNotifier<bool> reset = ValueNotifier(true);
@@ -123,8 +126,18 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
       moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
     }
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    super.didChangeDependencies();
+
     getStatistics();
+    for (var permission in userProvider.permissionList) {
+      if (permission.docType == moduleProvider.currentModule.title) {
+        permissionModel = permission;
+        break;
+      }
+    }
+    // TODO:
+    // permissionModel = userProvider.permissionList.firstWhere((model) =>
+    //     model.docType == moduleProvider.currentModule.genericListService);
+    super.didChangeDependencies();
   }
 
   @override
@@ -239,7 +252,7 @@ class _GenericListModuleScreenState extends State<GenericListScreen> {
             ),
           ],
         ),
-        floatingActionButton: moduleProvider.currentModule.createForm != null
+        floatingActionButton: permissionModel.permission
             ? InkWell(
                 onTap: () {
                   // Notifying the provider to disable page update

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../../models/list_models/selling_list_model/customer_list_model.dart';
 import '../../../new_version/core/utils/custom_drop_down_form_feild.dart';
-import '../../../new_version/modules/scanner/view/widgets/customer_scanner_icon_button.dart';
 import '../../../widgets/new_widgets/custom_page_view_form.dart';
 import '../../../widgets/new_widgets/test_text_field.dart';
 import '../../page/generic_page.dart';
@@ -50,6 +49,7 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
     'additional_discount_percentage': 0.0,
     'discount_amount': 0.0,
     'tax_type': taxType[0],
+    'posting_time': DateTime.now().toString(),
   };
 
   LatLng location = const LatLng(0.0, 0.0);
@@ -404,11 +404,11 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                                 }
                               }),
                         ),
-                        CustomerScannerIconButton(
-                          onCustomerFetched: (customerModel) async {
-                            fetchCustomerData(customerModel);
-                          },
-                        ),
+                        // CustomerScannerIconButton(
+                        //   onCustomerFetched: (customerModel) async {
+                        //     fetchCustomerData(customerModel);
+                        //   },
+                        // ),
                       ],
                     ),
 
@@ -448,25 +448,14 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                       )),
                       const SizedBox(width: 10),
                       Flexible(
-                          child: DatePickerTest(
-                        'due_date',
-                        'Due Date'.tr(),
-                        enable: false,
-                        onChanged: (value) => Future.delayed(Duration.zero,
-                            () => setState(() => data['due_date'] = value)),
-                        firstDate: DateTime.parse(data['posting_date'] ?? ''),
-                        initialValue: data['due_date'] ??
-                            ((selectedCstData['name'].toString() != 'noName' &&
-                                    selectedCstData['credit_days'].toString() !=
-                                        'null')
-                                ? DateTime.now()
-                                    .add(Duration(
-                                        days: int.parse(
-                                            (selectedCstData['credit_days']
-                                                .toString()))))
-                                    .toIso8601String()
-                                : null),
-                      )),
+                        child: TimePicker(
+                          'from',
+                          'From Time',
+                          enable: false,
+                          initialValue: data['posting_time'],
+                          onChanged: (value) {},
+                        ),
+                      ),
                     ]),
                     // New customer address
                     CustomExpandableTile(
@@ -475,8 +464,10 @@ class _SalesInvoiceReturnFormState extends State<SalesInvoiceReturnForm> {
                           defaultValue: data['customer_address'],
                           docType: APIService.FILTERED_ADDRESS,
                           nameResponse: 'name',
+                          anotherTitle: 'custom_code',
                           title: 'Customer Address'.tr(),
                           isValidate: false,
+                          keys: const {'subTitle': 'address_title'},
                           filters: {
                             'cur_nam': data['customer'],
                           },

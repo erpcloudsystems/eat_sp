@@ -13,10 +13,11 @@ class ListCardTest extends StatelessWidget {
   final String rightText;
   final IconData leftIcon;
   final String leftText;
+  final String? anotherTitle;
   final void Function(BuildContext context)? onPressed;
 
   const ListCardTest({
-    Key? key,
+    super.key,
     required this.id,
     this.title = '',
     this.status = '',
@@ -25,7 +26,8 @@ class ListCardTest extends StatelessWidget {
     required this.leftIcon,
     required this.rightText,
     required this.leftText,
-  }) : super(key: key);
+    this.anotherTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class ListCardTest extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                id,
+                                anotherTitle ?? id,
                                 maxLines: 1,
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,

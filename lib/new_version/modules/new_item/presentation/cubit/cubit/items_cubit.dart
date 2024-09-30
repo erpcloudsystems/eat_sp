@@ -27,7 +27,7 @@ class ItemsCubit extends Cubit<ItemsState> {
             'page_length': ApiConstance.pageLength,
             if (itemFilter.allowSales != null)
               "allow_sales": itemFilter.allowSales,
-            if (itemFilter.startKey != 0) 'start': itemFilter.startKey,
+            'start': itemFilter.startKey,
             if (itemFilter.searchText != null)
               'search_text': itemFilter.searchText,
             if (itemFilter.warehouse != null) 'warehouse': itemFilter.warehouse
@@ -47,6 +47,8 @@ class ItemsCubit extends Cubit<ItemsState> {
           {
             'price_list': itemFilter.priceList,
             'page_length': ApiConstance.pageLength,
+            if (itemFilter.allowSales != null)
+              "allow_sales": itemFilter.allowSales,
             if (itemFilter.startKey != 0) 'start': items.length + 1,
             if (itemFilter.searchText != null)
               'search_text': itemFilter.searchText,
