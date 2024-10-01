@@ -92,7 +92,7 @@ class GenericListScreen<T> extends StatefulWidget {
 class _GenericListModuleScreenState extends State<GenericListScreen> {
   final APIService service = APIService();
   PermissionModel permissionModel =
-      PermissionModel(docType: '', permission: true);
+      PermissionModel(docType: '', permission: false);
 
   String searchText = '';
   ValueNotifier<bool> reset = ValueNotifier(true);

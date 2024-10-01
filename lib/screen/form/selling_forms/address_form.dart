@@ -189,11 +189,7 @@ class _AddressFormState extends State<AddressForm> {
                         onChanged: (value) => data['address_title'] = value,
                         onSave: (key, value) => data[key] = value,
                       ),
-                      // CustomDropDown('address_type', ' Address Type'.tr(),
-                      //     items: addressTypeList,
-                      //     defaultValue: addressTypeList[0],
-                      //     onChanged: (value) => data['address_type'] = value),
-                      //Divider(color: Colors.grey, height: 1, thickness: 0.9),
+
                       CustomTextFieldTest(
                         'address_line1',
                         'Address Line 1'.tr(),
@@ -220,6 +216,20 @@ class _AddressFormState extends State<AddressForm> {
                               data['country'] = value['name'];
                             });
                           }),
+                      CustomTextFieldTest(
+                        'custom_code',
+                        'Code'.tr(),
+                        initialValue: data['custom_code'],
+                        onChanged: (value) {
+                          data['custom_code'] = value;
+                        },
+                        onSave: (key, value) => data[key] = value,
+                        keyboardType: TextInputType.number,
+                        disableError: false,
+                        validator: (value) =>
+                            numberValidationToast(value, 'Code'.tr()),
+                        disableValidation: true,
+                      ),
 
                       const SizedBox(height: 8),
                     ],
@@ -279,11 +289,11 @@ class _AddressFormState extends State<AddressForm> {
                         onChanged: (id, value) =>
                             setState(() => data[id] = value ? 1 : 0)),
                     const SizedBox(height: 8),
-                    Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(right: 6),
                           child: Icon(Icons.warning_amber,
                               color: Colors.amber, size: 22),

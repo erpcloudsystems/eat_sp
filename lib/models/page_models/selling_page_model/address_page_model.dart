@@ -15,6 +15,7 @@ class AddressPageModel {
       },
       {
         tr("Address Line 1"): data['address_line1'] ?? tr('none'),
+        tr("Code"): data['custom_code'] ?? tr('none'),
       },
       {
         tr("City/Town"): data['city'] ?? tr('none'),
