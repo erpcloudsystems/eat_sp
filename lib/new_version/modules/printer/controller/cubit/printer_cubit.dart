@@ -1,4 +1,5 @@
 import 'package:NextApp/main.dart';
+import 'package:NextApp/new_version/core/network/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -194,14 +195,18 @@ class PrinterCubit extends Cubit<PrinterState> {
               },
             ),
           );
-
       Navigator.pop(navigatorKey.currentContext!);
       await printInvoice(
         context: navigatorKey.currentContext!,
         invoiceData: response.data,
       );
+    } on PrimaryServerException {
+      Navigator.pop(navigatorKey.currentContext!);
+      debugPrint('Error while printing');
+      Fluttertoast.showToast(msg: 'Error occurred');
+      return;
     } catch (e) {
-      Navigator.pop(context);
+      Navigator.pop(navigatorKey.currentContext!);
       debugPrint('Error while printing: $e');
       Fluttertoast.showToast(msg: 'Error occurred: $e');
     }

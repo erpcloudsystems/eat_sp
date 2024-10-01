@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:expandable_menu/expandable_menu.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:NextApp/core/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -152,12 +153,19 @@ class PrintPageButton extends StatelessWidget {
       child: InkWell(
         onTap: context.select<ModuleProvider, bool>(
                 (value) => value.availablePdfFormat)
-            ? () => context.read<PrinterCubit>().printInvoiceServices(
-                  context: context,
-                  id: moduleProvider.pageId,
-                  docType: moduleProvider.currentModule.genericListService,
-                  format: 'POS Arabic',
-                )
+            ? () {
+                if (moduleProvider.pageData['docstatus'] != 1) {
+                  Fluttertoast.showToast(
+                      msg: 'Cannot print not submitted invoice');
+                  return;
+                }
+                context.read<PrinterCubit>().printInvoiceServices(
+                      context: context,
+                      id: moduleProvider.pageId,
+                      docType: moduleProvider.currentModule.genericListService,
+                      format: 'POS Arabic',
+                    );
+              }
             : null,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
