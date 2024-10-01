@@ -18,6 +18,8 @@ import 'new_version/core/global/state_managment.dart';
 import 'new_version/core/resources/strings_manager.dart';
 import 'new_version/core/global/dependency_container.dart' as di;
 
+
+final navigatorKey = GlobalKey<NavigatorState>();
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -75,6 +77,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.mainTheme(context),
         home: const SplashScreen(),
         routes: Routes.routes,
+        navigatorKey: navigatorKey,
       ),
     );
   }

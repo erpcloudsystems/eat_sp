@@ -1,3 +1,4 @@
+import 'package:NextApp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -102,11 +103,12 @@ class PrinterCubit extends Cubit<PrinterState> {
     required List<int> invoiceData,
   }) async {
     try {
+      await showLoadingDialog(context, 'Printing invoice data...');
       emit(PrinterLoading());
-
       if (defaultDevice != null) {
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
+        Navigator.pop(navigatorKey.currentContext!);
         if (context.mounted) {
           Navigator.push(
             context,
@@ -120,6 +122,7 @@ class PrinterCubit extends Cubit<PrinterState> {
           msg: 'No printer connected. Please set a printer in the settings.',
         );
         emit(PrinterError());
+        Navigator.pop(navigatorKey.currentContext!);
       }
     } catch (e) {
       debugPrint('Error while printing: $e');
@@ -192,11 +195,11 @@ class PrinterCubit extends Cubit<PrinterState> {
             ),
           );
 
+      Navigator.pop(navigatorKey.currentContext!);
       await printInvoice(
-        context: context,
+        context: navigatorKey.currentContext!,
         invoiceData: response.data,
       );
-      Navigator.pop(context);
     } catch (e) {
       Navigator.pop(context);
       debugPrint('Error while printing: $e');
