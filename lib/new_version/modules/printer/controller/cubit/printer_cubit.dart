@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:NextApp/main.dart';
 import 'package:NextApp/new_version/core/network/exceptions.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:printing/printing.dart';
+import 'package:pdf/pdf.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../../core/constants.dart';
@@ -14,7 +18,6 @@ import '../../../../../service/service_constants.dart';
 import '../../../../../widgets/dialog/loading_dialog.dart';
 import '../../../../core/network/api_constance.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../view/screens/pdf_viewer_screen.dart';
 part 'printer_state.dart';
 
 class PrinterCubit extends Cubit<PrinterState> {
@@ -110,14 +113,8 @@ class PrinterCubit extends Cubit<PrinterState> {
         await connectAndPrintToBluetoothPrinter(defaultDevice!, invoiceData);
         emit(PrinterPrintingSuccess());
         Navigator.pop(navigatorKey.currentContext!);
-        if (context.mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PdfViewerScreen(invoiceData: invoiceData),
-            ),
-          );
-        }
+       await Printing.layoutPdf(
+          onLayout: (format) async => Uint8List.fromList(invoiceData), format: PdfPageFormat.a4);
       } else {
         Fluttertoast.showToast(
           msg: 'No printer connected. Please set a printer in the settings.',

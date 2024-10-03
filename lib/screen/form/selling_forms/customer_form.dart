@@ -416,7 +416,7 @@ class _CustomerFormState extends State<CustomerForm> {
               /// Group 3
               ///
 
-              Group(
+              /* Group(
                 child: Column(
                   children: [
                     CustomTextFieldTest('credit_limit', 'Credit Limit'.tr(),
@@ -442,7 +442,7 @@ class _CustomerFormState extends State<CustomerForm> {
                             data['credit_limits']?[0][key] = value ? 1 : 0),
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
+import '../../new_version/modules/printer/view/screens/pdf_veiwer_download_screen.dart';
 import 'module_type.dart';
 import '../../service/service.dart';
 import '../user/user_provider.dart';
@@ -18,7 +19,6 @@ import '../../screen/page/page_screen.dart';
 import '../../service/server_exception.dart';
 import '../../service/service_constants.dart';
 import '../../widgets/dialog/loading_dialog.dart';
-import '../../widgets/new_widgets/pdf_screen.dart';
 
 class ModuleProvider extends ChangeNotifier {
   ModuleType? _currentModule;
@@ -723,8 +723,12 @@ class ModuleProvider extends ChangeNotifier {
           path: null,
         );
       }
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => PDFScreen(path: file!.path)));
+      Navigator.pop(context);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (_) => PdfVeiwerDownloadScreen(
+          file: file,
+        ),
+      ));
     } on ServerException catch (e) {
       print(e);
       Navigator.pop(context);

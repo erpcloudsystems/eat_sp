@@ -52,7 +52,7 @@ class CustomerPageModel {
         tr('Sales Partner'): data['default_sales_partner'] ?? tr('none'),
         tr('Payment Terms Template'): data['payment_terms'] ?? tr('none')
       },
-      {
+      /*{
         tr('Credit Limit'):
             (data["credit_limits"] == null || data["credit_limits"].isEmpty)
                 ? tr('none')
@@ -61,7 +61,7 @@ class CustomerPageModel {
       {
         tr('Bypass Credit Limit Check at Sales Order'):
             data['bypass_credit_limit_check'] ?? tr('none')
-      },
+      },*/
       {
         tr("Longitude"): data['longitude'].toString(),
         tr("Latitude"): data['latitude'].toString(),

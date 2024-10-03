@@ -62,7 +62,7 @@ class CustomerPage extends StatelessWidget {
         ),
         PageCard(items: model.card2Items, swapWidgets: [
           SwapWidget(
-              4,
+              3,
               SizedBox(
                   height: 30,
                   child: Checkbox(
